@@ -449,7 +449,7 @@
                 <span class="w-1.5 h-1.5 rounded-full bg-slate-300 group-hover:bg-[#2E3191]"></span>
                 <span class="truncate">Danh mục kỹ năng</span>
               </div>
-              <span class="text-[10px] font-bold px-1.5 py-0.2 rounded-full bg-indigo-50 text-[#2E3191] border border-indigo-200">12</span>
+              <span class="text-[10px] font-bold px-1.5 py-0.2 rounded-full bg-indigo-50 text-[#2E3191] border border-indigo-200">10</span>
             </button>
           </div>
         </div>
@@ -2287,7 +2287,7 @@
             </button>
             <button id="cat-tab-btn-kn" onclick="switchCatTab('kn')" class="bg-white text-slate-700 hover:text-[#2E3191] px-4 py-2 rounded-lg flex items-center space-x-1.5 transition cursor-pointer border border-slate-200 shadow-2xs">
               <span>🎯 Danh mục Kỹ năng</span>
-              <span class="text-[10px] font-bold px-1.5 py-0.2 rounded-full bg-indigo-50 text-[#2E3191] border border-indigo-200">12</span>
+              <span class="text-[10px] font-bold px-1.5 py-0.2 rounded-full bg-indigo-50 text-[#2E3191] border border-indigo-200">10</span>
             </button>
           </div>
           <span class="text-[11px] text-slate-400 italic">Dữ liệu dùng chung toàn công ty Cảng Phước An</span>
@@ -2629,7 +2629,7 @@
           <div class="p-3.5 border-b border-slate-200 flex justify-between items-center flex-wrap gap-2">
             <div>
               <h3 class="font-bold text-slate-900 text-xs">Danh mục Loại Hợp đồng Lao động</h3>
-              <p class="text-[11px] text-slate-400 mt-0.5">Áp dụng theo Bộ luật Lao động và quy chế quản lý nhân sự Cảng</p>
+              <p class="text-[11px] text-slate-400 mt-0.5">Danh mục loại thỏa thuận/hợp đồng; thời hạn và chế độ BHXH theo hồ sơ, chính sách được xác nhận</p>
             </div>
             <div class="flex items-center space-x-2">
               <button type="button" onclick="openColumnPicker(this, 'cat-table-hd')" class="bg-[#2E3191] text-white font-semibold text-xs rounded-xl px-3.5 py-1.5 shadow-xs hover:bg-[#242775] transition-all inline-flex items-center gap-1.5 cursor-pointer" title="Ẩn / Hiện và Ghim cột">
@@ -2699,13 +2699,13 @@
                 </tr>
               </thead>
               <tbody class="divide-y divide-slate-200">
-                <!-- 1. Chính thức -->
+                <!-- 1. HĐLĐ xác định thời hạn -->
                 <tr class="hover:bg-slate-50 group transition">
                   <td class="py-3 px-4 text-center text-slate-700 font-medium sticky left-0 bg-white group-hover:bg-slate-50 z-10">1</td>
-                  <td class="py-3 px-4 font-bold text-slate-900">HD-CT</td>
-                  <td class="py-3 px-4 font-bold text-slate-900">Chính thức</td>
-                  <td class="py-3 px-4 text-slate-700">12 - 36 tháng / Vô thời hạn</td>
-                  <td class="py-3 px-4 text-center"><span class="px-2 py-0.5 rounded text-[10px] font-semibold bg-emerald-50 text-emerald-700 border border-emerald-200">Bắt buộc</span></td>
+                  <td class="py-3 px-4 font-bold text-slate-900">HD-XDTH</td>
+                  <td class="py-3 px-4 font-bold text-slate-900">HĐLĐ xác định thời hạn</td>
+                  <td class="py-3 px-4 text-slate-700">Theo thời hạn ghi trong hợp đồng</td>
+                  <td class="py-3 px-4 text-center"><span class="px-2 py-0.5 rounded text-[10px] font-semibold bg-slate-100 text-slate-700 border border-slate-200">Chưa xác nhận</span></td>
                   <td class="py-3 px-4 text-center text-emerald-600 font-semibold whitespace-nowrap"><span class="inline-block whitespace-nowrap">🟢 Đang hoạt động</span></td>
                   <td class="py-3 px-4">
                     <div class="font-medium text-slate-800 leading-tight">AdminSystem</div>
@@ -2716,13 +2716,13 @@
                   </td>
                   <td class="py-3 px-4 text-center sticky right-0 bg-white group-hover:bg-slate-50 shadow-[-6px_0_10px_-4px_rgba(0,0,0,0.08)] sticky-action z-10"><button type="button" class="p-1.5 text-slate-500 hover:text-[#2E3191] hover:bg-slate-100 rounded-lg transition cursor-pointer" title="Chỉnh sửa"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0115.75 21H5.25A2.25 2.25 0 013 18.75V8.25A2.25 2.25 0 015.25 6H10"/></svg></button></td>
                 </tr>
-                <!-- 2. Thử việc -->
+                <!-- 2. HĐLĐ không xác định thời hạn -->
                 <tr class="hover:bg-slate-50 group transition">
                   <td class="py-3 px-4 text-center text-slate-700 font-medium sticky left-0 bg-white group-hover:bg-slate-50 z-10">2</td>
-                  <td class="py-3 px-4 font-bold text-slate-900">HD-TV</td>
-                  <td class="py-3 px-4 font-bold text-slate-900">Thử việc</td>
-                  <td class="py-3 px-4 text-slate-700">30 - 60 ngày</td>
-                  <td class="py-3 px-4 text-center"><span class="px-2 py-0.5 rounded text-[10px] font-semibold bg-slate-100 text-slate-800 font-medium border border-slate-200">Không bắt buộc</span></td>
+                  <td class="py-3 px-4 font-bold text-slate-900">HD-KXDTH</td>
+                  <td class="py-3 px-4 font-bold text-slate-900">HĐLĐ không xác định thời hạn</td>
+                  <td class="py-3 px-4 text-slate-700">Không xác định thời hạn</td>
+                  <td class="py-3 px-4 text-center"><span class="px-2 py-0.5 rounded text-[10px] font-semibold bg-slate-100 text-slate-700 border border-slate-200">Chưa xác nhận</span></td>
                   <td class="py-3 px-4 text-center text-emerald-600 font-semibold whitespace-nowrap"><span class="inline-block whitespace-nowrap">🟢 Đang hoạt động</span></td>
                   <td class="py-3 px-4">
                     <div class="font-medium text-slate-800 leading-tight">AdminSystem</div>
@@ -2731,6 +2731,18 @@
                   <td class="py-3 px-4">
                     <span class="text-slate-300 text-xs">—</span>
                   </td>
+                  <td class="py-3 px-4 text-center sticky right-0 bg-white group-hover:bg-slate-50 shadow-[-6px_0_10px_-4px_rgba(0,0,0,0.08)] sticky-action z-10"><button type="button" class="p-1.5 text-slate-500 hover:text-[#2E3191] hover:bg-slate-100 rounded-lg transition cursor-pointer" title="Chỉnh sửa"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0115.75 21H5.25A2.25 2.25 0 013 18.75V8.25A2.25 2.25 0 015.25 6H10"/></svg></button></td>
+                </tr>
+                <!-- 3. Thỏa thuận thử việc -->
+                <tr class="hover:bg-slate-50 group transition">
+                  <td class="py-3 px-4 text-center text-slate-700 font-medium sticky left-0 bg-white group-hover:bg-slate-50 z-10">3</td>
+                  <td class="py-3 px-4 font-bold text-slate-900">TV-THUVIEC</td>
+                  <td class="py-3 px-4 font-bold text-slate-900">Thỏa thuận thử việc</td>
+                  <td class="py-3 px-4 text-slate-700">Theo thỏa thuận/hồ sơ</td>
+                  <td class="py-3 px-4 text-center"><span class="px-2 py-0.5 rounded text-[10px] font-semibold bg-slate-100 text-slate-700 border border-slate-200">Chưa xác nhận</span></td>
+                  <td class="py-3 px-4 text-center text-emerald-600 font-semibold whitespace-nowrap"><span class="inline-block whitespace-nowrap">🟢 Đang hoạt động</span></td>
+                  <td class="py-3 px-4"><div class="font-medium text-slate-800 leading-tight">AdminSystem</div><div class="text-[10px] text-slate-400 mt-0.5">01/01/2026 08:30</div></td>
+                  <td class="py-3 px-4"><span class="text-slate-300 text-xs">—</span></td>
                   <td class="py-3 px-4 text-center sticky right-0 bg-white group-hover:bg-slate-50 shadow-[-6px_0_10px_-4px_rgba(0,0,0,0.08)] sticky-action z-10"><button type="button" class="p-1.5 text-slate-500 hover:text-[#2E3191] hover:bg-slate-100 rounded-lg transition cursor-pointer" title="Chỉnh sửa"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0115.75 21H5.25A2.25 2.25 0 013 18.75V8.25A2.25 2.25 0 015.25 6H10"/></svg></button></td>
                 </tr>
               </tbody>
@@ -2928,9 +2940,27 @@
           <div class="p-3.5 border-b border-slate-200 flex justify-between items-center flex-wrap gap-2">
             <div>
               <h3 class="font-bold text-slate-900 text-xs">Danh mục Kỹ năng Chuyên môn & Nghiệp vụ Cảng</h3>
-              <p class="text-[11px] text-slate-400 mt-0.5">Chuẩn hóa 12 kỹ năng nghề cảng dùng gán cho hồ sơ nhân sự, phân ca kíp và kiểm tra an toàn vận hành</p>
+              <p class="text-[11px] text-slate-400 mt-0.5">Chuẩn hóa 10 kỹ năng nghề cảng dùng gán cho hồ sơ nhân sự, phân ca kíp và kiểm tra an toàn vận hành</p>
             </div>
             <div class="flex items-center space-x-2">
+              <select id="cat-skill-dept-filter" onchange="filterSkillsCatalogTable()" class="px-2.5 py-1.5 border border-slate-300 rounded-lg text-xs text-slate-700 bg-white focus:ring-2 focus:ring-[#2E3191]">
+                <option value="">🏢 Tất cả Đơn vị/ Phòng ban</option>
+                <option value="Dùng chung toàn Cảng">🏢 Dùng chung toàn Cảng</option>
+                <option value="Phòng Vận hành Cầu bến">Phòng Vận hành Cầu bến</option>
+                <option value="Tổ Lái cẩu bờ STS">Tổ Lái cẩu bờ STS</option>
+                <option value="Tổ Lái xe đầu kéo bến">Tổ Lái xe đầu kéo bến</option>
+                <option value="Phòng Kho bãi & Container">Phòng Kho bãi & Container</option>
+                <option value="Phòng Kỹ thuật & Bảo trì Cảng">Phòng Kỹ thuật & Bảo trì Cảng</option>
+                <option value="Tổ Điện & Tự động hóa Cảng">Tổ Điện & Tự động hóa Cảng</option>
+                <option value="Tổ Bảo trì Thiết bị Cơ giới">Tổ Bảo trì Thiết bị Cơ giới</option>
+                <option value="Phòng Phát triển Phần mềm">Phòng Phát triển Phần mềm</option>
+                <option value="Phòng HT & Hạ tầng CNTT">Phòng HT & Hạ tầng CNTT</option>
+                <option value="Đội An ninh - Cảnh vệ Cảng">Đội An ninh - Cảnh vệ Cảng</option>
+                <option value="Phòng Kế toán Tổng hợp">Phòng Kế toán Tổng hợp</option>
+                <option value="Phòng Tài chính Doanh nghiệp">Phòng Tài chính Doanh nghiệp</option>
+                <option value="Phòng Tổ chức - Hành chính">Phòng Tổ chức - Hành chính</option>
+                <option value="Phòng Kế hoạch - Kinh doanh Cảng">Phòng Kế hoạch - Kinh doanh Cảng</option>
+              </select>
               <input type="text" id="cat-skill-search" oninput="filterSkillsCatalogTable()" placeholder="Tìm tên, mã kỹ năng, chứng chỉ..." class="px-3 py-1.5 border border-slate-300 rounded-lg text-xs">
               <button type="button" onclick="openColumnPicker(this, 'cat-table-kn')" class="bg-[#2E3191] text-white font-semibold text-xs rounded-xl px-3.5 py-1.5 shadow-xs hover:bg-[#242775] transition-all inline-flex items-center gap-1.5 cursor-pointer" title="Ẩn / Hiện và Ghim cột">
                 <span>Cột</span>
@@ -2959,12 +2989,19 @@
                       <button type="button" class="inline-flex items-center justify-center text-white/70 hover:text-white transition-colors cursor-pointer ml-1.5 p-0.5 rounded hover:bg-white/10 shrink-0" title="Tìm kiếm"><svg class="w-3.5 h-3.5" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="6.5" cy="6.5" r="4.5" /><path d="M9.8 9.8L13.8 13.8" /></svg></button>
                     </div>
                   </th>
-                  <th class="py-2.5 px-3.5 min-w-[280px]">
+                  <th class="py-2.5 px-3.5 min-w-[260px]">
                     <div class="inline-flex items-center">
                       <span class="inline-flex items-center text-white/40 hover:text-white/80 cursor-grab mr-1.5 shrink-0 select-none" title="Kéo đổi vị trí cột"><svg class="w-2.5 h-3.5" viewBox="0 0 8 14" fill="currentColor"><circle cx="2" cy="2" r="1.1"/><circle cx="6" cy="2" r="1.1"/><circle cx="2" cy="7" r="1.1"/><circle cx="6" cy="7" r="1.1"/><circle cx="2" cy="12" r="1.1"/><circle cx="6" cy="12" r="1.1"/></svg></span>
                       <span>Tên kỹ năng chuyên môn</span>
                       <span class="inline-flex flex-col items-center justify-center cursor-pointer text-white/70 hover:text-white transition-colors ml-1 select-none p-0.5 group/sort shrink-0" title="Sắp xếp cột"><svg class="w-2.5 h-3" viewBox="0 0 10 12" fill="currentColor"><path d="M5 1L9 5H1L5 1Z" class="group-hover/sort:text-white" /><path d="M1 7H9L5 11L1 7Z" class="group-hover/sort:text-white" /></svg></span>
                       <button type="button" class="inline-flex items-center justify-center text-white/70 hover:text-white transition-colors cursor-pointer ml-1.5 p-0.5 rounded hover:bg-white/10 shrink-0" title="Tìm kiếm"><svg class="w-3.5 h-3.5" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="6.5" cy="6.5" r="4.5" /><path d="M9.8 9.8L13.8 13.8" /></svg></button>
+                    </div>
+                  </th>
+                  <th class="py-2.5 px-3.5 min-w-[190px]">
+                    <div class="inline-flex items-center">
+                      <span class="inline-flex items-center text-white/40 hover:text-white/80 cursor-grab mr-1.5 shrink-0 select-none" title="Kéo đổi vị trí cột"><svg class="w-2.5 h-3.5" viewBox="0 0 8 14" fill="currentColor"><circle cx="2" cy="2" r="1.1"/><circle cx="6" cy="2" r="1.1"/><circle cx="2" cy="7" r="1.1"/><circle cx="6" cy="7" r="1.1"/><circle cx="2" cy="12" r="1.1"/><circle cx="6" cy="12" r="1.1"/></svg></span>
+                      <span>Đơn vị/ Phòng ban</span>
+                      <span class="inline-flex flex-col items-center justify-center cursor-pointer text-white/70 hover:text-white transition-colors ml-1 select-none p-0.5 group/sort shrink-0" title="Sắp xếp cột"><svg class="w-2.5 h-3" viewBox="0 0 10 12" fill="currentColor"><path d="M5 1L9 5H1L5 1Z" class="group-hover/sort:text-white" /><path d="M1 7H9L5 11L1 7Z" class="group-hover/sort:text-white" /></svg></span>
                     </div>
                   </th>
                   <th class="py-2.5 px-3 min-w-[220px]">
@@ -3073,77 +3110,7 @@
                     </div>
                   </td>
                 </tr>
-                <tr class="hover:bg-slate-50 group transition">
-                  <td class="py-3 px-4 text-center text-slate-700 font-medium sticky left-0 bg-white group-hover:bg-slate-50 z-10">3</td>
-                  <td class="py-3 px-4 font-bold text-[#2E3191]">SK-NN-01</td>
-                  <td class="py-3 px-4">
-                    <div class="font-bold text-slate-900 text-xs">Tiếng Anh Chuyên ngành Hàng hải & Logistics (Marlins English)</div>
-                    <div class="text-[11px] text-slate-500 mt-0.5 line-clamp-1" title="Giao tiếp thông thạo với đối tác hãng tàu quốc tế (Maersk, MSC, COSCO) và chuyên gia công nghệ nước ngoài.">Giao tiếp thông thạo với đối tác hãng tàu quốc tế (Maersk, MSC, COSCO) và chuyên gia công nghệ nước ngoài.</div>
-                  </td>
-                  <td class="py-3 px-4 text-xs text-slate-700 font-medium">Marlins English for Seafarers 92/100</td>
-                  <td class="py-3 px-4 text-center">
-                    <button type="button" onclick="filterEmpBySkill('Tiếng Anh Chuyên ngành Hàng hải & Logistics (Marlins English)')" class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-indigo-50 text-[#2E3191] border border-indigo-200 hover:bg-indigo-100 transition cursor-pointer" title="Bấm để xem danh sách 3 nhân sự đạt kỹ năng này trong Hồ sơ nhân sự">
-                      3 NV
-                    </button>
-                  </td>
-                  <td class="py-3 px-4 text-center text-emerald-600 font-semibold whitespace-nowrap">
-                    <span class="inline-block whitespace-nowrap">🟢 Đang áp dụng</span>
-                  </td>
-                  <td class="py-3 px-4">
-                    <div class="font-medium text-slate-800 leading-tight">AdminSystem</div>
-                    <div class="text-[10px] text-slate-400 mt-0.5">01/01/2026 08:30</div>
-                  </td>
-                  <td class="py-3 px-4">
-                    
-                      <div class="font-medium text-slate-800 leading-tight">AdminSystem</div>
-                      <div class="text-[10px] text-slate-400 mt-0.5">12/06/2026 09:15</div>
-                    
-                  </td>
-                  <td class="py-3 px-4 text-center sticky right-0 bg-white group-hover:bg-slate-50 shadow-[-6px_0_10px_-4px_rgba(0,0,0,0.08)] sticky-action z-10">
-                    <div class="flex items-center justify-center space-x-1.5">
-                      <button type="button" onclick="editSkillCatalogItem('SK-NN-01')" class="p-1.5 text-slate-500 hover:text-[#2E3191] hover:bg-slate-100 rounded-lg transition cursor-pointer" title="Chỉnh sửa">
-                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0115.75 21H5.25A2.25 2.25 0 013 18.75V8.25A2.25 2.25 0 015.25 6H10"/></svg>
-                      </button>
-                      <button type="button" onclick="deleteSkillFromCatalog('SK-NN-01')" class="p-1.5 text-slate-500 hover:text-rose-600 hover:bg-rose-50 rounded-lg transition cursor-pointer" title="Xóa">
-                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0"/></svg>
-                      </button>
-                    </div>
-                  </td>
-                </tr>
-                <tr class="hover:bg-slate-50 group transition">
-                  <td class="py-3 px-4 text-center text-slate-700 font-medium sticky left-0 bg-white group-hover:bg-slate-50 z-10">4</td>
-                  <td class="py-3 px-4 font-bold text-[#2E3191]">SK-NN-02</td>
-                  <td class="py-3 px-4">
-                    <div class="font-bold text-slate-900 text-xs">Tiếng Trung Thương mại & Hàng hải Cảng biển (HSK 5 / TOCFL)</div>
-                    <div class="text-[11px] text-slate-500 mt-0.5 line-clamp-1" title="Phục vụ trực tiếp tuyến tàu container trực tiếp từ các cụm cảng Thượng Hải, Ninh Ba, Thâm Quyến.">Phục vụ trực tiếp tuyến tàu container trực tiếp từ các cụm cảng Thượng Hải, Ninh Ba, Thâm Quyến.</div>
-                  </td>
-                  <td class="py-3 px-4 text-xs text-slate-700 font-medium">HSK 5 (Score 265/300) & Maritime Chinese</td>
-                  <td class="py-3 px-4 text-center">
-                    <button type="button" onclick="filterEmpBySkill('Tiếng Trung Thương mại & Hàng hải Cảng biển (HSK 5 / TOCFL)')" class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-indigo-50 text-[#2E3191] border border-indigo-200 hover:bg-indigo-100 transition cursor-pointer" title="Bấm để xem danh sách 2 nhân sự đạt kỹ năng này trong Hồ sơ nhân sự">
-                      2 NV
-                    </button>
-                  </td>
-                  <td class="py-3 px-4 text-center text-emerald-600 font-semibold whitespace-nowrap">
-                    <span class="inline-block whitespace-nowrap">🟢 Đang áp dụng</span>
-                  </td>
-                  <td class="py-3 px-4">
-                    <div class="font-medium text-slate-800 leading-tight">AdminSystem</div>
-                    <div class="text-[10px] text-slate-400 mt-0.5">01/01/2026 08:30</div>
-                  </td>
-                  <td class="py-3 px-4">
-                    <span class="text-slate-300 text-xs">—</span>
-                  </td>
-                  <td class="py-3 px-4 text-center sticky right-0 bg-white group-hover:bg-slate-50 shadow-[-6px_0_10px_-4px_rgba(0,0,0,0.08)] sticky-action z-10">
-                    <div class="flex items-center justify-center space-x-1.5">
-                      <button type="button" onclick="editSkillCatalogItem('SK-NN-02')" class="p-1.5 text-slate-500 hover:text-[#2E3191] hover:bg-slate-100 rounded-lg transition cursor-pointer" title="Chỉnh sửa">
-                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0115.75 21H5.25A2.25 2.25 0 013 18.75V8.25A2.25 2.25 0 015.25 6H10"/></svg>
-                      </button>
-                      <button type="button" onclick="deleteSkillFromCatalog('SK-NN-02')" class="p-1.5 text-slate-500 hover:text-rose-600 hover:bg-rose-50 rounded-lg transition cursor-pointer" title="Xóa">
-                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0"/></svg>
-                      </button>
-                    </div>
-                  </td>
-                </tr>
+                
                 <tr class="hover:bg-slate-50 group transition">
                   <td class="py-3 px-4 text-center text-slate-700 font-medium sticky left-0 bg-white group-hover:bg-slate-50 z-10">5</td>
                   <td class="py-3 px-4 font-bold text-[#2E3191]">SK-KT-01</td>
@@ -3425,7 +3392,7 @@
           <!-- Footer thống kê phân trang chuẩn PAP -->
           <div class="px-4 py-3 border-t border-slate-200 bg-white flex flex-wrap items-center justify-between gap-3 text-xs text-slate-600">
             <div class="font-medium text-slate-600">
-              Hiển thị: <strong id="skill-shown-count" class="text-slate-800">12</strong> / 12 kỹ năng chuyên môn
+              Hiển thị: <strong id="skill-shown-count" class="text-slate-800">10</strong> / 10 kỹ năng chuyên môn
             </div>
             <div class="flex items-center space-x-2 text-slate-400 text-[11px]">
               <span>Chuẩn hóa danh mục kỹ năng nghề Cảng Phước An 2026</span>
@@ -3587,8 +3554,9 @@
             <div class="md:col-span-1">
               <select id="emp-filter-contract" onchange="handleEmpFilter()" class="w-full px-2 py-1.5 border border-slate-300 rounded-lg bg-white text-slate-700 focus:ring-2 focus:ring-[#2E3191] focus:outline-hidden text-xs cursor-pointer">
                 <option value="">Hợp đồng</option>
-                <option value="Chính thức">Chính thức</option>
-                <option value="Thử việc">Thử việc</option>
+                <option value="HĐLĐ xác định thời hạn">HĐLĐ xác định thời hạn</option>
+                <option value="HĐLĐ không xác định thời hạn">HĐLĐ không xác định thời hạn</option>
+                <option value="Thỏa thuận thử việc">Thỏa thuận thử việc</option>
               </select>
             </div>
 
@@ -3859,7 +3827,7 @@
                   <!-- Injected badge -->
                 </span>
                 <span id="prof-card-contract-badge" class="px-2 py-0.5 rounded text-[10px] font-semibold bg-slate-100 text-slate-700 border border-slate-200">
-                  Chính thức
+                  HĐLĐ xác định thời hạn
                 </span>
               </div>
             </div>
@@ -3887,7 +3855,7 @@
                 <span id="prof-card-phone" class="text-slate-700 text-right">0908 123 456</span>
               </div>
               <div class="flex items-start justify-between py-1 border-b border-slate-50">
-                <span class="text-slate-400">Ngày vào làm:</span>
+                <span class="text-slate-400">Ngày bắt đầu:</span>
                 <span id="prof-card-joindate" class="text-slate-700 text-right font-medium">01/01/2026</span>
               </div>
               <div class="flex items-start justify-between py-1 border-b border-slate-50">
@@ -3937,8 +3905,8 @@
                 <span id="prof-tab-skills-badge" class="ml-1 px-1.5 py-0.2 rounded-full text-[10px] font-bold bg-indigo-50 text-[#2E3191] border border-indigo-200">6</span>
               </button>
               <button onclick="switchProfTab('gps')" id="tab-btn-gps" class="px-3.5 py-2 rounded-xl text-slate-800 font-medium hover:text-[#2E3191] hover:bg-slate-50 flex items-center space-x-1.5 transition cursor-pointer shrink-0">
-                <span>📍</span>
-                <span>GPS Chấm công</span>
+                <span>⏱️</span>
+                <span>Hình thức chấm công</span>
               </button>
               <button onclick="switchProfTab('leave')" id="tab-btn-leave" class="px-3.5 py-2 rounded-xl text-slate-800 font-medium hover:text-[#2E3191] hover:bg-slate-50 flex items-center space-x-1.5 transition cursor-pointer shrink-0">
                 <span>🏖️</span>
@@ -4220,7 +4188,7 @@
                       <span>📜</span>
                       <span>Loại Hợp đồng</span>
                     </label>
-                    <input type="text" id="prof-work-contract" readonly value="Chính thức" class="w-full px-3 py-2 bg-slate-100 border border-slate-200 rounded-lg font-semibold text-slate-800 cursor-not-allowed">
+                    <input type="text" id="prof-work-contract" readonly value="HĐLĐ xác định thời hạn" class="w-full px-3 py-2 bg-slate-100 border border-slate-200 rounded-lg font-semibold text-slate-800 cursor-not-allowed">
                   </div>
                   <div>
                     <label class="block font-semibold text-slate-700 mb-1 flex items-center space-x-1">
@@ -4230,18 +4198,18 @@
                     <input type="text" id="prof-work-status" readonly value="🟢 Đang làm việc" class="w-full px-3 py-2 bg-slate-100 border border-slate-200 rounded-lg font-semibold text-emerald-700 cursor-not-allowed">
                   </div>
 
-                  <!-- Hàng 4: Ngày Onboard & Ngày chính thức (Ký HĐCT) -->
+                  <!-- Hàng 4: Ngày bắt đầu & Ngày chính thức -->
                   <div>
                     <label class="block font-semibold text-slate-700 mb-1 flex items-center space-x-1">
                       <span>📅</span>
-                      <span>Ngày Onboard</span>
+                      <span>Ngày bắt đầu</span>
                     </label>
                     <input type="text" id="prof-work-startdate" readonly value="01/11/2025" class="w-full px-3 py-2 bg-slate-100 border border-slate-200 rounded-lg font-semibold text-slate-800 cursor-not-allowed">
                   </div>
                   <div>
                     <label class="block font-semibold text-slate-700 mb-1 flex items-center space-x-1">
                       <span>🎯</span>
-                      <span>Ngày chính thức (Ký HĐCT)</span>
+                      <span>Ngày chính thức</span>
                     </label>
                     <input type="text" id="prof-work-officialdate" readonly value="01/01/2026" class="w-full px-3 py-2 bg-slate-100 border border-slate-200 rounded-lg font-semibold text-slate-800 cursor-not-allowed">
                   </div>
@@ -4635,14 +4603,14 @@
                 <div class="border-b border-slate-100 pb-3 flex items-center justify-between">
                   <div>
                     <h3 class="text-sm font-bold text-slate-900 flex items-center space-x-2">
-                      <span>📍</span>
-                      <span>Cấu hình Địa điểm GPS Chấm công Hợp lệ</span>
+                      <span>⏱️</span>
+                      <span>Thiết lập hình thức chấm công</span>
                     </h3>
-                    <p class="text-xs text-slate-700 font-medium mt-0.5">Địa điểm được gán trực tiếp từ Danh mục Chi nhánh & Văn phòng. Tọa độ và bán kính được kế thừa tự động.</p>
+                    <p class="text-xs text-slate-700 font-medium mt-0.5">Hình thức chấm công quy định phương thức chấm công (Mobile GPS + Selfie) và vị trí/bán kính áp dụng cho nhân viên.</p>
                   </div>
                   <button onclick="openGpsModal()" class="px-3.5 py-1.5 pap-primary text-white rounded-lg text-xs font-semibold pap-primary-hover shadow-xs flex items-center space-x-1.5 transition cursor-pointer">
                     <svg class="w-3.5 h-3.5 stroke-current" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" /></svg>
-                    <span>Gán địa điểm GPS</span>
+                    <span>Thiết lập</span>
                   </button>
                 </div>
 
@@ -5027,11 +4995,11 @@
                     </div>
                   </th>
 
-                  <!-- Ngày vào làm -->
+                  <!-- Ngày bắt đầu -->
                   <th class="py-2.5 px-3 min-w-[125px] text-center sticky top-0 bg-[#2E3191] z-20">
                     <div class="inline-flex items-center justify-center">
                       <span class="inline-flex items-center text-white/40 hover:text-white/80 cursor-grab mr-1 shrink-0 select-none" title="Kéo đổi vị trí cột"><svg class="w-2.5 h-3.5" viewBox="0 0 8 14" fill="currentColor"><circle cx="2" cy="2" r="1.1"/><circle cx="6" cy="2" r="1.1"/><circle cx="2" cy="7" r="1.1"/><circle cx="6" cy="7" r="1.1"/><circle cx="2" cy="12" r="1.1"/><circle cx="6" cy="12" r="1.1"/></svg></span>
-                      <span>Ngày vào làm</span>
+                      <span>Ngày bắt đầu</span>
                       <span class="inline-flex flex-col items-center justify-center cursor-pointer text-white/70 hover:text-white transition-colors ml-1 select-none p-0.5 group/sort shrink-0" title="Sắp xếp cột"><svg class="w-2.5 h-3" viewBox="0 0 10 12" fill="currentColor"><path d="M5 1L9 5H1L5 1Z" class="group-hover/sort:text-white" /><path d="M1 7H9L5 11L1 7Z" class="group-hover/sort:text-white" /></svg></span>
                     </div>
                   </th>
@@ -5241,32 +5209,29 @@
 
         <!-- ================= PANEL 1: THIẾT LẬP CHẤM CÔNG ================= -->
         <div id="att-panel-setup" class="space-y-3 hidden">
-          <nav class="flex flex-wrap items-center gap-2 rounded-xl border border-slate-200 bg-white p-2 text-xs" aria-label="Các nhóm thiết lập chấm công">
-            <a href="#attendance-clients-section" class="rounded-lg px-3 py-1.5 font-semibold text-[#2E3191] hover:bg-indigo-50">Client &amp; phạm vi</a>
-            <a href="#attendance-locations-section" class="rounded-lg px-3 py-1.5 font-semibold text-[#2E3191] hover:bg-indigo-50">Địa điểm GPS</a>
-          </nav>
           <!-- CLIENT CHẤM CÔNG MOBILE: GPS luôn bắt buộc; Geofence là tùy chọn theo từng client -->
           <div id="attendance-clients-section" class="bg-white rounded-xl border border-slate-200 shadow-xs overflow-hidden">
             <div class="p-3.5 border-b border-slate-200 bg-slate-50/70 flex flex-wrap items-center justify-between gap-3">
               <div>
-                <div class="font-bold text-xs text-slate-800 uppercase">Client chấm công</div>
+                <div class="font-bold text-xs text-slate-800 uppercase">Hình thức chấm công</div>
                 <div class="mt-1 text-[11px] text-slate-600">Mobile GPS + Selfie · GPS luôn bắt buộc · Phạm vi dùng do HR chỉ định</div>
               </div>
               <div class="flex items-center gap-2">
                 <button type="button" onclick="openColumnPicker(this, 'attendance-client-table')" class="bg-[#2E3191] text-white font-semibold text-xs rounded-xl px-3.5 py-1.5 shadow-xs hover:bg-[#242775] transition-all inline-flex items-center gap-1.5 cursor-pointer" title="Ẩn / Hiện và Ghim cột">Cột <span aria-hidden="true">⌄</span></button>
-                <button type="button" onclick="downloadTableExcel('attendance-client-table', 'Danh_sach_Client_cham_cong')" class="bg-[#2E3191] text-white font-semibold text-xs rounded-xl px-3.5 py-1.5 shadow-xs hover:bg-[#242775] transition-all inline-flex items-center gap-1.5 cursor-pointer" title="Tải xuống Excel"><span>Tải xuống</span><svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="12" y1="18" x2="12" y2="12"/><line x2="9" y2="15" x1="12"/><line x2="15" y2="15" x1="12"/></svg></button>
-                <button type="button" onclick="openAttendanceClientModal()" class="px-3 py-1.5 pap-primary text-white rounded-lg text-xs font-semibold pap-primary-hover shadow-xs transition">+ Tạo client</button>
+                <button type="button" onclick="downloadTableExcel('attendance-client-table', 'Danh_sach_Hinh_thuc_cham_cong')" class="bg-[#2E3191] text-white font-semibold text-xs rounded-xl px-3.5 py-1.5 shadow-xs hover:bg-[#242775] transition-all inline-flex items-center gap-1.5 cursor-pointer" title="Tải xuống Excel"><span>Tải xuống</span><svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="12" y1="18" x2="12" y2="12"/><line x2="9" y2="15" x1="12"/><line x2="15" y2="15" x1="12"/></svg></button>
+                <button type="button" onclick="openAttendanceClientModal()" class="px-3 py-1.5 pap-primary text-white rounded-lg text-xs font-semibold pap-primary-hover shadow-xs transition">+ Tạo hình thức</button>
               </div>
             </div>
             <div id="attendance-clients-viewport" class="overflow-x-auto pap-table-frame pap-table-scroll">
               <table id="attendance-client-table" class="w-full text-left text-xs border-collapse pap-data-table">
-                <thead class="pap-data-table__head">
-                  <tr class="bg-white text-slate-600 border-b border-slate-200 font-semibold text-[11px] uppercase">
-                    <th class="py-2.5 px-3 w-12 text-center">STT</th>
-                    <th class="py-2.5 px-3 min-w-[190px]">Tên client</th>
-                    <th class="py-2.5 px-3 min-w-[180px]">Phạm vi nhân viên</th>
-                    <th class="py-2.5 px-3 min-w-[210px]">Địa điểm GPS</th>
-                    <th class="py-2.5 px-3 min-w-[170px]">Quy tắc vị trí</th>
+                <thead class="bg-[#2E3191] text-white select-none border-b border-[#2E3191] shadow-xs sticky top-0 z-20 pap-data-table__head">
+                  <tr class="text-xs font-bold divide-x divide-white/10">
+                    <th class="py-2.5 px-3 text-center w-12 sticky top-0 left-0 bg-[#2E3191] z-30 shrink-0 select-none">STT</th>
+                    <th class="py-2.5 px-3 min-w-[180px]">Tên hình thức</th>
+                    <th class="py-2.5 px-3 min-w-[140px]">Phương thức</th>
+                    <th class="py-2.5 px-3 text-center min-w-[160px]">Số lượng nhân viên</th>
+                    <th class="py-2.5 px-3 min-w-[210px]">Vị trí & Bán kính</th>
+                    <th class="py-2.5 px-3 text-center min-w-[150px]">Yêu cầu duyệt</th>
                     <th class="py-2.5 px-3 text-center min-w-[120px]">Trạng thái</th>
                     <th class="py-2.5 px-3 text-center min-w-[140px]">Khởi tạo</th>
                     <th class="py-2.5 px-3 text-center min-w-[140px]">Cập nhật cuối</th>
@@ -5274,65 +5239,17 @@
                   </tr>
                 </thead>
                 <tbody id="attendance-client-tbody" class="divide-y divide-slate-100 bg-white">
-                  <tr><td colspan="8" class="py-6 px-3 text-center text-slate-500">Chưa có client chấm công. Tạo client để cấu hình phạm vi sử dụng.</td></tr>
+                  <tr><td colspan="8" class="py-6 px-3 text-center text-slate-500">Chưa có hình thức chấm công. Tạo mới để cấu hình phạm vi sử dụng.</td></tr>
                 </tbody>
               </table>
             </div>
             <div id="attendance-client-table-summary" class="px-4 py-2.5 text-xs text-slate-600 pap-data-table__footer">
-              <div class="flex flex-wrap items-center gap-2"><span>Hiển thị</span><select id="attendance-client-table-page-size" onchange="changeAttendanceManagementPageSize('clients', this.value)" class="px-2 py-1 border border-slate-300 rounded-md bg-white text-xs"><option value="10" selected>10 dòng / trang</option><option value="20">20 dòng / trang</option><option value="50">50 dòng / trang</option></select><span id="attendance-client-table-range">0 / 0 client</span></div>
-              <div id="attendance-client-table-pagination" class="flex items-center gap-1.5" aria-label="Phân trang client chấm công"></div>
+              <div class="flex flex-wrap items-center gap-2"><span>Hiển thị</span><select id="attendance-client-table-page-size" onchange="changeAttendanceManagementPageSize('clients', this.value)" class="px-2 py-1 border border-slate-300 rounded-md bg-white text-xs"><option value="10" selected>10 dòng / trang</option><option value="20">20 dòng / trang</option><option value="50">50 dòng / trang</option></select><span id="attendance-client-table-range">0 / 0 hình thức</span></div>
+              <div id="attendance-client-table-pagination" class="flex items-center gap-1.5" aria-label="Phân trang hình thức chấm công"></div>
             </div>
           </div>
 
-          <!-- Bảng Danh mục Điểm chấm công GPS Cảng Phước An -->
-          <div id="attendance-locations-section" class="bg-white rounded-xl border border-slate-200 shadow-xs overflow-hidden">
-            <div class="p-3.5 border-b border-slate-200 bg-slate-50/70 flex flex-wrap items-center justify-between gap-3">
-              <div class="flex items-center space-x-2">
-                <span class="font-bold text-xs text-slate-800 uppercase">Danh mục Địa điểm làm việc & Phân vùng Geofencing</span>
-                <span class="text-[11px] text-slate-500 font-medium">(Hỗ trợ 1 nhân sự có nhiều địa điểm làm việc)</span>
-              </div>
-              <div class="flex items-center space-x-2">
-                <button type="button" onclick="openColumnPicker(this, 'att-gps-table')" class="bg-[#2E3191] text-white font-semibold text-xs rounded-xl px-3.5 py-1.5 shadow-xs hover:bg-[#242775] transition-all inline-flex items-center gap-1.5 cursor-pointer" title="Ẩn / Hiện và Ghim cột">
-                  <span>Cột</span>
-                  <svg class="w-3.5 h-3.5 stroke-current stroke-2" fill="none" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg>
-                </button>
-                <button type="button" onclick="openAttendanceLocationModal()" class="bg-[#2E3191] text-white font-semibold text-xs rounded-xl px-3.5 py-1.5 shadow-xs hover:bg-[#242775] transition-all inline-flex items-center gap-1.5 cursor-pointer" title="Tạo mới Địa điểm GPS Chấm công">
-                  <span>Tạo mới Địa điểm GPS</span>
-                  <svg class="w-3.5 h-3.5 stroke-current stroke-2" fill="none" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/></svg>
-                </button>
-                <button type="button" onclick="downloadTableExcel('att-gps-table', 'Danh_muc_Dia_diem_GPS')" class="bg-[#2E3191] text-white font-semibold text-xs rounded-xl px-3.5 py-1.5 shadow-xs hover:bg-[#242775] transition-all inline-flex items-center gap-1.5 cursor-pointer" title="Tải xuống Excel">
-                  <span>Tải xuống</span>
-                  <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="12" y1="18" x2="12" y2="12"/><line x2="9" y2="15" x1="12"/><line x2="15" y2="15" x1="12"/></svg>
-                </button>
-              </div>
-            </div>
-
-            <div id="attendance-locations-viewport" class="overflow-x-auto pap-table-frame pap-table-scroll">
-              <table id="att-gps-table" class="w-full text-left text-xs border-collapse pap-data-table">
-                <thead class="pap-data-table__head">
-                  <tr class="bg-slate-50 text-slate-600 border-b border-slate-200 font-semibold text-[11px] uppercase">
-                    <th class="py-2.5 px-3 w-12 text-center">STT</th>
-                    <th class="py-2.5 px-3 min-w-[120px]">Mã điểm</th>
-                    <th class="py-2.5 px-3 min-w-[220px]">Tên địa điểm làm việc</th>
-                    <th class="py-2.5 px-3 min-w-[180px]">Tọa độ GPS (Lat, Long)</th>
-                    <th class="py-2.5 px-3 text-center min-w-[110px]">Bán kính quét</th>
-                    <th class="py-2.5 px-3 text-center min-w-[110px]">Số nhân sự gán</th>
-                    <th class="py-2.5 px-3 text-center min-w-[135px] whitespace-nowrap">Trạng thái</th>
-                    <th class="py-2.5 px-3 text-center min-w-[140px]">Khởi tạo</th>
-                    <th class="py-2.5 px-3 text-center min-w-[140px]">Cập nhật cuối</th>
-                    <th class="py-2.5 px-3 text-center w-24 whitespace-nowrap sticky right-0 top-0 bg-[#2E3191] z-30 shadow-[-6px_0_10px_-4px_rgba(0,0,0,0.25)] sticky-action">Hành động</th>
-                  </tr>
-                </thead>
-                <tbody id="att-gps-tbody" class="divide-y divide-slate-100 bg-white"></tbody>
-              </table>
-            </div>
-            <div id="att-gps-table-summary" class="px-4 py-2.5 text-xs text-slate-600 pap-data-table__footer">
-              <div class="flex flex-wrap items-center gap-2"><span>Hiển thị</span><select id="att-gps-table-page-size" onchange="changeAttendanceManagementPageSize('locations', this.value)" class="px-2 py-1 border border-slate-300 rounded-md bg-white text-xs"><option value="10" selected>10 dòng / trang</option><option value="20">20 dòng / trang</option><option value="50">50 dòng / trang</option></select><span id="att-gps-table-range">0 / 0 địa điểm</span></div>
-              <div id="att-gps-table-pagination" class="flex items-center gap-1.5" aria-label="Phân trang địa điểm GPS"></div>
-            </div>
           </div>
-
-        </div>
 
         <!-- ================= PANEL: QUẢN LÝ MIỄN CHẤM CÔNG ================= -->
         <div id="att-panel-exempt" class="space-y-3 hidden">
@@ -5393,7 +5310,7 @@
                         <span class="pap-column-drag inline-flex items-center text-white/40 hover:text-white/80 cursor-grab mr-1.5 shrink-0 select-none" title="Kéo đổi vị trí cột">
                           <svg class="w-2.5 h-3.5" viewBox="0 0 8 14" fill="currentColor"><circle cx="2" cy="2" r="1.1"/><circle cx="6" cy="2" r="1.1"/><circle cx="2" cy="7" r="1.1"/><circle cx="6" cy="7" r="1.1"/><circle cx="2" cy="12" r="1.1"/><circle cx="6" cy="12" r="1.1"/></svg>
                         </span>
-                        <span>Đơn vị / Phòng ban</span>
+                        <span>Đơn vị/ Phòng ban</span>
                         <button type="button" onclick="document.getElementById('attendance-exempt-department') && document.getElementById('attendance-exempt-department').focus()" class="inline-flex items-center justify-center text-white/70 hover:text-white transition-colors cursor-pointer ml-1.5 p-0.5 rounded hover:bg-white/10 shrink-0" title="Lọc đơn vị / phòng ban">
                           <svg class="w-3.5 h-3.5" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="1.5,2 14.5,2 9.5,8 9.5,14 6.5,14 6.5,8"/></svg>
                         </button>
@@ -10636,8 +10553,9 @@
           <div>
             <label class="block font-semibold text-slate-700 mb-1">Loại hợp đồng <span class="text-rose-500">*</span></label>
             <select id="new-emp-contract" class="w-full px-3 py-2 border border-slate-300 rounded-lg bg-white text-slate-700 focus:ring-2 focus:ring-[#2E3191]">
-              <option value="Chính thức">Chính thức (Có thời hạn / Vô thời hạn)</option>
-              <option value="Thử việc" selected>Thử việc</option>
+              <option value="HĐLĐ xác định thời hạn">HĐLĐ xác định thời hạn</option>
+              <option value="HĐLĐ không xác định thời hạn">HĐLĐ không xác định thời hạn</option>
+              <option value="Thỏa thuận thử việc" selected>Thỏa thuận thử việc</option>
             </select>
           </div>
           <div>
@@ -10651,18 +10569,18 @@
           </div>
         </div>
 
-        <!-- 2 TRƯỜNG NGHIỆP VỤ: Ngày vào làm & NGÀY CHÍNH THỨC -->
+        <!-- 2 TRƯỜNG NGHIỆP VỤ: Ngày bắt đầu & Ngày chính thức -->
         <div class="grid grid-cols-2 gap-3">
           <div>
             <label class="block font-semibold text-slate-700 mb-1 flex items-center justify-between">
-              <span>Ngày vào làm (Thử việc) <span class="text-rose-500">*</span></span>
+              <span>Ngày bắt đầu <span class="text-rose-500">*</span></span>
               <span class="text-[10px] text-slate-400">Gia nhập</span>
             </label>
             <input type="date" id="new-emp-startdate" required value="2026-01-01" class="w-full px-3 py-2 border border-slate-300 rounded-lg text-slate-800 focus:ring-2 focus:ring-[#2E3191]">
           </div>
           <div>
             <label class="block font-semibold text-slate-700 mb-1 flex items-center justify-between">
-              <span>Ngày chính thức (Ký HĐCT)</span>
+              <span>Ngày chính thức</span>
               <span class="text-[10px] text-slate-400">Hợp đồng chính</span>
             </label>
             <input type="date" id="new-emp-officialdate" value="2026-03-01" class="w-full px-3 py-2 border border-slate-300 rounded-lg text-slate-800 focus:ring-2 focus:ring-[#2E3191]">
@@ -10686,72 +10604,55 @@
 
   <!-- ================= MODAL: GÁN ĐỊA ĐIỂM GPS CHẤM CÔNG (TỪ DANH MỤC CHI NHÁNH) ================= -->
   <div id="modal-gps-location" class="fixed inset-0 bg-slate-900/50 backdrop-blur-xs z-50 flex items-center justify-center p-4 hidden">
-    <div class="bg-white rounded-2xl max-w-lg w-full shadow-2xl border border-slate-200 overflow-hidden transform transition-all">
-      <div class="pap-primary text-white p-4 flex items-center justify-between">
+    <div class="bg-white rounded-2xl max-w-lg w-full shadow-2xl border border-slate-200 overflow-hidden transform transition-all flex flex-col max-h-[90vh]">
+      <div class="pap-primary text-white p-4 flex items-center justify-between shrink-0">
         <h3 class="text-sm font-bold flex items-center space-x-2">
-          <svg class="w-4 h-4 text-white shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M15 10.5a3 3 0 11-6 0 3 3 0 016 0z" /><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1115 0z" /></svg>
-          <span>Gán Địa điểm GPS Chấm công cho Nhân viên</span>
+          <span>⏱️</span>
+          <span>Thiết lập hình thức chấm công cho nhân viên</span>
         </h3>
-        <button onclick="closeGpsModal()" class="text-slate-300 hover:text-white text-lg leading-none cursor-pointer">&times;</button>
+        <button type="button" onclick="closeGpsModal()" class="text-slate-300 hover:text-white text-lg leading-none cursor-pointer">&times;</button>
       </div>
 
-      <form onsubmit="handleSaveGpsLocation(event)" class="p-5 space-y-4 text-xs">
+      <form onsubmit="handleSaveGpsLocation(event)" class="p-5 space-y-4 text-xs overflow-y-auto flex-1">
         <div>
           <label class="block font-semibold text-slate-700 mb-1 flex items-center justify-between">
-            <span>Chọn Chi nhánh / Văn phòng được phép chấm công <span class="text-rose-500">*</span></span>
-            <span class="text-[10px] text-[#2E3191]">📍 Geofencing GPS</span>
+            <span>Chọn các Hình thức chấm công áp dụng <span class="text-rose-500">*</span></span>
+            <span class="text-[10px] text-[#2E3191]">⏱️ Chọn nhiều hình thức</span>
           </label>
-          <select id="gps-branch-select" onchange="updateGpsBranchPreview()" class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-[#2E3191] focus:border-[#2E3191] bg-white font-medium text-slate-800">
-            <!-- Nạp động từ branchesData -->
-          </select>
-          <p class="text-[10px] text-slate-400 mt-1">Nhân viên sẽ được phép chấm công Mobile App trong bán kính hợp lệ của địa điểm này.</p>
-        </div>
+          <p class="text-[10px] text-slate-500 mb-2">Nhân viên sẽ được phép chấm công theo tất cả các hình thức được tích chọn.</p>
+          
+          <!-- CUSTOM MULTI-SELECT DROPDOWN (MẶC ĐỊNH LÀ THU GỌN) -->
+          <div class="relative" id="emp-methods-multiselect-container">
+            <button type="button" onclick="toggleEmpAttendanceMethodDropdown(event)" id="emp-methods-dropdown-trigger" class="w-full px-3 py-2 border border-slate-300 rounded-lg bg-white flex items-center justify-between text-left text-xs text-slate-800 hover:border-[#2E3191] focus:ring-2 focus:ring-[#2E3191] transition cursor-pointer">
+              <span id="emp-methods-trigger-label" class="truncate font-medium text-slate-700">Chọn hình thức chấm công...</span>
+              <svg id="emp-methods-chevron" class="w-4 h-4 text-slate-400 shrink-0 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+              </svg>
+            </button>
 
-        <!-- Khung Preview Kế thừa tự động từ Danh mục Chi nhánh -->
-        <div class="p-3.5 bg-slate-50 border border-slate-200 rounded-xl space-y-2.5">
-          <div class="flex items-center justify-between">
-            <span class="font-bold text-slate-800 flex items-center space-x-1.5 text-xs">
-              <span id="gps-preview-icon">🏢</span>
-              <span id="gps-preview-name">Trụ sở Điều hành Cảng Phước An</span>
-            </span>
-            <span id="gps-preview-type" class="px-2 py-0.5 rounded-full text-[10px] bg-blue-50 text-[#2E3191] font-semibold border border-blue-200">Trụ sở</span>
-          </div>
-
-          <div class="text-[11px] text-slate-800 font-medium flex items-start space-x-1">
-            <span class="text-slate-400 shrink-0">📍</span>
-            <span id="gps-preview-address">Xã Phước An, Huyện Nhơn Trạch, Tỉnh Đồng Nai</span>
-          </div>
-
-          <div class="grid grid-cols-3 gap-2.5 bg-white p-2.5 rounded-lg border border-slate-200 text-[11px]">
-            <div>
-              <span class="text-slate-400 block text-[10px]">Vĩ độ (Latitude):</span>
-              <strong id="gps-preview-lat" class="text-slate-800">10.612345° N</strong>
-            </div>
-            <div>
-              <span class="text-slate-400 block text-[10px]">Kinh độ (Longitude):</span>
-              <strong id="gps-preview-long" class="text-slate-800">106.945678° E</strong>
-            </div>
-            <div>
-              <span class="text-slate-400 block text-[10px]">Bán kính cho phép:</span>
-              <strong id="gps-preview-radius" class="font-bold text-[#2E3191]">300 mét</strong>
+            <!-- DROPDOWN MENU (MẶC ĐỊNH LÀ HIDDEN) -->
+            <div id="emp-methods-dropdown-menu" class="hidden absolute left-0 right-0 top-full mt-1.5 bg-white border border-slate-200 rounded-xl shadow-xl z-50 p-2 space-y-1.5 max-h-64 overflow-y-auto">
+              <div id="gps-methods-multiselect-list" class="space-y-1.5">
+                <!-- Nạp động danh sách checkbox từ attendanceClientsData -->
+              </div>
             </div>
           </div>
 
-          <div class="text-[10px] text-slate-700 font-medium flex items-start space-x-1.5 bg-blue-50/50 p-2 rounded-lg border border-blue-100">
-            <span class="text-[#2E3191] shrink-0">💡</span>
-            <span class="leading-relaxed">Tọa độ và bán kính được <strong>kế thừa tự động từ Danh mục Chi nhánh</strong>. Để chỉnh sửa tọa độ hoặc bán kính gốc, vui lòng cập nhật tại menu <em>"Cơ cấu tổ chức > Chi nhánh & Văn phòng"</em>.</span>
+          <!-- THÔNG TIN CHI TIẾT CÁC HÌNH THỨC ĐÃ CHỌN -->
+          <div id="emp-methods-selected-details-container" class="space-y-3 mt-3">
+            <!-- Render chi tiết các hình thức đã chọn -->
           </div>
         </div>
 
-        <div class="pt-3 border-t border-slate-200 flex justify-end space-x-2">
-          <button type="button" onclick="closeGpsModal()" class="px-4 py-2 border border-slate-300 text-slate-800 font-medium rounded-lg font-medium hover:bg-slate-50 transition cursor-pointer">
+        <div class="pt-3 border-t border-slate-200 flex justify-end gap-2 shrink-0">
+          <button type="button" onclick="closeGpsModal()" class="px-3.5 py-1.5 border border-slate-300 text-slate-700 font-semibold rounded-lg hover:bg-slate-50 transition cursor-pointer text-xs">
             Hủy
           </button>
-          <button type="submit" class="px-5 py-2 pap-primary text-white rounded-lg font-semibold pap-primary-hover shadow-xs transition cursor-pointer">
-            Lưu Phân công
+          <button type="submit" class="px-4 py-1.5 pap-primary text-white rounded-lg font-semibold pap-primary-hover shadow-xs transition cursor-pointer text-xs">
+            Lưu thiết lập
           </button>
         </div>
-      </form>
+      </form></form>
     </div>
   </div>
 
@@ -10760,39 +10661,53 @@
   <div id="modal-attendance-client" class="fixed inset-0 bg-slate-900/50 backdrop-blur-xs z-[70] flex items-center justify-center p-4 hidden">
     <div class="bg-white rounded-2xl max-w-3xl w-full shadow-2xl border border-slate-200 overflow-hidden max-h-[92vh] flex flex-col">
       <div class="pap-primary text-white p-4 flex items-center justify-between shrink-0">
-        <h3 id="attendance-client-modal-title" class="text-sm font-bold">Tạo client chấm công</h3>
+        <h3 id="attendance-client-modal-title" class="text-sm font-bold">Tạo hình thức chấm công</h3>
         <button type="button" onclick="closeAttendanceClientModal()" class="text-slate-300 hover:text-white text-lg leading-none">&times;</button>
       </div>
       <form onsubmit="handleSaveAttendanceClient(event)" class="p-5 space-y-4 text-xs overflow-y-auto flex-1">
         <input id="attendance-client-edit-id" type="hidden" />
+        
+        <!-- 1. TÊN & PHƯƠNG THỨC -->
         <div class="grid grid-cols-2 gap-3">
           <div>
-            <label for="attendance-client-name" class="block font-semibold text-slate-700 mb-1">Tên client <span class="text-rose-500">*</span></label>
-            <input id="attendance-client-name" required maxlength="100" placeholder="VD: Mobile GPS + Selfie - Ngoài văn phòng" class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-[#2E3191]" />
+            <label for="attendance-client-name" class="block font-semibold text-slate-700 mb-1">Tên hình thức <span class="text-rose-500">*</span></label>
+            <input id="attendance-client-name" required maxlength="100" placeholder="VD: Mobile GPS + Selfie - Văn phòng Cảng" class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-[#2E3191]" />
           </div>
           <div>
-            <label class="block font-semibold text-slate-700 mb-1">Phương thức</label>
-            <div class="w-full px-3 py-2 rounded-lg border border-slate-200 bg-slate-50 font-semibold text-slate-700">Mobile GPS + Selfie</div>
+            <label for="attendance-client-method" class="block font-semibold text-slate-700 mb-1">Phương thức</label>
+            <select id="attendance-client-method" class="w-full px-3 py-2 border border-slate-300 rounded-lg bg-white focus:ring-2 focus:ring-[#2E3191] font-semibold text-slate-700">
+              <option value="MOBILE_GPS_SELFIE">Mobile GPS + Selfie</option>
+            </select>
           </div>
         </div>
 
-        <div class="max-w-xs">
-          <label for="attendance-client-status" class="block font-semibold text-slate-700 mb-1">Trạng thái</label>
-          <select id="attendance-client-status" class="w-full px-3 py-2 border border-slate-300 rounded-lg bg-white focus:ring-2 focus:ring-[#2E3191]">
-            <option value="Đang áp dụng">Đang hoạt động</option>
-            <option value="Ngừng áp dụng">Ngừng hoạt động</option>
-          </select>
-        </div>
-
-        <div class="p-3 rounded-xl border border-blue-200 bg-blue-50 flex items-start gap-2 text-blue-900">
-          <span class="font-bold">GPS bắt buộc</span>
-          <span>Nhân viên phải cấp quyền vị trí và thiết bị phải gửi được tọa độ mới check-in được. Tắt giới hạn vùng không tắt yêu cầu GPS.</span>
-        </div>
-
+        <!-- 2. PHẠM VI ÁP DỤNG -->
         <section>
-          <div class="font-bold text-slate-800 mb-2">Phạm vi nhân viên được dùng client <span class="text-rose-500">*</span></div>
+          <div class="flex flex-wrap items-center justify-between gap-2 mb-2">
+            <div class="font-bold text-slate-800">Phạm vi nhân viên được dùng hình thức này <span class="text-rose-500">*</span></div>
+            <div class="flex items-center gap-2">
+              <span id="att-client-scope-badge" class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-indigo-50 border border-indigo-200 text-[#2E3191] text-xs font-semibold">
+                <span class="w-1.5 h-1.5 rounded-full bg-[#2E3191]"></span>
+                <span id="att-client-scope-count-text">0 đơn vị • 0 nhân viên</span>
+              </span>
+              <button id="att-client-scope-preview-btn" type="button" onclick="openAttendanceClientScopePreviewModal()" class="text-xs text-[#2E3191] font-semibold hover:underline flex items-center gap-1 cursor-pointer bg-white px-2.5 py-1 rounded-lg border border-indigo-200 hover:bg-indigo-50/70 shadow-xs transition">
+                <span>👥</span>
+                <span>Xem danh sách</span>
+              </button>
+            </div>
+          </div>
           <div class="border border-slate-200 rounded-xl overflow-hidden">
-            <div class="px-3 py-2 bg-slate-50 border-b border-slate-200"><div class="font-semibold">1. Chọn đơn vị theo cơ cấu tổ chức</div><div class="mt-0.5 text-[10px] text-slate-500">Chọn đơn vị cấp trên để bao gồm cấp dưới và nhân viên; có thể bỏ chọn nhân viên ngoại lệ.</div></div>
+            <div class="px-3 py-2 bg-slate-50 border-b border-slate-200 flex flex-wrap items-center justify-between gap-2">
+              <div>
+                <div class="font-semibold text-slate-800 text-xs">1. Chọn đơn vị theo cơ cấu tổ chức</div>
+                <div class="mt-0.5 text-[10px] text-slate-500">Chọn đơn vị cha sẽ tự động áp dụng cho các đơn vị con bên dưới.</div>
+              </div>
+              <div class="flex items-center gap-2 text-[11px]">
+                <button type="button" onclick="expandAllAttendanceClientOrgUnits()" class="text-[#2E3191] font-semibold hover:underline cursor-pointer">Mở rộng tất cả</button>
+                <span class="text-slate-300">|</span>
+                <button type="button" onclick="collapseAllAttendanceClientOrgUnits()" class="text-slate-500 font-semibold hover:underline cursor-pointer">Thu gọn tất cả</button>
+              </div>
+            </div>
             <input id="attendance-client-unit-search" oninput="filterAttendanceClientScope('unit')" placeholder="Tìm đơn vị..." class="w-full px-3 py-2 border-b border-slate-200 focus:ring-2 focus:ring-[#2E3191]" />
             <div id="attendance-client-unit-tree" class="p-2 max-h-44 overflow-y-auto space-y-1"></div>
           </div>
@@ -10802,31 +10717,140 @@
           </div>
         </section>
 
-        <section class="border border-slate-200 rounded-xl p-3 space-y-3">
-          <label class="flex items-center justify-between gap-3 cursor-pointer">
-            <span>
-              <span class="block font-bold text-slate-800">Giới hạn check-in trong bán kính</span>
-              <span class="block text-[10px] text-slate-500 mt-0.5">Bật để chỉ nhận check-in tại địa điểm GPS được chọn.</span>
-            </span>
-            <input id="attendance-client-geofence" type="checkbox" checked onchange="toggleAttendanceClientGeofenceFields()" class="w-4 h-4 accent-[#2E3191]" />
-          </label>
-          <div id="attendance-client-location-fields">
-            <div class="font-semibold text-slate-700 mb-1">Địa điểm GPS được phép <span class="text-rose-500">*</span></div>
-            <div id="attendance-client-location-options" class="grid grid-cols-1 md:grid-cols-2 gap-2"></div>
-            <p class="mt-1 text-[10px] text-slate-500">Nhân viên chỉ check-in được tại địa điểm vừa được client cho phép, vừa được gán trong hồ sơ GPS cá nhân.</p>
+        <!-- 3. CẤU HÌNH VỊ TRÍ ĐỊA LÝ -->
+        <section class="border border-slate-200 rounded-xl p-3.5 space-y-3 bg-slate-50/50">
+          <div class="font-bold text-slate-800">Cấu hình vị trí địa lý</div>
+          
+          <div class="w-48">
+            <label for="attendance-client-location-limited" class="block font-semibold text-slate-700 mb-1">Quy định vị trí GPS</label>
+            <select id="attendance-client-location-limited" onchange="toggleAttendanceClientLocationFields()" class="w-full px-3 py-1.5 border border-slate-300 rounded-lg bg-white focus:ring-2 focus:ring-[#2E3191] font-semibold text-slate-700 text-xs">
+              <option value="true">Bắt buộc</option>
+              <option value="false">Không bắt buộc</option>
+            </select>
           </div>
-          <div id="attendance-client-unrestricted-note" class="hidden p-2.5 rounded-lg bg-amber-50 border border-amber-200 text-amber-900">
-            GPS vẫn bắt buộc và tọa độ thực tế vẫn được ghi nhận; client không đối chiếu tọa độ với bán kính địa điểm cố định.
+
+          <div id="attendance-client-location-fields" class="space-y-3 pt-2">
+            <div class="flex items-center justify-between">
+              <span class="text-xs font-bold text-slate-700">Thông tin điểm check-in</span>
+              <button type="button" onclick="toggleAttendanceClientMapPicker()" class="text-xs text-[#2E3191] font-semibold hover:underline flex items-center gap-1 cursor-pointer bg-indigo-50/80 px-2.5 py-1 rounded-lg border border-indigo-200">
+                <span>📍</span>
+                <span id="att-client-map-toggle-text">Chọn vị trí trên bản đồ ▼</span>
+              </button>
+            </div>
+
+            <!-- KHUNG TÌM KIẾM VÀ BẢN ĐỒ MAP (COLLAPSIBLE) -->
+            <div id="attendance-client-map-picker-panel" class="hidden p-3 bg-white rounded-xl border border-indigo-200 shadow-xs space-y-2.5">
+              <div>
+                <label for="attendance-location-search" class="block font-semibold text-slate-700 mb-1">Tìm địa điểm</label>
+                <div class="flex gap-2">
+                  <input id="attendance-location-search" type="search" autocomplete="off" placeholder="Nhập tên địa điểm, văn phòng hoặc địa chỉ..." class="min-w-0 flex-1 px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-[#2E3191]" onkeydown="if(event.key === 'Enter'){event.preventDefault();searchAttendanceLocationAddress();}" />
+                  <button type="button" onclick="searchAttendanceLocationAddress()" class="px-3 py-2 pap-primary text-white rounded-lg font-semibold pap-primary-hover whitespace-nowrap">Tìm địa điểm</button>
+                  <button type="button" onclick="getCurrentAttendanceLocation()" class="px-3 py-2 bg-white border border-slate-300 rounded-lg font-semibold text-slate-700 hover:border-[#2E3191] whitespace-nowrap">Vị trí hiện tại</button>
+                </div>
+                <div id="attendance-location-search-results" class="hidden mt-1 border border-slate-200 rounded-lg bg-white shadow-lg max-h-40 overflow-y-auto" role="listbox" aria-label="Địa điểm tìm được"></div>
+                <div id="attendance-location-geocode-status" class="mt-1 text-[10px] text-slate-500" aria-live="polite">Tìm địa điểm hoặc chọn trực tiếp trên bản đồ để tự điền địa chỉ và tọa độ.</div>
+              </div>
+              <div>
+                <div id="attendance-location-map" class="w-full h-52 rounded-xl border border-slate-200 bg-slate-100 overflow-hidden" aria-label="Bản đồ chọn địa điểm chấm công"></div>
+                <p class="mt-1 text-[10px] text-slate-400">Chọn kết quả tìm kiếm hoặc bấm lên bản đồ để ghim điểm. Bản đồ © OpenStreetMap · Tìm kiếm Photon.</p>
+              </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+              <div class="md:col-span-2">
+                <label for="att-client-address" class="block font-semibold text-slate-700 mb-1">Địa chỉ / Khu vực <span class="text-rose-500">*</span></label>
+                <input id="att-client-address" placeholder="VD: Trụ sở chính, Xã Phước An..." class="w-full px-3 py-2 border border-slate-300 rounded-lg bg-white focus:ring-2 focus:ring-[#2E3191]" />
+              </div>
+              <div>
+                <label for="att-client-lat" class="block font-semibold text-slate-700 mb-1">Vĩ độ (Latitude) <span class="text-rose-500">*</span></label>
+                <input id="att-client-lat" type="number" step="any" placeholder="VD: 10.612345" class="w-full px-3 py-2 border border-slate-300 rounded-lg bg-white focus:ring-2 focus:ring-[#2E3191]" />
+              </div>
+              <div>
+                <label for="att-client-long" class="block font-semibold text-slate-700 mb-1">Kinh độ (Longitude) <span class="text-rose-500">*</span></label>
+                <input id="att-client-long" type="number" step="any" placeholder="VD: 106.945678" class="w-full px-3 py-2 border border-slate-300 rounded-lg bg-white focus:ring-2 focus:ring-[#2E3191]" />
+              </div>
+              <div class="md:col-span-2">
+                <label for="att-client-radius" class="block font-semibold text-slate-700 mb-1">Bán kính hợp lệ (mét) <span class="text-rose-500">*</span></label>
+                <input id="att-client-radius" type="number" min="10" placeholder="VD: 300" class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-[#2E3191]" />
+              </div>
+              <p class="md:col-span-2 text-[10px] text-slate-500">Hệ thống sẽ tự động đối chiếu tọa độ GPS thực tế của nhân viên với điểm này khi chấm công.</p>
+            </div>
           </div>
         </section>
+
+        <!-- 4. YÊU CẦU XÁC NHẬN DỮ LIỆU CHẤM CÔNG (HỆ THỐNG TỰ ĐỘNG GỬI YÊU CẦU DUYỆT ĐẾN QUẢN LÝ) -->
+        <section class="border border-slate-200 rounded-xl p-3.5 bg-white">
+          <label class="flex items-start gap-3 cursor-pointer">
+            <div class="flex items-center h-5">
+              <input id="attendance-client-require-approval" type="checkbox" class="w-4 h-4 accent-[#2E3191] rounded border-slate-300 cursor-pointer" />
+            </div>
+            <div>
+              <span class="block font-bold text-slate-800 text-xs">Yêu cầu xác nhận dữ liệu chấm công</span>
+              <span class="block text-[11px] text-slate-500 mt-0.5">Hệ thống tự động gửi yêu cầu duyệt chấm công đến quản lý trực tiếp khi nhân viên check-in.</span>
+            </div>
+          </label>
+        </section>
+
+        <!-- 5. TRẠNG THÁI (CUỐI FORM, MẶC ĐỊNH ĐANG HOẠT ĐỘNG) -->
+        <div class="w-48 pt-1">
+          <label for="attendance-client-status" class="block font-semibold text-slate-700 mb-1">Trạng thái</label>
+          <select id="attendance-client-status" class="w-full px-3 py-1.5 border border-slate-300 rounded-lg bg-white focus:ring-2 focus:ring-[#2E3191] text-xs font-semibold">
+            <option value="Đang áp dụng" selected>🟢 Đang hoạt động</option>
+            <option value="Ngừng áp dụng">🔴 Ngừng hoạt động</option>
+          </select>
+        </div>
+
         <div id="attendance-client-form-error" class="hidden p-2.5 rounded-lg bg-rose-50 border border-rose-200 text-rose-800"></div>
+
+
       </form>
-      <div class="p-4 border-t border-slate-200 bg-slate-50 flex items-center justify-end gap-2 shrink-0">
-        <button type="button" onclick="closeAttendanceClientModal()" class="px-4 py-2 bg-white border border-slate-300 rounded-lg font-semibold text-slate-700">Hủy</button>
-        <button type="button" onclick="document.querySelector('#modal-attendance-client form').requestSubmit()" class="px-4 py-2 pap-primary text-white rounded-lg font-semibold pap-primary-hover">Lưu client</button>
+      <div class="px-4 py-2.5 border-t border-slate-200 bg-slate-50 flex items-center justify-end gap-2 shrink-0">
+        <button type="button" onclick="closeAttendanceClientModal()" class="px-3 py-1.5 bg-white border border-slate-300 rounded-lg font-semibold text-xs text-slate-700 hover:bg-slate-50 transition cursor-pointer">Hủy</button>
+        <button type="button" onclick="document.querySelector('#modal-attendance-client form').requestSubmit()" class="px-3.5 py-1.5 pap-primary text-white rounded-lg font-semibold text-xs pap-primary-hover transition cursor-pointer shadow-xs">Lưu hình thức</button>
       </div>
     </div>
   </div>
+  <!-- ================= MODAL: XEM TRƯỚC DANH SÁCH NHÂN SỰ ÁP DỤNG ================= -->
+  <div id="modal-attendance-client-scope-preview" class="fixed inset-0 bg-slate-900/60 backdrop-blur-xs z-[100] flex items-center justify-center p-4 hidden">
+    <div class="bg-white rounded-2xl max-w-2xl w-full shadow-2xl border border-slate-200 overflow-hidden flex flex-col max-h-[85vh]">
+      <div class="pap-primary text-white p-4 flex items-center justify-between shrink-0">
+        <div>
+          <h3 class="text-sm font-bold flex items-center gap-2">
+            <span>👥</span>
+            <span id="modal-attendance-client-scope-preview-title">Danh sách nhân sự được áp dụng</span>
+          </h3>
+          <p id="att-scope-preview-header-sub" class="text-[11px] text-indigo-100 mt-0.5">0 nhân viên đang nằm trong phạm vi áp dụng</p>
+        </div>
+        <button type="button" onclick="closeAttendanceClientScopePreviewModal()" class="text-slate-300 hover:text-white text-xl leading-none cursor-pointer">&times;</button>
+      </div>
+
+      <div class="p-3 border-b border-slate-200 bg-slate-50 flex items-center gap-2 shrink-0">
+        <input id="att-scope-preview-search" type="search" oninput="renderAttendanceClientScopePreviewList()" placeholder="Tìm theo mã NV, họ tên, phòng ban..." class="w-full px-3 py-2 text-xs border border-slate-300 rounded-lg bg-white focus:ring-2 focus:ring-[#2E3191]" />
+      </div>
+
+      <div class="flex-1 overflow-y-auto p-3 min-h-[250px]">
+        <table class="w-full text-left text-xs border-collapse">
+          <thead class="bg-slate-50 border-b border-slate-200 sticky top-0 z-10 text-slate-700 font-semibold">
+            <tr>
+              <th class="py-2 px-3 text-center w-12">STT</th>
+              <th class="py-2 px-3 min-w-[90px]">Mã NV</th>
+              <th class="py-2 px-3 min-w-[160px]">Họ và tên</th>
+              <th class="py-2 px-3 min-w-[180px]">Đơn vị / Phòng ban</th>
+              <th class="py-2 px-3 min-w-[130px]">Chức vụ</th>
+            </tr>
+          </thead>
+          <tbody id="att-scope-preview-tbody" class="divide-y divide-slate-100 bg-white">
+          </tbody>
+        </table>
+      </div>
+
+      <div class="px-4 py-2.5 border-t border-slate-200 bg-slate-50 flex items-center justify-between shrink-0">
+        <span id="att-scope-preview-footer-count" class="text-xs text-slate-500 font-medium">Tổng cộng: 0 nhân viên</span>
+        <button type="button" onclick="closeAttendanceClientScopePreviewModal()" class="px-4 py-1.5 pap-primary text-white rounded-lg text-xs font-semibold pap-primary-hover shadow-xs cursor-pointer">Đóng</button>
+      </div>
+    </div>
+  </div>
+
 
   <div id="modal-attendance-location-edit" class="fixed inset-0 bg-slate-900/50 backdrop-blur-xs z-[80] flex items-center justify-center p-4 hidden">
     <div class="bg-white rounded-2xl max-w-3xl w-full shadow-2xl border border-slate-200 overflow-hidden">
@@ -10891,7 +10915,7 @@
   <div id="modal-attendance-client-employee-picker" class="fixed inset-0 bg-slate-900/60 backdrop-blur-xs z-[90] flex items-center justify-center p-3 sm:p-6 hidden">
     <div class="w-full max-w-5xl h-[82vh] bg-white rounded-xl shadow-2xl border border-slate-200 flex flex-col overflow-hidden">
       <div class="px-5 py-4 flex items-center justify-between border-b border-slate-200 shrink-0">
-        <h3 class="text-lg font-bold text-[#2E3191]">Chọn nhân viên được dùng client</h3>
+        <h3 class="text-lg font-bold text-[#2E3191]">Chọn nhân viên được dùng hình thức này</h3>
         <button type="button" onclick="closeAttendanceClientEmployeePicker()" aria-label="Đóng" class="text-slate-400 hover:text-slate-700 text-2xl">&times;</button>
       </div>
       <div class="p-4 flex-1 min-h-0 grid grid-cols-1 lg:grid-cols-[2fr_0.9fr] gap-4">
@@ -11077,8 +11101,9 @@
           <div>
             <label class="block font-semibold text-slate-700 mb-1">Loại Hợp đồng <span class="text-rose-500">*</span></label>
             <select id="edit-emp-contract" class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-[#2E3191]">
-              <option value="Chính thức">Chính thức (Có thời hạn / Vô thời hạn)</option>
-              <option value="Thử việc">Thử việc (Theo hợp đồng thử việc)</option>
+              <option value="HĐLĐ xác định thời hạn">HĐLĐ xác định thời hạn</option>
+              <option value="HĐLĐ không xác định thời hạn">HĐLĐ không xác định thời hạn</option>
+              <option value="Thỏa thuận thử việc">Thỏa thuận thử việc</option>
             </select>
           </div>
           <div>
@@ -11095,11 +11120,11 @@
         <!-- 2 TRƯỜNG NGHIỆP VỤ: NGÀY VÀO LÀM & NGÀY CHÍNH THỨC -->
         <div class="grid grid-cols-2 gap-3">
           <div>
-            <label class="block font-semibold text-slate-700 mb-1">Ngày vào làm (Thử việc) <span class="text-rose-500">*</span></label>
+            <label class="block font-semibold text-slate-700 mb-1">Ngày bắt đầu <span class="text-rose-500">*</span></label>
             <input type="date" id="edit-emp-startdate" required class="w-full px-3 py-2 border border-slate-300 rounded-lg text-slate-800 focus:ring-2 focus:ring-[#2E3191]">
           </div>
           <div>
-            <label class="block font-semibold text-slate-700 mb-1">Ngày chính thức (Ký HĐCT)</label>
+            <label class="block font-semibold text-slate-700 mb-1">Ngày chính thức</label>
             <input type="date" id="edit-emp-officialdate" class="w-full px-3 py-2 border border-slate-300 rounded-lg text-slate-800 focus:ring-2 focus:ring-[#2E3191]">
           </div>
         </div>
@@ -11342,6 +11367,21 @@
           </p>
         </div>
 
+        <!-- Đơn vị / Phòng ban (Hiển thị không cho cập nhật, dùng lọc kỹ năng theo đơn vị) -->
+        <div>
+          <label class="block font-bold text-slate-700 text-xs mb-1 flex items-center justify-between">
+            <span class="flex items-center gap-1.5">
+              <span>🏢</span>
+              <span>Đơn vị / Phòng ban</span>
+            </span>
+            <span class="text-[10px] text-slate-400 font-normal">Cố định theo nhân sự</span>
+          </label>
+          <div class="relative">
+            <input type="text" id="skill-form-department" readonly value="" class="w-full px-3 py-2 border border-slate-200 rounded-lg text-xs bg-slate-100 text-slate-800 font-semibold cursor-not-allowed select-none focus:outline-none" title="Đơn vị / phòng ban của nhân sự (không cho chỉnh sửa)" />
+            <div class="absolute right-3 top-2.5 text-slate-400 text-xs pointer-events-none">🔒</div>
+          </div>
+        </div>
+
         <!-- Tên kỹ năng chuyên môn (Dropdown từ Danh mục Kỹ năng + Icon Thêm mới nhanh) -->
         <div>
           <label class="block font-bold text-slate-700 text-xs mb-1">
@@ -11430,6 +11470,33 @@
           <div class="sm:col-span-2">
             <label class="block font-bold text-slate-700 mb-1">Tên kỹ năng chuyên môn <span class="text-rose-500">*</span></label>
             <input type="text" id="quick-skill-name" required placeholder="VD: Vận hành Cẩu bờ STS chuyên dụng..." class="w-full px-3 py-2 border border-slate-300 rounded-lg font-semibold text-slate-900 focus:ring-2 focus:ring-[#2E3191]">
+          </div>
+        </div>
+
+        <div class="relative" id="quick-skill-dept-wrapper">
+          <label class="block font-bold text-slate-700 mb-1">Đơn vị/ Phòng ban <span class="text-rose-500">*</span></label>
+          <input type="hidden" id="quick-skill-dept" value="Dùng chung toàn Cảng">
+          <div id="quick-skill-dept-trigger" onclick="toggleQuickSkillDeptDropdown()" class="w-full px-3 py-2 border border-slate-300 rounded-lg text-xs bg-white text-slate-800 font-medium flex items-center justify-between cursor-pointer focus:ring-2 focus:ring-[#2E3191] focus:border-[#2E3191] select-none shadow-2xs hover:border-slate-400 transition-colors">
+            <span id="quick-skill-dept-label" class="truncate flex items-center gap-1.5 font-semibold text-slate-800">
+              <span id="quick-skill-dept-icon">🌐</span>
+              <span id="quick-skill-dept-text">Dùng chung toàn Cảng (Tất cả đơn vị)</span>
+            </span>
+            <svg id="quick-skill-dept-chevron" class="w-4 h-4 text-slate-400 transition-transform duration-200 shrink-0 ml-1.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" /></svg>
+          </div>
+
+          <!-- Popup Panel with Search Input -->
+          <div id="quick-skill-dept-dropdown" class="hidden absolute top-full left-0 mt-1 w-full bg-white rounded-xl shadow-2xl border border-slate-200 z-50 p-2.5 space-y-2 animate-in fade-in zoom-in-95 duration-150">
+            <div class="relative">
+              <svg class="w-3.5 h-3.5 absolute left-2.5 top-2.5 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" /></svg>
+              <input type="text" id="quick-skill-dept-search" oninput="filterQuickSkillDeptDropdown(this.value)" placeholder="Tìm kiếm Đơn vị/ Phòng ban..." class="w-full pl-8 pr-2.5 py-1.5 text-xs bg-slate-50 border border-slate-200 rounded-lg outline-none focus:bg-white focus:border-[#2E3191] focus:ring-1 focus:ring-[#2E3191]" />
+            </div>
+            <div id="quick-skill-dept-list" class="max-h-52 overflow-y-auto space-y-0.5 text-xs py-1">
+              <!-- Rendered via JS -->
+            </div>
+            <div class="pt-2 border-t border-slate-100 flex items-center justify-between text-[11px] text-slate-500">
+              <div id="quick-skill-dept-count" class="text-[#2E3191] font-semibold">16 đơn vị</div>
+              <div class="text-[10px] text-slate-400">Chọn Đơn vị/ Phòng ban áp dụng</div>
+            </div>
           </div>
         </div>
 
@@ -12856,13 +12923,73 @@
       }
     ];
 
-    let attendanceExemptionsData = employeesData.filter(employee => employee.isExempt).map(employee => ({
-      id: `LEGACY-${employee.pap}`,
-      employeeCode: employee.pap,
-      effectiveFrom: null,
-      status: 'ACTIVE',
-      source: 'LEGACY'
-    }));
+    // Dữ liệu minh họa: thay nhãn cũ bằng loại hợp đồng cụ thể, không suy diễn thời hạn/BHXH.
+    const illustrativeIndefiniteContractCodes = new Set(['PAP0001', 'PAP0002', 'PAP0034', 'PAP0089', 'PAP0108']);
+    const normalizeContractCategory = (value, employeeCode) => {
+      if (value === 'Chính thức') {
+        return illustrativeIndefiniteContractCodes.has(employeeCode)
+          ? 'HĐLĐ không xác định thời hạn'
+          : 'HĐLĐ xác định thời hạn';
+      }
+      if (value === 'Xác định thời hạn (3 năm)') return 'HĐLĐ xác định thời hạn';
+      if (value === 'Không xác định thời hạn') return 'HĐLĐ không xác định thời hạn';
+      if (value === 'Thử việc') return 'Thỏa thuận thử việc';
+      return value || 'Chưa cập nhật';
+    };
+    employeesData.forEach(employee => {
+      employee.contract = normalizeContractCategory(employee.contract, employee.pap);
+    });
+
+    let attendanceExemptionsData = [
+      {
+        id: 'EXEMPT-PAP0001',
+        employeeCode: 'PAP0001',
+        description: 'Thành viên Ban Lãnh đạo cấp cao (Hội đồng Quản trị)',
+        effectiveFrom: '2025-01-01',
+        status: 'ACTIVE',
+        source: 'SYSTEM',
+        createdBy: 'AdminSystem',
+        createdAt: Date.now() - 60 * 86400000,
+        updatedBy: 'AdminSystem',
+        updatedAt: Date.now() - 10 * 86400000
+      },
+      {
+        id: 'EXEMPT-PAP0002',
+        employeeCode: 'PAP0002',
+        description: 'Tổng Giám đốc điều hành Cảng Phước An',
+        effectiveFrom: '2025-01-01',
+        status: 'ACTIVE',
+        source: 'SYSTEM',
+        createdBy: 'AdminSystem',
+        createdAt: Date.now() - 60 * 86400000,
+        updatedBy: 'AdminSystem',
+        updatedAt: Date.now() - 10 * 86400000
+      },
+      {
+        id: 'EXEMPT-PAP0009',
+        employeeCode: 'PAP0009',
+        description: 'Phó Tổng Giám đốc phụ trách Vận hành & Cảng',
+        effectiveFrom: '2025-03-01',
+        status: 'ACTIVE',
+        source: 'SYSTEM',
+        createdBy: 'AdminSystem',
+        createdAt: Date.now() - 30 * 86400000,
+        updatedBy: 'AdminSystem',
+        updatedAt: Date.now() - 5 * 86400000
+      },
+      {
+        id: 'EXEMPT-PAP0108',
+        employeeCode: 'PAP0108',
+        description: 'Cố vấn Chiến lược Cấp cao kiêm nhiệm',
+        effectiveFrom: '2025-06-01',
+        status: 'ACTIVE',
+        source: 'SYSTEM',
+        createdBy: 'AdminSystem',
+        createdAt: Date.now() - 20 * 86400000,
+        updatedBy: 'AdminSystem',
+        updatedAt: Date.now() - 2 * 86400000
+      }
+    ];
     // Giữ cờ cũ chỉ làm nguồn migration mẫu; mọi nghiệp vụ đọc từ danh sách bản ghi này.
     employeesData.forEach(employee => { delete employee.isExempt; });
 
@@ -12899,7 +13026,7 @@
       tbody.innerHTML = pageSlice.map(m => {
         const phone = m.phone || '0908123456';
         const startDateStr = m.startDate || m.joindate || '01/01/2026';
-        const isProbation = m.contract === 'Thử việc';
+        const isProbation = m.contract === 'Thỏa thuận thử việc';
         const officialDateStr = isProbation ? 'Đang thử việc' : (m.officialDate || m.startDate || '01/01/2026');
         const scheduleMode = getEmployeeScheduleMode(m);
         const scheduleModeDisplay = scheduleMode === 'FIXED'
@@ -13015,7 +13142,7 @@
 
             <!-- 9. Loại HĐ -->
             <td class="py-2 px-3 text-center text-xs">
-              <span class="px-1.5 py-0.5 rounded text-[10px] font-medium ${m.contract === 'Thử việc' ? 'bg-amber-50 text-amber-700 border border-amber-200' : 'bg-slate-100 text-slate-700 border border-slate-200'}">${m.contract}</span>
+              <span class="px-1.5 py-0.5 rounded text-[10px] font-medium ${m.contract === 'Thỏa thuận thử việc' ? 'bg-amber-50 text-amber-700 border border-amber-200' : 'bg-slate-100 text-slate-700 border border-slate-200'}">${m.contract}</span>
             </td>
 
             <!-- 10. Trạng thái -->
@@ -13421,7 +13548,7 @@
       if (document.getElementById('prof-work-position')) document.getElementById('prof-work-position').value = emp.position || '—';
       if (document.getElementById('prof-work-title')) document.getElementById('prof-work-title').value = emp.title;
       if (document.getElementById('prof-work-code')) document.getElementById('prof-work-code').innerText = emp.pap;
-      if (document.getElementById('prof-work-contract')) document.getElementById('prof-work-contract').value = emp.contract || 'Chính thức';
+      if (document.getElementById('prof-work-contract')) document.getElementById('prof-work-contract').value = emp.contract || 'Chưa cập nhật';
       if (document.getElementById('prof-work-status')) {
         const stVal = emp.status || 'Đang làm việc';
         document.getElementById('prof-work-status').value = (stVal === 'Đang làm việc' ? '🟢 ' : stVal === 'Đã nghỉ việc' ? '🔴 ' : '🟣 ') + stVal;
@@ -13431,7 +13558,7 @@
       if (document.getElementById('prof-work-username')) document.getElementById('prof-work-username').value = emp.pap.toLowerCase() + '@phuocanport.com';
       if (document.getElementById('prof-work-manager')) document.getElementById('prof-work-manager').value = getEmployeeManagerDisplayName(emp);
       if (document.getElementById('prof-work-startdate')) document.getElementById('prof-work-startdate').value = emp.startDate || emp.joindate || '01/11/2025';
-      if (document.getElementById('prof-work-officialdate')) document.getElementById('prof-work-officialdate').value = emp.officialDate || (emp.contract === 'Thử việc' ? 'Đang thử việc' : '01/01/2026');
+      if (document.getElementById('prof-work-officialdate')) document.getElementById('prof-work-officialdate').value = emp.officialDate || (emp.contract === 'Thỏa thuận thử việc' ? 'Đang thử việc' : '01/01/2026');
 
       // Update OCR fields with this employee data
       if (document.getElementById('ocr-res-cccd')) document.getElementById('ocr-res-cccd').value = emp.cccd || '';
@@ -13486,6 +13613,7 @@
         code: 'SK-IT-01',
         name: 'Quản trị Cơ sở Hạ tầng & Hệ thống Cảng điện tử (Port TOS / ERP)',
         category: 'Công nghệ Thông tin & Hệ thống Cảng',
+        department: 'Phòng HT & Hạ tầng CNTT',
         certificate: 'Oracle Certified Master & Cisco CCNP Enterprise (#CCNP-90812)',
         description: 'Chuyên trách quy hoạch, giám sát vận hành hệ thống điều hành cảng container (TOS), hạ tầng mạng lõi cáp quang và trung tâm dữ liệu cảng biển 24/7.',
         empCount: 4,
@@ -13499,6 +13627,7 @@
         code: 'SK-IT-02',
         name: 'Lập trình Tích hợp API EDIFACT / BAPLIE cho Hãng tàu',
         category: 'Công nghệ Thông tin & Hệ thống Cảng',
+        department: 'Phòng Phát triển Phần mềm',
         certificate: 'EDI Integration Specialist Certificate',
         description: 'Kết nối tự động dữ liệu xếp dỡ container với hệ thống khai báo hải quan một cửa quốc gia.',
         empCount: 3,
@@ -13509,35 +13638,10 @@
         updatedAt: ''
       },
       {
-        code: 'SK-NN-01',
-        name: 'Tiếng Anh Chuyên ngành Hàng hải & Logistics (Marlins English)',
-        category: 'Ngoại ngữ Chuyên môn',
-        certificate: 'Marlins English for Seafarers 92/100',
-        description: 'Giao tiếp thông thạo với đối tác hãng tàu quốc tế (Maersk, MSC, COSCO) và chuyên gia công nghệ nước ngoài.',
-        empCount: 3,
-        status: 'Đang áp dụng',
-        createdBy: 'AdminSystem',
-        createdAt: '01/01/2026 08:30',
-        updatedBy: 'AdminSystem',
-        updatedAt: '12/06/2026 09:15'
-      },
-      {
-        code: 'SK-NN-02',
-        name: 'Tiếng Trung Thương mại & Hàng hải Cảng biển (HSK 5 / TOCFL)',
-        category: 'Ngoại ngữ Chuyên môn',
-        certificate: 'HSK 5 (Score 265/300) & Maritime Chinese',
-        description: 'Phục vụ trực tiếp tuyến tàu container trực tiếp từ các cụm cảng Thượng Hải, Ninh Ba, Thâm Quyến.',
-        empCount: 2,
-        status: 'Đang áp dụng',
-        createdBy: 'AdminSystem',
-        createdAt: '01/01/2026 08:30',
-        updatedBy: '',
-        updatedAt: ''
-      },
-      {
         code: 'SK-KT-01',
         name: 'Kỹ thuật Công trình Thủy & Thủy lực Luồng Hàng hải Cảng',
         category: 'Kỹ thuật & Công nghệ Cảng',
+        department: 'Phòng Kỹ thuật & Bảo trì Cảng',
         certificate: 'Chứng chỉ Hành nghề Thiết kế Công trình Thủy Hạng I (Bộ Xây dựng)',
         description: 'Chuyên môn khảo sát đo đạc độ sâu luồng hàng hải, kiểm định độ ổn định kết cấu kè bến nhô tiếp nhận tàu 160.000 DWT.',
         empCount: 2,
@@ -13551,6 +13655,7 @@
         code: 'SK-KT-02',
         name: 'Bảo trì Hệ thống Điện Động lực & Tự động hóa Cẩu bờ STS/RTG',
         category: 'Kỹ thuật & Công nghệ Cảng',
+        department: 'Tổ Điện & Tự động hóa Cảng',
         certificate: 'Siemens Certified S7-1500 PLC & Drives Specialist',
         description: 'Bảo trì phòng ngừa định kỳ hệ thống biến tần công suất lớn, biến áp trung thế 22kV và trạm sạc xe đầu kéo điện.',
         empCount: 2,
@@ -13564,6 +13669,7 @@
         code: 'SK-VH-01',
         name: 'Vận hành Cẩu bờ STS Chuyên dụng Siêu trọng tải (Super Post-Panamax)',
         category: 'Vận hành & Khai thác Cầu bến',
+        department: 'Tổ Lái cẩu bờ STS',
         certificate: 'Giấy phép Điều khiển Thiết bị Nâng cấp I & An toàn Nhóm 3',
         description: 'Đạt năng suất xếp dỡ bình quân 35 container/giờ/cẩu an toàn tuyệt đối trong điều kiện gió bão cấp 6.',
         empCount: 2,
@@ -13577,6 +13683,7 @@
         code: 'SK-VH-02',
         name: 'Hoa tiêu Dẫn tàu Hàng hải Luồng Sông Lòng Tàu & Cảng Phước An',
         category: 'Vận hành & Khai thác Cầu bến',
+        department: 'Phòng Vận hành Cầu bến',
         certificate: 'Bằng Hoa tiêu Hàng hải Hạng Nhất (Cục Hàng hải VN)',
         description: 'Dẫn dắt các tàu mẹ tải trọng đến 60.000 DWT cập cầu an toàn qua các đoạn cua luồng phức tạp.',
         empCount: 1,
@@ -13590,6 +13697,7 @@
         code: 'SK-VH-03',
         name: 'Vận hành Cổng tự động Cảng (Smart Gate OCR & Cân điện tử)',
         category: 'Vận hành & Khai thác Cầu bến',
+        department: 'Phòng Kho bãi & Container',
         certificate: 'Chứng nhận Vận hành Trạm Cân & Smart Gate TOS Camco',
         description: 'Kiểm soát luồng xe đầu kéo ra vào cổng cảng với tốc độ xử lý dưới 25 giây/lượt cont.',
         empCount: 2,
@@ -13603,6 +13711,7 @@
         code: 'SK-AT-01',
         name: 'An ninh Cảng biển Quốc tế ISPS Code & Phòng cháy Chữa cháy Cảng',
         category: 'An toàn & An ninh Cảng',
+        department: 'Đội An ninh - Cảnh vệ Cảng',
         certificate: 'Chứng chỉ Sĩ quan An ninh Cảng biển (CSO - ISPS Code IMO)',
         description: 'Chủ trì diễn tập ứng phó sự cố an ninh hàng hải, kiểm soát ra vào theo quy chế ISPS cấp độ 1.',
         empCount: 1,
@@ -13616,6 +13725,7 @@
         code: 'SK-AT-02',
         name: 'Ứng phó Sự cố Tràn dầu & Hóa chất Độc hại trên Luồng Cảng',
         category: 'An toàn & An ninh Cảng',
+        department: 'Phòng Vận hành Cầu bến',
         certificate: 'Chứng chỉ Chỉ huy Ứng phó Sự cố Tràn dầu Cấp 2 (IMO Level 2)',
         description: 'Sẵn sàng triển khai phao quây dầu, thiết bị thu gom skimmer bảo vệ khu bảo tồn sinh thái rừng ngập mặn lân cận cảng.',
         empCount: 1,
@@ -13629,6 +13739,7 @@
         code: 'SK-DD-01',
         name: 'Điều độ Cầu bến & Xếp dỡ Container Tàu biển (Berth & Yard Planning)',
         category: 'Vận hành & Khai thác Cầu bến',
+        department: 'Phòng Vận hành Cầu bến',
         certificate: 'Navis N4 Certified Marine Planner (CMP)',
         description: 'Lập sơ đồ xếp dỡ tối ưu trọng tâm tàu (Stowage plan), cân bằng tải trọng và giảm thiểu lượt đảo chuyển container trên bãi.',
         empCount: 1,
@@ -13641,17 +13752,28 @@
     ];
 
     // Điền dữ liệu vào Dropdown Tên kỹ năng của Modal Hồ sơ Kỹ năng
-    function populateSkillCatalogDropdown(selectedName = '') {
+    function populateSkillCatalogDropdown(selectedName = '', deptFilter = '') {
       const select = document.getElementById('skill-form-name');
       if (!select) return;
 
       select.innerHTML = '<option value="">-- Chọn kỹ năng chuẩn hóa từ danh mục Cảng Phước An --</option>';
 
-      const sortedSkills = [...skillsCatalogData].sort((a, b) => a.name.localeCompare(b.name, 'vi'));
+      const normDept = (deptFilter || '').trim().toLocaleLowerCase('vi');
+      
+      // Lọc danh mục: Kỹ năng của đơn vị đó + Kỹ năng dùng chung toàn Cảng (hoặc giữ lại kỹ năng đang chọn nếu sửa)
+      const matchingSkills = skillsCatalogData.filter(sk => {
+        if (selectedName && sk.name === selectedName) return true;
+        if (!normDept) return true;
+        const skDept = (sk.department || 'Dùng chung toàn Cảng').trim().toLocaleLowerCase('vi');
+        if (skDept.includes('dùng chung') || skDept.includes('all')) return true;
+        return skDept === normDept || normDept.includes(skDept) || skDept.includes(normDept);
+      });
+
+      const sortedSkills = [...matchingSkills].sort((a, b) => a.name.localeCompare(b.name, 'vi'));
       sortedSkills.forEach(sk => {
         const opt = document.createElement('option');
         opt.value = sk.name;
-        opt.textContent = `[${sk.code}] ${sk.name}`;
+        opt.textContent = `[${sk.code}] ${sk.name} (${sk.department || 'Dùng chung'})`;
         if (selectedName && sk.name === selectedName) {
           opt.selected = true;
         }
@@ -13701,10 +13823,111 @@
     }
 
     // Modal Thêm mới Nhanh Kỹ năng vào Danh mục dùng chung
+    const skillDepartmentOptions = [
+      { id: 'all', name: 'Dùng chung toàn Cảng', code: 'ALL', icon: '🌐', desc: 'Áp dụng cho toàn thể CBNV các khối phòng ban' },
+      { id: 'pb-cb', name: 'Phòng Vận hành Cầu bến', code: 'PB-CAUBEN', icon: '⚓', desc: 'Khối Vận hành & Cảng' },
+      { id: 'to-sts', name: 'Tổ Lái cẩu bờ STS', code: 'TO-STS', icon: '🏗️', desc: 'Phòng Vận hành Cầu bến' },
+      { id: 'to-keodau', name: 'Tổ Lái xe đầu kéo bến', code: 'TO-KEODAU', icon: '🚛', desc: 'Phòng Vận hành Cầu bến' },
+      { id: 'pb-kb', name: 'Phòng Kho bãi & Container', code: 'PB-KHOBAI', icon: '📦', desc: 'Khối Vận hành & Cảng' },
+      { id: 'to-container', name: 'Tổ Quản lý Bãi Container', code: 'TO-CONTAINER', icon: '📋', desc: 'Phòng Kho bãi & Container' },
+      { id: 'to-tally', name: 'Tổ Kiểm đếm Giao nhận Tally', code: 'TO-TALLY', icon: '📝', desc: 'Phòng Kho bãi & Container' },
+      { id: 'pb-ht', name: 'Phòng Kỹ thuật & Bảo trì Cảng', code: 'PB-BAOTRI', icon: '🔧', desc: 'Khối Vận hành & Cảng' },
+      { id: 'to-dien-tdh', name: 'Tổ Điện & Tự động hóa Cảng', code: 'TO-DIEN', icon: '⚡', desc: 'Phòng Kỹ thuật & Bảo trì Cảng' },
+      { id: 'to-co-gioi', name: 'Tổ Bảo trì Thiết bị Cơ giới', code: 'TO-COGIOI', icon: '⚙️', desc: 'Phòng Kỹ thuật & Bảo trì Cảng' },
+      { id: 'pb-pm', name: 'Phòng Phát triển Phần mềm', code: 'PB-CNTT-SW', icon: '💻', desc: 'Khối Công nghệ & Số hóa' },
+      { id: 'pb-it', name: 'Phòng HT & Hạ tầng CNTT', code: 'PB-CNTT-IT', icon: '🖥️', desc: 'Khối Công nghệ & Số hóa' },
+      { id: 'doi-an', name: 'Đội An ninh - Cảnh vệ Cảng', code: 'DOI-ANNINH', icon: '🛡️', desc: 'Khối Gián tiếp & An ninh' },
+      { id: 'pb-kt', name: 'Phòng Kế toán Tổng hợp', code: 'PB-KETOAN', icon: '📊', desc: 'Khối Tài chính - Kế toán' },
+      { id: 'pb-tc', name: 'Phòng Tài chính Doanh nghiệp', code: 'PB-TAICHINH', icon: '💰', desc: 'Khối Tài chính - Kế toán' },
+      { id: 'pb-tchc', name: 'Phòng Tổ chức - Hành chính', code: 'PB-TCHC', icon: '👥', desc: 'Khối Gián tiếp & An ninh' },
+      { id: 'pb-khkd', name: 'Phòng Kế hoạch - Kinh doanh Cảng', code: 'PB-KHKD', icon: '📈', desc: 'Khối Gián tiếp & An ninh' }
+    ];
+
+    function toggleQuickSkillDeptDropdown() {
+      const dd = document.getElementById('quick-skill-dept-dropdown');
+      const chevron = document.getElementById('quick-skill-dept-chevron');
+      if (!dd) return;
+      const isHidden = dd.classList.contains('hidden');
+      if (isHidden) {
+        renderQuickSkillDeptDropdownList('');
+        dd.classList.remove('hidden');
+        if (chevron) chevron.classList.add('rotate-180');
+        const searchInput = document.getElementById('quick-skill-dept-search');
+        if (searchInput) {
+          searchInput.value = '';
+          setTimeout(() => searchInput.focus(), 60);
+        }
+      } else {
+        closeQuickSkillDeptDropdown();
+      }
+    }
+
+    function closeQuickSkillDeptDropdown() {
+      const dd = document.getElementById('quick-skill-dept-dropdown');
+      const chevron = document.getElementById('quick-skill-dept-chevron');
+      if (dd) dd.classList.add('hidden');
+      if (chevron) chevron.classList.remove('rotate-180');
+    }
+
+    function filterQuickSkillDeptDropdown(query) {
+      renderQuickSkillDeptDropdownList(query);
+    }
+
+    function setQuickSkillDeptValue(deptName) {
+      const hiddenInput = document.getElementById('quick-skill-dept');
+      const textEl = document.getElementById('quick-skill-dept-text');
+      const iconEl = document.getElementById('quick-skill-dept-icon');
+      
+      const found = skillDepartmentOptions.find(d => d.name === deptName) || { name: deptName || 'Dùng chung toàn Cảng', icon: deptName === 'Dùng chung toàn Cảng' ? '🌐' : '🏢' };
+      if (hiddenInput) hiddenInput.value = found.name;
+      if (textEl) textEl.textContent = found.name + (found.name === 'Dùng chung toàn Cảng' ? ' (Tất cả đơn vị)' : '');
+      if (iconEl) iconEl.textContent = found.icon;
+      closeQuickSkillDeptDropdown();
+    }
+
+    function renderQuickSkillDeptDropdownList(query = '') {
+      const listContainer = document.getElementById('quick-skill-dept-list');
+      const countEl = document.getElementById('quick-skill-dept-count');
+      if (!listContainer) return;
+
+      const currentVal = document.getElementById('quick-skill-dept')?.value || 'Dùng chung toàn Cảng';
+      const q = (query || '').trim().toLocaleLowerCase('vi');
+
+      const filtered = q ? skillDepartmentOptions.filter(d =>
+        d.name.toLocaleLowerCase('vi').includes(q) ||
+        (d.code && d.code.toLocaleLowerCase('vi').includes(q)) ||
+        (d.desc && d.desc.toLocaleLowerCase('vi').includes(q))
+      ) : skillDepartmentOptions;
+
+      if (countEl) countEl.textContent = `${filtered.length} đơn vị`;
+
+      if (!filtered.length) {
+        listContainer.innerHTML = '<div class="px-3 py-4 text-center text-slate-400 italic text-xs">Không tìm thấy Đơn vị/ Phòng ban phù hợp</div>';
+        return;
+      }
+
+      listContainer.innerHTML = filtered.map(item => {
+        const isSelected = item.name === currentVal;
+        return `
+          <div onclick="setQuickSkillDeptValue('${escapeHtml(item.name)}')" class="px-2.5 py-1.5 rounded-lg flex items-center justify-between cursor-pointer transition select-none ${isSelected ? 'bg-indigo-50/80 text-[#2E3191] font-bold border border-indigo-200' : 'hover:bg-slate-50 text-slate-700'}">
+            <div class="flex items-center gap-2 min-w-0">
+              <span class="text-sm shrink-0">${item.icon}</span>
+              <div class="min-w-0">
+                <div class="truncate text-xs ${isSelected ? 'text-[#2E3191] font-bold' : 'text-slate-800 font-semibold'}">${escapeHtml(item.name)}</div>
+                <div class="text-[10px] text-slate-400 truncate">${escapeHtml(item.desc || '')} ${item.code ? '• ' + escapeHtml(item.code) : ''}</div>
+              </div>
+            </div>
+            ${isSelected ? '<svg class="w-4 h-4 text-[#2E3191] shrink-0 ml-1.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7" /></svg>' : ''}
+          </div>
+        `;
+      }).join('');
+    }
+
     function openQuickAddSkillModal() {
       const modal = document.getElementById('modal-quick-add-skill');
       if (!modal) return;
 
+      closeQuickSkillDeptDropdown();
       const codeInput = document.getElementById('quick-skill-code');
       const nameInput = document.getElementById('quick-skill-name');
       const certInput = document.getElementById('quick-skill-cert');
@@ -13713,6 +13936,7 @@
       const nextNum = skillsCatalogData.length + 1;
       if (codeInput) codeInput.value = 'SK-' + String(nextNum).padStart(3, '0');
       if (nameInput) nameInput.value = '';
+      setQuickSkillDeptValue('Dùng chung toàn Cảng');
       if (certInput) certInput.value = '';
       if (descInput) descInput.value = '';
 
@@ -13721,6 +13945,7 @@
     }
 
     function closeQuickAddSkillModal() {
+      closeQuickSkillDeptDropdown();
       const modal = document.getElementById('modal-quick-add-skill');
       if (modal) modal.classList.add('hidden');
       // Reset về chế độ Thêm mới
@@ -13745,6 +13970,7 @@
 
       const code = (document.getElementById('quick-skill-code')?.value || '').trim().toUpperCase();
       const name = (document.getElementById('quick-skill-name')?.value || '').trim();
+      const department = document.getElementById('quick-skill-dept')?.value || 'Dùng chung toàn Cảng';
       const certificate = (document.getElementById('quick-skill-cert')?.value || '').trim();
       const description = (document.getElementById('quick-skill-desc')?.value || '').trim();
       const status = document.getElementById('quick-skill-status')?.value || 'Đang áp dụng';
@@ -13769,6 +13995,7 @@
         }
 
         item.name = name;
+        item.department = department;
         item.certificate = certificate;
         item.description = description;
         item.status = status;
@@ -13798,6 +14025,7 @@
       const newSkill = {
         code: code || ('SK-' + String(skillsCatalogData.length + 1).padStart(3, '0')),
         name: name,
+        department: department,
         certificate: certificate || '',
         description: description || '',
         empCount: 0,
@@ -14138,6 +14366,9 @@
               <div class="font-bold text-slate-900 text-xs">${escapeHtml(sk.name)}</div>
               ${sk.description ? `<div class="text-[11px] text-slate-500 mt-0.5 line-clamp-1" title="${escapeHtml(sk.description)}">${escapeHtml(sk.description)}</div>` : ''}
             </td>
+            <td class="py-3 px-4 text-xs text-slate-700 font-medium whitespace-nowrap">
+              <div class="text-slate-800 font-medium">${escapeHtml(sk.department || 'Dùng chung toàn Cảng')}</div>
+            </td>
             <td class="py-3 px-4 text-xs text-slate-700 font-medium">${escapeHtml(sk.certificate || '—')}</td>
             <td class="py-3 px-4 text-center">
               <button type="button" onclick="filterEmpBySkill('${escapeHtml(sk.name)}')" class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-indigo-50 text-[#2E3191] border border-indigo-200 hover:bg-indigo-100 transition cursor-pointer" title="Bấm để xem danh sách ${empCount} nhân sự đạt kỹ năng này trong Hồ sơ nhân sự">
@@ -14178,18 +14409,21 @@
     function filterSkillsCatalogTable() {
       const searchInput = document.getElementById('cat-skill-search');
       const query = searchInput ? searchInput.value.toLowerCase().trim() : '';
+      const deptFilter = (document.getElementById('cat-skill-dept-filter')?.value || '').trim();
 
-      if (!query) {
-        renderSkillsCatalogTable(skillsCatalogData);
-        return;
+      let filtered = [...skillsCatalogData];
+      if (deptFilter) {
+        filtered = filtered.filter(sk => (sk.department || 'Dùng chung toàn Cảng') === deptFilter);
       }
-
-      const filtered = skillsCatalogData.filter(sk =>
-        sk.code.toLowerCase().includes(query) ||
-        sk.name.toLowerCase().includes(query) ||
-        (sk.certificate && sk.certificate.toLowerCase().includes(query)) ||
-        (sk.description && sk.description.toLowerCase().includes(query))
-      );
+      if (query) {
+        filtered = filtered.filter(sk =>
+          sk.code.toLowerCase().includes(query) ||
+          sk.name.toLowerCase().includes(query) ||
+          (sk.department && sk.department.toLowerCase().includes(query)) ||
+          (sk.certificate && sk.certificate.toLowerCase().includes(query)) ||
+          (sk.description && sk.description.toLowerCase().includes(query))
+        );
+      }
 
       renderSkillsCatalogTable(filtered);
     }
@@ -14220,6 +14454,8 @@
 
       const nameInput = document.getElementById('quick-skill-name');
       if (nameInput) nameInput.value = item.name || '';
+
+      setQuickSkillDeptValue(item.department || 'Dùng chung toàn Cảng');
 
       const certInput = document.getElementById('quick-skill-cert');
       if (certInput) certInput.value = item.certificate || '';
@@ -14278,15 +14514,15 @@
         secondarySkills: [
           {
             id: 'SK-SEC-01',
-            name: 'Tiếng Anh Chuyên ngành Hàng hải & Logistics (Marlins English)',
-            category: 'Ngoại ngữ Chuyên môn',
+            name: 'Lập trình Tích hợp API EDIFACT / BAPLIE cho Hãng tàu',
+            category: 'Công nghệ Thông tin & Hệ thống Cảng',
             level: 4,
             levelLabel: 'Thành thạo (Level 4 - Advanced)',
             expYears: 6,
             verified: true,
             verifiedDate: '10/02/2026',
-            certificate: 'Marlins English for Seafarers 92/100',
-            description: 'Giao tiếp thông thạo với đối tác hãng tàu quốc tế (Maersk, MSC, COSCO) và chuyên gia công nghệ nước ngoài.'
+            certificate: 'EDI Integration Specialist Certificate',
+            description: 'Kết nối tự động dữ liệu xếp dỡ container với hệ thống khai báo hải quan một cửa quốc gia.'
           },
           {
             id: 'SK-SEC-02',
@@ -14355,15 +14591,15 @@
         secondarySkills: [
           {
             id: 'SK-SEC-06',
-            name: 'Tiếng Anh Đàm phán Hợp đồng Hàng hải Cấp cao',
-            category: 'Ngoại ngữ Chuyên môn',
+            name: 'Điều độ Cầu bến & Xếp dỡ Container Tàu biển (Berth & Yard Planning)',
+            category: 'Vận hành & Khai thác Cầu bến',
             level: 5,
             levelLabel: 'Chuyên gia (Level 5 - Expert)',
             expYears: 20,
             verified: true,
             verifiedDate: '01/01/2026',
-            certificate: 'IELTS 8.0 / C1 Business English',
-            description: 'Làm việc trực tiếp với các định chế tài chính và đối tác khai thác cảng quốc tế.'
+            certificate: 'Navis N4 Certified Marine Planner (CMP)',
+            description: 'Lập sơ đồ xếp dỡ tối ưu trọng tâm tàu (Stowage plan), cân bằng tải trọng và giảm thiểu lượt đảo chuyển container trên bãi.'
           },
           {
             id: 'SK-SEC-07',
@@ -14473,14 +14709,14 @@
         secondarySkills: [
           {
             id: 'SK-SEC-89-1',
-            name: 'Tiếng Anh Chuyên ngành Hàng hải & Logistics (Marlins English)',
+            name: 'Hoa tiêu Dẫn tàu Hàng hải Luồng Sông Lòng Tàu & Cảng Phước An',
             level: 4,
             levelLabel: 'Thành thạo (Level 4 - Advanced)',
             expYears: 12,
             verified: true,
             verifiedDate: '15/12/2025',
-            certificate: 'Marlins English for Port Officers 88/100',
-            description: 'Liên lạc trực tiếp với thuyền trưởng và đại diện hãng tàu quốc tế.'
+            certificate: 'Bằng Hoa tiêu Hàng hải Hạng Nhất (Cục Hàng hải VN)',
+            description: 'Dẫn dắt các tàu mẹ tải trọng đến 60.000 DWT cập cầu an toàn qua các đoạn cua luồng phức tạp.'
           },
           {
             id: 'SK-SEC-89-2',
@@ -14952,12 +15188,18 @@
       document.getElementById('skill-form-id').value = skillId || '';
 
       const code = currentSelectedEmpCode || 'PAP0009';
+      const emp = (typeof employeesData !== 'undefined' ? employeesData.find(e => e.pap === code) : null);
+      const empDept = emp?.dept || (document.getElementById('prof-work-dept')?.value) || 'Phòng Phát triển Phần mềm';
+
+      const deptInput = document.getElementById('skill-form-department');
+      if (deptInput) deptInput.value = empDept;
+
       const data = getEmployeeSkills(code);
 
       if (mode === 'add') {
         document.getElementById('btn-save-skill-text').innerText = 'Lưu kỹ năng';
         document.getElementById('skill-type-secondary').checked = true;
-        populateSkillCatalogDropdown('');
+        populateSkillCatalogDropdown('', empDept);
         document.getElementById('skill-form-level').value = '4';
         document.getElementById('skill-form-exp').value = '3';
         document.getElementById('skill-form-cert').value = '';
@@ -14975,7 +15217,7 @@
         }
 
         if (targetSkill) {
-          populateSkillCatalogDropdown(targetSkill.name || '');
+          populateSkillCatalogDropdown(targetSkill.name || '', empDept);
           document.getElementById('skill-form-level').value = String(targetSkill.level || 4);
           document.getElementById('skill-form-exp').value = targetSkill.expYears || 1;
           document.getElementById('skill-form-cert').value = targetSkill.certificate || '';
@@ -15264,7 +15506,7 @@
 
     const attendanceManagementPages = {
       exemptions: { page: 1, pageSize: 10, selectId: 'attendance-exemptions-table-page-size', rangeId: 'attendance-exemptions-table-range', paginationId: 'attendance-exemptions-table-pagination', unit: 'nhân viên', render: () => renderAttendanceExemptionList() },
-      clients: { page: 1, pageSize: 10, selectId: 'attendance-client-table-page-size', rangeId: 'attendance-client-table-range', paginationId: 'attendance-client-table-pagination', unit: 'client', render: () => renderAttendanceClientsTable() },
+      clients: { page: 1, pageSize: 10, selectId: 'attendance-client-table-page-size', rangeId: 'attendance-client-table-range', paginationId: 'attendance-client-table-pagination', unit: 'hình thức', render: () => renderAttendanceClientsTable() },
       locations: { page: 1, pageSize: 10, selectId: 'att-gps-table-page-size', rangeId: 'att-gps-table-range', paginationId: 'att-gps-table-pagination', unit: 'địa điểm', render: () => renderAttendanceLocationsTable() }
     };
 
@@ -15742,7 +15984,7 @@
         else if (lists.contracts.size && !lists.contracts.has(norm(record.contract))) errors.push('Loại hợp đồng không có trong danh mục');
         if (!record.status) errors.push('Thiếu Trạng thái nhân sự');
         else if (lists.statuses.size && !lists.statuses.has(norm(record.status))) errors.push('Trạng thái nhân sự không có trong danh mục');
-        if (!record.startDate) errors.push('Ngày vào làm không hợp lệ hoặc đang để trống');
+        if (!record.startDate) errors.push('Ngày bắt đầu không hợp lệ hoặc đang để trống');
         if (columnMap.officialDate >= 0 && String(cells[columnMap.officialDate] ?? '').trim() && !record.officialDate) errors.push('Ngày chính thức không hợp lệ');
         rowsOut.push({ rowNumber: index + 2, record, errors });
       });
@@ -15778,9 +16020,9 @@
     function closeEmployeeImportModal() { document.getElementById('modal-employee-import').classList.add('hidden'); }
     function downloadEmployeeImportTemplate() {
       if (typeof XLSX === 'undefined') { showToast('Không tải được thư viện Excel. Vui lòng kiểm tra kết nối rồi thử lại.'); return; }
-      const headers = ['Mã nhân viên (PAP)', 'Họ và tên', 'Email nội bộ', 'Số điện thoại', 'Mã văn phòng', 'Đơn vị/Phòng ban', 'Chức vụ', 'Chức danh chuyên môn', 'Loại hợp đồng', 'Trạng thái nhân sự', 'Ngày vào làm (DD/MM/YYYY)', 'Ngày chính thức (DD/MM/YYYY)'];
+      const headers = ['Mã nhân viên (PAP)', 'Họ và tên', 'Email nội bộ', 'Số điện thoại', 'Mã văn phòng', 'Đơn vị/Phòng ban', 'Chức vụ', 'Chức danh chuyên môn', 'Loại hợp đồng', 'Trạng thái nhân sự', 'Ngày bắt đầu (DD/MM/YYYY)', 'Ngày chính thức (DD/MM/YYYY)'];
       const catalogs = getEmployeeImportCatalogs();
-      const guide = [['CỘT', 'BẮT BUỘC', 'GIÁ TRỊ/DẠNG DỮ LIỆU'], ['Mã nhân viên (PAP)', 'Có', 'PAP + số; không được trùng mã đã tồn tại'], ['Họ và tên', 'Có', 'Văn bản'], ['Email nội bộ', 'Có', 'Email hợp lệ'], ['Số điện thoại', 'Không', 'Văn bản'], ['Mã văn phòng', 'Có', catalogs.workplaces.join(' | ')], ['Đơn vị/Phòng ban', 'Có', catalogs.departments.join(' | ')], ['Chức vụ', 'Không', catalogs.positions.join(' | ')], ['Chức danh chuyên môn', 'Có', catalogs.titles.join(' | ')], ['Loại hợp đồng', 'Có', catalogs.contracts.join(' | ')], ['Trạng thái nhân sự', 'Có', catalogs.statuses.join(' | ')], ['Ngày vào làm (DD/MM/YYYY)', 'Có', 'Ngày hợp lệ, ví dụ 01/09/2026'], ['Ngày chính thức (DD/MM/YYYY)', 'Không', 'Có thể để trống; ngày hợp lệ nếu nhập'], [], ['Lưu ý', '', 'Tệp chỉ thêm hồ sơ mới. Dòng lỗi không được thêm. Trường thông tin cá nhân/tài chính không có trong mẫu sẽ để trống.']];
+      const guide = [['CỘT', 'BẮT BUỘC', 'GIÁ TRỊ/DẠNG DỮ LIỆU'], ['Mã nhân viên (PAP)', 'Có', 'PAP + số; không được trùng mã đã tồn tại'], ['Họ và tên', 'Có', 'Văn bản'], ['Email nội bộ', 'Có', 'Email hợp lệ'], ['Số điện thoại', 'Không', 'Văn bản'], ['Mã văn phòng', 'Có', catalogs.workplaces.join(' | ')], ['Đơn vị/Phòng ban', 'Có', catalogs.departments.join(' | ')], ['Chức vụ', 'Không', catalogs.positions.join(' | ')], ['Chức danh chuyên môn', 'Có', catalogs.titles.join(' | ')], ['Loại hợp đồng', 'Có', catalogs.contracts.join(' | ')], ['Trạng thái nhân sự', 'Có', catalogs.statuses.join(' | ')], ['Ngày bắt đầu (DD/MM/YYYY)', 'Có', 'Ngày hợp lệ, ví dụ 01/09/2026'], ['Ngày chính thức (DD/MM/YYYY)', 'Không', 'Có thể để trống; ngày hợp lệ nếu nhập'], [], ['Lưu ý', '', 'Tệp chỉ thêm hồ sơ mới. Dòng lỗi không được thêm. Trường thông tin cá nhân/tài chính không có trong mẫu sẽ để trống.']];
       const workbook = XLSX.utils.book_new(); XLSX.utils.book_append_sheet(workbook, XLSX.utils.aoa_to_sheet([headers]), 'NhanVien'); XLSX.utils.book_append_sheet(workbook, XLSX.utils.aoa_to_sheet(guide), 'HuongDan'); XLSX.writeFile(workbook, 'Mau_nhap_nhan_vien.xlsx');
     }
     async function handleEmployeeImportFile(event) {
@@ -15839,7 +16081,7 @@
       const startDateInput = document.getElementById('new-emp-startdate') ? document.getElementById('new-emp-startdate').value : '';
       const officialDateInput = document.getElementById('new-emp-officialdate') ? document.getElementById('new-emp-officialdate').value : '';
       const formattedStartDate = startDateInput ? parseInputDateToDisplay(startDateInput) : new Date().toLocaleDateString('vi-VN');
-      const formattedOfficialDate = officialDateInput ? parseInputDateToDisplay(officialDateInput) : (contract === 'Thử việc' ? 'Đang thử việc' : formattedStartDate);
+      const formattedOfficialDate = officialDateInput ? parseInputDateToDisplay(officialDateInput) : (contract === 'Thỏa thuận thử việc' ? 'Đang thử việc' : formattedStartDate);
 
       const newEmp = {
         workplaceCode: workplaceCode,
@@ -15956,14 +16198,18 @@
     let attendanceClientsData = [
       {
         id: 'ATT-CLIENT-HQ',
-        name: 'Chấm công tại Trụ sở Cảng',
+        name: 'Chấm công tại Trụ sở Cảng Phước An',
         method: 'MOBILE_GPS_SELFIE',
         requiresGps: true,
         applicableOrgUnits: ['root'],
         applicableEmployeeCodes: [],
         excludedEmployeeCodes: [],
         locationLimited: true,
-        locationCodes: ['LOC-CANG-HQ'],
+        requireApproval: false,
+        address: 'Xã Phước An, Huyện Nhơn Trạch, Tỉnh Đồng Nai',
+        lat: 10.612345,
+        long: 106.945678,
+        radius: 300,
         status: 'Đang áp dụng',
         createdBy: 'AdminSystem',
         createdAt: '10/09/2026 08:30',
@@ -15975,32 +16221,40 @@
         name: 'Chấm công Văn phòng TP.HCM',
         method: 'MOBILE_GPS_SELFIE',
         requiresGps: true,
-        applicableOrgUnits: ['cn-hcm'],
+        applicableOrgUnits: ['root'],
         applicableEmployeeCodes: [],
         excludedEmployeeCodes: [],
         locationLimited: true,
-        locationCodes: ['LOC-VP-HCM'],
+        requireApproval: false,
+        address: '123 Nguyễn Văn Trỗi, Phú Nhuận, TP.HCM',
+        lat: 10.792345,
+        long: 106.678912,
+        radius: 150,
+        status: 'Đang áp dụng',
+        createdBy: 'AdminSystem',
+        createdAt: '10/09/2026 08:30',
+        updatedBy: 'AdminSystem',
+        updatedAt: '25/09/2026 15:30'
+      },
+      {
+        id: 'ATT-CLIENT-OUT',
+        name: 'Chấm công Công tác / Thị trường (Ngoài văn phòng)',
+        method: 'MOBILE_GPS_SELFIE',
+        requiresGps: true,
+        applicableOrgUnits: ['root'],
+        applicableEmployeeCodes: [],
+        excludedEmployeeCodes: [],
+        locationLimited: false,
+        requireApproval: true,
+        address: '',
+        lat: 0,
+        long: 0,
+        radius: 0,
         status: 'Đang áp dụng',
         createdBy: 'AdminSystem',
         createdAt: '12/09/2026 09:00',
         updatedBy: 'AdminSystem',
-        updatedAt: '24/09/2026 16:10'
-      },
-      {
-        id: 'ATT-CLIENT-FIELD',
-        name: 'Chấm công hiện trường (GPS + Selfie)',
-        method: 'MOBILE_GPS_SELFIE',
-        requiresGps: true,
-        applicableOrgUnits: [],
-        applicableEmployeeCodes: ['PAP0034', 'PAP0411'],
-        excludedEmployeeCodes: [],
-        locationLimited: false,
-        locationCodes: [],
-        status: 'Đang áp dụng',
-        createdBy: 'AdminSystem',
-        createdAt: '15/09/2026 07:30',
-        updatedBy: 'AdminSystem',
-        updatedAt: '26/09/2026 17:00'
+        updatedAt: '25/09/2026 15:30'
       }
     ];
     let editingAttendanceClientId = null;
@@ -16135,31 +16389,38 @@
       if (!tbody) return;
       const page = paginateAttendanceTable('clients', attendanceClientsData);
       if (!page.rows.length) {
-        tbody.innerHTML = '<tr><td colspan="9" class="py-6 px-3 text-center text-slate-500">Chưa có client chấm công. Tạo client để cấu hình phạm vi sử dụng.</td></tr>';
+        tbody.innerHTML = '<tr><td colspan="10" class="py-6 px-3 text-center text-slate-500">Chưa có hình thức chấm công. Tạo mới để cấu hình phạm vi sử dụng.</td></tr>';
         return;
       }
       tbody.innerHTML = page.rows.map((client, index) => {
-        const unitText = client.applicableOrgUnits.length ? `${client.applicableOrgUnits.length} đơn vị` : '';
-        const employeeText = client.applicableEmployeeCodes.length ? `${client.applicableEmployeeCodes.length} nhân viên` : '';
-        const scopeText = [unitText, employeeText].filter(Boolean).join(' + ');
-        const locationNames = client.locationLimited
-          ? (client.locationCodes || []).map(code => {
-              const location = branchesData.find(item => item.code === code);
-              return location ? `${escapeHtml(location.name)} (${Number(location.radius)}m)` : escapeHtml(code);
-            }).join(', ')
-          : 'Không giới hạn theo địa điểm';
-        const ruleText = client.locationLimited ? 'Trong bán kính địa điểm chọn' : 'Không đối chiếu bán kính';
-        const ruleClass = client.locationLimited ? 'bg-blue-50 text-blue-800 border-blue-200' : 'bg-amber-50 text-amber-800 border-amber-200';
+        const appliedEmployees = getAttendanceClientAppliedEmployeesForClient(client);
+        const empCount = appliedEmployees.length;
+        
+        const locationText = client.locationLimited
+          ? (client.address ? `<div class="font-medium text-slate-800">${escapeHtml(client.address)}</div><div class="text-[10px] text-slate-500">${client.lat}, ${client.long} (Bán kính ${client.radius}m)</div>` : 'Có giới hạn bán kính')
+          : '<span class="text-slate-500">Không bắt buộc vị trí (Toàn quốc)</span>';
+        
+        const approvalText = client.requireApproval
+          ? '<span class="inline-block px-2 py-0.5 rounded-full border text-[10px] font-semibold bg-amber-50 text-amber-800 border-amber-200">Cần QL duyệt</span>'
+          : '<span class="inline-block px-2 py-0.5 rounded-full border text-[10px] font-semibold bg-slate-50 text-slate-600 border-slate-200">Tự động nhận</span>';
+        
         const statusClass = isAttendanceRecordActive(client.status) ? 'bg-emerald-50 text-emerald-700 border-emerald-200' : 'bg-slate-100 text-slate-600 border-slate-200';
+        
         return `<tr class="hover:bg-slate-50/80">
           <td class="py-3 px-3 text-center text-slate-400 font-semibold">${page.offset + index + 1}</td>
-          <td class="py-3 px-3"><div class="font-bold text-slate-900">${escapeHtml(client.name)}</div><div class="text-[10px] text-slate-500">Mobile GPS + Selfie · GPS bắt buộc</div></td>
-          <td class="py-3 px-3 font-medium text-slate-700">${escapeHtml(scopeText)}</td>
-          <td class="py-3 px-3 text-slate-600">${locationNames || '—'}</td>
-          <td class="py-3 px-3"><span class="inline-block px-2 py-1 rounded-full border text-[10px] font-semibold ${ruleClass}">${ruleText}</span></td>
+          <td class="py-3 px-3"><div class="font-bold text-slate-900">${escapeHtml(client.name)}</div><div class="text-[10px] text-slate-500 font-mono">${client.id}</div></td>
+          <td class="py-3 px-3"><span class="inline-block px-2 py-0.5 rounded-full bg-blue-50 text-[#2E3191] font-semibold text-[10px] border border-blue-200">Mobile GPS + Selfie</span></td>
+          <td class="py-3 px-3 text-center">
+            <button type="button" onclick="openAttendanceClientScopePreviewModal('${client.id}')" class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-indigo-50 hover:bg-indigo-100 text-[#2E3191] font-semibold text-xs border border-indigo-200 hover:border-indigo-300 transition-colors cursor-pointer shadow-2xs" title="Bấm để xem danh sách ${empCount} nhân viên áp dụng">
+              <span>👥</span>
+              <span>${empCount} nhân viên</span>
+            </button>
+          </td>
+          <td class="py-3 px-3 text-slate-600">${locationText}</td>
+          <td class="py-3 px-3 text-center">${approvalText}</td>
           <td class="py-3 px-3 text-center"><span class="inline-block whitespace-nowrap px-2.5 py-0.5 rounded-full border text-[10px] font-bold ${statusClass}">${getAttendanceStatusLabel(client.status)}</span></td>
-          <td class="py-3 px-3 text-center"><div class="font-medium text-slate-800 leading-tight">${escapeHtml(client.createdBy || 'AdminSystem')}</div><div class="text-[10px] text-slate-400 leading-none mt-0.5">${escapeHtml(client.createdAt || '—')}</div></td>
-          <td class="py-3 px-3 text-center">${client.updatedBy ? `<div class="font-medium text-slate-800 leading-tight">${escapeHtml(client.updatedBy)}</div><div class="text-[10px] text-slate-400 leading-none mt-0.5">${escapeHtml(client.updatedAt || '—')}</div>` : '<span class="text-slate-400">—</span>'}</td>
+          <td class="py-3 px-3 text-center"><div class="font-medium text-slate-800 leading-tight">${escapeHtml(client.createdBy || 'AdminSystem')}</div><div class="text-[10px] text-slate-400 leading-none mt-0.5">${escapeHtml(client.createdAt || '-')}</div></td>
+          <td class="py-3 px-3 text-center">${client.updatedBy ? `<div class="font-medium text-slate-800 leading-tight">${escapeHtml(client.updatedBy)}</div><div class="text-[10px] text-slate-400 leading-none mt-0.5">${escapeHtml(client.updatedAt || '-')}</div>` : '<span class="text-slate-400">—</span>'}</td>
           <td class="py-3 px-3 text-center whitespace-nowrap sticky right-0 bg-white group-hover:bg-slate-50 shadow-[-6px_0_10px_-4px_rgba(0,0,0,0.08)] sticky-action z-10">
             <button type="button" onclick="openAttendanceClientModal('${client.id}')" aria-label="Cập nhật ${escapeHtml(client.name)}" title="Cập nhật" class="inline-flex items-center justify-center text-[#2E3191] hover:bg-indigo-50 rounded-md p-1.5"><svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 20h9"/><path stroke-linecap="round" stroke-linejoin="round" d="M16.5 3.5a2.12 2.12 0 013 3L8 18l-4 1 1-4Z"/></svg></button>
             <button type="button" onclick="deleteAttendanceClient('${client.id}')" aria-label="Xóa ${escapeHtml(client.name)}" title="Xóa" class="inline-flex items-center justify-center text-rose-600 hover:bg-rose-50 rounded-md p-1.5"><svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M3 6h18M8 6V4h8v2m3 0-1 14H6L5 6m4 4v6m6-6v6"/></svg></button>
@@ -16193,41 +16454,96 @@
       }).join('');
     }
 
+    let attendanceClientExpandedUnitIds = new Set();
+
+    function expandAllAttendanceClientOrgUnits() {
+      const units = getAttendanceClientOrgUnits();
+      units.forEach(u => attendanceClientExpandedUnitIds.add(u.id));
+      renderAttendanceClientScopeOptions();
+    }
+
+    function collapseAllAttendanceClientOrgUnits() {
+      attendanceClientExpandedUnitIds.clear();
+      renderAttendanceClientScopeOptions();
+    }
+
+    function toggleOrgUnitTreeNode(event, unitId) {
+      if (event) {
+        event.preventDefault();
+        event.stopPropagation();
+      }
+      if (attendanceClientExpandedUnitIds.has(unitId)) {
+        attendanceClientExpandedUnitIds.delete(unitId);
+      } else {
+        attendanceClientExpandedUnitIds.add(unitId);
+      }
+      renderAttendanceClientScopeOptions();
+    }
+
     function renderAttendanceClientScopeOptions() {
       const unitBox = document.getElementById('attendance-client-unit-tree');
-      const locationBox = document.getElementById('attendance-client-location-options');
       if (unitBox) {
         const units = getAttendanceClientOrgUnits();
         const query = (document.getElementById('attendance-client-unit-search')?.value || '').trim().toLocaleLowerCase('vi');
         const visibleIds = new Set();
-        if (query) units.forEach(unit => {
-          if (`${unit.code} ${unit.name}`.toLocaleLowerCase('vi').includes(query)) {
-            visibleIds.add(unit.id);
-            getAncestryPath(unit.id, units).forEach(parent => visibleIds.add(parent.id));
-          }
-        });
+        if (query) {
+          units.forEach(unit => {
+            if (`${unit.code || ''} ${unit.name || ''}`.toLocaleLowerCase('vi').includes(query)) {
+              visibleIds.add(unit.id);
+              getAncestryPath(unit.id, units).forEach(parent => visibleIds.add(parent.id));
+            }
+          });
+        }
         const childrenOf = id => units.filter(unit => unit.parentId === id);
+
         const renderNode = (unit, depth = 0) => {
           if (query && !visibleIds.has(unit.id)) return '';
+          const childUnits = childrenOf(unit.id);
+          const hasChildren = childUnits.length > 0;
+          
+          // Mặc định là thu gọn, khi tìm kiếm thì tự động mở các nhánh khớp
+          const isExpanded = query ? visibleIds.has(unit.id) : attendanceClientExpandedUnitIds.has(unit.id);
+          
           const descendants = getAttendanceClientDescendantUnitIds([unit.id]);
           const branchSelected = [...descendants].every(id => attendanceClientScopeUnitIds.has(id));
           const checked = attendanceClientScopeUnitIds.has(unit.id) || branchSelected;
           const directEmployees = (employeesData || []).filter(employee => employee.status === 'Đang làm việc' && getAttendanceClientEmployeeUnitId(employee) === unit.id).length;
-          const children = childrenOf(unit.id).map(child => renderNode(child, depth + 1)).join('');
-          return `<div data-scope-search="${escapeHtml(`${unit.code || ''} ${unit.name || ''}`.toLocaleLowerCase('vi'))}" class="${query && !visibleIds.has(unit.id) ? 'hidden' : ''}"><label class="flex items-center gap-2 px-2 py-1.5 rounded hover:bg-slate-50 cursor-pointer" style="padding-left:${8 + depth * 16}px"><input type="checkbox" ${checked ? 'checked' : ''} onchange="toggleAttendanceClientOrgUnit('${escapeHtml(unit.id)}', this.checked)" class="accent-[#2E3191]" /><span class="min-w-0 flex-1"><span class="font-medium text-slate-800">${escapeHtml(unit.name)}</span><span class="ml-2 text-[10px] text-slate-400">${escapeHtml(unit.code || '')}</span></span><span class="text-[10px] text-slate-500">${directEmployees} NV</span></label>${children}</div>`;
-        };
-        unitBox.innerHTML = units.filter(unit => !unit.parentId || !units.some(parent => parent.id === unit.parentId)).map(unit => renderNode(unit)).join('') || '<div class="p-3 text-center text-slate-500">Không tìm thấy đơn vị.</div>';
-      }
-      if (locationBox) locationBox.innerHTML = branchesData.filter(location => isAttendanceRecordActive(location.status)).map(location => `<label class="flex items-start gap-2 p-2 rounded-lg border border-slate-200 hover:border-indigo-300"><input type="checkbox" name="attendance-client-location" value="${escapeHtml(location.code)}" class="mt-0.5 accent-[#2E3191]" /><span><strong class="block text-slate-800">${escapeHtml(location.name)}</strong><span class="text-[10px] text-slate-500">${escapeHtml(location.lat)}, ${escapeHtml(location.long)} · bán kính ${Number(location.radius)}m</span></span></label>`).join('');
-      renderAttendanceClientEmployeeSummary();
-    }
+          
+          const toggleBtn = hasChildren ? `
+            <button type="button" onclick="toggleOrgUnitTreeNode(event, '${escapeHtml(unit.id)}')" title="${isExpanded ? 'Thu gọn' : 'Mở rộng'}" class="w-5 h-5 flex items-center justify-center text-slate-400 hover:text-[#2E3191] hover:bg-slate-100 rounded transition cursor-pointer shrink-0">
+              <svg class="w-3.5 h-3.5 transition-transform duration-150 ${isExpanded ? 'rotate-90 text-[#2E3191]' : ''}" viewBox="0 0 20 20" fill="currentColor">
+                <path fill-rule="evenodd" d="M7.21 14.77a.75.75 0 01.02-1.06L11.168 10 7.23 6.29a.75.75 0 111.04-1.08l4.5 4.25a.75.75 0 010 1.08l-4.5 4.25a.75.75 0 01-1.06-.02z" clip-rule="evenodd" />
+              </svg>
+            </button>
+          ` : `<span class="w-5 h-5 inline-block shrink-0"></span>`;
+          
+          const childrenHtml = hasChildren ? `
+            <div id="unit-tree-children-${escapeHtml(unit.id)}" class="${isExpanded ? '' : 'hidden'} space-y-0.5">
+              ${childUnits.map(child => renderNode(child, depth + 1)).join('')}
+            </div>
+          ` : '';
 
-    function filterAttendanceClientScope(type) {
-      const input = document.getElementById('attendance-client-unit-search');
-      const box = document.getElementById('attendance-client-unit-tree');
-      if (!input || !box) return;
-      const query = input.value.trim().toLocaleLowerCase('vi');
-      renderAttendanceClientScopeOptions();
+          return `
+            <div data-scope-search="${escapeHtml(`${unit.code || ''} ${unit.name || ''}`.toLocaleLowerCase('vi'))}">
+              <div class="flex items-center gap-1 px-2 py-1 rounded-lg hover:bg-slate-50 transition" style="padding-left:${4 + depth * 16}px">
+                ${toggleBtn}
+                <label class="flex items-center gap-2 min-w-0 flex-1 cursor-pointer select-none py-0.5">
+                  <input type="checkbox" ${checked ? 'checked' : ''} onchange="toggleAttendanceClientOrgUnit('${escapeHtml(unit.id)}', this.checked)" class="accent-[#2E3191] w-4 h-4 rounded cursor-pointer shrink-0" />
+                  <span class="min-w-0 flex-1 truncate">
+                    <span class="font-medium text-slate-800 text-xs">${escapeHtml(unit.name)}</span>
+                    <span class="ml-1 text-[10px] text-slate-400 font-mono">${escapeHtml(unit.code || '')}</span>
+                  </span>
+                  <span class="text-[10px] text-slate-400 font-semibold px-1.5 py-0.5 bg-slate-100 rounded shrink-0">${directEmployees} NV</span>
+                </label>
+              </div>
+              ${childrenHtml}
+            </div>
+          `;
+        };
+
+        const rootUnits = units.filter(unit => !unit.parentId || !units.some(parent => parent.id === unit.parentId));
+        unitBox.innerHTML = rootUnits.map(unit => renderNode(unit)).join('') || '<div class="p-3 text-center text-slate-500">Không tìm thấy đơn vị.</div>';
+      }
     }
 
     function toggleAttendanceClientOrgUnit(unitId, checked) {
@@ -16258,6 +16574,130 @@
       });
     }
 
+    
+    function getCurrentAttendanceClientAppliedEmployees() {
+      const client = {
+        applicableOrgUnits: [...attendanceClientScopeUnitIds],
+        applicableEmployeeCodes: [...attendanceClientScopeEmployeeCodes],
+        excludedEmployeeCodes: [...attendanceClientScopeExcludedEmployeeCodes]
+      };
+      if (!attendanceClientScopeUnitIds.size && !attendanceClientScopeEmployeeCodes.size) {
+        return [];
+      }
+      return (employeesData || []).filter(employee =>
+        employee.status === 'Đang làm việc' && canEmployeeUseAttendanceClient(employee, client)
+      );
+    }
+
+    function updateAttendanceClientScopeCounter() {
+      const appliedEmployees = getCurrentAttendanceClientAppliedEmployees();
+      const unitRoots = typeof getAttendanceClientSelectedOrgUnitRoots === 'function' ? getAttendanceClientSelectedOrgUnitRoots() : [];
+      const unitCount = unitRoots.length;
+      const empCount = appliedEmployees.length;
+      
+      const countTextEl = document.getElementById('att-client-scope-count-text');
+      if (countTextEl) {
+        if (unitCount === 0 && empCount === 0) {
+          countTextEl.textContent = 'Chưa chọn phạm vi';
+        } else {
+          const parts = [];
+          if (unitCount > 0) parts.push(`${unitCount} đơn vị`);
+          parts.push(`${empCount} nhân viên`);
+          countTextEl.textContent = parts.join(' • ');
+        }
+      }
+      
+      const previewBtn = document.getElementById('att-client-scope-preview-btn');
+      if (previewBtn) {
+        previewBtn.disabled = (empCount === 0);
+        previewBtn.classList.toggle('opacity-50', empCount === 0);
+        previewBtn.classList.toggle('cursor-not-allowed', empCount === 0);
+      }
+    }
+
+    let attendanceClientPreviewTargetClientId = null;
+
+    function getAttendanceClientAppliedEmployeesForClient(targetClient) {
+      if (!targetClient) return [];
+      const isAllOrg = (!targetClient.applicableOrgUnits || !targetClient.applicableOrgUnits.length || targetClient.applicableOrgUnits.includes('root') || targetClient.applicableOrgUnits.includes('ALL'));
+      const hasSpecificCodes = Array.isArray(targetClient.applicableEmployeeCodes) && targetClient.applicableEmployeeCodes.length > 0;
+      
+      return (employeesData || []).filter(employee => {
+        if (employee.status !== 'Đang làm việc') return false;
+        if (typeof canEmployeeUseAttendanceClient === 'function') {
+          return canEmployeeUseAttendanceClient(employee, targetClient);
+        }
+        const empCode = employee.pap || employee.code;
+        if (hasSpecificCodes) return targetClient.applicableEmployeeCodes.includes(empCode);
+        return isAllOrg;
+      });
+    }
+
+    function openAttendanceClientScopePreviewModal(clientId) {
+      attendanceClientPreviewTargetClientId = clientId || null;
+      const searchInput = document.getElementById('att-scope-preview-search');
+      if (searchInput) searchInput.value = '';
+      renderAttendanceClientScopePreviewList();
+      const modal = document.getElementById('modal-attendance-client-scope-preview');
+      if (modal) modal.classList.remove('hidden');
+    }
+
+    function closeAttendanceClientScopePreviewModal() {
+      attendanceClientPreviewTargetClientId = null;
+      const modal = document.getElementById('modal-attendance-client-scope-preview');
+      if (modal) modal.classList.add('hidden');
+    }
+
+    function renderAttendanceClientScopePreviewList() {
+      const tbody = document.getElementById('att-scope-preview-tbody');
+      if (!tbody) return;
+      
+      let allApplied = [];
+      let headerTitle = 'Danh sách nhân sự được áp dụng';
+      
+      if (attendanceClientPreviewTargetClientId) {
+        const client = (attendanceClientsData || []).find(c => String(c.id) === String(attendanceClientPreviewTargetClientId));
+        if (client) {
+          headerTitle = `Danh sách nhân viên: ${client.name}`;
+          allApplied = getAttendanceClientAppliedEmployeesForClient(client);
+        } else {
+          allApplied = [];
+        }
+      } else {
+        allApplied = getCurrentAttendanceClientAppliedEmployees();
+      }
+
+      const modalTitleEl = document.getElementById('modal-attendance-client-scope-preview-title');
+      if (modalTitleEl) modalTitleEl.textContent = headerTitle;
+
+      const query = (document.getElementById('att-scope-preview-search')?.value || '').trim().toLocaleLowerCase('vi');
+      
+      const filtered = query ? allApplied.filter(e =>
+        `${e.pap || ''} ${e.name || ''} ${e.dept || ''} ${e.position || e.pos || ''}`.toLocaleLowerCase('vi').includes(query)
+      ) : allApplied;
+
+      const subEl = document.getElementById('att-scope-preview-header-sub');
+      if (subEl) subEl.textContent = `${allApplied.length} nhân viên đang nằm trong phạm vi áp dụng`;
+
+      const footerCountEl = document.getElementById('att-scope-preview-footer-count');
+      if (footerCountEl) footerCountEl.textContent = `Hiển thị ${filtered.length} / ${allApplied.length} nhân viên`;
+
+      if (!filtered.length) {
+        tbody.innerHTML = '<tr><td colspan="5" class="py-8 px-3 text-center text-slate-400">Không có nhân viên nào phù hợp với phạm vi hoặc bộ lọc tìm kiếm.</td></tr>';
+        return;
+      }
+
+      tbody.innerHTML = filtered.map((emp, idx) => `
+        <tr class="hover:bg-slate-50 transition">
+          <td class="py-2.5 px-3 text-center text-slate-400 font-semibold">${idx + 1}</td>
+          <td class="py-2.5 px-3 font-mono font-bold text-[#2E3191]">${escapeHtml(emp.pap || '—')}</td>
+          <td class="py-2.5 px-3"><div class="font-semibold text-slate-900">${escapeHtml(emp.name || '—')}</div></td>
+          <td class="py-2.5 px-3 text-slate-700">${escapeHtml(emp.dept || '—')}</td>
+          <td class="py-2.5 px-3 text-slate-600">${escapeHtml(emp.position || emp.pos || '—')}</td>
+        </tr>
+      `).join('');
+    }
+  
     function renderAttendanceClientEmployeeSummary() {
       const summary = document.getElementById('attendance-client-employee-summary');
       if (!summary) return;
@@ -16267,6 +16707,7 @@
         excludedEmployeeCodes: [...attendanceClientScopeExcludedEmployeeCodes]
       };
       const selectedCount = getAttendanceClientInScopeEmployees().filter(employee => canEmployeeUseAttendanceClient(employee, client)).length;
+      updateAttendanceClientScopeCounter();
       summary.textContent = attendanceClientScopeUnitIds.size
         ? `${selectedCount} nhân viên được chọn theo đơn vị; có thể bỏ chọn ngoại lệ.`
         : `${selectedCount} nhân viên được chọn.`;
@@ -16343,24 +16784,95 @@
       document.getElementById('attendance-client-unrestricted-note').classList.toggle('hidden', enabled);
     }
 
+    function toggleAttendanceClientLocationFields() {
+      const select = document.getElementById('attendance-client-location-limited');
+      const isLimited = select ? (select.value === 'true') : true;
+      const fieldsContainer = document.getElementById('attendance-client-location-fields');
+      const addressInput = document.getElementById('att-client-address');
+      const latInput = document.getElementById('att-client-lat');
+      const longInput = document.getElementById('att-client-long');
+      const radiusInput = document.getElementById('att-client-radius');
+
+      if (fieldsContainer) {
+        if (isLimited) {
+          fieldsContainer.classList.remove('hidden');
+          if (addressInput) addressInput.setAttribute('required', 'true');
+          if (latInput) latInput.setAttribute('required', 'true');
+          if (longInput) longInput.setAttribute('required', 'true');
+          if (radiusInput) radiusInput.setAttribute('required', 'true');
+        } else {
+          fieldsContainer.classList.add('hidden');
+          if (addressInput) addressInput.removeAttribute('required');
+          if (latInput) latInput.removeAttribute('required');
+          if (longInput) longInput.removeAttribute('required');
+          if (radiusInput) radiusInput.removeAttribute('required');
+        }
+      }
+    }
+
     function openAttendanceClientModal(id) {
       const client = id ? attendanceClientsData.find(item => String(item.id) === String(id)) : null;
       editingAttendanceClientId = client ? client.id : null;
-      document.getElementById('attendance-client-modal-title').textContent = client ? 'Cập nhật client chấm công' : 'Tạo client chấm công';
-      document.getElementById('attendance-client-edit-id').value = client ? client.id : '';
-      document.getElementById('attendance-client-name').value = client ? client.name : '';
-      document.getElementById('attendance-client-status').value = client ? (isAttendanceRecordActive(client.status) ? 'Đang áp dụng' : 'Ngừng áp dụng') : 'Đang áp dụng';
-      document.getElementById('attendance-client-unit-search').value = '';
-      document.getElementById('attendance-client-form-error').classList.add('hidden');
+      
+      const titleEl = document.getElementById('attendance-client-modal-title');
+      if (titleEl) titleEl.textContent = client ? 'Cập nhật hình thức chấm công' : 'Tạo hình thức chấm công';
+      
+      const editIdEl = document.getElementById('attendance-client-edit-id');
+      if (editIdEl) editIdEl.value = client ? client.id : '';
+      
+      const nameEl = document.getElementById('attendance-client-name');
+      if (nameEl) nameEl.value = client ? client.name : '';
+      
+      const methodEl = document.getElementById('attendance-client-method');
+      if (methodEl) methodEl.value = client ? (client.method || 'MOBILE_GPS_SELFIE') : 'MOBILE_GPS_SELFIE';
+      
+      const statusEl = document.getElementById('attendance-client-status');
+      if (statusEl) statusEl.value = client ? (isAttendanceRecordActive(client.status) ? 'Đang áp dụng' : 'Ngừng áp dụng') : 'Đang áp dụng';
+      
+      const searchEl = document.getElementById('attendance-client-unit-search');
+      if (searchEl) searchEl.value = '';
+      
+      const errEl = document.getElementById('attendance-client-form-error');
+      if (errEl) errEl.classList.add('hidden');
+      
       attendanceClientScopeUnitIds = getAttendanceClientDescendantUnitIds(client ? client.applicableOrgUnits : []);
       attendanceClientScopeEmployeeCodes = new Set(client ? client.applicableEmployeeCodes : []);
       attendanceClientScopeExcludedEmployeeCodes = new Set(client ? (client.excludedEmployeeCodes || []) : []);
-      renderAttendanceClientScopeOptions();
-      const selectedLocations = client ? client.locationCodes : [];
-      document.querySelectorAll('input[name="attendance-client-location"]').forEach(input => { input.checked = selectedLocations.includes(input.value); });
-      document.getElementById('attendance-client-geofence').checked = client ? client.locationLimited : true;
-      toggleAttendanceClientGeofenceFields();
-      document.getElementById('modal-attendance-client').classList.remove('hidden');
+      if (typeof renderAttendanceClientScopeOptions === 'function') {
+        renderAttendanceClientScopeOptions();
+      }
+      
+      const locLimitedEl = document.getElementById('attendance-client-location-limited');
+      if (locLimitedEl) {
+        locLimitedEl.value = (client && client.locationLimited === false) ? 'false' : 'true';
+      }
+      
+      const addrEl = document.getElementById('att-client-address');
+      if (addrEl) addrEl.value = client ? (client.address || '') : '';
+      
+      const latEl = document.getElementById('att-client-lat');
+      if (latEl) latEl.value = (client && client.lat !== undefined && client.lat !== 0) ? client.lat : '';
+      
+      const longEl = document.getElementById('att-client-long');
+      if (longEl) longEl.value = (client && client.long !== undefined && client.long !== 0) ? client.long : '';
+      
+      const radiusEl = document.getElementById('att-client-radius');
+      if (radiusEl) radiusEl.value = (client && client.radius !== undefined && client.radius !== 0) ? client.radius : '300';
+      
+      const approvalEl = document.getElementById('attendance-client-require-approval');
+      if (approvalEl) approvalEl.checked = client ? !!client.requireApproval : false;
+      
+      updateAttendanceClientScopeCounter();
+      toggleAttendanceClientLocationFields();
+      
+      // Hide map picker on open
+      const mapPanel = document.getElementById('attendance-client-map-picker-panel');
+      if (mapPanel) mapPanel.classList.add('hidden');
+      const mapToggleText = document.getElementById('att-client-map-toggle-text');
+      if (mapToggleText) mapToggleText.textContent = 'Chọn vị trí trên bản đồ';
+      
+      const modal = document.getElementById('modal-attendance-client');
+      if (modal) modal.classList.remove('hidden');
     }
 
     function closeAttendanceClientModal() {
@@ -16372,45 +16884,82 @@
       event.preventDefault();
       const isEditing = Boolean(editingAttendanceClientId);
       const name = document.getElementById('attendance-client-name').value.trim();
+      const method = document.getElementById('attendance-client-method') ? document.getElementById('attendance-client-method').value : 'MOBILE_GPS_SELFIE';
       const applicableOrgUnits = getAttendanceClientSelectedOrgUnitRoots();
       const applicableEmployeeCodes = [...attendanceClientScopeEmployeeCodes];
       const excludedEmployeeCodes = [...attendanceClientScopeExcludedEmployeeCodes];
-      const locationLimited = document.getElementById('attendance-client-geofence').checked;
-      const locationCodes = [...document.querySelectorAll('input[name="attendance-client-location"]:checked')].map(input => input.value);
+      
+      const locationLimited = document.getElementById('attendance-client-location-limited') ? (document.getElementById('attendance-client-location-limited').value === 'true') : true;
+      const requireApproval = document.getElementById('attendance-client-require-approval') ? document.getElementById('attendance-client-require-approval').checked : false;
+      
+      const address = document.getElementById('att-client-address') ? document.getElementById('att-client-address').value.trim() : '';
+      const lat = Number(document.getElementById('att-client-lat') ? document.getElementById('att-client-lat').value : 0) || 0;
+      const long = Number(document.getElementById('att-client-long') ? document.getElementById('att-client-long').value : 0) || 0;
+      const radius = Number(document.getElementById('att-client-radius') ? document.getElementById('att-client-radius').value : 0) || 0;
+
       const error = document.getElementById('attendance-client-form-error');
-      const message = !name ? 'Vui lòng nhập tên client.'
-        : (!applicableOrgUnits.length && !applicableEmployeeCodes.length) ? 'Chọn ít nhất một đơn vị/phòng ban hoặc nhân viên được dùng client.'
-        : (locationLimited && !locationCodes.length) ? 'Khi giới hạn theo bán kính, cần chọn ít nhất một địa điểm GPS.'
+      const message = !name ? 'Vui lòng nhập tên hình thức chấm công.'
+        : (!applicableOrgUnits.length && !applicableEmployeeCodes.length) ? 'Chọn ít nhất một đơn vị hoặc nhân viên áp dụng.'
+        : (locationLimited && (!address || !lat || !long || !radius)) ? 'Khi bắt buộc vị trí cố định, vui lòng điền đầy đủ Địa chỉ, Tọa độ và Bán kính.'
         : '';
       if (message) {
         error.textContent = message;
         error.classList.remove('hidden');
         return;
       }
+
       const previousRecord = attendanceClientsData.find(item => String(item.id) === String(editingAttendanceClientId));
       const record = {
         ...(previousRecord || {}),
         id: editingAttendanceClientId || `ATT-${Date.now()}`,
         name,
-        method: 'MOBILE_GPS_SELFIE',
+        method,
         requiresGps: true,
         applicableOrgUnits,
         applicableEmployeeCodes,
         excludedEmployeeCodes,
         locationLimited,
-        locationCodes,
+        requireApproval,
+        address,
+        lat,
+        long,
+        radius,
         status: document.getElementById('attendance-client-status').value,
         createdBy: previousRecord?.createdBy || 'AdminSystem',
         createdAt: previousRecord?.createdAt || getAttendanceRecordDate(),
         updatedBy: previousRecord ? 'AdminSystem' : null,
         updatedAt: previousRecord ? getAttendanceRecordDate() : null
       };
-      const index = attendanceClientsData.findIndex(item => String(item.id) === String(record.id));
-      if (index >= 0) attendanceClientsData[index] = record;
-      else attendanceClientsData.push(record);
-      renderAttendanceClientsTable();
+
+      if (isEditing) {
+        const index = attendanceClientsData.findIndex(item => String(item.id) === String(editingAttendanceClientId));
+        if (index > -1) attendanceClientsData[index] = record;
+      } else {
+        attendanceClientsData.unshift(record);
+      }
       closeAttendanceClientModal();
-      showToast(isEditing ? 'Đã cập nhật client chấm công.' : 'Đã tạo client chấm công.');
+      renderAttendanceClientsTable();
+      showToast(isEditing ? 'Cập nhật hình thức thành công!' : 'Tạo mới hình thức thành công!');
+    }
+
+    function toggleAttendanceClientMapPicker() {
+      const panel = document.getElementById('attendance-client-map-picker-panel');
+      const toggleText = document.getElementById('att-client-map-toggle-text');
+      if (!panel) return;
+      const isHidden = panel.classList.contains('hidden');
+      if (isHidden) {
+        panel.classList.remove('hidden');
+        if (toggleText) toggleText.textContent = 'Thu gọn bản đồ ▲';
+        const lat = Number(document.getElementById('att-client-lat')?.value) || 10.612345;
+        const long = Number(document.getElementById('att-client-long')?.value) || 106.945678;
+        setTimeout(() => {
+          initAttendanceLocationMap(lat, long);
+          if (attendanceLocationMap) attendanceLocationMap.invalidateSize();
+        }, 150);
+      } else {
+        panel.classList.add('hidden');
+        if (toggleText) toggleText.textContent = 'Chọn vị trí trên bản đồ ▼';
+      }
     }
 
     function generateAttendanceLocationCode() {
@@ -16444,7 +16993,10 @@
       const address = formatAttendanceGeocoderAddress(feature.properties || {});
       document.getElementById('attendance-location-lat').value = lat.toFixed(6);
       document.getElementById('attendance-location-long').value = long.toFixed(6);
-      if (address) document.getElementById('attendance-location-address').value = address.slice(0, 200);
+      if (address) {
+        const addrEl = document.getElementById('att-client-address') || document.getElementById('attendance-location-address');
+        if (addrEl) addrEl.value = address.slice(0, 200);
+      }
       if (attendanceLocationMarker) attendanceLocationMarker.setLatLng([lat, long]);
       if (attendanceLocationMap) attendanceLocationMap.setView([lat, long], Math.max(attendanceLocationMap.getZoom(), 16));
       document.getElementById('attendance-location-form-error').classList.add('hidden');
@@ -16502,8 +17054,10 @@
 
     function setAttendanceLocationPoint(lat, long) {
       if (!Number.isFinite(Number(lat)) || !Number.isFinite(Number(long))) return false;
-      document.getElementById('attendance-location-lat').value = Number(lat).toFixed(6);
-      document.getElementById('attendance-location-long').value = Number(long).toFixed(6);
+      const latEl = document.getElementById('att-client-lat') || document.getElementById('attendance-location-lat');
+      const longEl = document.getElementById('att-client-long') || document.getElementById('attendance-location-long');
+      if (latEl) latEl.value = Number(lat).toFixed(6);
+      if (longEl) longEl.value = Number(long).toFixed(6);
       if (attendanceLocationMarker) attendanceLocationMarker.setLatLng([Number(lat), Number(long)]);
       if (attendanceLocationMap) attendanceLocationMap.panTo([Number(lat), Number(long)]);
       return true;
@@ -16679,183 +17233,283 @@
     }
 
     function deleteAttendanceClient(id) {
-      if (!confirm('Bạn có chắc muốn xóa client chấm công này?')) return;
+      if (!confirm('Bạn có chắc muốn xóa hình thức chấm công này?')) return;
       attendanceClientsData = attendanceClientsData.filter(item => String(item.id) !== String(id));
       renderAttendanceClientsTable();
-      showToast('Đã xóa client chấm công.');
+      showToast('Đã xóa hình thức chấm công.');
     }
 
     // Render danh sách địa điểm GPS Chấm công của nhân viên từ Danh mục Chi nhánh
     function renderEmployeeGpsLocations(papCode) {
       const code = papCode || currentSelectedEmpCode || 'PAP0009';
       const emp = employeesData.find(e => e.pap === code) || employeesData[2];
-      const mainWpCode = emp.workplaceCode || (emp.dept && emp.dept.includes('Chi nhánh TP.HCM') ? 'LOC-VP-HCM' : 'LOC-CANG-HQ');
-
-      if (!emp.gpsLocations || emp.gpsLocations.length === 0) {
-        if (emp.dept && emp.dept.includes('Chi nhánh TP.HCM')) {
-          emp.gpsLocations = [{ branchCode: 'LOC-VP-HCM' }];
-        } else {
-          emp.gpsLocations = [
-            { branchCode: 'LOC-CANG-HQ' },
-            { branchCode: 'LOC-VP-HCM' }
-          ];
-        }
-      }
-
-      // Đảm bảo văn phòng chính luôn có trong danh sách GPS
-      if (!emp.gpsLocations.some(l => l.branchCode === mainWpCode || l.branchCode === (mainWpCode === 'LOC-CANG-HQ' ? 'TS-CANG' : 'CN-HCM'))) {
-        emp.gpsLocations.unshift({ branchCode: mainWpCode });
-      }
-
       const container = document.getElementById('prof-gps-list');
       if (!container) return;
 
+      // Tìm các hình thức chấm công áp dụng cho nhân viên này
+      const applicableMethods = attendanceClientsData.filter(client => {
+        if (!isAttendanceRecordActive(client.status)) return false;
+        if (client.excludedEmployeeCodes && client.excludedEmployeeCodes.includes(emp.pap)) return false;
+        if (client.applicableEmployeeCodes && client.applicableEmployeeCodes.includes(emp.pap)) return true;
+        if (client.applicableOrgUnits && (client.applicableOrgUnits.includes('root') || client.applicableOrgUnits.length > 0)) return true;
+        return false;
+      });
+
+      if (!applicableMethods.length) {
+        container.innerHTML = '<div class="p-4 text-center text-slate-500 bg-slate-50 rounded-xl">Chưa có hình thức chấm công nào được gán cho nhân viên này.</div>';
+        return;
+      }
+
       let html = '';
-      emp.gpsLocations.forEach(loc => {
-        const isMainWorkplace = (loc.branchCode === mainWpCode || (loc.branchCode === 'TS-CANG' && mainWpCode === 'LOC-CANG-HQ') || (loc.branchCode === 'CN-HCM' && mainWpCode === 'LOC-VP-HCM'));
-        const br = branchesData.find(b => b.code === loc.branchCode || b.aliasCode === loc.branchCode) || {
-          code: loc.branchCode,
-          name: 'Điểm GPS ' + loc.branchCode,
-          type: 'Điểm GPS',
-          address: 'Địa chỉ đang cập nhật...',
-          lat: '10.612345',
-          long: '106.945678',
-          radius: 300
-        };
+      applicableMethods.forEach(method => {
+        const locInfo = method.locationLimited
+          ? (method.address ? escapeHtml(method.address) : 'Địa chỉ cố định')
+          : 'Không bắt buộc vị trí (Toàn quốc / Đi thị trường)';
+        
+        const locIcon = method.locationLimited ? '📍' : '🌐';
+        const approvalBadge = method.requireApproval
+          ? '<span class="text-[10px] bg-amber-50 text-amber-800 border border-amber-200 px-2 py-0.5 rounded-full font-semibold">Yêu cầu quản lý duyệt check-in</span>'
+          : '<span class="text-[10px] bg-emerald-50 text-emerald-800 border border-emerald-200 px-2 py-0.5 rounded-full font-semibold">Tự động ghi nhận công</span>';
 
         html += `
-          <div class="p-4 border ${isMainWorkplace ? 'border-indigo-300 bg-indigo-50/20 shadow-xs' : 'border-slate-200 bg-white'} rounded-xl hover:border-[#2E3191] transition space-y-2.5">
+          <div class="p-4 border border-slate-200 bg-white rounded-xl hover:border-[#2E3191] transition space-y-2.5">
             <div class="flex items-start justify-between">
               <div class="flex items-center space-x-2.5">
-                <span class="text-2xl">${br.type === 'Trụ sở' ? '🏢' : '🏬'}</span>
+                <span class="text-2xl">📱</span>
                 <div>
                   <div class="font-bold text-slate-900 text-xs flex items-center space-x-1.5">
-                    <span>${br.name}</span>
-                    <span class="text-[10px] text-[#2E3191] bg-blue-50 px-1.5 py-0.5 rounded border border-blue-200">(${br.code})</span>
+                    <span>${escapeHtml(method.name)}</span>
+                    <span class="text-[10px] text-[#2E3191] bg-blue-50 px-1.5 py-0.5 rounded border border-blue-200">Mobile GPS + Selfie</span>
                   </div>
-                  <div class="text-[11px] text-slate-700 font-medium mt-0.5">Địa chỉ: ${br.address}</div>
+                  <div class="text-[11px] text-slate-700 font-medium mt-1 flex items-center gap-1.5">
+                    <span>${locIcon}</span>
+                    <span>${locInfo}</span>
+                  </div>
                 </div>
               </div>
               <div class="flex items-center space-x-2">
-                ${isMainWorkplace 
-                  ? '<span class="px-2.5 py-0.5 rounded-full text-[10px] bg-indigo-50 text-[#2E3191] border border-indigo-200 font-bold flex items-center space-x-1"><span>🏢</span><span>Nơi làm việc chính</span></span>' 
-                  : '<span class="px-2.5 py-0.5 rounded-full text-[10px] bg-sky-50 text-sky-700 border border-sky-200 font-semibold flex items-center space-x-1"><span>📍</span><span>Địa điểm được cấp quyền</span></span>'}
-                ${isMainWorkplace 
-                  ? '<span class="text-[10px] text-slate-400 italic px-1" title="Văn phòng làm việc chính cố định (đổi tại Tab Công việc)">🔒 Cố định</span>' 
-                  : `<button type="button" onclick="removeGpsLocation('${br.code}')" class="p-1 text-slate-400 hover:text-rose-600 rounded-lg hover:bg-rose-50 transition cursor-pointer" title="Hủy gán địa điểm này"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg></button>`}
+                ${approvalBadge}
+                <span class="text-[10px] bg-blue-50 text-[#2E3191] px-2 py-0.5 rounded-full font-semibold border border-blue-200">Đang áp dụng</span>
               </div>
             </div>
-
-            <div class="grid grid-cols-3 gap-3 bg-slate-50 p-2.5 rounded-lg text-[11px]">
-              <div>
-                <span class="text-slate-400 block text-[10px]">Vĩ độ (Latitude):</span>
-                <strong class="text-slate-800">${br.lat}° N</strong>
-              </div>
-              <div>
-                <span class="text-slate-400 block text-[10px]">Kinh độ (Longitude):</span>
-                <strong class="text-slate-800">${br.long}° E</strong>
-              </div>
-              <div>
-                <span class="text-slate-400 block text-[10px]">Bán kính cho phép:</span>
-                <strong class="font-bold text-[#2E3191]">${br.radius} mét</strong>
-              </div>
-            </div>
-
-            <div class="flex items-center justify-between text-[10px] text-slate-400 pt-1 border-t border-slate-100">
-              <span class="flex items-center space-x-1">
-                <span class="text-[#2E3191]">🔗</span>
-                <span>Tọa độ & bán kính kế thừa từ: <strong class="text-slate-700">Danh mục Chi nhánh & Văn phòng</strong></span>
-              </span>
-              <span class="text-emerald-600 font-medium">✓ Đã đồng bộ Mobile App</span>
-            </div>
-          </div>
-        `;
+          </div>`;
       });
 
       container.innerHTML = html;
     }
 
-    // Xóa/hủy gán địa điểm GPS của nhân viên
-    function removeGpsLocation(branchCode) {
-      const code = currentSelectedEmpCode || 'PAP0009';
-      const emp = employeesData.find(e => e.pap === code) || employeesData[2];
-      const mainWpCode = emp.workplaceCode || (emp.dept && emp.dept.includes('Chi nhánh TP.HCM') ? 'CN-HCM' : 'TS-CANG');
-
-      if (branchCode === mainWpCode) {
-        alert('Đây là Văn phòng làm việc chính của nhân viên! Bạn không thể xóa địa điểm này tại đây.\nNếu muốn điều chuyển, vui lòng bấm nút [✏️ Cập nhật] tại Tab Công việc.');
-        return;
+    function toggleEmpAttendanceMethodDropdown(event) {
+      if (event) {
+        event.preventDefault();
+        event.stopPropagation();
       }
-
-      if (!emp.gpsLocations) return;
-
-      if (confirm(`Bạn có chắc chắn muốn hủy cấp quyền chấm công tại địa điểm GPS (${branchCode}) cho nhân viên này?`)) {
-        emp.gpsLocations = emp.gpsLocations.filter(l => l.branchCode !== branchCode);
-        renderEmployeeGpsLocations(code);
-        showToast(`Đã hủy cấp quyền chấm công GPS ${branchCode} thành công!`);
+      const menu = document.getElementById('emp-methods-dropdown-menu');
+      const chevron = document.getElementById('emp-methods-chevron');
+      if (!menu) return;
+      const isHidden = menu.classList.contains('hidden');
+      if (isHidden) {
+        menu.classList.remove('hidden');
+        if (chevron) chevron.classList.add('rotate-180');
+      } else {
+        menu.classList.add('hidden');
+        if (chevron) chevron.classList.remove('rotate-180');
       }
     }
 
-    // Modal Gán GPS Handlers
-    function openGpsModal() {
-      const selectEl = document.getElementById('gps-branch-select');
-      if (selectEl) {
-        selectEl.innerHTML = branchesData.map(b => `
-          <option value="${b.code}">${b.name} (${b.code}) - ${b.type}</option>
-        `).join('');
+    document.addEventListener('click', function(event) {
+      const container = document.getElementById('emp-methods-multiselect-container');
+      if (container && !container.contains(event.target)) {
+        closeEmpAttendanceMethodDropdown();
       }
-      updateGpsBranchPreview();
-      document.getElementById('modal-gps-location').classList.remove('hidden');
+    });
+
+    document.addEventListener('keydown', function(event) {
+      if (event.key === 'Escape') {
+        closeEmpAttendanceMethodDropdown();
+      }
+    });
+
+    function closeEmpAttendanceMethodDropdown() {
+      const menu = document.getElementById('emp-methods-dropdown-menu');
+      const chevron = document.getElementById('emp-methods-chevron');
+      if (menu) menu.classList.add('hidden');
+      if (chevron) chevron.classList.remove('rotate-180');
+    }
+
+    function updateEmpAttendanceMethodTriggerLabel() {
+      const checkboxes = document.querySelectorAll('input[name="emp-attendance-method"]');
+      const checkedBoxes = Array.from(checkboxes).filter(cb => cb.checked);
+      const triggerLabel = document.getElementById('emp-methods-trigger-label');
+      const detailsContainer = document.getElementById('emp-methods-selected-details-container') || document.getElementById('emp-methods-selected-tags');
+
+      if (triggerLabel) {
+        if (checkedBoxes.length === 0) {
+          triggerLabel.textContent = 'Chọn hình thức chấm công...';
+          triggerLabel.className = 'truncate font-normal text-slate-400';
+        } else {
+          triggerLabel.textContent = `${checkedBoxes.length} hình thức đã chọn`;
+          triggerLabel.className = 'truncate font-semibold text-[#2E3191]';
+        }
+      }
+
+      if (detailsContainer) {
+        if (checkedBoxes.length === 0) {
+          detailsContainer.innerHTML = `
+            <div class="p-4 text-center text-slate-400 bg-slate-50 border border-dashed border-slate-200 rounded-xl text-xs">
+              Chưa chọn hình thức nào. Vui lòng bấm vào ô phía trên để chọn hình thức chấm công.
+            </div>
+          `;
+        } else {
+          detailsContainer.innerHTML = checkedBoxes.map(cb => {
+            const method = (attendanceClientsData || []).find(c => c.id === cb.value);
+            if (!method) return '';
+            
+            const locText = method.locationLimited
+              ? (method.address ? escapeHtml(method.address) : 'Địa chỉ cố định')
+              : 'Không bắt buộc vị trí (Toàn quốc / Đi thị trường)';
+            const locIcon = method.locationLimited ? '📍' : '🌐';
+            
+            const coordsBlock = method.locationLimited ? `
+              <div class="grid grid-cols-2 gap-2.5 bg-white p-2.5 rounded-lg border border-slate-200 text-[11px]">
+                <div>
+                  <span class="text-slate-400 block text-[10px]">Vĩ độ (Latitude):</span>
+                  <strong class="text-slate-800">${method.lat || 0}° N</strong>
+                </div>
+                <div>
+                  <span class="text-slate-400 block text-[10px]">Kinh độ (Longitude):</span>
+                  <strong class="text-slate-800">${method.long || 0}° E</strong>
+                </div>
+              </div>
+            ` : `
+              <div class="p-2 bg-white rounded-lg border border-slate-200 text-[11px] text-slate-600">
+                <span>🌐 Cho phép check-in tự do mọi địa điểm trên toàn quốc.</span>
+              </div>
+            `;
+
+            const approvalBadge = method.requireApproval
+              ? '<span class="font-semibold text-amber-800 bg-amber-50 border border-amber-200 px-2 py-0.5 rounded-full text-[10px]">Yêu cầu quản lý duyệt check-in</span>'
+              : '<span class="font-semibold text-emerald-700 bg-emerald-50 border border-emerald-200 px-2 py-0.5 rounded-full text-[10px]">Tự động ghi nhận công</span>';
+
+            return `
+              <div class="p-3.5 bg-slate-50 border border-slate-200 rounded-xl space-y-2.5 transition hover:border-indigo-300">
+                <div class="flex items-center justify-between">
+                  <span class="font-bold text-slate-800 flex items-center space-x-1.5 text-xs">
+                    <span>📱</span>
+                    <span>${escapeHtml(method.name)}</span>
+                  </span>
+                  <div class="flex items-center gap-1.5">
+                    <span class="px-2 py-0.5 rounded-full text-[10px] bg-blue-50 text-[#2E3191] font-semibold border border-blue-200">Mobile GPS + Selfie</span>
+                    <button type="button" onclick="removeEmpAttendanceMethodSelection(event, '${escapeHtml(method.id)}')" title="Bỏ chọn hình thức này" class="text-slate-400 hover:text-rose-600 transition px-1.5 py-0.5 hover:bg-rose-50 rounded cursor-pointer font-bold leading-none">&times;</button>
+                  </div>
+                </div>
+
+                <div class="text-[11px] text-slate-800 font-medium flex items-start space-x-1.5">
+                  <span class="text-slate-400 shrink-0">${locIcon}</span>
+                  <span>${locText}</span>
+                </div>
+
+                ${coordsBlock}
+
+                <div class="flex items-center justify-between bg-white p-2 rounded-lg border border-slate-200 text-[11px]">
+                  <span class="text-slate-600 font-medium">Quy tắc phê duyệt:</span>
+                  ${approvalBadge}
+                </div>
+              </div>
+            `;
+          }).join('');
+        }
+      }
+    }
+
+    function removeEmpAttendanceMethodSelection(event, methodId) {
+      if (event) {
+        event.preventDefault();
+        event.stopPropagation();
+      }
+      const checkbox = document.querySelector(`input[name="emp-attendance-method"][value="${methodId}"]`);
+      if (checkbox) {
+        checkbox.checked = false;
+        updateEmpAttendanceMethodTriggerLabel();
+      }
+    }
+
+    function openGpsModal() {
+      const code = currentSelectedEmpCode || 'PAP0009';
+      const emp = (employeesData || []).find(e => e.pap === code) || employeesData[2];
+      const listContainer = document.getElementById('gps-methods-multiselect-list');
+      
+      closeEmpAttendanceMethodDropdown();
+      
+      if (listContainer) {
+        const activeClients = (attendanceClientsData || []).filter(c => isAttendanceRecordActive(c.status));
+        listContainer.innerHTML = activeClients.map(c => {
+          const isAssigned = typeof canEmployeeUseAttendanceClient === 'function' ? canEmployeeUseAttendanceClient(emp, c) : true;
+          const locText = c.locationLimited
+            ? (c.address ? escapeHtml(c.address) : 'Địa chỉ cố định')
+            : 'Không bắt buộc vị trí (Toàn quốc / Đi thị trường)';
+          const locIcon = c.locationLimited ? '📍' : '🌐';
+          const approvalBadge = c.requireApproval
+            ? '<span class="text-[10px] bg-amber-50 text-amber-800 border border-amber-200 px-2 py-0.5 rounded-full font-semibold shrink-0">Cần duyệt</span>'
+            : '<span class="text-[10px] bg-emerald-50 text-emerald-800 border border-emerald-200 px-2 py-0.5 rounded-full font-semibold shrink-0">Tự động nhận</span>';
+
+          return `
+            <label class="flex items-start gap-2.5 p-2 rounded-lg border border-slate-100 hover:border-indigo-300 hover:bg-slate-50 transition cursor-pointer select-none bg-white">
+              <input type="checkbox" name="emp-attendance-method" value="${escapeHtml(c.id)}" ${isAssigned ? 'checked' : ''} onchange="updateEmpAttendanceMethodTriggerLabel()" class="w-4 h-4 accent-[#2E3191] rounded mt-0.5 cursor-pointer shrink-0" />
+              <div class="flex-1 min-w-0">
+                <div class="flex items-center justify-between gap-1">
+                  <span class="font-bold text-slate-800 text-xs truncate">${escapeHtml(c.name)}</span>
+                  ${approvalBadge}
+                </div>
+                <div class="text-[11px] text-slate-500 mt-0.5 flex items-center gap-1">
+                  <span>${locIcon}</span>
+                  <span class="truncate">${escapeHtml(locText)}</span>
+                </div>
+              </div>
+            </label>
+          `;
+        }).join('') || '<div class="p-3 text-center text-slate-500">Chưa có hình thức chấm công nào đang hoạt động.</div>';
+      }
+
+      updateEmpAttendanceMethodTriggerLabel();
+
+      const modal = document.getElementById('modal-gps-location');
+      if (modal) modal.classList.remove('hidden');
     }
 
     function closeGpsModal() {
-      document.getElementById('modal-gps-location').classList.add('hidden');
-    }
-
-    function updateGpsBranchPreview() {
-      const selectEl = document.getElementById('gps-branch-select');
-      if (!selectEl) return;
-      const code = selectEl.value;
-      const br = branchesData.find(b => b.code === code || b.aliasCode === code) || branchesData[0];
-      if (!br) return;
-
-      if (document.getElementById('gps-preview-name')) document.getElementById('gps-preview-name').innerText = br.name;
-      if (document.getElementById('gps-preview-type')) document.getElementById('gps-preview-type').innerText = br.type;
-      if (document.getElementById('gps-preview-icon')) {
-        let ic = '🏬';
-        if (br.type === 'Trụ sở') ic = '🏢';
-        else if (br.type.includes('bến') || br.code.includes('CAU-TAU')) ic = '⚓';
-        else if (br.type.includes('bãi') || br.code.includes('RTG')) ic = '🏗️';
-        document.getElementById('gps-preview-icon').innerText = ic;
-      }
-      if (document.getElementById('gps-preview-address')) document.getElementById('gps-preview-address').innerText = br.address;
-      if (document.getElementById('gps-preview-lat')) document.getElementById('gps-preview-lat').innerText = br.lat + '° N';
-      if (document.getElementById('gps-preview-long')) document.getElementById('gps-preview-long').innerText = br.long + '° E';
-      if (document.getElementById('gps-preview-radius')) document.getElementById('gps-preview-radius').innerText = br.radius + ' mét';
+      closeEmpAttendanceMethodDropdown();
+      const modal = document.getElementById('modal-gps-location');
+      if (modal) modal.classList.add('hidden');
     }
 
     function handleSaveGpsLocation(e) {
       e.preventDefault();
-      const branchCode = document.getElementById('gps-branch-select').value;
       const code = currentSelectedEmpCode || 'PAP0009';
-      const emp = employeesData.find(e => e.pap === code) || employeesData[2];
-      if (!emp.gpsLocations) emp.gpsLocations = [];
+      const checkboxes = document.querySelectorAll('input[name="emp-attendance-method"]');
+      const selectedIds = new Set(Array.from(checkboxes).filter(cb => cb.checked).map(cb => cb.value));
 
-      const br = branchesData.find(b => b.code === branchCode || b.aliasCode === branchCode) || { name: branchCode };
+      (attendanceClientsData || []).forEach(method => {
+        if (!method.applicableEmployeeCodes) method.applicableEmployeeCodes = [];
+        if (!method.excludedEmployeeCodes) method.excludedEmployeeCodes = [];
 
-      const exists = emp.gpsLocations.some(l => l.branchCode === branchCode || (branchCode === 'LOC-CANG-HQ' && l.branchCode === 'TS-CANG') || (branchCode === 'LOC-VP-HCM' && l.branchCode === 'CN-HCM'));
-      if (exists) {
-        showToast(`Địa điểm "${br.name}" đã có trong danh sách GPS được phép chấm công của nhân viên!`);
-        closeGpsModal();
-        return;
-      }
+        if (selectedIds.has(method.id)) {
+          if (!method.applicableEmployeeCodes.includes(code)) {
+            method.applicableEmployeeCodes.push(code);
+          }
+          method.excludedEmployeeCodes = method.excludedEmployeeCodes.filter(c => c !== code);
+        } else {
+          method.applicableEmployeeCodes = method.applicableEmployeeCodes.filter(c => c !== code);
+          if (!method.excludedEmployeeCodes.includes(code)) {
+            method.excludedEmployeeCodes.push(code);
+          }
+        }
+      });
 
-      emp.gpsLocations.push({ branchCode });
       closeGpsModal();
       renderEmployeeGpsLocations(code);
-      showToast(`✓ Đã cấp quyền chấm công GPS tại "${br.name}" cho nhân viên thành công!`);
+      showToast('✓ Đã cập nhật thiết lập hình thức chấm công cho nhân viên!');
     }
 
-  
     // -------------------------------------------------------------
     // ORDER 2: QUẢN LÝ NHÂN SỰ (SCR-EMP-EDIT, DOCS, DEPENDENT, SCHEDULE)
     // -------------------------------------------------------------
@@ -16975,7 +17629,7 @@
       if (officialDateVal) {
         emp.officialDate = parseInputDateToDisplay(officialDateVal);
       } else {
-        emp.officialDate = emp.contract === 'Thử việc' ? 'Đang thử việc' : '—';
+        emp.officialDate = emp.contract === 'Thỏa thuận thử việc' ? 'Đang thử việc' : '—';
       }
       emp.joindate = emp.startDate;
 
@@ -17003,7 +17657,7 @@
     function updateEmployeeKpis() {
       const total = employeesData.length;
       const working = employeesData.filter(e => e.status === 'Đang làm việc').length;
-      const probation = employeesData.filter(e => e.contract === 'Thử việc').length;
+        const probation = employeesData.filter(e => e.contract === 'Thỏa thuận thử việc').length;
       const mat = employeesData.filter(e => e.status === 'Đang nghỉ thai sản').length;
       const sus = employeesData.filter(e => e.status === 'Tạm ngưng công tác').length;
       const resigned = employeesData.filter(e => e.status === 'Đã nghỉ việc').length;
@@ -20132,6 +20786,10 @@
     window.handleQuickAddSkillCatalogSubmit = handleQuickAddSkillCatalogSubmit;
     window.renderSkillsCatalogTable = renderSkillsCatalogTable;
     window.filterSkillsCatalogTable = filterSkillsCatalogTable;
+    window.toggleQuickSkillDeptDropdown = toggleQuickSkillDeptDropdown;
+    window.closeQuickSkillDeptDropdown = closeQuickSkillDeptDropdown;
+    window.filterQuickSkillDeptDropdown = filterQuickSkillDeptDropdown;
+    window.setQuickSkillDeptValue = setQuickSkillDeptValue;
     window.deleteSkillFromCatalog = deleteSkillFromCatalog;
     window.editSkillCatalogItem = editSkillCatalogItem;
     window.onSkillNameSelectChange = onSkillNameSelectChange;
@@ -20611,6 +21269,12 @@
       }
     };
 
+    Object.values(departmentsData).forEach(unit => {
+      (unit.members || []).forEach(member => {
+        member.loaihd = normalizeContractCategory(member.loaihd, member.pap);
+      });
+    });
+
     function selectDepartment(deptKey) {
       document.querySelectorAll('#org-tree-root div').forEach(el => {
         el.classList.remove('tree-node-active');
@@ -20684,7 +21348,7 @@
           <td class="py-3 px-3.5 font-semibold ${m.chucvu !== '—' ? 'pap-text-primary' : 'text-slate-400'}">${m.chucvu}</td>
           <td class="py-3 px-3.5 text-slate-700">${m.chucdanh}</td>
           <td class="py-3 px-3.5">
-            <span class="px-2 py-0.5 rounded text-[10px] font-medium ${m.loaihd === 'Thử việc' ? 'bg-amber-50 text-amber-700 border border-amber-200' : 'bg-slate-100 text-slate-700 border border-slate-200'}">${m.loaihd}</span>
+            <span class="px-2 py-0.5 rounded text-[10px] font-medium ${m.loaihd === 'Thỏa thuận thử việc' ? 'bg-amber-50 text-amber-700 border border-amber-200' : 'bg-slate-100 text-slate-700 border border-slate-200'}">${m.loaihd}</span>
           </td>
           <td class="py-3 px-3.5 text-center">
             ${renderStatusBadge(m.status)}
@@ -22212,7 +22876,7 @@
           email: 'manager@phuocanport.com',
           chucvu: unit.managerTitle || 'Trưởng đơn vị',
           chucdanh: unit.managerTitle || 'Quản lý phụ trách',
-          loaihd: 'Chính thức',
+          loaihd: 'HĐLĐ không xác định thời hạn',
           status: 'Đang làm việc',
           initials: 'QL',
           color: 'bg-[#2E3191]'
@@ -22255,7 +22919,7 @@
 
         const statusBadge = (m.status === 'Đang làm việc' || m.status === 'ACTIVE')
           ? '<span class="px-2 py-0.5 rounded-full text-[10.5px] font-semibold bg-emerald-50 text-emerald-700 border border-emerald-200">🟢 Đang làm việc</span>'
-          : '<span class="px-2 py-0.5 rounded-full text-[10.5px] font-medium bg-slate-100 text-slate-600 border border-slate-200">⚪ ' + (m.status || 'Chính thức') + '</span>';
+          : '<span class="px-2 py-0.5 rounded-full text-[10.5px] font-medium bg-slate-100 text-slate-600 border border-slate-200">⚪ ' + (m.status || 'Chưa cập nhật') + '</span>';
 
         tr.innerHTML = `
           <td class="py-2.5 px-3 text-center text-slate-400 font-mono text-[11px]">${m.stt || (idx + 1)}</td>
@@ -32341,6 +33005,23 @@
     window.confirmUnlockAttendancePeriod = confirmUnlockAttendancePeriod;
     window.changeDailyAttendanceDate = changeDailyAttendanceDate;
     window.recalculateDailyAttendance = recalculateDailyAttendance;
+    window.toggleAttendanceClientLocationFields = toggleAttendanceClientLocationFields;
+    window.toggleAttendanceClientMapPicker = toggleAttendanceClientMapPicker;
+    window.toggleOrgUnitTreeNode = toggleOrgUnitTreeNode;
+    window.expandAllAttendanceClientOrgUnits = expandAllAttendanceClientOrgUnits;
+    window.collapseAllAttendanceClientOrgUnits = collapseAllAttendanceClientOrgUnits;
+    window.getAttendanceClientAppliedEmployeesForClient = getAttendanceClientAppliedEmployeesForClient;
+    window.openAttendanceClientScopePreviewModal = openAttendanceClientScopePreviewModal;
+    window.closeAttendanceClientScopePreviewModal = closeAttendanceClientScopePreviewModal;
+    window.renderAttendanceClientScopePreviewList = renderAttendanceClientScopePreviewList;
+    window.toggleEmpAttendanceMethodDropdown = toggleEmpAttendanceMethodDropdown;
+    window.closeEmpAttendanceMethodDropdown = closeEmpAttendanceMethodDropdown;
+    window.updateEmpAttendanceMethodTriggerLabel = updateEmpAttendanceMethodTriggerLabel;
+    window.removeEmpAttendanceMethodSelection = removeEmpAttendanceMethodSelection;
+    window.openGpsModal = openGpsModal;
+    window.closeGpsModal = closeGpsModal;
+    window.updateGpsBranchPreview = updateGpsBranchPreview;
+    window.handleSaveGpsLocation = handleSaveGpsLocation;
     window.openAttendanceClientModal = openAttendanceClientModal;
     window.closeAttendanceClientModal = closeAttendanceClientModal;
     window.handleSaveAttendanceClient = handleSaveAttendanceClient;
@@ -33249,5 +33930,3 @@
 
 </body>
 </html>
-
-
