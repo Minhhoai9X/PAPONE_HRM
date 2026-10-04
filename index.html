@@ -6200,10 +6200,10 @@
               <span id="btn-publish-schedule-text">Chỉnh sửa (Về nháp)</span>
             </button>
 
-            <!-- Action 4: Đổi ca (M14) -->
+            <!-- Action 4: Đổi ca (M07, hiện ẩn/chưa phát hành) -->
             <button onclick="openShiftSwapModal()" class="hidden px-3 py-2 bg-white border border-slate-300 hover:bg-slate-50 text-slate-700 rounded-xl text-xs font-semibold shadow-2xs flex items-center space-x-1.5 transition cursor-pointer" title="Đăng ký đề xuất đổi ca làm việc">
               <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0l3.181 3.183a8.25 8.25 0 0013.803-3.7M4.031 9.865a8.25 8.25 0 0113.803-3.7l3.181 3.182m0-4.991v4.99" /></svg>
-              <span>Đổi ca (M14)</span>
+              <span>Đổi ca (M07)</span>
             </button>
 
             <!-- Action 5: Import Excel (Sắp lịch bằng mẫu Excel) -->
@@ -6244,10 +6244,10 @@
             <span>Lịch nghỉ lễ</span>
           </button>
           
-          <!-- Tab 5: Duyệt Đổi ca (M14) -->
+          <!-- Tab 5: Yêu cầu đổi ca riêng của M07 -->
           <button id="tab-btn-schedule-requests" style="display: none !important;" onclick="switchScheduleTab('requests')" class="bg-white text-slate-700 hover:text-[#2E3191] hover:bg-slate-50 px-4 py-2 rounded-lg flex items-center space-x-1.5 transition cursor-pointer">
             <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0l3.181 3.183a8.25 8.25 0 0013.803-3.7M4.031 9.865a8.25 8.25 0 0113.803-3.7l3.181 3.182m0-4.991v4.99" /></svg>
-            <span>Duyệt Đổi ca (M14)</span>
+            <span>Yêu cầu đổi ca (M07)</span>
             <span id="badge-pending-swap-count" class="px-1.5 py-0.2 rounded-full bg-amber-500 text-white text-[10px] font-bold">2</span>
           </button>
         </div>
@@ -7161,7 +7161,7 @@
                     <span>Sẵn sàng xử lý</span>
                   </span>
                 </div>
-                <p class="text-xs text-slate-700 font-medium mt-0.5">Xử lý tập trung các đề xuất Đổi ca (M07), Nghỉ phép (M09), Tăng ca OT (M08), Giải trình công (M06) với quy trình đa cấp & cảnh báo SLA.</p>
+                <p class="text-xs text-slate-700 font-medium mt-0.5">Tạo nhóm yêu cầu, thiết kế biểu mẫu và xử lý phê duyệt; các đơn HRM đã tích hợp trả kết quả về đúng phân hệ nghiệp vụ.</p>
               </div>
             </div>
           </div>
@@ -7211,7 +7211,7 @@
               </button>
               <button onclick="switchApprovalTab('workflow')" id="tab-approval-workflow" class="px-3.5 py-2.5 text-xs font-semibold border-b-2 border-transparent text-slate-800 font-medium hover:text-slate-900 flex items-center space-x-2 transition cursor-pointer">
                 <span>⚙️</span>
-                <span>Cấu hình luồng duyệt</span>
+                <span>Thiết lập yêu cầu</span>
               </button>
             </div>
             <div class="hidden lg:flex items-center text-xs text-slate-700 font-medium space-x-1 pb-1 pr-2">
@@ -7233,15 +7233,15 @@
                 <!-- Filter Type -->
                 <select id="inbox-filter-type" onchange="filterApprovalInbox()" class="text-xs border border-slate-300 rounded-lg px-2.5 py-1.5 bg-white text-slate-700 font-medium">
                   <option value="ALL">Tất cả nghiệp vụ</option>
-                  <option value="SHIFT_SWAP">🔄 Đổi ca làm việc (M07)</option>
                   <option value="LEAVE">🏖️ Đăng ký nghỉ phép (M09)</option>
-                  <option value="OVERTIME">⏰ Đăng ký tăng ca OT (M08)</option>
                   <option value="ATTENDANCE">📝 Giải trình chấm công (M06)</option>
+                  <option value="GENERAL">📄 Đề xuất chung</option>
                 </select>
                 <!-- Filter SLA -->
                 <select id="inbox-filter-sla" onchange="filterApprovalInbox()" class="text-xs border border-slate-300 rounded-lg px-2.5 py-1.5 bg-white text-slate-700 font-medium">
                   <option value="ALL">Tất cả thời hạn SLA</option>
-                  <option value="URGENT">🚨 Khẩn / Gần quá hạn (&lt; 8h)</option>
+                  <option value="URGENT">🚨 Gần hạn (&lt; 8h)</option>
+                  <option value="OVERDUE">🔴 Quá hạn</option>
                   <option value="NORMAL">⏳ Bình thường (&gt; 8h)</option>
                   <option value="DELEGATED">Đơn được ủy quyền duyệt thay</option>
                 </select>
@@ -7524,36 +7524,58 @@
 
           <!-- TAB 5: CẤU HÌNH LUỒNG DUYỆT (SCR-APR-01 Visual Workflow Builder) -->
           <div id="content-approval-workflow" class="p-4 space-y-4 hidden">
-            <!-- Header Workflow selector -->
+            <!-- Thiết lập nhóm yêu cầu và phiên bản áp dụng -->
             <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 bg-slate-50 p-3 rounded-xl border border-slate-200">
               <div class="flex items-center space-x-2">
-                <span class="text-xs font-bold text-slate-700">Quy trình áp dụng:</span>
+                <span class="text-xs font-bold text-slate-700">Nhóm yêu cầu:</span>
                 <select id="workflow-select-type" onchange="renderWorkflowBuilder()" class="text-xs border border-slate-300 rounded-lg px-3 py-1.5 bg-white text-[#2E3191] font-bold">
                   <option value="LEAVE">🏖️ Đăng ký Nghỉ phép năm (M09)</option>
-                  <option value="SHIFT_SWAP">🔄 Đổi ca làm việc (M07)</option>
-                  <option value="OVERTIME">⏰ Đăng ký Tăng ca OT (M08)</option>
                   <option value="ATTENDANCE">📝 Giải trình Chấm công (M06)</option>
+                  <option value="GENERAL">📄 Đề xuất chung</option>
                 </select>
               </div>
               <div class="flex items-center space-x-2">
-                <span class="px-2.5 py-1 rounded-full bg-emerald-100 text-emerald-800 text-[11px] font-bold border border-emerald-200">🟢 Luồng đang hoạt động (Active)</span>
-                <button onclick="showToast('Chức năng chỉnh sửa luồng thuộc quyền Quản trị viên HR Admin')" class="px-3 py-1.5 bg-white border border-slate-300 hover:bg-slate-100 text-slate-700 text-xs font-semibold rounded-lg transition cursor-pointer">
-                  <span>✏️ Chỉnh sửa luồng</span>
+                <span id="request-group-version-badge" class="px-2.5 py-1 rounded-full bg-emerald-100 text-emerald-800 text-[11px] font-bold border border-emerald-200">🟢 Phiên bản 1 · Đang hoạt động</span>
+                <button onclick="createRequestGroupDemo()" class="px-3 py-1.5 bg-white border border-slate-300 hover:bg-slate-100 text-slate-700 text-xs font-semibold rounded-lg transition cursor-pointer">
+                  <span>＋ Tạo nhóm</span>
                 </button>
+                <button id="btn-activate-request-group" onclick="activateRequestGroupVersion()" class="px-3 py-1.5 pap-primary text-white text-xs font-semibold rounded-lg transition cursor-pointer hover:bg-[#242775]">Kích hoạt phiên bản</button>
               </div>
             </div>
 
-            <!-- Visual Flowchart (Horizontal Node Sequence) -->
-            <div class="border border-slate-200 rounded-xl p-5 bg-white shadow-xs">
-              <div class="text-xs font-bold uppercase text-slate-400 tracking-wider mb-4">Sơ đồ các bước phê duyệt đa cấp</div>
-              <div id="workflow-visual-nodes" class="flex flex-wrap md:flex-nowrap items-center justify-start gap-2 overflow-x-auto py-2">
-                <!-- Dynamic Nodes -->
-              </div>
-            </div>
+            <div class="grid grid-cols-1 lg:grid-cols-[230px_minmax(0,1fr)] gap-4 items-start">
+              <nav class="rounded-xl border border-slate-200 bg-slate-50 p-2 flex lg:flex-col gap-1 overflow-x-auto" role="tablist" aria-label="Menu thiết lập nhóm yêu cầu">
+                <button id="request-config-tab-general" role="tab" aria-controls="workflow-step-details" aria-selected="true" onclick="switchRequestConfigTab('general')" class="request-config-tab min-w-[170px] lg:min-w-0 w-full rounded-lg bg-indigo-50 text-left px-3 py-2.5 text-xs font-bold text-[#2E3191] border border-indigo-100">
+                  <span class="block">⚙️ Chung</span><span class="block mt-0.5 text-[10px] font-normal text-slate-500">Tên nhóm, mã và trạng thái</span>
+                </button>
+                <button id="request-config-tab-form" role="tab" aria-controls="workflow-step-details" aria-selected="false" onclick="switchRequestConfigTab('form')" class="request-config-tab min-w-[170px] lg:min-w-0 w-full rounded-lg border border-transparent hover:bg-white text-left px-3 py-2.5 text-xs font-semibold text-slate-700">
+                  <span class="block">🧾 Mẫu form</span><span class="block mt-0.5 text-[10px] font-normal text-slate-500">Trường người gửi cần nhập</span>
+                </button>
+                <button id="request-config-tab-access" role="tab" aria-controls="workflow-step-details" aria-selected="false" onclick="switchRequestConfigTab('access')" class="request-config-tab min-w-[170px] lg:min-w-0 w-full rounded-lg border border-transparent hover:bg-white text-left px-3 py-2.5 text-xs font-semibold text-slate-700">
+                  <span class="block">👥 Quyền truy cập</span><span class="block mt-0.5 text-[10px] font-normal text-slate-500">Ai được tạo và theo dõi</span>
+                </button>
+                <button id="request-config-tab-workflow" role="tab" aria-controls="workflow-step-details" aria-selected="false" onclick="switchRequestConfigTab('workflow')" class="request-config-tab min-w-[170px] lg:min-w-0 w-full rounded-lg border border-transparent hover:bg-white text-left px-3 py-2.5 text-xs font-semibold text-slate-700">
+                  <span class="block">🔀 Luồng duyệt</span><span class="block mt-0.5 text-[10px] font-normal text-slate-500">Khối, người duyệt và cách duyệt</span>
+                </button>
+                <button id="request-config-tab-notifications" role="tab" aria-controls="workflow-step-details" aria-selected="false" onclick="switchRequestConfigTab('notifications')" class="request-config-tab min-w-[170px] lg:min-w-0 w-full rounded-lg border border-transparent hover:bg-white text-left px-3 py-2.5 text-xs font-semibold text-slate-700">
+                  <span class="block">🔔 Thông báo & SLA</span><span class="block mt-0.5 text-[10px] font-normal text-slate-500">Thời hạn và nhắc việc</span>
+                </button>
+              </nav>
 
-            <!-- Workflow Detail Info -->
-            <div id="workflow-step-details" class="grid grid-cols-1 md:grid-cols-3 gap-4">
-              <!-- Rendered dynamically -->
+              <div class="min-w-0 space-y-4">
+                <!-- Sơ đồ khối chỉ hiển thị tại mục Luồng duyệt -->
+                <div id="workflow-visual-panel" class="border border-slate-200 rounded-xl p-5 bg-white shadow-xs hidden">
+                  <div class="text-xs font-bold uppercase text-slate-400 tracking-wider mb-4">Sơ đồ các bước phê duyệt đa cấp</div>
+                  <div id="workflow-visual-nodes" class="flex flex-wrap md:flex-nowrap items-center justify-start gap-2 overflow-x-auto py-2">
+                    <!-- Dynamic Nodes -->
+                  </div>
+                </div>
+
+                <!-- Nội dung mục menu đang chọn -->
+                <div id="workflow-step-details" role="tabpanel" class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                  <!-- Rendered dynamically -->
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -9260,36 +9282,22 @@
     </div>
   </div>
 
-  <!-- ================= MODAL: ĐĂNG KÝ ĐỔI CA LÀM VIỆC (SCR-SHF-04 / M14) ================= -->
+  <!-- ================= MODAL: ĐĂNG KÝ ĐỔI CA LÀM VIỆC (M07 - CHƯA TÍCH HỢP M14) ================= -->
   <div id="modal-shift-swap" class="fixed inset-0 bg-slate-900/50 backdrop-blur-xs z-50 flex items-center justify-center p-4 hidden">
     <div class="bg-white rounded-2xl max-w-lg w-full shadow-2xl border border-slate-200 overflow-hidden transform transition-all max-h-[92vh] flex flex-col">
       <!-- Header -->
       <div class="pap-primary text-white p-3.5 flex items-center justify-between shrink-0">
         <h3 class="text-xs font-bold flex items-center space-x-2">
           <svg class="w-3.5 h-3.5 text-white shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M7.5 21L3 16.5m0 0L7.5 12M3 16.5h13.5m0-13.5L21 7.5m0 0L16.5 12M21 7.5H7.5" /></svg>
-          <span>Đăng ký Đổi ca làm việc (SCR-SHF-04 / M14)</span>
+          <span>Đăng ký Đổi ca làm việc (M07)</span>
         </h3>
         <button onclick="closeShiftSwapModal()" class="text-slate-300 hover:text-white text-lg leading-none cursor-pointer">&times;</button>
       </div>
 
       <!-- Form Body -->
       <form onsubmit="handleSaveShiftSwap(event)" class="p-4 space-y-3.5 text-xs overflow-y-auto">
-        <!-- Banner quy trình duyệt M14 -->
-        <div class="p-3 bg-indigo-50 rounded-xl border border-indigo-200 text-indigo-900 space-y-1.5">
-          <div class="font-bold flex items-center space-x-1.5 text-xs">
-            <span>🛡️</span>
-            <span>Quy trình phê duyệt tự động 2 bước (M14 Approval Engine):</span>
-          </div>
-          <div class="grid grid-cols-2 gap-2 text-[11px] pt-1">
-            <div class="p-2 bg-white rounded-lg border border-indigo-100 flex items-center space-x-2">
-              <span class="w-5 h-5 rounded-full bg-amber-100 text-amber-800 font-bold flex items-center justify-center text-[10px]">1</span>
-              <div><strong>Bước 1:</strong> Đồng nghiệp B xác nhận đồng ý</div>
-            </div>
-            <div class="p-2 bg-white rounded-lg border border-indigo-100 flex items-center space-x-2">
-              <span class="w-5 h-5 rounded-full bg-blue-100 text-[#2E3191] font-bold flex items-center justify-center text-[10px]">2</span>
-              <div><strong>Bước 2:</strong> Quản lý ca phê duyệt & Sync lịch</div>
-            </div>
-          </div>
+        <div class="p-3 bg-amber-50 rounded-xl border border-amber-200 text-amber-900 text-xs">
+          Đây là màn hình mô phỏng riêng của M07. Đổi ca chưa được tích hợp vào nhóm yêu cầu M14 trong phạm vi hiện tại; không tự đồng bộ thay đổi lịch khi duyệt tại M14.
         </div>
 
         <!-- Bên A: Người đề xuất đổi ca -->
@@ -11891,14 +11899,30 @@
             <span class="font-semibold text-slate-800 font-medium">Lý do đề xuất:</span>
             <p id="detail-modal-reason" class="text-slate-800 italic mt-0.5 bg-white p-2.5 rounded-lg border border-slate-200">--</p>
           </div>
+        
+          <!-- Người theo dõi (Watchers - Chuẩn Base Request) -->
+          <div class="pt-2 border-t border-slate-200">
+            <span class="font-semibold text-slate-800 font-medium flex items-center space-x-1.5">
+              <span>👁️</span>
+              <span>Người theo dõi (Watchers):</span>
+            </span>
+            <div id="detail-modal-watchers" class="flex flex-wrap items-center gap-1.5 mt-1.5">
+              <!-- Dynamic Watcher Tags -->
+            </div>
+          </div>
         </div>
 
         <!-- Stepper Lịch sử duyệt (Audit Trail Timeline) -->
         <div class="space-y-2">
           <div class="font-bold text-slate-700 uppercase tracking-wider text-[10px]">🕒 Tiến trình & Lịch sử duyệt (Audit Trail)</div>
-          <div id="detail-modal-stepper" class="space-y-3 pl-2 border-l-2 border-slate-200 ml-3 py-1">
-            <!-- Dynamic Stepper Items -->
-          </div>
+        <div id="detail-modal-stepper" class="space-y-3 pl-2 border-l-2 border-slate-200 ml-3 py-1">
+          <!-- Dynamic Stepper Items -->
+        </div>
+      </div>
+
+        <div id="detail-modal-viewer-notice" class="hidden bg-sky-50 border border-sky-200 rounded-xl p-3 text-xs text-sky-900">
+          <div class="font-bold">👁️ Bạn đang xem yêu cầu với quyền người theo dõi</div>
+          <div class="mt-1">Chỉ xem được nội dung trong phạm vi được cấp. Không thể duyệt, từ chối hoặc chỉnh sửa yêu cầu.</div>
         </div>
 
         <!-- Khung hành động phê duyệt của User hiện tại -->
@@ -11920,10 +11944,6 @@
           Đóng
         </button>
         <div id="detail-modal-buttons" class="flex items-center space-x-2">
-          <button onclick="handleDetailAction('REQUEST_INFO')" class="px-3 py-2 bg-amber-500 hover:bg-amber-600 text-white font-bold rounded-lg transition cursor-pointer text-xs flex items-center space-x-1">
-            <span>💬</span>
-            <span>Yêu cầu làm rõ</span>
-          </button>
           <button onclick="handleDetailAction('REJECT')" class="px-3.5 py-2 bg-rose-600 hover:bg-rose-700 text-white font-bold rounded-lg transition cursor-pointer text-xs flex items-center space-x-1">
             <span>✕</span>
             <span>Từ chối</span>
@@ -11953,9 +11973,8 @@
           <label class="block font-semibold text-slate-700 mb-1">Loại nghiệp vụ <span class="text-rose-500">*</span></label>
           <select id="quick-req-type" onchange="onQuickReqTypeChange()" class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-[#2E3191] bg-white font-bold text-[#2E3191]">
             <option value="LEAVE">🏖️ Đăng ký Nghỉ phép năm (M09)</option>
-            <option value="SHIFT_SWAP">🔄 Đổi ca làm việc (M07)</option>
-            <option value="OVERTIME">⏰ Đăng ký Tăng ca OT (M08)</option>
             <option value="ATTENDANCE">📝 Giải trình Chấm công (M06)</option>
+            <option value="GENERAL">📄 Đề xuất chung (phê duyệt thuần)</option>
           </select>
         </div>
 
@@ -11995,6 +12014,48 @@
     </div>
   </div>
 
+  <!-- MODAL HR ADMIN THAY NGƯỜI DUYỆT KHI MẤT QUYỀN/THIẾU NGƯỜI XỬ LÝ -->
+  <div id="modal-approver-replacement" class="fixed inset-0 bg-slate-900/50 backdrop-blur-xs z-[60] flex items-center justify-center p-4 hidden">
+    <div class="bg-white rounded-2xl max-w-lg w-full shadow-2xl border border-slate-200 overflow-hidden">
+      <div class="pap-primary text-white px-5 py-4 flex items-center justify-between">
+        <div>
+          <h3 class="text-sm font-bold">Chỉ định người duyệt thay thế</h3>
+          <p class="text-[11px] text-indigo-100 mt-0.5">Đơn giữ trạng thái Chờ duyệt; thao tác được ghi vào lịch sử.</p>
+        </div>
+        <button type="button" onclick="closeApproverReplacementModal()" class="text-white/80 hover:text-white text-xl">&times;</button>
+      </div>
+      <form onsubmit="replaceRequestApprover(event)" class="p-5 space-y-3 text-xs">
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="block text-slate-500 mb-1">Mã yêu cầu</label>
+            <input id="replace-approver-request-id" disabled class="w-full px-3 py-2 bg-slate-100 border border-slate-200 rounded-lg font-bold text-slate-700">
+          </div>
+          <div>
+            <label class="block text-slate-500 mb-1">Người duyệt hiện tại</label>
+            <input id="replace-approver-current" disabled class="w-full px-3 py-2 bg-slate-100 border border-slate-200 rounded-lg text-slate-700">
+          </div>
+        </div>
+        <div>
+          <label for="replace-approver-next" class="block font-semibold text-slate-700 mb-1">Người duyệt thay thế <span class="text-rose-500">*</span></label>
+          <select id="replace-approver-next" required class="w-full px-3 py-2 border border-slate-300 rounded-lg bg-white">
+            <option value="">Chọn nhân viên</option>
+            <option>Nguyễn Văn B — Trưởng phòng Vận hành</option>
+            <option>Phạm Thị C — Phó phòng Nhân sự</option>
+            <option>Lê Văn D — Quản lý đơn vị</option>
+          </select>
+        </div>
+        <div>
+          <label for="replace-approver-reason" class="block font-semibold text-slate-700 mb-1">Lý do thay đổi <span class="text-rose-500">*</span></label>
+          <textarea id="replace-approver-reason" required rows="3" class="w-full px-3 py-2 border border-slate-300 rounded-lg" placeholder="Ví dụ: người duyệt đã chuyển đơn vị hoặc mất quyền xử lý"></textarea>
+        </div>
+        <div class="pt-2 border-t border-slate-200 flex justify-end gap-2">
+          <button type="button" onclick="closeApproverReplacementModal()" class="px-3.5 py-2 border border-slate-300 rounded-lg">Hủy</button>
+          <button type="submit" class="px-4 py-2 pap-primary text-white rounded-lg font-semibold">Gán người duyệt</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
   <!-- 3. MODAL THIẾT LẬP ỦY QUYỀN PHÊ DUYỆT (SCR-APR-04) -->
   <div id="modal-add-delegation" class="fixed inset-0 bg-slate-900/50 backdrop-blur-xs z-50 flex items-center justify-center p-4 hidden">
     <div class="bg-white rounded-2xl max-w-md w-full shadow-2xl border border-slate-200 overflow-hidden transform transition-all">
@@ -12025,9 +12086,8 @@
         <div>
           <label class="block font-semibold text-slate-700 mb-1">Phạm vi nghiệp vụ ủy quyền <span class="text-rose-500">*</span></label>
           <select id="delegation-scope-select" class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-[#2E3191] bg-white">
-            <option value="ALL">Tất cả nghiệp vụ (Đổi ca, Nghỉ phép, Tăng ca, Giải trình)</option>
-            <option value="LEAVE_OT">Chỉ Nghỉ phép & Tăng ca OT</option>
-            <option value="SHIFT_SWAP">Chỉ Đổi ca làm việc</option>
+            <option value="ALL">Tất cả nhóm yêu cầu được cấu hình</option>
+            <option value="LEAVE_ATTENDANCE">Nghỉ phép (M09) & Giải trình chấm công (M06)</option>
           </select>
         </div>
 
@@ -29711,6 +29771,61 @@
     // 1. Dữ liệu Hộp thư Chờ tôi duyệt (SCR-APR-02 Pending Approvals Inbox)
     let approvalInboxData = [
       {
+        id: 'DON-2026-011',
+        type: 'LEAVE',
+        typeName: 'Nghỉ Phép năm',
+        typeBadgeCls: 'bg-teal-50 text-teal-700 border-teal-200',
+        typeIcon: '🏖️',
+        reqPap: 'PAP0007',
+        reqName: 'Vũ Văn G',
+        reqDept: 'Đội Vận hành Cẩu bờ',
+        reqRole: 'Công nhân Vận hành cẩu giàn STS',
+        details: 'Nghỉ 0.5 ngày (Buổi sáng 15/09/2026)',
+        reason: 'Nghỉ buổi sáng giải quyết việc gia đình',
+        handoverTo: 'Hoàng Văn E (PAP0005)',
+        currentLevelName: 'Cấp 1: Đội trưởng Vận hành',
+        levelIndex: 1,
+        totalLevels: 1,
+        slaHoursLeft: 6,
+        isUrgent: true,
+        isDelegated: false,
+        delegatedFrom: '',
+        createdAt: '12/09/2026 10:00',
+        watchers: ['Phòng Nhân sự', 'Trưởng ban An toàn Cảng'],
+        approvalMode: 'ANY',
+        auditTrail: [
+          { step: 1, role: 'Đội trưởng Vận hành (Bạn)', name: 'Trần Thị Mai Phương', action: 'PENDING', time: '', note: '' }
+        ]
+      },
+      {
+        id: 'DON-2026-010',
+        type: 'LEAVE',
+        typeName: 'Nghỉ Dưỡng sức sau ốm đau',
+        typeBadgeCls: 'bg-teal-50 text-teal-700 border-teal-200',
+        typeIcon: '🏥',
+        reqPap: 'PAP0004',
+        reqName: 'Phạm Thị D',
+        reqDept: 'Phòng Kế toán - Tài chính',
+        reqRole: 'Kế toán viên',
+        details: 'Nghỉ 5.0 ngày (07/09/2026 ➔ 11/09/2026)',
+        reason: 'Nghỉ dưỡng sức phục hồi sau đợt phẫu thuật nội soi điều trị',
+        handoverTo: 'Nguyễn Văn B (PAP0002)',
+        currentLevelName: 'Cấp 1: Kế toán trưởng & Ban Chấp hành Công đoàn',
+        levelIndex: 1,
+        totalLevels: 2,
+        slaHoursLeft: 14,
+        isUrgent: false,
+        isDelegated: false,
+        delegatedFrom: '',
+        createdAt: '03/09/2026 09:15',
+        watchers: ['Ban Chấp hành Công đoàn', 'Phòng Hành chính - Nhân sự'],
+        approvalMode: 'ANY',
+        auditTrail: [
+          { step: 1, role: 'Kế toán trưởng & BCH Công đoàn', name: 'Trần Thị Mai Phương (Bạn)', action: 'PENDING', time: '', note: '' },
+          { step: 2, role: 'Giám đốc Nhân sự & Tổ chức', name: 'Lãnh đạo phê duyệt', action: 'WAIT', time: '', note: '' }
+        ]
+      },
+      {
         id: 'NP-2026-0045',
         type: 'LEAVE',
         typeName: 'Nghỉ phép năm',
@@ -29737,55 +29852,56 @@
         ]
       },
       {
-        id: 'SWAP-2026-002',
-        type: 'SHIFT_SWAP',
-        typeName: 'Đổi ca làm việc',
-        typeBadgeCls: 'bg-blue-50 text-[#2E3191] border-blue-200',
-        typeIcon: '🔄',
+        id: 'YC-2026-0002',
+        type: 'GENERAL',
+        typeName: 'Đề xuất chung',
+        typeBadgeCls: 'bg-indigo-50 text-indigo-700 border-indigo-200',
+        typeIcon: '📄',
         reqPap: 'PAP0007',
         reqName: 'Phạm Văn D',
         reqDept: 'Phòng Kho bãi & Container',
         reqRole: 'Nhân viên Kiểm đếm bãi',
-        details: 'Đổi Thứ 6 (11/09): Ca [OFF] ➔ [S2] với Lê Văn C (PAP0005)',
-        reason: 'Trực ca đêm thay để hỗ trợ điều phối bãi cho tàu hàng rời SITC cập bến an toàn.',
-        handoverTo: 'Lê Văn C (PAP0005)',
-        currentLevelName: 'Cấp 2: Quản lý Ca / Trưởng bộ phận',
-        levelIndex: 2,
-        totalLevels: 2,
+        details: 'Đề nghị cấp bổ sung thiết bị bảo hộ cho tổ kiểm đếm',
+        reason: 'Thiết bị hiện tại đã hư hỏng, ảnh hưởng an toàn khi làm việc tại bãi.',
+        handoverTo: '',
+        currentLevelName: 'Khối 1: Quản lý đơn vị (Chế độ: Tất cả)',
+        levelIndex: 1,
+        totalLevels: 1,
         slaHoursLeft: 4,
         isUrgent: true,
         isDelegated: false,
         delegatedFrom: '',
         createdAt: '08/09/2026 14:30',
+        approvalMode: 'ALL', approvalsRemaining: 1,
         auditTrail: [
-          { step: 1, role: 'Đồng nghiệp đổi ca', name: 'Lê Văn C (PAP0005)', action: 'APPROVED', time: '08/09/2026 15:45', note: 'Tôi đồng ý đổi ca này với D.' },
-          { step: 2, role: 'Quản lý trực tiếp / Nhân sự', name: 'Trần Thị Mai Phương (Bạn)', action: 'PENDING', time: '', note: '' }
+          { step: 1, role: 'Người đề xuất', name: 'Phạm Văn D', action: 'APPROVED', time: '08/09/2026 14:30', note: 'Đã gửi yêu cầu' },
+          { step: 2, role: 'Khối 1 · Quản lý đơn vị (Tất cả)', name: 'Nguyễn Văn A (Bạn)', action: 'PENDING', time: '', note: '' }
         ]
       },
       {
-        id: 'OT-2026-0089',
-        type: 'OVERTIME',
-        typeName: 'Đăng ký Tăng ca OT',
-        typeBadgeCls: 'bg-amber-50 text-amber-800 border-amber-200',
-        typeIcon: '⏰',
+        id: 'GT-2026-0089',
+        type: 'ATTENDANCE',
+        typeName: 'Giải trình chấm công',
+        typeBadgeCls: 'bg-purple-50 text-purple-700 border-purple-200',
+        typeIcon: '📝',
         reqPap: 'PAP0003',
         reqName: 'Nguyễn Văn Long',
         reqDept: 'Phòng Vận hành Cầu bến',
         reqRole: 'Kỹ thuật viên cẩu khung RTG',
-        details: 'Tăng ca 4.0 giờ (18:00 - 22:00 ngày 18/09/2026)',
-        reason: 'Bốc dỡ giải phóng khẩn cấp tàu container Maersk tải trọng 50.000 DWT cập cầu số 1.',
+        details: 'Bổ sung lượt chấm công ra ca ngày 18/09/2026',
+        reason: 'Ứng dụng ghi nhận lỗi đồng bộ khi nhân viên kết thúc ca.',
         handoverTo: '',
-        currentLevelName: 'Cấp 1: Phê duyệt Chuyên môn Khối',
+        currentLevelName: 'Khối 1: Quản lý trực tiếp (Chế độ: Một người)',
         levelIndex: 1,
         totalLevels: 2,
-        slaHoursLeft: 22,
+        slaHoursLeft: -5,
         isUrgent: false,
         isDelegated: false,
         delegatedFrom: '',
         createdAt: '16/09/2026 08:30',
         auditTrail: [
-          { step: 1, role: 'Giám đốc Nhân sự & Trưởng ban', name: 'Trần Thị Mai Phương (Bạn)', action: 'PENDING', time: '', note: '' },
-          { step: 2, role: 'Ban Giám đốc Cảng', name: 'Nguyễn Văn Sếp (CEO)', action: 'PENDING', time: '', note: '' }
+          { step: 1, role: 'Quản lý trực tiếp', name: 'Trần Thị Mai Phương (Bạn)', action: 'PENDING', time: '', note: '' },
+          { step: 2, role: 'HR chấm công', name: 'Chuyên viên phụ trách', action: 'WAIT', time: '', note: '' }
         ]
       },
       {
@@ -29838,12 +29954,12 @@
         ]
       },
       {
-        id: 'SWAP-2026-004',
-        type: 'SHIFT_SWAP',
-        typeName: 'Đổi ca trực ban',
-        typeBadgeCls: 'bg-blue-50 text-[#2E3191] border-blue-200',
-        details: 'Đổi ngày Thứ 7 (05/09): Ca [S1] ➔ [CHIEU] với Đỗ Văn Hùng',
-        reason: 'Có lịch đón tiếp đoàn công tác kiểm định luồng hàng hải buổi sáng.',
+        id: 'YC-2026-0004',
+        type: 'GENERAL',
+        typeName: 'Đề xuất chung',
+        typeBadgeCls: 'bg-indigo-50 text-indigo-700 border-indigo-200',
+        details: 'Đề xuất điều chỉnh lịch tiếp đoàn kiểm định luồng hàng hải',
+        reason: 'Đề xuất chung đang chờ người quản lý đơn vị xem xét.',
         createdAt: '03/09/2026 14:00',
         status: 'APPROVED',
         statusText: 'Đã hoàn tất',
@@ -29851,26 +29967,25 @@
         canRecall: false,
         steps: [
           { name: 'Khởi tạo', role: 'Bạn', status: 'DONE', time: '03/09 14:00' },
-          { name: 'Đồng nghiệp', role: 'Đỗ Văn Hùng', status: 'DONE', time: '03/09 15:30', note: 'Nhất trí đổi ca.' },
-          { name: 'Ban Giám đốc', role: 'GĐ Điều hành', status: 'DONE', time: '03/09 16:45', note: 'Đã phê duyệt và cập nhật lịch.' }
+          { name: 'Quản lý đơn vị', role: 'Người duyệt', status: 'DONE', time: '03/09 15:30', note: 'Đã phê duyệt đề xuất.' }
         ]
       },
       {
-        id: 'OT-2026-0071',
-        type: 'OVERTIME',
-        typeName: 'Đăng ký Tăng ca OT',
+        id: 'YC-2026-0071',
+        type: 'GENERAL',
+        typeName: 'Đề xuất chung',
         typeBadgeCls: 'bg-amber-50 text-amber-800 border-amber-200',
-        details: 'Tăng ca 6.0 giờ trực dịp Lễ Quốc khánh 02/09/2026',
-        reason: 'Trực chỉ huy công tác an toàn phòng chống thiên tai và ứng trực luồng tàu cảng.',
+        details: 'Đề xuất bố trí trực chỉ huy an toàn dịp lễ',
+        reason: 'Đề xuất chung được ghi nhận và phê duyệt; không tự cập nhật dữ liệu nghiệp vụ khác.',
         createdAt: '28/08/2026 11:00',
         status: 'APPROVED',
-        statusText: 'Đã phê duyệt (Hưởng 300% lương)',
+        statusText: 'Đã phê duyệt',
         statusCls: 'bg-emerald-100 text-emerald-800',
         canRecall: false,
         steps: [
           { name: 'Khởi tạo', role: 'Bạn', status: 'DONE', time: '28/08 11:00' },
           { name: 'Khối Điều hành', role: 'Phó TGĐ Cảng', status: 'DONE', time: '28/08 14:15', note: 'Đồng ý phân công trực chỉ huy lễ.' },
-          { name: 'Tài chính - Kế toán', role: 'Kế toán trưởng', status: 'DONE', time: '29/08 09:00', note: 'Xác nhận chế độ lương trực Lễ Điều 98.' }
+          { name: 'Khối duyệt', role: 'Người duyệt', status: 'DONE', time: '29/08 09:00', note: 'Đã phê duyệt đề xuất.' }
         ]
       },
       {
@@ -29910,32 +30025,32 @@
         delegatedText: ''
       },
       {
-        id: 'SWAP-2026-003',
-        type: 'SHIFT_SWAP',
-        typeName: 'Đổi ca làm việc',
+        id: 'YC-2026-0003',
+        type: 'GENERAL',
+        typeName: 'Đề xuất chung',
         reqName: 'Lê Thị Thu Thảo',
         reqDept: 'Đội Hoa tiêu & Hàng hải',
-        details: 'Đổi ngày 08/09 (Thứ 3): Ca 1 ➔ Ca 3 với Phạm Văn D',
+        details: 'Đề xuất hỗ trợ điều phối luồng tàu',
         decision: 'APPROVED',
         decisionText: 'Đã phê duyệt',
         decisionCls: 'bg-emerald-100 text-emerald-800 border-emerald-200',
         decisionIcon: '✓',
-        note: 'Đồng ý hoán đổi ca đêm dẫn tàu SITC nhập luồng an toàn.',
+        note: 'Đã phê duyệt đề xuất. Không tự cập nhật lịch ca hoặc dữ liệu nghiệp vụ.',
         actionTime: '07/09/2026 10:15',
         delegatedText: ''
       },
       {
-        id: 'OT-2026-0078',
-        type: 'OVERTIME',
-        typeName: 'Đăng ký Tăng ca OT',
+        id: 'YC-2026-0078',
+        type: 'GENERAL',
+        typeName: 'Đề xuất chung',
         reqName: 'Trần Văn Mạnh',
         reqDept: 'Đội Xe đầu kéo & Nâng bãi',
-        details: 'Tăng ca 5.0 giờ ngày 30/08/2026',
+        details: 'Đề xuất bổ sung nguồn lực cho công việc phát sinh',
         decision: 'REJECTED',
         decisionText: 'Đã từ chối',
         decisionCls: 'bg-rose-100 text-rose-800 border-rose-200',
         decisionIcon: '✕',
-        note: 'Từ chối: Nhân sự đã tăng ca 38 giờ trong tháng 8, vượt định mức khuyến nghị nội bộ.',
+        note: 'Từ chối: Nội dung cần bổ sung căn cứ theo quy chế nội bộ.',
         actionTime: '29/08/2026 15:40',
         delegatedText: ''
       },
@@ -29963,8 +30078,8 @@
         delegatePap: 'PAP0008',
         delegateName: 'Trương Thị Hà',
         delegateRole: 'Phó Trưởng phòng Nhân sự & Tiền lương',
-        scope: 'Nghỉ phép (M09) & Tăng ca OT (M08)',
-        scopeKey: 'LEAVE_OT',
+        scope: 'Nghỉ phép (M09) & Giải trình chấm công (M06)',
+        scopeKey: 'LEAVE_ATTENDANCE',
         period: '18/09/2026 ➔ 25/09/2026',
         reason: 'Đi công tác làm việc với Cục Hàng hải Việt Nam và Tổng công ty tại Hà Nội.',
         status: 'ACTIVE',
@@ -29989,43 +30104,29 @@
     // 5. Cấu hình Luồng duyệt Đa cấp (SCR-APR-01 Visual Workflow Builder Data)
     const workflowDefinitionsData = {
       'LEAVE': {
-        type: 'LEAVE',
-        name: 'Quy trình Đăng ký Nghỉ phép năm (M09)',
-        description: 'Luồng phê duyệt 2 cấp tiêu chuẩn cho nghỉ dưới 3 ngày; tự động nâng cấp 3 cấp (Giám đốc Khối) nếu nghỉ từ 3 ngày trở lên.',
-        watchers: ['Chuyên viên Tiền lương (HR)', 'Đội trưởng trực tiếp'],
+        type: 'LEAVE', code: 'LEAVE', name: 'Đăng ký nghỉ phép', category: 'Nghỉ phép', description: 'Yêu cầu nghỉ phép được duyệt theo các khối cấu hình. Khi hoàn tất, kết quả được chuyển về phân hệ M09.', integration: 'M09 · Cập nhật kết quả nghỉ phép sau khi duyệt hoàn tất', status: 'ACTIVE', version: 1, requestSlaHours: 48, reminderLeadHours: 8,
+        creators: ['Toàn bộ nhân viên'], watchers: ['Quản lý trực tiếp', 'Chuyên viên Tiền lương'],
+        formFields: [{ label: 'Loại nghỉ', type: 'Danh mục M09', required: true }, { label: 'Từ ngày – Đến ngày', type: 'Khoảng ngày', required: true }, { label: 'Người bàn giao', type: 'Nhân viên', required: false }, { label: 'Lý do', type: 'Văn bản nhiều dòng', required: true }],
         steps: [
-          { level: 1, name: 'Cấp 1: Quản lý trực tiếp', approverType: 'DYNAMIC', approverRole: 'Trưởng bộ phận / Đội trưởng của Nhân sự', mechanism: 'Sequential', slaWarn: 12, slaEscalate: 24, onOverdue: 'Tự động nhắc nhở SMS & Email', condition: 'Mọi đơn xin nghỉ' },
-          { level: 2, name: 'Cấp 2: Giám đốc Nhân sự & Tổ chức', approverType: 'ROLE', approverRole: 'Giám đốc Nhân sự (Trần Thị Mai Phương)', mechanism: 'Sequential', slaWarn: 24, slaEscalate: 48, onOverdue: 'Leo thang lên Tổng Giám đốc', condition: 'Tất cả các đơn đã qua Cấp 1' }
-        ]
-      },
-      'SHIFT_SWAP': {
-        type: 'SHIFT_SWAP',
-        name: 'Quy trình Đổi ca làm việc (M07)',
-        description: 'Cơ chế 2 bước đặc thù: Đồng nghiệp hoán ca đồng ý ➔ Quản lý Ca phê duyệt ➔ Hệ thống tự động hoán đổi ca trên bảng phân ca ngay lập tức.',
-        watchers: ['Bộ phận Điều độ bãi & Cầu bến', 'Trực ban cảng'],
-        steps: [
-          { level: 1, name: 'Bước 1: Đồng nghiệp đổi ca xác nhận', approverType: 'SPECIFIC', approverRole: 'Nhân sự được đề xuất hoán đổi ca (Đồng nghiệp B)', mechanism: 'Single', slaWarn: 6, slaEscalate: 12, onOverdue: 'Hủy yêu cầu đổi ca', condition: 'Người nhận đổi phải có ca phù hợp' },
-          { level: 2, name: 'Bước 2: Quản lý Ca / Trưởng kíp duyệt', approverType: 'DYNAMIC', approverRole: 'Quản lý ca trực hoặc Trưởng khối Vận hành', mechanism: 'Sequential', slaWarn: 8, slaEscalate: 16, onOverdue: 'Tự động nhắc nhở', condition: 'Bước 1 đã xác nhận thành công' }
-        ]
-      },
-      'OVERTIME': {
-        type: 'OVERTIME',
-        name: 'Quy trình Đăng ký Tăng ca OT (M08)',
-        description: 'Áp dụng cho khối Cầu bến & Kho bãi khi có tàu giải phóng hàng gấp, kiểm soát chặt trần 40h/tháng theo BLLĐ Điều 107.',
-        watchers: ['Kế toán tiền lương', 'Phòng An toàn Lao động & Cảng vụ'],
-        steps: [
-          { level: 1, name: 'Cấp 1: Phê duyệt Chuyên môn Khối', approverType: 'ROLE', approverRole: 'Trưởng phòng Vận hành / GĐ Nhân sự', mechanism: 'Sequential', slaWarn: 12, slaEscalate: 24, onOverdue: 'Cảnh báo khẩn cấp', condition: 'Số giờ OT <= 4h/ngày' },
-          { level: 2, name: 'Cấp 2: Ban Giám đốc Cảng', approverType: 'ROLE', approverRole: 'Phó Tổng Giám đốc / Tổng Giám đốc', mechanism: 'Sequential', slaWarn: 24, slaEscalate: 48, onOverdue: 'Tự động duyệt nếu đã có lệnh bến', condition: 'Tổng giờ tăng ca trong tháng > 30h' }
+          { level: 1, name: 'Quản lý trực tiếp', approverRole: 'Quản lý trực tiếp của người gửi', approvers: ['DIRECT_MANAGER'], mode: 'ANY', slaHours: 24 },
+          { level: 2, name: 'Nhân sự', approverRole: 'HR phụ trách hồ sơ nghỉ phép', approvers: ['HR_LEAVE'], mode: 'ANY', slaHours: 24 }
         ]
       },
       'ATTENDANCE': {
-        type: 'ATTENDANCE',
-        name: 'Quy trình Giải trình Chấm công (M06)',
-        description: 'Xử lý các sự cố quên chấm vân tay/khuôn mặt, đi muộn có lý do khách quan (sự cố giao thông cầu Phước An, thiên tai).',
-        watchers: ['Admin IT hệ thống chấm công'],
+        type: 'ATTENDANCE', code: 'ATTENDANCE', name: 'Giải trình chấm công', category: 'Chấm công', description: 'Yêu cầu giải trình được duyệt theo các khối cấu hình. Khi hoàn tất, kết quả được chuyển về phân hệ M06 để xử lý tiếp.', integration: 'M06 · Chuyển kết quả giải trình sau khi duyệt hoàn tất', status: 'ACTIVE', version: 1, requestSlaHours: 48, reminderLeadHours: 8,
+        creators: ['Toàn bộ nhân viên'], watchers: ['Quản lý trực tiếp', 'Chuyên viên chấm công'],
+        formFields: [{ label: 'Ngày cần giải trình', type: 'Ngày', required: true }, { label: 'Loại sự cố', type: 'Danh mục M06', required: true }, { label: 'Ca làm việc', type: 'Ca đã phân', required: true }, { label: 'Lý do', type: 'Văn bản nhiều dòng', required: true }, { label: 'Tệp minh chứng', type: 'Tệp đính kèm', required: false }],
         steps: [
-          { level: 1, name: 'Cấp 1: Quản lý trực tiếp xác minh', approverType: 'DYNAMIC', approverRole: 'Đội trưởng / Trưởng phòng trực tiếp', mechanism: 'Sequential', slaWarn: 24, slaEscalate: 48, onOverdue: 'Nhắc nhở người duyệt', condition: 'Giải trình trong vòng 3 ngày làm việc' },
-          { level: 2, name: 'Cấp 2: Nhân sự đối soát bảng công', approverType: 'ROLE', approverRole: 'Chuyên viên Tiền lương & Phúc lợi', mechanism: 'Sequential', slaWarn: 24, slaEscalate: 48, onOverdue: 'Cập nhật mặc định theo Cấp 1', condition: 'Sau khi Cấp 1 đã duyệt' }
+          { level: 1, name: 'Quản lý trực tiếp', approverRole: 'Quản lý trực tiếp của người gửi', approvers: ['DIRECT_MANAGER'], mode: 'ANY', slaHours: 24 },
+          { level: 2, name: 'Nhân sự chấm công', approverRole: 'HR phụ trách chấm công', approvers: ['HR_ATTENDANCE'], mode: 'ANY', slaHours: 24 }
+        ]
+      },
+      'GENERAL': {
+        type: 'GENERAL', code: 'GENERAL', name: 'Đề xuất chung', category: 'Khác', description: 'Nhóm yêu cầu phê duyệt thuần; không tự ghi dữ liệu vào phân hệ nghiệp vụ khác.', integration: 'Không tích hợp nghiệp vụ · Chỉ lưu kết quả phê duyệt và lịch sử', status: 'ACTIVE', version: 1, requestSlaHours: 72, reminderLeadHours: 8,
+        creators: ['Toàn bộ nhân viên'], watchers: ['Quản lý đơn vị'],
+        formFields: [{ label: 'Tiêu đề', type: 'Văn bản một dòng', required: true }, { label: 'Nội dung đề xuất', type: 'Văn bản nhiều dòng', required: true }, { label: 'Tệp đính kèm', type: 'Tệp đính kèm', required: false }],
+        steps: [
+          { level: 1, name: 'Quản lý đơn vị', approverRole: 'Quản lý đơn vị và HR Admin', approvers: ['UNIT_MANAGER', 'HR_ADMIN'], mode: 'ALL', slaHours: 24 }
         ]
       }
     };
@@ -30034,6 +30135,19 @@
     let selectedInboxIds = new Set();
     let currentDetailReqId = null;
     let pendingRejectId = null;
+    let currentRequestConfigTab = 'general';
+    let currentDetailMode = 'APPROVER';
+    let simulateMissingApprover = false;
+    let pendingRoutingDraftId = null;
+    let pendingRejectIds = [];
+    let routeIssueDemo = { id: 'GT-2026-0012', currentApprover: 'Người duyệt mất quyền', status: 'PENDING', audit: [] };
+    const approvalViewerDemoItem = {
+      id: 'GT-2026-0091', type: 'ATTENDANCE', typeName: 'Giải trình chấm công', typeBadgeCls: 'bg-purple-50 text-purple-700 border-purple-200',
+      reqName: 'Nguyễn Văn B', reqPap: 'PAP0002', reqDept: 'Phòng Khai thác Cảng', details: 'Giải trình thiếu lượt chấm công ngày 02/10',
+      reason: 'Đề nghị xem xét dữ liệu chấm công của ca làm việc.', createdAt: '02/10/2026 08:15', slaHoursLeft: 18,
+      handoverTo: '', isDelegated: false, auditTrail: [{ step: 1, role: 'Người đề xuất', name: 'Nguyễn Văn B', action: 'APPROVED', time: '02/10/2026 08:15', note: 'Đã gửi yêu cầu' }, { step: 2, role: 'Quản lý trực tiếp', name: 'Đang xử lý', action: 'PENDING', time: '', note: '' }],
+      viewerDemo: true, attachmentsRestricted: true, reasonRestricted: true
+    };
 
     // Chuyển đổi tab trong phân hệ Phê duyệt
     function switchApprovalTab(tabKey) {
@@ -30116,7 +30230,8 @@
         const matchType = typeFilter === 'ALL' || item.type === typeFilter;
 
         let matchSla = true;
-        if (slaFilter === 'URGENT') matchSla = item.isUrgent || item.slaHoursLeft <= 8;
+        if (slaFilter === 'URGENT') matchSla = item.slaHoursLeft >= 0 && (item.isUrgent || item.slaHoursLeft <= 8);
+        else if (slaFilter === 'OVERDUE') matchSla = item.slaHoursLeft < 0;
         else if (slaFilter === 'NORMAL') matchSla = !item.isUrgent && item.slaHoursLeft > 8;
         else if (slaFilter === 'DELEGATED') matchSla = item.isDelegated;
 
@@ -30142,8 +30257,10 @@
 
       tbody.innerHTML = filtered.map(item => {
         const isChecked = selectedInboxIds.has(item.id);
-        const slaBadge = item.slaHoursLeft <= 6
-          ? `<span class="px-2 py-0.5 rounded-full bg-rose-100 text-rose-800 text-[10px] font-bold border border-rose-200 animate-pulse">🚨 Còn ${item.slaHoursLeft}h (Gấp)</span>`
+        const slaBadge = item.slaHoursLeft < 0
+          ? `<span class="px-2 py-0.5 rounded-full bg-rose-100 text-rose-800 text-[10px] font-bold border border-rose-200" title="Quá hạn chỉ gửi nhắc/cảnh báo; không tự chuyển bước">🔴 Quá hạn ${Math.abs(item.slaHoursLeft)}h</span>`
+          : item.slaHoursLeft <= 6
+          ? `<span class="px-2 py-0.5 rounded-full bg-rose-100 text-rose-800 text-[10px] font-bold border border-rose-200">🚨 Còn ${item.slaHoursLeft}h (Gần hạn)</span>`
           : item.slaHoursLeft <= 12
             ? `<span class="px-2 py-0.5 rounded-full bg-amber-100 text-amber-800 text-[10px] font-semibold border border-amber-200">⏳ Còn ${item.slaHoursLeft}h</span>`
             : `<span class="px-2 py-0.5 rounded-full bg-slate-100 text-slate-800 font-medium text-[10px] font-normal border border-slate-200">🕒 Còn ${item.slaHoursLeft}h</span>`;
@@ -30272,6 +30389,31 @@
       const pad = n => n.toString().padStart(2, '0');
       const timeStr = `${pad(now.getDate())}/${pad(now.getMonth() + 1)}/${now.getFullYear()} ${pad(now.getHours())}:${pad(now.getMinutes())}`;
 
+      const approvedStep = (item.auditTrail || []).find(step => step.action === 'PENDING');
+      if (approvedStep) {
+        approvedStep.action = 'APPROVED';
+        approvedStep.time = timeStr;
+        approvedStep.note = note || 'Đồng ý phê duyệt.';
+      }
+
+      const stillWaitingForAll = item.approvalMode === 'ALL' && item.approvalsRemaining > 0;
+      if (stillWaitingForAll) {
+        item.approvalsRemaining -= 1;
+        item.auditTrail.push({ step: item.levelIndex, role: 'Khối duyệt (Tất cả)', name: 'Người duyệt còn lại', action: 'PENDING', time: '', note: 'Đơn tiếp tục chờ đủ tất cả người duyệt trong khối.' });
+      }
+      const movesToNextBlock = !stillWaitingForAll && item.levelIndex < item.totalLevels;
+      if (movesToNextBlock) {
+        const nextStep = item.auditTrail.find(step => step.action === 'WAIT' && step.step > item.levelIndex);
+        if (nextStep) {
+          nextStep.action = 'PENDING';
+          nextStep.note = 'Đến lượt xử lý sau khi khối trước đã duyệt.';
+          item.currentLevelName = nextStep.role;
+        } else {
+          item.auditTrail.push({ step: item.levelIndex + 1, role: 'Khối tiếp theo', name: 'Người duyệt được phân tuyến', action: 'PENDING', time: '', note: 'Đến lượt xử lý sau khi khối trước đã duyệt.' });
+          item.currentLevelName = 'Khối tiếp theo';
+        }
+        item.levelIndex += 1;
+      }
       approvalHistoryData.unshift({
         id: item.id,
         type: item.type,
@@ -30280,63 +30422,81 @@
         reqDept: item.reqDept,
         details: item.details,
         decision: 'APPROVED',
-        decisionText: 'Đã phê duyệt',
-        decisionCls: 'bg-emerald-100 text-emerald-800 border-emerald-200',
+        decisionText: stillWaitingForAll ? 'Bạn đã duyệt · Còn người duyệt' : movesToNextBlock ? 'Khối đã duyệt · Chuyển khối' : 'Đã phê duyệt',
+        decisionCls: stillWaitingForAll || movesToNextBlock ? 'bg-amber-100 text-amber-800 border-amber-200' : 'bg-emerald-100 text-emerald-800 border-emerald-200',
         decisionIcon: '✓',
-        note: note || 'Đồng ý phê duyệt.',
+        note: stillWaitingForAll ? `${note || 'Đồng ý phê duyệt.'} Đơn vẫn chờ người còn lại trong khối; chưa hoàn tất nghiệp vụ.` : movesToNextBlock ? `${note || 'Đồng ý phê duyệt.'} Đã chuyển sang khối tiếp theo; chưa hoàn tất nghiệp vụ.` : (note || 'Đồng ý phê duyệt.'),
         actionTime: timeStr,
-        delegatedText: item.isDelegated ? `Ủy quyền thay mặt: ${item.delegatedFrom}` : ''
+        delegatedText: item.isDelegated ? `Ủy quyền thay mặt: ${item.delegatedFrom}` : '',
+        auditTrail: item.auditTrail
       });
 
-      // TÍCH HỢP TỰ ĐỘNG VỚI MODULE 07: NẾU LÀ ĐƠN ĐỔI CA (SHIFT_SWAP)
-      if (item.type === 'SHIFT_SWAP') {
-        const swapReq = shiftSwapRequestsData.find(s => s.id === item.id);
-        if (swapReq) {
-          swapReq.status = 'APPROVED';
-          swapReq.step = 3;
+      // Xóa khỏi Inbox
+      // Đồng bộ trả kết quả về phân hệ Đơn Nghỉ phép M09 (nếu là loại LEAVE)
+      if (item.type === 'LEAVE' && !stillWaitingForAll && !movesToNextBlock) {
+        if (typeof leaveRequestsData !== 'undefined') {
+          const lReq = leaveRequestsData.find(r => r.id === item.id);
+          if (lReq) {
+            lReq.status = 'APPROVED';
+            lReq.approvedAt = timeStr;
+            lReq.approver = 'Phê duyệt qua Trung tâm M14';
+            lReq.note = note || 'Đã phê duyệt qua Trung tâm Phê duyệt M14';
 
-          // Hoán đổi ca trực tiếp trên bảng phân ca scheduleWeekStore
-          const currentList = scheduleWeekStore[currentScheduleWeekKey] || defaultWeekSchedule;
-          const schedA = currentList.find(s => s.pap === swapReq.reqPap);
-          const schedB = currentList.find(s => s.pap === swapReq.targetPap);
-
-          let dayIdx = 3;
-          if (swapReq.reqDate.includes('Thứ 2')) dayIdx = 0;
-          else if (swapReq.reqDate.includes('Thứ 3')) dayIdx = 1;
-          else if (swapReq.reqDate.includes('Thứ 4')) dayIdx = 2;
-          else if (swapReq.reqDate.includes('Thứ 5')) dayIdx = 3;
-          else if (swapReq.reqDate.includes('Thứ 6')) dayIdx = 4;
-          else if (swapReq.reqDate.includes('Thứ 7')) dayIdx = 5;
-          else if (swapReq.reqDate.includes('Chủ Nhật') || swapReq.reqDate.includes('CN')) dayIdx = 6;
-
-          if (schedA && schedB) {
-            const tempShift = schedA.shifts[dayIdx];
-            schedA.shifts[dayIdx] = schedB.shifts[dayIdx];
-            schedB.shifts[dayIdx] = tempShift;
-
-            schedA.draftModified = true;
-            schedB.draftModified = true;
-
-            if (typeof renderWorkSchedule === 'function') renderWorkSchedule();
+            // Khấu trừ vào quỹ sổ theo dõi nghỉ phép nếu loại nghỉ có trừ quỹ phép năm (AL)
+            if (lReq.typeCode === 'AL' && typeof leaveLedgerData !== 'undefined') {
+              const ledger = leaveLedgerData.find(e => e.pap === lReq.empCode);
+              if (ledger) {
+                ledger.usedLeave = Math.round(((ledger.usedLeave || 0) + (lReq.days || 0)) * 10) / 10;
+                if (!ledger.history) ledger.history = [];
+                ledger.history.unshift({
+                  id: lReq.id,
+                  type: lReq.typeName,
+                  from: lReq.fromDate,
+                  to: lReq.toDate,
+                  days: lReq.days,
+                  reason: lReq.reason,
+                  status: 'Đã duyệt',
+                  approver: 'Phê duyệt M14'
+                });
+              }
+            }
           }
-
-          updatePendingSwapBadge();
         }
+        if (typeof renderLeaveRequestsTable === 'function') renderLeaveRequestsTable();
+        if (typeof renderLeaveTable === 'function') renderLeaveTable();
       }
 
-      // Xóa khỏi Inbox
+      // Đồng bộ trạng thái từ chối về phân hệ Đơn Nghỉ phép M09 (nếu là loại LEAVE)
+      if (item.type === 'LEAVE') {
+        if (typeof leaveRequestsData !== 'undefined') {
+          const lReq = leaveRequestsData.find(r => r.id === item.id);
+          if (lReq) {
+            lReq.status = 'REJECTED';
+            lReq.approvedAt = timeStr;
+            lReq.approver = 'Từ chối qua Trung tâm M14';
+            lReq.note = `Từ chối: ${reason}`;
+          }
+        }
+        if (typeof renderLeaveRequestsTable === 'function') renderLeaveRequestsTable();
+      }
+
       approvalInboxData.splice(index, 1);
       selectedInboxIds.delete(reqId);
 
       updateApprovalBadges();
       renderApprovalInbox();
 
-      showToast(`✓ Đã phê duyệt thành công yêu cầu [${reqId}]! Hệ thống đã ghi nhận kiểm toán.`);
+      showToast(stillWaitingForAll
+        ? `✓ Bạn đã duyệt [${reqId}]. Yêu cầu vẫn chờ người còn lại trong khối; chưa chuyển sang bước tiếp theo.`
+        : movesToNextBlock
+          ? `✓ Đã duyệt khối hiện tại của [${reqId}]. Yêu cầu đã chuyển đến ${item.currentLevelName}; chưa cập nhật nghiệp vụ.`
+          : `✓ Đã phê duyệt hoàn tất [${reqId}]. Kết quả được chuyển về phân hệ nghiệp vụ liên quan.`);
     }
 
     // TỪ CHỐI ĐƠN KÈM LÝ DO BẮT BUỘC (BR-APP-05)
     function openRejectReasonModal(reqId) {
       pendingRejectId = reqId;
+      pendingRejectIds = [reqId];
       const modal = document.getElementById('modal-reject-reason');
       const title = document.getElementById('reject-modal-title');
       const input = document.getElementById('reject-reason-input');
@@ -30355,6 +30515,7 @@
       const modal = document.getElementById('modal-reject-reason');
       if (modal) modal.classList.add('hidden');
       pendingRejectId = null;
+      pendingRejectIds = [];
     }
 
     function confirmRejectSubmission(e) {
@@ -30367,9 +30528,8 @@
         return;
       }
 
-      if (pendingRejectId) {
-        rejectApprovalItem(pendingRejectId, reason);
-      }
+      const targets = pendingRejectIds.length ? [...pendingRejectIds] : (pendingRejectId ? [pendingRejectId] : []);
+      targets.forEach(id => rejectApprovalItem(id, reason));
       closeRejectReasonModal();
     }
 
@@ -30383,6 +30543,17 @@
       const pad = n => n.toString().padStart(2, '0');
       const timeStr = `${pad(now.getDate())}/${pad(now.getMonth() + 1)}/${now.getFullYear()} ${pad(now.getHours())}:${pad(now.getMinutes())}`;
 
+      let rejectedActiveApprover = false;
+      const rejectionTrail = (item.auditTrail || []).map(step => {
+        if (step.action === 'PENDING' && !rejectedActiveApprover) {
+          rejectedActiveApprover = true;
+          return { ...step, action: 'REJECTED', time: timeStr, note: `Từ chối: ${reason}` };
+        }
+        return step.action === 'PENDING' || step.action === 'WAIT'
+          ? { ...step, action: 'CANCELLED', time: timeStr, note: 'Đóng do yêu cầu bị từ chối ở khối duyệt.' }
+          : step;
+      });
+
       approvalHistoryData.unshift({
         id: item.id,
         type: item.type,
@@ -30394,20 +30565,11 @@
         decisionText: 'Đã từ chối',
         decisionCls: 'bg-rose-100 text-rose-800 border-rose-200',
         decisionIcon: '✕',
-        note: reason,
+        note: `Từ chối: ${reason} · Toàn bộ khối/bước duyệt còn chờ đã đóng; không phát sinh kết quả nghiệp vụ.`,
         actionTime: timeStr,
-        delegatedText: item.isDelegated ? `Ủy quyền thay mặt: ${item.delegatedFrom}` : ''
+        delegatedText: item.isDelegated ? `Ủy quyền thay mặt: ${item.delegatedFrom}` : '',
+        auditTrail: rejectionTrail
       });
-
-      // Nếu là đơn đổi ca
-      if (item.type === 'SHIFT_SWAP') {
-        const swapReq = shiftSwapRequestsData.find(s => s.id === item.id);
-        if (swapReq) {
-          swapReq.status = 'REJECTED';
-          swapReq.step = 4;
-          updatePendingSwapBadge();
-        }
-      }
 
       approvalInboxData.splice(index, 1);
       selectedInboxIds.delete(reqId);
@@ -30415,7 +30577,7 @@
       updateApprovalBadges();
       renderApprovalInbox();
 
-      showToast(`✕ Đã từ chối yêu cầu [${reqId}]. Thông báo đã được gửi về người tạo.`);
+      showToast(`✕ Đã từ chối [${reqId}]. Các bước duyệt còn chờ đã đóng; không có cập nhật nghiệp vụ và người tạo được thông báo.`);
     }
 
     // Phê duyệt hàng loạt
@@ -30428,18 +30590,26 @@
         approveApprovalItem(id, 'Phê duyệt hàng loạt (Batch Approve)');
       });
 
-      showToast(`✓ Đã phê duyệt hàng loạt thành công ${ids.length} yêu cầu!`);
+      showToast(`✓ Đã xử lý ${ids.length} yêu cầu theo đúng khối duyệt. Những yêu cầu chưa hết luồng vẫn chờ người xử lý tiếp theo.`);
     }
 
     function openBatchRejectModal() {
       if (selectedInboxIds.size === 0) return;
-      openRejectReasonModal(`Hàng loạt (${selectedInboxIds.size} yêu cầu)`);
+      pendingRejectId = null;
+      pendingRejectIds = Array.from(selectedInboxIds);
+      const modal = document.getElementById('modal-reject-reason');
+      const title = document.getElementById('reject-modal-title');
+      const input = document.getElementById('reject-reason-input');
+      if (modal) modal.classList.remove('hidden');
+      if (title) title.innerText = `Từ chối ${pendingRejectIds.length} yêu cầu đã chọn`;
+      if (input) { input.value = ''; input.focus(); }
     }
 
     // MODAL XEM CHI TIẾT ĐƠN & AUDIT TRAIL
     function openApprovalDetail(reqId) {
       currentDetailReqId = reqId;
-      const item = approvalInboxData.find(i => i.id === reqId) || approvalHistoryData.find(i => i.id === reqId);
+      currentDetailMode = reqId === approvalViewerDemoItem.id ? 'VIEWER' : 'APPROVER';
+      const item = (currentDetailMode === 'VIEWER' ? approvalViewerDemoItem : null) || approvalInboxData.find(i => i.id === reqId) || approvalHistoryData.find(i => i.id === reqId);
       if (!item) return;
 
       const modal = document.getElementById('modal-approval-detail');
@@ -30452,12 +30622,21 @@
       const stepper = document.getElementById('detail-modal-stepper');
       const actionBox = document.getElementById('detail-modal-action-box');
       const buttons = document.getElementById('detail-modal-buttons');
+      const viewerNotice = document.getElementById('detail-modal-viewer-notice');
 
       if (title) title.innerText = `${item.typeName}: ${item.id}`;
       if (badge) badge.innerText = item.type;
       if (sub) sub.innerText = `Người đề xuất: ${item.reqName} (${item.reqPap || ''}) • Đơn vị: ${item.reqDept}`;
       if (createdAt) createdAt.innerText = `Gửi lúc: ${item.createdAt || item.actionTime || 'Hôm nay'}`;
-      if (reasonEl) reasonEl.innerText = item.reason || item.details || '--';
+      if (reasonEl) reasonEl.innerText = currentDetailMode === 'VIEWER' && item.reasonRestricted
+        ? 'Bạn chưa được cấp quyền xem trường thông tin này.'
+        : (item.reason || item.details || '--');
+
+      const watchersEl = document.getElementById('detail-modal-watchers');
+      if (watchersEl) {
+        const watchersList = item.watchers && item.watchers.length > 0 ? item.watchers : ['Phòng Nhân sự', 'Trưởng ban trực tiếp'];
+        watchersEl.innerHTML = watchersList.map(w => `<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-[11px] font-medium bg-slate-100 text-slate-700 border border-slate-200"><svg class="w-3 h-3 mr-1 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/></svg>${w}</span>`).join('');
+      }
 
       if (grid) {
         grid.innerHTML = `
@@ -30467,7 +30646,7 @@
           </div>
           <div>
             <span class="text-slate-400">Thời hạn xử lý (SLA):</span>
-            <div class="font-bold text-amber-700">${item.slaHoursLeft ? `Còn ${item.slaHoursLeft} giờ` : 'Đã hoàn tất'}</div>
+            <div class="font-bold ${item.slaHoursLeft < 0 ? 'text-rose-700' : 'text-amber-700'}">${item.slaHoursLeft < 0 ? `Quá hạn ${Math.abs(item.slaHoursLeft)} giờ · Chỉ nhắc/cảnh báo, không tự chuyển bước` : (item.slaHoursLeft ? `Còn ${item.slaHoursLeft} giờ` : 'Đã hoàn tất')}</div>
           </div>
           <div>
             <span class="text-slate-400">Bàn giao công việc cho:</span>
@@ -30477,6 +30656,7 @@
             <span class="text-slate-400">Cơ chế áp dụng:</span>
             <div class="font-bold text-[#2E3191]">${item.isDelegated ? `Ủy quyền từ ${item.delegatedFrom}` : 'Quy trình trực tiếp'}</div>
           </div>
+          ${item.attachmentsRestricted ? '<div class="col-span-2"><span class="text-slate-400">Tệp minh chứng:</span><div class="font-semibold text-slate-500">Có tệp đính kèm · Bạn chưa được cấp quyền xem tệp</div></div>' : ''}
         `;
       }
 
@@ -30490,10 +30670,11 @@
         stepper.innerHTML = trail.map((s, idx) => {
           const isDone = s.action === 'APPROVED';
           const isReject = s.action === 'REJECTED';
-          const isPending = s.action === 'PENDING';
+          const isPending = s.action === 'PENDING' || s.action === 'WAIT';
+          const isCancelled = s.action === 'CANCELLED';
 
-          const icon = isDone ? '🟢 ✓' : isReject ? '🔴 ✕' : '🟡 ⋯';
-          const titleCls = isDone ? 'text-emerald-700 font-bold' : isReject ? 'text-rose-700 font-bold' : 'text-amber-800 font-bold';
+          const icon = isDone ? '🟢 ✓' : isReject ? '🔴 ✕' : isCancelled ? '⚪ Đóng' : '🟡 ⋯';
+          const titleCls = isDone ? 'text-emerald-700 font-bold' : isReject || isCancelled ? 'text-rose-700 font-bold' : 'text-amber-800 font-bold';
 
           return `
             <div class="relative pl-6">
@@ -30512,10 +30693,16 @@
 
       // Ẩn action box nếu đơn đã trong lịch sử
       const isPendingInbox = approvalInboxData.some(i => i.id === reqId);
-      if (actionBox) actionBox.classList.toggle('hidden', !isPendingInbox);
-      if (buttons) buttons.classList.toggle('hidden', !isPendingInbox);
+      const canAct = isPendingInbox && currentDetailMode !== 'VIEWER';
+      if (actionBox) actionBox.classList.toggle('hidden', !canAct);
+      if (buttons) buttons.classList.toggle('hidden', !canAct);
+      if (viewerNotice) viewerNotice.classList.toggle('hidden', currentDetailMode !== 'VIEWER');
 
       if (modal) modal.classList.remove('hidden');
+    }
+
+    function openApprovalViewerDemo() {
+      openApprovalDetail(approvalViewerDemoItem.id);
     }
 
     function closeApprovalDetailModal() {
@@ -30875,112 +31062,193 @@
       showToast(`Đã hủy hiệu lực ủy quyền của [${del.delegateName}].`);
     }
 
-    // RENDER TAB 5: CẤU HÌNH LUỒNG DUYỆT (SCR-APR-01 Visual Workflow Builder)
+    // THIẾT LẬP NHÓM YÊU CẦU: Chung / Form / Quyền / Luồng / SLA
+    function switchRequestConfigTab(tabKey) {
+      currentRequestConfigTab = tabKey;
+      document.querySelectorAll('.request-config-tab').forEach(btn => {
+        const active = btn.id === `request-config-tab-${tabKey}`;
+        btn.setAttribute('aria-selected', String(active));
+        btn.className = `request-config-tab min-w-[170px] lg:min-w-0 w-full rounded-lg text-left px-3 py-2.5 text-xs border ${active ? 'bg-indigo-50 font-bold text-[#2E3191] border-indigo-100' : 'bg-transparent font-semibold text-slate-700 border-transparent hover:bg-white'}`;
+      });
+      renderWorkflowBuilder();
+    }
+
+    function markRequestConfigDirty(typeKey) {
+      const def = workflowDefinitionsData[typeKey];
+      if (!def) return;
+      def.hasDraftChanges = true;
+      const badge = document.getElementById('request-group-version-badge');
+      if (badge) badge.className = 'px-2.5 py-1 rounded-full bg-amber-100 text-amber-800 text-[11px] font-bold border border-amber-200', badge.innerText = `🟠 Có thay đổi chưa kích hoạt · Đang dùng v${def.version}`;
+      const activateBtn = document.getElementById('btn-activate-request-group');
+      if (activateBtn) activateBtn.disabled = false, activateBtn.classList.remove('opacity-50');
+    }
+
+    function updateApproverMode(typeKey, index, value) {
+      workflowDefinitionsData[typeKey].steps[index].mode = value;
+      markRequestConfigDirty(typeKey);
+      renderWorkflowBuilder();
+    }
+
+    const requestApproverOptions = [
+      ['DIRECT_MANAGER', 'Quản lý trực tiếp của người gửi'],
+      ['UNIT_MANAGER', 'Quản lý đơn vị của người gửi'],
+      ['HR_ADMIN', 'HR Admin'],
+      ['HR_LEAVE', 'HR phụ trách hồ sơ nghỉ phép'],
+      ['HR_ATTENDANCE', 'HR phụ trách chấm công'],
+      ['PAP0004', 'Hoàng Kim Lân (PAP0004)'],
+      ['PAP0009', 'Trần Thị Mai Phương (PAP0009)']
+    ];
+
+    function updateApproverAssignees(typeKey, index, select) {
+      const step = workflowDefinitionsData[typeKey].steps[index];
+      step.approvers = Array.from(select.selectedOptions).map(option => option.value);
+      step.approverRole = step.approvers.map(value => requestApproverOptions.find(option => option[0] === value)?.[1]).filter(Boolean).join(', ');
+      markRequestConfigDirty(typeKey);
+    }
+
+    function updateApproverSla(typeKey, index, value) {
+      workflowDefinitionsData[typeKey].steps[index].slaHours = Math.max(1, Number(value) || 1);
+      markRequestConfigDirty(typeKey);
+      renderWorkflowBuilder();
+    }
+
+    function updateRequestReminder(typeKey, value) {
+      workflowDefinitionsData[typeKey].reminderLeadHours = Math.max(0, Number(value) || 0);
+      markRequestConfigDirty(typeKey);
+    }
+
+    function updateRequestFormField(typeKey, index, key, value) {
+      const field = workflowDefinitionsData[typeKey].formFields[index];
+      field[key] = key === 'required' ? Boolean(value) : value;
+      markRequestConfigDirty(typeKey);
+    }
+
+    function addRequestFormField(typeKey) {
+      workflowDefinitionsData[typeKey].formFields.push({ label: 'Trường mới', type: 'Văn bản một dòng', required: false });
+      markRequestConfigDirty(typeKey);
+      renderWorkflowBuilder();
+    }
+
+    function removeRequestFormField(typeKey, index) {
+      workflowDefinitionsData[typeKey].formFields.splice(index, 1);
+      markRequestConfigDirty(typeKey);
+      renderWorkflowBuilder();
+    }
+
+    function createRequestGroupDemo() {
+      if (!workflowDefinitionsData.CUSTOM_REQ) {
+        workflowDefinitionsData.CUSTOM_REQ = {
+          type: 'GENERAL', code: 'CUSTOM_REQ', name: 'Nhóm yêu cầu mới', category: 'Khác', description: 'Nhóm yêu cầu mới đang ở trạng thái bản nháp.', integration: 'Chưa tích hợp nghiệp vụ', status: 'DRAFT', version: 0, requestSlaHours: 48, reminderLeadHours: 8,
+          creators: ['Chưa cấu hình'], watchers: [], formFields: [{ label: 'Tiêu đề', type: 'Văn bản một dòng', required: true }, { label: 'Nội dung', type: 'Văn bản nhiều dòng', required: true }],
+          steps: [{ level: 1, name: 'Khối duyệt 1', approverRole: '', approvers: [], mode: 'ANY', slaHours: 24 }], hasDraftChanges: true
+        };
+        const select = document.getElementById('workflow-select-type');
+        if (select) select.add(new Option('🆕 Nhóm yêu cầu mới (Bản nháp)', 'CUSTOM_REQ'));
+      }
+      const select = document.getElementById('workflow-select-type');
+      if (select) select.value = 'CUSTOM_REQ';
+      currentRequestConfigTab = 'general';
+      switchRequestConfigTab('general');
+      showToast('Đã tạo nhóm yêu cầu ở trạng thái Bản nháp. HR Admin cần cấu hình và kích hoạt.');
+    }
+
+    function activateRequestGroupVersion() {
+      const typeKey = document.getElementById('workflow-select-type')?.value || 'LEAVE';
+      const def = workflowDefinitionsData[typeKey];
+      if (!def) return;
+      if (def.steps.some(step => !step.approverRole.trim())) {
+        showToast('Chưa thể kích hoạt: có khối duyệt chưa cấu hình người duyệt.');
+        return;
+      }
+      def.version = (def.version || 0) + 1;
+      def.status = 'ACTIVE';
+      def.hasDraftChanges = false;
+      def.activatedBy = 'Nguyễn Văn A (HR Admin)';
+      def.activatedAt = new Date().toLocaleString('vi-VN');
+      const badge = document.getElementById('request-group-version-badge');
+      if (badge) badge.className = 'px-2.5 py-1 rounded-full bg-emerald-100 text-emerald-800 text-[11px] font-bold border border-emerald-200', badge.innerText = `🟢 Phiên bản ${def.version} · Đang hoạt động`;
+      renderWorkflowBuilder();
+      showToast(`Đã kích hoạt phiên bản ${def.version} cho nhóm “${def.name}”. Người thực hiện: HR Admin.`);
+    }
+
+    function simulateMissingApproverChange(checked) {
+      simulateMissingApprover = checked;
+      showToast(checked ? 'Đang bật mô phỏng: gửi yêu cầu sẽ bị chặn nếu không tìm được người duyệt.' : 'Đã tắt mô phỏng thiếu người duyệt.');
+    }
+
+    function openApproverReplacementModal(requestId) {
+      routeIssueDemo.id = requestId;
+      document.getElementById('replace-approver-request-id').value = requestId;
+      document.getElementById('replace-approver-current').value = routeIssueDemo.currentApprover;
+      document.getElementById('replace-approver-next').value = '';
+      document.getElementById('replace-approver-reason').value = '';
+      document.getElementById('modal-approver-replacement').classList.remove('hidden');
+    }
+
+    function closeApproverReplacementModal() {
+      document.getElementById('modal-approver-replacement')?.classList.add('hidden');
+    }
+
+    function replaceRequestApprover(event) {
+      event.preventDefault();
+      const next = document.getElementById('replace-approver-next').value;
+      const reason = document.getElementById('replace-approver-reason').value.trim();
+      if (!next || !reason) return;
+      const priorApprover = routeIssueDemo.currentApprover;
+      routeIssueDemo.currentApprover = next;
+      routeIssueDemo.status = 'PENDING';
+      routeIssueDemo.audit.push({ from: priorApprover, to: next, reason, at: new Date().toLocaleString('vi-VN'), by: 'HR Admin' });
+      const inboxItem = approvalInboxData.find(item => item.id === routeIssueDemo.id);
+      if (inboxItem) {
+        const priorPendingStep = [...inboxItem.auditTrail].reverse().find(step => step.action === 'PENDING');
+        if (priorPendingStep) {
+          priorPendingStep.action = 'CANCELLED';
+          priorPendingStep.time = new Date().toLocaleString('vi-VN');
+          priorPendingStep.note = `Người duyệt được thay thế. Lý do: ${reason}`;
+        }
+        inboxItem.auditTrail.push({ step: inboxItem.levelIndex, role: 'HR Admin thay người duyệt', name: next, action: 'PENDING', time: new Date().toLocaleString('vi-VN'), note: `Thay cho ${priorApprover}. Lý do: ${reason}` });
+      }
+      closeApproverReplacementModal();
+      showToast(`Đã chỉ định ${next}. Yêu cầu ${routeIssueDemo.id} vẫn ở trạng thái Chờ duyệt; đã ghi audit.`);
+      renderWorkflowBuilder();
+    }
+
     function renderWorkflowBuilder() {
       const select = document.getElementById('workflow-select-type');
       const typeKey = select ? select.value : 'LEAVE';
-      const def = workflowDefinitionsData[typeKey] || workflowDefinitionsData['LEAVE'];
-
+      const def = workflowDefinitionsData[typeKey] || workflowDefinitionsData.LEAVE;
+      const visualPanel = document.getElementById('workflow-visual-panel');
       const visualNodes = document.getElementById('workflow-visual-nodes');
-      const detailsContainer = document.getElementById('workflow-step-details');
+      const details = document.getElementById('workflow-step-details');
+      const activateBtn = document.getElementById('btn-activate-request-group');
+      if (!details) return;
+      if (visualPanel) visualPanel.classList.toggle('hidden', currentRequestConfigTab !== 'workflow');
+      if (activateBtn) activateBtn.disabled = !def.hasDraftChanges && def.status === 'ACTIVE', activateBtn.classList.toggle('opacity-50', activateBtn.disabled);
+      const badge = document.getElementById('request-group-version-badge');
+      if (badge) badge.innerText = def.hasDraftChanges ? `🟠 Có thay đổi chưa kích hoạt · Đang dùng v${def.version || 0}` : (def.status === 'ACTIVE' ? `🟢 Phiên bản ${def.version} · Đang hoạt động` : '⚪ Bản nháp · Chưa kích hoạt');
 
-      if (!visualNodes || !detailsContainer) return;
+      if (visualNodes) visualNodes.innerHTML = [
+        '<div class="px-3 py-2 bg-slate-100 border rounded-lg text-xs font-bold">Bắt đầu</div>',
+        ...def.steps.map((step, index) => `<span class="text-slate-400">➜</span><div class="px-3 py-2 bg-indigo-50 border border-indigo-300 rounded-lg text-center min-w-36"><div class="text-[10px] text-indigo-700">Khối ${index + 1} · ${step.mode}</div><div class="text-xs font-bold">${step.name}</div><div class="text-[10px]">${step.approverRole || 'Chưa cấu hình người duyệt'}</div><div class="text-[10px] text-slate-500">Nhắc sau ${step.slaHours} giờ</div></div>`),
+        '<span class="text-slate-400">➜</span><div class="px-3 py-2 bg-emerald-50 border border-emerald-300 rounded-lg text-xs font-bold">Kết thúc / chuyển kết quả</div>'
+      ].join('');
 
-      // Sơ đồ chuỗi Node ngang
-      let nodesHtml = `
-        <div class="px-3.5 py-2.5 bg-slate-100 border border-slate-300 rounded-xl text-xs font-bold text-slate-700 flex items-center space-x-1.5 shrink-0">
-          <span>🚩</span>
-          <span>Bắt đầu</span>
-        </div>
-        <span class="text-slate-400 font-bold px-1 text-sm">➔</span>
-      `;
-
-      nodesHtml += def.steps.map((s, idx) => {
-        return `
-          <div class="px-4 py-2.5 bg-indigo-50 border-2 border-[#2E3191] rounded-xl text-xs text-indigo-950 font-bold flex flex-col items-center justify-center shrink-0 min-w-[150px] shadow-xs">
-            <span class="text-[10px] text-[#2E3191] uppercase tracking-wider">Cấp ${s.level}</span>
-            <span class="text-xs text-slate-800 text-center">${s.name.replace(`Cấp ${s.level}: `, '')}</span>
-            <span class="text-[9.5px] font-normal text-slate-700 font-medium mt-0.5">SLA: ${s.slaWarn}h / ${s.slaEscalate}h</span>
-          </div>
-          ${idx < def.steps.length - 1 ? '<span class="text-slate-400 font-bold px-1 text-sm">➔</span>' : ''}
-        `;
-      }).join('');
-
-      nodesHtml += `
-        <span class="text-slate-400 font-bold px-1 text-sm">➔</span>
-        <div class="px-3.5 py-2.5 bg-emerald-50 border border-emerald-300 rounded-xl text-xs font-bold text-emerald-800 flex items-center space-x-1.5 shrink-0">
-          <span>🏁</span>
-          <span>Hoàn tất / Áp dụng</span>
-        </div>
-      `;
-
-      visualNodes.innerHTML = nodesHtml;
-
-      // Bảng chi tiết cấu hình các cấp
-      detailsContainer.innerHTML = `
-        <div class="md:col-span-2 space-y-3">
-          <div class="text-xs font-bold uppercase text-slate-700 font-medium tracking-wider">Chi tiết cấu hình từng cấp duyệt</div>
-          <div class="space-y-2.5">
-            ${def.steps.map(s => `
-              <div class="bg-slate-50 p-3.5 rounded-xl border border-slate-200 text-xs space-y-2">
-                <div class="flex items-center justify-between border-b border-slate-200 pb-1.5">
-                  <span class="font-bold text-[#2E3191] text-xs">${s.name}</span>
-                  <span class="px-2 py-0.5 bg-white border border-slate-200 rounded text-[10px] text-slate-800 font-medium font-medium">Kiểu: ${s.mechanism}</span>
-                </div>
-                <div class="grid grid-cols-2 gap-2 text-[11px]">
-                  <div>
-                    <span class="text-slate-700 font-medium">Đối tượng duyệt:</span>
-                    <div class="font-semibold text-slate-800">${s.approverRole}</div>
-                  </div>
-                  <div>
-                    <span class="text-slate-700 font-medium">Điều kiện kích hoạt cấp:</span>
-                    <div class="font-semibold text-slate-800">${s.condition}</div>
-                  </div>
-                  <div>
-                    <span class="text-slate-700 font-medium">Thời hạn cảnh báo (Warning):</span>
-                    <div class="text-amber-700">${s.slaWarn} giờ</div>
-                  </div>
-                  <div>
-                    <span class="text-slate-700 font-medium">Thời hạn leo thang (Escalate):</span>
-                    <div class="text-rose-700">${s.slaEscalate} giờ</div>
-                  </div>
-                </div>
-                <div class="text-[10px] text-slate-700 font-medium bg-white p-2 rounded border border-slate-200">
-                  <b>⚡ Hành động khi quá hạn SLA:</b> ${s.onOverdue}
-                </div>
-              </div>
-            `).join('')}
-          </div>
-        </div>
-
-        <div class="space-y-3">
-          <div class="text-xs font-bold uppercase text-slate-700 font-medium tracking-wider">Thông tin nghiệp vụ & Watchers</div>
-          <div class="bg-slate-50 p-3.5 rounded-xl border border-slate-200 text-xs space-y-3">
-            <div>
-              <span class="text-slate-700 font-medium font-semibold">Tên quy trình:</span>
-              <div class="font-bold text-slate-800 mt-0.5">${def.name}</div>
-            </div>
-            <div>
-              <span class="text-slate-700 font-medium font-semibold">Mô tả quy chế:</span>
-              <p class="text-slate-800 font-medium mt-0.5 leading-relaxed text-[11px]">${def.description}</p>
-            </div>
-            <div class="border-t border-slate-200 pt-2.5">
-              <span class="text-slate-700 font-medium font-semibold flex items-center space-x-1">
-                <span>👁️</span>
-                <span>Người theo dõi mặc định (Watchers - SCR-APR-05):</span>
-              </span>
-              <div class="space-y-1 mt-1.5">
-                ${def.watchers.map(w => `
-                  <div class="px-2 py-1 bg-white border border-slate-200 rounded text-[11px] text-slate-700 flex items-center justify-between">
-                    <span>${w}</span>
-                    <span class="text-[9.5px] text-slate-400">Chỉ xem (Read-only)</span>
-                  </div>
-                `).join('')}
-              </div>
-            </div>
-          </div>
-        </div>
-      `;
+      const notice = '<div class="mb-3 rounded-lg border border-sky-200 bg-sky-50 p-3 text-xs text-sky-900">Giá trị dưới đây là dữ liệu minh họa; HR Admin cấu hình theo quy chế đã được phê duyệt. Quá hạn chỉ phát nhắc/cảnh báo, không tự duyệt, từ chối, bỏ qua hoặc chuyển khối.</div>';
+      if (currentRequestConfigTab === 'general') {
+        details.innerHTML = `${notice}<div class="grid grid-cols-1 md:grid-cols-2 gap-3">${[
+          ['Tên nhóm', def.name], ['Mã nhóm', def.code], ['Danh mục', def.category], ['Phiên bản đang áp dụng', `v${def.version || 0} · ${def.status === 'ACTIVE' ? 'Đang hoạt động' : 'Bản nháp'}`]
+        ].map(([label, value], index) => index < 3
+          ? `<label class="text-xs font-semibold text-slate-600">${label}<input value="${value}" onchange="workflowDefinitionsData['${typeKey}'].${['name','code','category'][index]}=this.value;markRequestConfigDirty('${typeKey}')" class="mt-1 w-full px-3 py-2 border border-slate-300 rounded-lg text-slate-900"></label>`
+          : `<div class="text-xs font-semibold text-slate-600">${label}<div class="mt-1 w-full px-3 py-2 border border-slate-200 rounded-lg bg-slate-50 text-slate-700">${value}</div></div>`).join('')}</div><div class="rounded-lg border border-indigo-100 bg-indigo-50 p-3 text-xs"><b>Kết quả sau khi duyệt:</b> ${def.integration}</div><div class="text-[11px] text-slate-500">${def.activatedBy ? `Kích hoạt gần nhất: ${def.activatedBy} · ${def.activatedAt}` : 'Chưa có lịch sử kích hoạt.'} Chỉ HR Admin mới kích hoạt phiên bản; lịch sử thao tác được lưu.</div>`;
+      } else if (currentRequestConfigTab === 'form') {
+        details.innerHTML = `${notice}<div class="space-y-2">${def.formFields.map((field, index) => `<div class="grid grid-cols-1 md:grid-cols-[1fr_190px_100px_30px] gap-2 items-center rounded-lg border border-slate-200 p-3 text-xs"><input value="${field.label}" aria-label="Tên trường" onchange="updateRequestFormField('${typeKey}',${index},'label',this.value)" class="w-full border border-slate-300 rounded-lg px-2 py-1.5 font-semibold"><select onchange="updateRequestFormField('${typeKey}',${index},'type',this.value)" class="w-full border border-slate-300 rounded-lg px-2 py-1.5"><option ${field.type === 'Văn bản một dòng' ? 'selected' : ''}>Văn bản một dòng</option><option ${field.type === 'Văn bản nhiều dòng' ? 'selected' : ''}>Văn bản nhiều dòng</option><option ${field.type === 'Ngày' ? 'selected' : ''}>Ngày</option><option ${field.type === 'Danh mục M09' || field.type === 'Danh mục M06' ? 'selected' : ''}>Danh mục</option><option ${field.type === 'Nhân viên' || field.type === 'Ca đã phân' ? 'selected' : ''}>Nhân viên / Ca</option><option ${field.type === 'Tệp đính kèm' ? 'selected' : ''}>Tệp đính kèm</option></select><label class="flex items-center gap-1"><input type="checkbox" ${field.required ? 'checked' : ''} onchange="updateRequestFormField('${typeKey}',${index},'required',this.checked)"> Bắt buộc</label><button title="Xóa trường" onclick="removeRequestFormField('${typeKey}',${index})" class="text-rose-600 font-bold">×</button></div>`).join('')}</div><button class="px-3 py-2 rounded-lg border border-slate-300 text-xs font-semibold" onclick="addRequestFormField('${typeKey}')">＋ Thêm trường</button>`;
+      } else if (currentRequestConfigTab === 'access') {
+        details.innerHTML = `${notice}<div class="grid md:grid-cols-2 gap-3"><div class="rounded-xl border border-slate-200 p-4"><h4 class="font-bold text-sm mb-2">Ai được tạo yêu cầu</h4>${def.creators.map(item => `<div class="text-xs py-1">✓ ${item}</div>`).join('')}<button onclick="showToast('Bộ chọn người/đơn vị tạo là dữ liệu minh họa.')" class="mt-3 text-indigo-700 text-xs font-semibold">＋ Thêm đối tượng</button></div><div class="rounded-xl border border-slate-200 p-4"><h4 class="font-bold text-sm mb-2">Người xem (chỉ đọc)</h4>${def.watchers.map(item => `<div class="flex justify-between text-xs py-1"><span>👁️ ${item}</span><span class="text-slate-500">Không được duyệt</span></div>`).join('')}<p class="mt-2 text-[11px] text-slate-500">Quyền xem chi tiết nhạy cảm và tệp đính kèm cần cấp riêng.</p><button onclick="openApprovalViewerDemo()" class="mt-3 px-3 py-2 bg-sky-50 text-sky-800 border border-sky-200 rounded-lg text-xs font-semibold">Xem thử bằng quyền người theo dõi</button></div></div>`;
+      } else if (currentRequestConfigTab === 'workflow') {
+        details.innerHTML = `${notice}<div class="space-y-3">${def.steps.map((step, index) => `<div class="rounded-xl border border-slate-200 p-4 space-y-3"><div class="flex justify-between"><h4 class="font-bold">Khối duyệt ${index + 1}: ${step.name}</h4><span class="text-xs text-slate-500">Khối chạy tuần tự theo thứ tự</span></div><label class="block text-xs font-semibold">Người duyệt trong khối (chọn một hoặc nhiều)<select multiple size="4" class="mt-1 w-full border border-slate-300 rounded-lg p-2" onchange="updateApproverAssignees('${typeKey}',${index},this)">${requestApproverOptions.map(([value,label]) => `<option value="${value}" ${(step.approvers || []).includes(value) ? 'selected' : ''}>${label}</option>`).join('')}</select><span class="text-[10px] text-slate-500">Dùng Ctrl để chọn nhiều người; chế độ dưới đây quyết định tiêu chí hoàn tất trong khối.</span></label><div class="grid sm:grid-cols-2 gap-3"><label class="text-xs font-semibold">Cách xử lý trong khối<select class="mt-1 w-full border border-slate-300 rounded-lg p-2" onchange="updateApproverMode('${typeKey}',${index},this.value)"><option value="ANY" ${step.mode === 'ANY' ? 'selected' : ''}>Một người duyệt là đủ</option><option value="ALL" ${step.mode === 'ALL' ? 'selected' : ''}>Tất cả người duyệt đều phải duyệt</option><option value="SEQUENTIAL" ${step.mode === 'SEQUENTIAL' ? 'selected' : ''}>Duyệt lần lượt theo thứ tự</option></select></label><label class="text-xs font-semibold">Nhắc khi chờ quá (giờ)<input type="number" min="1" value="${step.slaHours}" onchange="updateApproverSla('${typeKey}',${index},this.value)" class="mt-1 w-full border border-slate-300 rounded-lg p-2"></label></div><p class="text-[11px] text-slate-500">Từ chối ở bất kỳ khối nào sẽ kết thúc toàn bộ yêu cầu; cần nhập lý do và đóng các lượt duyệt còn chờ.</p></div>`).join('')}</div><label class="flex items-center gap-2 rounded-lg border border-amber-200 bg-amber-50 p-3 text-xs"><input type="checkbox" ${simulateMissingApprover ? 'checked' : ''} onchange="simulateMissingApproverChange(this.checked)"> Mô phỏng lỗi: không tìm thấy người duyệt khi gửi</label><div class="rounded-xl border border-rose-200 bg-rose-50 p-4"><div class="font-bold text-rose-900">Yêu cầu đang chờ xử lý định tuyến</div><div class="text-xs mt-1">${routeIssueDemo.id} · ${routeIssueDemo.currentApprover} · Trạng thái: Chờ duyệt</div><button onclick="openApproverReplacementModal('${routeIssueDemo.id}')" class="mt-2 px-3 py-2 bg-white border border-rose-300 rounded-lg text-xs font-semibold text-rose-800">HR Admin chỉ định người duyệt thay</button><p class="text-[11px] text-rose-800 mt-2">Không tự chuyển người duyệt. Bắt buộc lý do và audit; yêu cầu vẫn Chờ duyệt.</p></div>`;
+      } else {
+        details.innerHTML = `${notice}<div class="grid md:grid-cols-2 gap-3"><label class="text-xs font-semibold">SLA tổng của yêu cầu (giờ)<input type="number" value="${def.requestSlaHours}" onchange="workflowDefinitionsData['${typeKey}'].requestSlaHours=Math.max(1,Number(this.value)||1);markRequestConfigDirty('${typeKey}')" class="mt-1 w-full border border-slate-300 rounded-lg p-2"></label><label class="text-xs font-semibold">Nhắc trước hạn (giờ)<input type="number" value="${def.reminderLeadHours}" onchange="updateRequestReminder('${typeKey}',this.value)" class="mt-1 w-full border border-slate-300 rounded-lg p-2"></label></div><div class="rounded-lg border border-amber-200 bg-amber-50 p-3 text-xs">Quá hạn: chỉ gửi nhắc việc/cảnh báo đến người xử lý và HR Admin. Không tự duyệt, từ chối, bỏ qua người duyệt hoặc chuyển bước.</div><div class="text-xs text-slate-600">Tần suất nhắc và kênh thông báo cần HR Admin cấu hình theo chính sách nội bộ.</div>`;
+      }
     }
 
     // MODAL TẠO NHANH YÊU CẦU MỚI (SCR-APR-03 Quick Request)
@@ -31022,48 +31290,7 @@
             <input type="text" disabled value="2.0 ngày (Trừ vào phép năm 2026)" class="w-full px-3 py-2 bg-slate-100 border border-slate-200 rounded-lg font-bold text-emerald-700">
           </div>
         `;
-        if (flowPreview) flowPreview.innerText = '(Bắt đầu) ➔ [Cấp 1: QL Trực tiếp] ➔ [Cấp 2: Giám đốc Nhân sự] ➔ (Hoàn tất)';
-      } else if (type === 'SHIFT_SWAP') {
-        container.innerHTML = `
-          <div class="grid grid-cols-2 gap-3">
-            <div>
-              <label class="block font-semibold text-slate-700 mb-1">Ngày làm việc cần đổi <span class="text-rose-500">*</span></label>
-              <input type="date" id="quick-swap-date" required value="2026-09-18" class="w-full px-3 py-2 border border-slate-300 rounded-lg bg-white">
-            </div>
-            <div>
-              <label class="block font-semibold text-slate-700 mb-1">Ca hiện tại của bạn</label>
-              <select class="w-full px-3 py-2 border border-slate-300 rounded-lg bg-white">
-                <option value="S1">S1 - Kíp Ngày (07:00 - 19:00)</option>
-                <option value="S2">S2 - Kíp Đêm (19:00 - 07:00 🌙)</option>
-                <option value="HC">HC - Ca Hành chính (08:00 - 17:00)</option>
-                <option value="CHIEU">CHIEU - Ca Chiều (14:00 - 17:00)</option>
-                <option value="SANG">SANG - Ca Sáng (08:00 - 12:00)</option>
-              </select>
-            </div>
-          </div>
-          <div>
-            <label class="block font-semibold text-slate-700 mb-1">Đồng nghiệp hoán ca (Đồng ý đổi) <span class="text-rose-500">*</span></label>
-            <select class="w-full px-3 py-2 border border-slate-300 rounded-lg bg-white font-medium text-slate-800">
-              <option>Nguyễn Văn Long (PAP0003) - Kíp Ngày (S1)</option>
-              <option>Phạm Văn D (PAP0007) - Kíp Đêm (S2)</option>
-            </select>
-          </div>
-        `;
-        if (flowPreview) flowPreview.innerText = '(Bắt đầu) ➔ [Bước 1: Đồng nghiệp xác nhận] ➔ [Bước 2: Quản lý Ca duyệt & Cập nhật Bảng phân ca] ➔ (Hoàn tất)';
-      } else if (type === 'OVERTIME') {
-        container.innerHTML = `
-          <div class="grid grid-cols-2 gap-3">
-            <div>
-              <label class="block font-semibold text-slate-700 mb-1">Ngày tăng ca <span class="text-rose-500">*</span></label>
-              <input type="date" required value="2026-09-19" class="w-full px-3 py-2 border border-slate-300 rounded-lg bg-white">
-            </div>
-            <div>
-              <label class="block font-semibold text-slate-700 mb-1">Số giờ đăng ký (h) <span class="text-rose-500">*</span></label>
-              <input type="number" step="0.5" min="1" max="8" value="3.0" required class="w-full px-3 py-2 border border-slate-300 rounded-lg bg-white font-bold">
-            </div>
-          </div>
-        `;
-        if (flowPreview) flowPreview.innerText = '(Bắt đầu) ➔ [Cấp 1: Phê duyệt Chuyên môn Khối] ➔ [Cấp 2: Kế toán đối soát] ➔ (Hoàn tất)';
+        if (flowPreview) flowPreview.innerText = getRequestFlowPreview(type);
       } else if (type === 'ATTENDANCE') {
         container.innerHTML = `
           <div class="grid grid-cols-2 gap-3">
@@ -31079,10 +31306,23 @@
                 <option>Máy chấm công lỗi kết nối</option>
               </select>
             </div>
+            <div>
+              <label class="block font-semibold text-slate-700 mb-1">Ca làm việc <span class="text-rose-500">*</span></label>
+              <select required class="w-full px-3 py-2 border border-slate-300 rounded-lg bg-white"><option>Ca sáng</option><option>Ca chiều</option><option>Ca đêm</option><option>Ca hành chính</option></select>
+            </div>
           </div>
         `;
-        if (flowPreview) flowPreview.innerText = '(Bắt đầu) ➔ [Cấp 1: Quản lý trực tiếp xác minh] ➔ [Cấp 2: Nhân sự cập nhật công] ➔ (Hoàn tất)';
+        if (flowPreview) flowPreview.innerText = getRequestFlowPreview(type);
+      } else if (type === 'GENERAL') {
+        container.innerHTML = `<div><label class="block font-semibold text-slate-700 mb-1">Tiêu đề yêu cầu <span class="text-rose-500">*</span></label><input id="quick-general-title" required maxlength="120" placeholder="Nhập tiêu đề ngắn gọn" class="w-full px-3 py-2 border border-slate-300 rounded-lg bg-white"></div><div><label class="block font-semibold text-slate-700 mb-1">Nội dung đề xuất <span class="text-rose-500">*</span></label><textarea id="quick-general-content" required rows="3" placeholder="Mô tả nội dung cần phê duyệt" class="w-full px-3 py-2 border border-slate-300 rounded-lg bg-white"></textarea></div><div><label class="block font-semibold text-slate-700 mb-1">Tệp minh chứng</label><input type="file" class="w-full px-3 py-2 border border-slate-300 rounded-lg bg-white"></div>`;
+        if (flowPreview) flowPreview.innerText = getRequestFlowPreview(type);
       }
+    }
+
+    function getRequestFlowPreview(type) {
+      const def = workflowDefinitionsData[type];
+      if (!def) return 'Chưa cấu hình luồng duyệt';
+      return `(Bắt đầu) ➔ ${def.steps.map((step, index) => `[Khối ${index + 1}: ${step.name} · ${step.mode === 'ANY' ? 'Một người' : step.mode === 'ALL' ? 'Tất cả' : 'Lần lượt'}]`).join(' ➔ ')} ➔ (Hoàn tất${def.integration.includes('M09') ? ' · chuyển M09' : def.integration.includes('M06') ? ' · chuyển M06' : ' · phê duyệt thuần'})`;
     }
 
     function handleQuickRequestSubmit(e) {
@@ -31091,30 +31331,39 @@
       const reasonInput = document.getElementById('quick-req-reason');
       const type = typeSelect ? typeSelect.value : 'LEAVE';
       const reason = reasonInput ? reasonInput.value.trim() : '';
-
+      const def = workflowDefinitionsData[type];
+      if (!reason) { showToast('Vui lòng nhập lý do đề xuất.'); return; }
       const now = new Date();
       const pad = n => n.toString().padStart(2, '0');
       const dateStr = `${pad(now.getDate())}/${pad(now.getMonth() + 1)}`;
+      if (simulateMissingApprover || !def || def.steps.some(step => !step.approverRole.trim())) {
+        if (!pendingRoutingDraftId) {
+          pendingRoutingDraftId = `DRAFT-${type.substring(0, 2)}-2026-${String(myApprovalRequestsData.length + 1).padStart(3, '0')}`;
+          myApprovalRequestsData.unshift({
+            id: pendingRoutingDraftId, type, typeName: def?.name || 'Yêu cầu chưa phân loại', typeBadgeCls: 'bg-amber-50 text-amber-800 border-amber-200',
+            details: 'Bản nháp chưa thể gửi do chưa xác định được người duyệt', reason, createdAt: `${dateStr}/2026 ${pad(now.getHours())}:${pad(now.getMinutes())}`,
+            status: 'DRAFT', statusText: 'Bản nháp · Chưa có người duyệt', statusCls: 'bg-amber-100 text-amber-800', canRecall: false,
+            steps: [{ name: 'Định tuyến', role: 'HR Admin cần cấu hình người duyệt', status: 'CURRENT', time: 'Chưa gửi', note: 'Không có phê duyệt tự động.' }]
+          });
+          updateApprovalBadges();
+        } else {
+          const draft = myApprovalRequestsData.find(request => request.id === pendingRoutingDraftId);
+          if (draft) draft.reason = reason;
+        }
+        showToast(`Yêu cầu được giữ ở Bản nháp [${pendingRoutingDraftId}] vì chưa xác định được người duyệt. HR Admin đã được cảnh báo; yêu cầu chưa vào luồng xử lý.`);
+        return;
+      }
       const newId = `${type.substring(0, 2)}-2026-00${myApprovalRequestsData.length + 50}`;
-
-      let typeName = 'Nghỉ phép năm';
-      let typeBadgeCls = 'bg-teal-50 text-teal-700 border-teal-200';
-      let details = 'Nghỉ phép 2.0 ngày';
-
-      if (type === 'SHIFT_SWAP') {
-        typeName = 'Đổi ca làm việc';
-        typeBadgeCls = 'bg-blue-50 text-[#2E3191] border-blue-200';
-        details = 'Đổi ca trực với đồng nghiệp';
-      } else if (type === 'OVERTIME') {
-        typeName = 'Đăng ký Tăng ca OT';
-        typeBadgeCls = 'bg-amber-50 text-amber-800 border-amber-200';
-        details = 'Tăng ca 3.0 giờ hỗ trợ bốc dỡ tàu hàng';
-      } else if (type === 'ATTENDANCE') {
-        typeName = 'Giải trình chấm công';
-        typeBadgeCls = 'bg-purple-50 text-purple-700 border-purple-200';
-        details = 'Giải trình quên chấm vân tay';
+      if (pendingRoutingDraftId) {
+        myApprovalRequestsData = myApprovalRequestsData.filter(request => request.id !== pendingRoutingDraftId);
+        pendingRoutingDraftId = null;
       }
 
+      const typeName = def.name;
+      const typeBadgeCls = type === 'LEAVE' ? 'bg-teal-50 text-teal-700 border-teal-200' : type === 'ATTENDANCE' ? 'bg-purple-50 text-purple-700 border-purple-200' : 'bg-indigo-50 text-indigo-700 border-indigo-200';
+      let details = type === 'LEAVE' ? `Nghỉ phép từ ${document.getElementById('quick-leave-from')?.value || ''} đến ${document.getElementById('quick-leave-to')?.value || ''}`
+        : type === 'ATTENDANCE' ? `Giải trình chấm công ngày ${document.querySelector('#quick-req-fields input[type="date"]')?.value || ''}`
+          : document.getElementById('quick-general-title')?.value.trim() || '';
       const newReq = {
         id: newId,
         type: type,
@@ -31124,13 +31373,12 @@
         reason: reason,
         createdAt: `${dateStr}/2026 ${pad(now.getHours())}:${pad(now.getMinutes())}`,
         status: 'PENDING',
-        statusText: 'Đang xử lý (Cấp 1)',
+        statusText: `Đang xử lý (Khối 1/${def.steps.length})`,
         statusCls: 'bg-amber-100 text-amber-800',
         canRecall: true,
         steps: [
           { name: 'Khởi tạo', role: 'Bạn', status: 'DONE', time: `${dateStr} ${pad(now.getHours())}:${pad(now.getMinutes())}` },
-          { name: 'QL Trực tiếp', role: 'Cấp trên trực tiếp', status: 'CURRENT', time: 'Đang chờ duyệt', note: '' },
-          { name: 'Cấp phê duyệt', role: 'Ban Giám đốc', status: 'WAIT', time: '', note: '' }
+          ...def.steps.map((step, index) => ({ name: step.name, role: `${step.approverRole} · ${step.mode}`, status: index === 0 ? 'CURRENT' : 'WAIT', time: index === 0 ? 'Đang chờ duyệt' : '', note: '' }))
         ]
       };
 
@@ -31139,7 +31387,7 @@
       updateApprovalBadges();
       switchApprovalTab('my-requests');
 
-      showToast(`Đã gửi yêu cầu [${newId}] lên hệ thống phê duyệt thành công!`);
+      showToast(`Đã gửi [${newId}] vào luồng “${def.name}”. Dữ liệu nghiệp vụ chỉ được chuyển sau khi tất cả khối duyệt hoàn tất.`);
     }
 
     // Khởi tạo ban đầu cho Module 14
@@ -31730,9 +31978,64 @@
       };
 
       leaveRequestsData.unshift(newReq);
+
+      // Đẩy tự động vào Trung tâm Phê duyệt M14 (Base Request integration)
+      if (typeof approvalInboxData !== 'undefined') {
+        approvalInboxData.unshift({
+          id: nextId,
+          type: 'LEAVE',
+          typeName: lt ? lt.name : 'Nghỉ phép',
+          typeBadgeCls: 'bg-teal-50 text-teal-700 border-teal-200',
+          typeIcon: '🏖️',
+          reqPap: emp ? emp.pap : empCode,
+          reqName: emp ? emp.name : 'Nhân sự',
+          reqDept: emp ? emp.dept : 'Cảng Phước An',
+          reqRole: 'Nhân viên',
+          details: `Nghỉ ${days.toFixed(1)} ngày (${fromDate} ➔ ${toDate})`,
+          reason: reason,
+          handoverTo: handoverEmp ? handoverEmp.name : 'Không có',
+          currentLevelName: 'Khối 1: Quản lý trực tiếp',
+          levelIndex: 1,
+          totalLevels: (days > 2) ? 2 : 1,
+          slaHoursLeft: 24,
+          isUrgent: false,
+          isDelegated: false,
+          delegatedFrom: '',
+          createdAt: nowStr + ' ' + new Date().getHours() + ':' + String(new Date().getMinutes()).padStart(2, '0'),
+          watchers: ['Phòng Hành chính - Nhân sự', 'Người nhận bàn giao: ' + (handoverEmp ? handoverEmp.name : 'N/A')],
+          approvalMode: 'ANY',
+          auditTrail: [
+            { step: 1, role: 'Quản lý trực tiếp', name: 'Trần Thị Mai Phương (Bạn)', action: 'PENDING', time: '', note: '' }
+          ]
+        });
+      }
+
+      if (typeof myApprovalRequestsData !== 'undefined') {
+        myApprovalRequestsData.unshift({
+          id: nextId,
+          type: 'LEAVE',
+          typeName: lt ? lt.name : 'Nghỉ phép',
+          typeBadgeCls: 'bg-teal-50 text-teal-700 border-teal-200',
+          details: `Nghỉ ${days.toFixed(1)} ngày (${fromDate} ➔ ${toDate})`,
+          reason: reason,
+          createdAt: nowStr,
+          status: 'PENDING',
+          statusText: 'Đang xử lý (Khối 1)',
+          statusCls: 'bg-amber-100 text-amber-800',
+          canRecall: true,
+          steps: [
+            { name: 'Khởi tạo', role: 'Bạn', status: 'DONE', time: nowStr },
+            { name: 'Quản lý trực tiếp', role: 'Trần Thị Mai Phương', status: 'CURRENT', time: 'Đang chờ duyệt', note: '' }
+          ]
+        });
+      }
+
+      if (typeof updateApprovalBadges === 'function') updateApprovalBadges();
+      if (typeof renderApprovalInbox === 'function') renderApprovalInbox();
+
       closeCreateLeaveRequestModal();
       renderLeaveRequestsTable();
-      showToast(`✓ Đã gửi thành công đơn nghỉ phép: ${nextId} (${days.toFixed(1)} ngày)!`);
+      showToast(`✓ Đã gửi đơn nghỉ phép [${nextId}] và chuyển đồng bộ sang Trung tâm Phê duyệt M14!`);
     }
 
     function openViewLeaveRequestModal(id) {
