@@ -369,9 +369,7 @@
     <!-- Navigation Menu List -->
     <div class="flex-1 overflow-y-auto py-3 px-2 space-y-4 text-xs font-medium text-slate-800 font-medium">
       
-      <!-- Group 1: Cây menu Cơ cấu Tổ chức tập trung (Centralized Org Menu Tree) -->
-      <div>
-        <!-- Group 1: Cơ cấu Tổ chức (M02 - TINH GỌN MÔ HÌNH CHA - CON) -->
+      <!-- Group 1: Cơ cấu Tổ chức (M02 - TINH GỌN MÔ HÌNH CHA - CON) -->
       <div>
         <div class="sidebar-section-header px-3 mb-1.5 text-[10px] font-bold uppercase tracking-wider text-slate-400">Cơ cấu tổ chức</div>
         <div class="space-y-0.5">
@@ -633,34 +631,33 @@
               </button>
             </div>
           </div>
-          <div class="space-y-0.5">
-            <button onclick="handleApprovalParentClick()" id="side-item-approval" class="sidebar-btn hover:bg-slate-100 hover:text-slate-900 w-full text-left px-3 py-2 rounded-lg flex items-center justify-between cursor-pointer transition text-slate-800 font-medium" title="Quy trình phê duyệt">
-              <div class="flex items-center space-x-2.5 overflow-hidden truncate">
-                <span class="text-sm shrink-0">✅</span>
-                <span class="sidebar-label truncate font-medium">Quy trình phê duyệt</span>
-              </div>
-              <div class="flex items-center space-x-1.5">
-                <span id="sidebar-approval-badge" class="sidebar-badge text-[10px] bg-rose-500 text-white font-bold px-1.5 py-0.2 rounded-full shadow-xs">3</span>
-                <span onclick="event.stopPropagation(); toggleApprovalSubmenu()" id="approval-chevron" class="text-[10px] text-slate-400 hover:text-slate-700 transition-transform duration-200 p-0.5 cursor-pointer" title="Đóng/Mở menu con">▼</span>
-              </div>
-            </button>
-            <div id="approval-sub-menu" class="pl-4 space-y-1 mt-0.5 border-l border-slate-200 ml-3.5">
-              <button onclick="openApprovalSub('inbox')" id="sub-item-approval-inbox" class="sidebar-sub-item w-full text-left px-2 py-1.5 rounded flex items-center justify-between cursor-pointer transition text-[11px] text-[#2E3191] font-bold bg-blue-50/70 group" title="Hộp thư phê duyệt">
-                <div class="flex items-center space-x-1.5 truncate">
-                  <span class="w-1.5 h-1.5 rounded-full bg-[#2E3191]"></span>
-                  <span class="truncate">Hộp thư phê duyệt</span>
-                </div>
-                <span id="sidebar-approval-sub-inbox-badge" class="text-[9px] px-1 rounded bg-rose-100 text-rose-700 font-bold">3</span>
-              </button>
-              <button onclick="openApprovalSub('workflow')" id="sub-item-approval-workflow" class="sidebar-sub-item w-full text-left px-2 py-1.5 rounded flex items-center justify-between cursor-pointer transition text-[11px] text-slate-700 font-medium hover:text-[#2E3191] hover:bg-slate-50 group" title="Thiết lập quy trình">
-                <div class="flex items-center space-x-1.5 truncate">
-                  <span class="w-1.5 h-1.5 rounded-full bg-slate-300 group-hover:bg-[#2E3191]"></span>
-                  <span class="truncate">Thiết lập quy trình</span>
-                </div>
-                <span class="text-[9px] px-1 rounded bg-indigo-50 text-[#2E3191] font-bold">Admin</span>
-              </button>
+        </div>
+      </div>
+
+      <!-- Group 5: Phê duyệt & Quy trình -->
+      <div>
+        <div class="sidebar-section-header px-3 mb-1.5 text-[10px] font-bold uppercase tracking-wider text-slate-400">Phê duyệt & Luồng xử lý</div>
+        <div class="space-y-0.5">
+          <!-- 1. Hộp thư phê duyệt (M14) -->
+          <button onclick="switchSidebarModule('approval')" id="side-item-approval" class="sidebar-btn hover:bg-slate-100 hover:text-slate-900 w-full text-left px-3 py-2 rounded-lg flex items-center justify-between cursor-pointer transition text-slate-800 font-medium text-xs" title="Hộp thư phê duyệt">
+            <div class="flex items-center space-x-2.5 truncate">
+              <span class="text-sm shrink-0">📥</span>
+              <span class="sidebar-label truncate font-medium">Hộp thư phê duyệt</span>
             </div>
-          </div>
+            <div class="flex items-center space-x-1.5">
+              <span id="sidebar-approval-badge" class="sidebar-badge text-[10px] bg-rose-500 text-white font-bold px-1.5 py-0.2 rounded-full shadow-xs">3</span>
+              <span class="sidebar-badge text-[10px] bg-blue-50 text-[#2E3191] border border-blue-200 px-1.5 py-0.2 rounded font-semibold">M14</span>
+            </div>
+          </button>
+
+          <!-- 2. Thiết lập quy trình (Base Request Engine) -->
+          <button onclick="switchSidebarModule('approval-workflow')" id="side-item-approval-workflow" class="sidebar-btn hover:bg-slate-100 hover:text-slate-900 w-full text-left px-3 py-2 rounded-lg flex items-center justify-between cursor-pointer transition text-slate-800 font-medium text-xs" title="Thiết lập quy trình & nhóm đề xuất">
+            <div class="flex items-center space-x-2.5 truncate">
+              <span class="text-sm shrink-0">⚙️</span>
+              <span class="sidebar-label truncate font-medium">Thiết lập quy trình</span>
+            </div>
+            <span class="sidebar-badge text-[10px] bg-indigo-50 text-[#2E3191] border border-indigo-200 px-1.5 py-0.2 rounded font-semibold">Base Engine</span>
+          </button>
         </div>
       </div>
 
@@ -7230,10 +7227,6 @@
                 <span>Ủy quyền duyệt</span>
                 <span id="badge-approval-delegation-active" class="px-1.5 py-0.2 rounded-full bg-emerald-100 text-emerald-800 text-[10px] font-bold">1 Đang hiệu lực</span>
               </button>
-              <button onclick="openApprovalSub('workflow')" id="tab-approval-to-workflow" class="px-3.5 py-2.5 text-xs font-semibold border-b-2 border-transparent text-slate-600 hover:text-[#2E3191] flex items-center space-x-1.5 transition cursor-pointer" title="Cấu hình danh mục nhóm đề xuất và luồng duyệt">
-                <span>⚙️</span>
-                <span>Thiết lập quy trình</span>
-              </button>
             </div>
             <div class="hidden lg:flex items-center text-xs text-slate-700 font-medium space-x-1 pb-1 pr-2">
               <span>Đang đăng nhập:</span>
@@ -7543,7 +7536,6 @@
             </div>
           </div>
 
-          </div>
         </div>
       </section>
 
@@ -11088,7 +11080,7 @@
             Lưu thiết lập
           </button>
         </div>
-      </form></form>
+      </form>
     </div>
   </div>
 
@@ -19973,54 +19965,15 @@
     }
 
     function handleApprovalParentClick() {
-      const menu = document.getElementById('approval-sub-menu');
-      const chevron = document.getElementById('approval-chevron');
-      if (menu && menu.classList.contains('hidden')) {
-        menu.classList.remove('hidden');
-        if (chevron) chevron.innerText = '▼';
-      }
-      openApprovalSub('inbox');
+      switchSidebarModule('approval');
     }
 
     function openApprovalSub(subTab) {
-      const menu = document.getElementById('approval-sub-menu');
-      const chevron = document.getElementById('approval-chevron');
-      if (menu && menu.classList.contains('hidden')) {
-        menu.classList.remove('hidden');
-        if (chevron) chevron.innerText = '▼';
-      }
       if (subTab === 'workflow') {
         switchSidebarModule('approval-workflow');
-        if (typeof renderWorkflowBuilder === 'function') renderWorkflowBuilder();
       } else {
         switchSidebarModule('approval');
-        switchApprovalTab(subTab);
-      }
-      updateApprovalSubHighlight(subTab);
-    }
-
-    function updateApprovalSubHighlight(subTab) {
-      const subInbox = document.getElementById('sub-item-approval-inbox');
-      const subWorkflow = document.getElementById('sub-item-approval-workflow');
-      if (!subInbox || !subWorkflow) return;
-
-      const isWorkflow = subTab === 'workflow';
-      if (isWorkflow) {
-        subWorkflow.className = "sidebar-sub-item w-full text-left px-2 py-1.5 rounded flex items-center justify-between cursor-pointer transition text-[11px] text-[#2E3191] font-bold bg-blue-50/70 group";
-        const bulletW = subWorkflow.querySelector('span.rounded-full');
-        if (bulletW) bulletW.className = "w-1.5 h-1.5 rounded-full bg-[#2E3191]";
-
-        subInbox.className = "sidebar-sub-item w-full text-left px-2 py-1.5 rounded flex items-center justify-between cursor-pointer transition text-[11px] text-slate-700 font-medium hover:text-[#2E3191] hover:bg-slate-50 group";
-        const bulletI = subInbox.querySelector('span.rounded-full');
-        if (bulletI) bulletI.className = "w-1.5 h-1.5 rounded-full bg-slate-300 group-hover:bg-[#2E3191]";
-      } else {
-        subInbox.className = "sidebar-sub-item w-full text-left px-2 py-1.5 rounded flex items-center justify-between cursor-pointer transition text-[11px] text-[#2E3191] font-bold bg-blue-50/70 group";
-        const bulletI = subInbox.querySelector('span.rounded-full');
-        if (bulletI) bulletI.className = "w-1.5 h-1.5 rounded-full bg-[#2E3191]";
-
-        subWorkflow.className = "sidebar-sub-item w-full text-left px-2 py-1.5 rounded flex items-center justify-between cursor-pointer transition text-[11px] text-slate-700 font-medium hover:text-[#2E3191] hover:bg-slate-50 group";
-        const bulletW = subWorkflow.querySelector('span.rounded-full');
-        if (bulletW) bulletW.className = "w-1.5 h-1.5 rounded-full bg-slate-300 group-hover:bg-[#2E3191]";
+        if (typeof switchApprovalTab === 'function') switchApprovalTab(subTab || 'inbox');
       }
     }
 
@@ -20049,11 +20002,11 @@
       }
 
       // Reset sub buttons
-      const allSubButtons = ['company', 'org', 'catalog', 'employee-list', 'employee-profile', 'annual-leave', 'work-schedule', 'approval', 'gps-setup', 'attendance'];
+      const allSubButtons = ['company', 'org', 'catalog', 'employee-list', 'employee-profile', 'annual-leave', 'work-schedule', 'approval', 'approval-workflow', 'gps-setup', 'attendance'];
       allSubButtons.forEach(k => {
         const item = document.getElementById('side-item-' + k);
         if (item) {
-          item.className = "sidebar-btn hover:bg-slate-100 hover:text-slate-900 w-full text-left px-2.5 py-1.5 rounded-lg flex items-center justify-between cursor-pointer transition text-slate-600 text-xs";
+          item.className = "sidebar-btn hover:bg-slate-100 hover:text-slate-900 w-full text-left px-3 py-2 rounded-lg flex items-center justify-between cursor-pointer transition text-slate-800 font-medium text-xs";
         }
       });
 
@@ -20103,7 +20056,7 @@
         'annual-leave': { parent: 'Quản lý nhân sự', current: 'Quản lý phép năm' },
         'work-schedule': { parent: 'Chấm công & Ca kíp', current: 'Bảng lịch làm việc' },
         'approval': { parent: 'Hệ thống Phê duyệt', current: 'Hộp thư phê duyệt (M14)' },
-        'approval-workflow': { parent: 'Hệ thống Phê duyệt', current: 'Thiết lập quy trình phê duyệt' },
+        'approval-workflow': { parent: 'Cài đặt hệ thống', current: 'Thiết lập quy trình (Base Request Engine)' },
         'gps-setup': { parent: 'Quản lý chấm công', current: 'Thiết lập chấm công (M06)' },
         'attendance': { parent: 'Quản lý chấm công', current: 'Bảng công ngày (Core ⭐)' }
       };
@@ -20126,13 +20079,10 @@
         }
         const catBtn = document.getElementById('side-item-catalog');
         if (catBtn) catBtn.className = "sidebar-btn bg-slate-100 text-slate-900 w-full text-left px-2.5 py-1.5 rounded-lg flex items-center justify-between cursor-pointer transition text-xs font-semibold";
-      } else if (moduleKey === 'approval' || moduleKey === 'approval-workflow') {
-        const appBtn = document.getElementById('side-item-approval');
-        if (appBtn) appBtn.className = "sidebar-btn sidebar-active w-full text-left px-2.5 py-1.5 rounded-lg flex items-center justify-between cursor-pointer transition text-xs";
       } else {
         const activeItem = document.getElementById('side-item-' + moduleKey);
         if (activeItem) {
-          activeItem.className = "sidebar-btn sidebar-active w-full text-left px-2.5 py-1.5 rounded-lg flex items-center justify-between cursor-pointer transition text-xs";
+          activeItem.className = "sidebar-btn sidebar-active w-full text-left px-3 py-2 rounded-lg flex items-center justify-between cursor-pointer transition text-xs font-semibold";
         }
       }
 
@@ -20158,23 +20108,9 @@
         if (typeof renderWorkSchedule === 'function') renderWorkSchedule();
       }
       if (moduleKey === 'approval-workflow') {
-        const appSubMenu = document.getElementById('approval-sub-menu');
-        const appChevron = document.getElementById('approval-chevron');
-        if (appSubMenu && appSubMenu.classList.contains('hidden')) {
-          appSubMenu.classList.remove('hidden');
-          if (appChevron) appChevron.innerText = '▼';
-        }
-        if (typeof updateApprovalSubHighlight === 'function') updateApprovalSubHighlight('workflow');
         if (typeof showBaseGroupsScreen === 'function') showBaseGroupsScreen();
       }
       if (moduleKey === 'approval') {
-        const appSubMenu = document.getElementById('approval-sub-menu');
-        const appChevron = document.getElementById('approval-chevron');
-        if (appSubMenu && appSubMenu.classList.contains('hidden')) {
-          appSubMenu.classList.remove('hidden');
-          if (appChevron) appChevron.innerText = '▼';
-        }
-        if (typeof updateApprovalSubHighlight === 'function') updateApprovalSubHighlight(currentApprovalTab);
         if (typeof renderApprovalInbox === 'function') renderApprovalInbox();
         if (typeof updateApprovalBadges === 'function') updateApprovalBadges();
       }
