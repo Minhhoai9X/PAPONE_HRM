@@ -505,12 +505,13 @@
                   <span class="truncate">Mẫu lịch làm việc</span>
                 </div>
               </button>
-              <!-- Legacy period-list navigation, hidden: use the calendar for period selection and assignment -->
-              <button onclick="openScheduleSub('assignments')" id="sub-item-schedule-assignments" style="display:none !important" aria-hidden="true" tabindex="-1" class="sidebar-sub-item w-full text-left px-2 py-1.5 rounded flex items-center justify-between cursor-pointer transition text-[11px] text-slate-700 font-medium hover:text-[#2E3191] hover:bg-slate-50 group" title="Phân ca làm việc">
+              <!-- 2. Phân ca làm việc -->
+              <button onclick="openScheduleSub('assignments')" id="sub-item-schedule-assignments" class="sidebar-sub-item w-full text-left px-2 py-1.5 rounded flex items-center justify-between cursor-pointer transition text-[11px] text-slate-700 font-medium hover:text-[#2E3191] hover:bg-slate-50 group" title="Phân ca làm việc">
                 <div class="flex items-center space-x-1.5 truncate">
                   <span class="w-1.5 h-1.5 rounded-full bg-slate-300 group-hover:bg-[#2E3191]"></span>
                   <span class="truncate">Phân ca làm việc</span>
                 </div>
+                <span class="text-[9px] px-1 rounded bg-indigo-50 text-[#2E3191] font-bold" id="sidebar-schedule-assignments-count">3</span>
               </button>
               <!-- 3. Danh mục ca -->
               <button onclick="openScheduleSub('templates')" id="sub-item-schedule-templates" class="sidebar-sub-item w-full text-left px-2 py-1.5 rounded flex items-center justify-between cursor-pointer transition text-[11px] text-slate-700 font-medium hover:text-[#2E3191] hover:bg-slate-50 group" title="Danh mục ca">
@@ -6678,9 +6679,9 @@
           </button>
           
           <!-- Tab 2: Phân ca làm việc (Quy chuẩn Doanh nghiệp) -->
-          <button id="tab-btn-schedule-assignments" style="display:none !important" aria-hidden="true" tabindex="-1" onclick="switchScheduleTab('assignments')" class="bg-white text-slate-700 hover:text-[#2E3191] hover:bg-slate-50 px-4 py-2 rounded-lg flex items-center space-x-1.5 transition cursor-pointer text-xs font-semibold">
+          <button id="tab-btn-schedule-assignments" onclick="switchScheduleTab('assignments')" class="bg-white text-slate-700 hover:text-[#2E3191] hover:bg-slate-50 px-4 py-2 rounded-lg flex items-center space-x-1.5 transition cursor-pointer text-xs font-semibold">
             <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12h3.75M9 15h3.75M9 18h3.75m3 .75H18a2.25 2.25 0 002.25-2.25V6.108c0-1.135-.845-2.098-1.976-2.192a48.424 48.424 0 00-1.123-.08m-5.801 0c-.065.21-.1.433-.1.664 0 .414.336.75.75.75h4.5a.75.75 0 00.75-.75 2.25 2.25 0 00-.1-.664m-5.8 0A2.251 2.251 0 0113.5 2.25H15c1.012 0 1.867.668 2.15 1.586m-5.8 0c-.376.023-.75.05-1.124.08C9.095 4.01 8.25 4.973 8.25 6.108V8.25m0 0H4.875c-.621 0-1.125.504-1.125 1.125v11.25c0 .621.504 1.125 1.125 1.125h9.75c.621 0 1.125-.504 1.125-1.125V9.375c0-.621-.504-1.125-1.125-1.125H8.25zM6.75 12h.008v.008H6.75V12zm0 3h.008v.008H6.75V15zm0 3h.008v.008H6.75V18z" /></svg>
-            <span>Phân ca (ẩn)</span>
+            <span>Phân ca nhân viên</span>
           </button>
           
           <!-- Tab 3: Danh mục ca (Quy chuẩn Doanh nghiệp) -->
@@ -20456,13 +20457,29 @@
       const breadcrumbParent = document.getElementById('breadcrumb-parent');
       const breadcrumbCurrent = document.getElementById('breadcrumb-current');
 
-      // Ensure org tree menu is open if navigating inside org modules
-            if (moduleKey === 'attendance') {
+      // Ensure accordion dropdowns are open if navigating inside their modules
+      if (moduleKey === 'attendance') {
         const attSubMenu = document.getElementById('attendance-sub-menu');
         const attChevron = document.getElementById('attendance-chevron');
         if (attSubMenu && attSubMenu.classList.contains('hidden')) {
           attSubMenu.classList.remove('hidden');
           if (attChevron) attChevron.innerText = '▼';
+        }
+      }
+      if (moduleKey === 'work-schedule') {
+        const schedSubMenu = document.getElementById('schedule-sub-menu');
+        const schedChevron = document.getElementById('schedule-chevron');
+        if (schedSubMenu && schedSubMenu.classList.contains('hidden')) {
+          schedSubMenu.classList.remove('hidden');
+          if (schedChevron) schedChevron.innerText = '▼';
+        }
+      }
+      if (moduleKey === 'annual-leave') {
+        const leaveSubMenu = document.getElementById('annual-leave-sub-menu');
+        const leaveChevron = document.getElementById('annual-leave-chevron');
+        if (leaveSubMenu && leaveSubMenu.classList.contains('hidden')) {
+          leaveSubMenu.classList.remove('hidden');
+          if (leaveChevron) leaveChevron.innerText = '▼';
         }
       }
 
@@ -20534,11 +20551,17 @@
         if (typeof updateEmployeeKpis === 'function') updateEmployeeKpis();
       }
       if (moduleKey === 'annual-leave') {
-        if (typeof renderLeaveTable === 'function') renderLeaveTable();
-        if (typeof updateLeaveKpis === 'function') updateLeaveKpis();
+        const targetTab = (typeof currentAnnualLeaveSubTab !== 'undefined' && currentAnnualLeaveSubTab) ? currentAnnualLeaveSubTab : 'ledger';
+        if (typeof switchAnnualLeaveSubTab === 'function') switchAnnualLeaveSubTab(targetTab);
+        else {
+          if (typeof renderLeaveTable === 'function') renderLeaveTable();
+          if (typeof updateLeaveKpis === 'function') updateLeaveKpis();
+        }
       }
       if (moduleKey === 'work-schedule') {
-        if (typeof renderWorkSchedule === 'function') renderWorkSchedule();
+        const targetTab = (typeof currentScheduleTabKey !== 'undefined' && currentScheduleTabKey) ? currentScheduleTabKey : 'matrix';
+        if (typeof switchScheduleTab === 'function') switchScheduleTab(targetTab);
+        else if (typeof renderWorkSchedule === 'function') renderWorkSchedule();
       }
       if (moduleKey === 'approval-workflow') {
         if (typeof showBaseGroupsScreen === 'function') showWorkflowGroupsScreen();
@@ -20548,7 +20571,9 @@
         if (typeof updateApprovalBadges === 'function') updateApprovalBadges();
       }
       if (moduleKey === 'attendance') {
-        if (typeof renderAttendanceDailyTimesheet === 'function') renderAttendanceDailyTimesheet();
+        const targetTab = (typeof currentAttendanceTabKey !== 'undefined' && currentAttendanceTabKey) ? currentAttendanceTabKey : 'daily';
+        if (typeof switchAttendanceTab === 'function') switchAttendanceTab(targetTab);
+        else if (typeof renderAttendanceDailyTimesheet === 'function') renderAttendanceDailyTimesheet();
       }
       if (moduleKey === 'catalog') {
         if (typeof renderSkillsCatalogTable === 'function') renderSkillsCatalogTable();
@@ -26485,17 +26510,23 @@
 
     // ================= CHUYỂN ĐỔI TAB LỊCH LÀM VIỆC (ĐỒNG BỘ .sub-tab-active) =================
     function switchScheduleTab(tabKey) {
-      if (tabKey === 'assignments') tabKey = 'matrix';
       if (typeof updateScheduleSubHighlight === 'function') {
         updateScheduleSubHighlight(tabKey);
       }
+      const titles = {
+        'matrix': 'Bảng lịch làm việc',
+        'assignments': 'Phân ca nhân viên',
+        'policies': 'Mẫu lịch làm việc',
+        'templates': 'Danh mục ca',
+        'holidays': 'Lịch nghỉ lễ'
+      };
       const topTitle = document.getElementById('top-page-title');
-      if (topTitle) {
-        if (tabKey === 'matrix') topTitle.innerText = 'Bảng lịch làm việc';
-        else if (tabKey === 'policies') topTitle.innerText = 'Mẫu lịch làm việc';
-        else if (tabKey === 'assignments') topTitle.innerText = 'Bảng lịch làm việc';
-        else if (tabKey === 'templates') topTitle.innerText = 'Danh mục ca';
-        else if (tabKey === 'holidays') topTitle.innerText = 'Lịch nghỉ lễ';
+      const breadcrumbCurrent = document.getElementById('breadcrumb-current');
+      if (topTitle && titles[tabKey]) {
+        topTitle.innerText = titles[tabKey];
+      }
+      if (breadcrumbCurrent && titles[tabKey]) {
+        breadcrumbCurrent.innerText = titles[tabKey];
       }
   
       currentScheduleTabKey = tabKey;
@@ -28220,7 +28251,7 @@
     function populateScheduleWeekOptions(force) {
       const selectEl = document.getElementById('schedule-week-select');
       if (!selectEl) return;
-      if (selectEl.options.length > 10) return; // Đã khởi tạo đầy đủ
+      if (selectEl.options && selectEl.options.length > 10) return; // Đã khởi tạo đầy đủ
 
       const months = {};
       Object.keys(weekDatesDefinitions).forEach(wKey => {
@@ -35129,6 +35160,18 @@
       if (subItemPolicies) subItemPolicies.className = inactiveSubCls;
       if (subItemTypes) subItemTypes.className = inactiveSubCls;
 
+      currentAnnualLeaveSubTab = subTab || 'ledger';
+      const titles = {
+        'ledger': 'Sổ theo dõi phép',
+        'requests': 'Quản lý đơn nghỉ phép',
+        'policies': 'Chính sách nghỉ phép',
+        'types': 'Danh mục loại nghỉ phép'
+      };
+      const topPageTitle = document.getElementById('top-page-title');
+      const breadcrumbCurrent = document.getElementById('breadcrumb-current');
+      if (topPageTitle && titles[currentAnnualLeaveSubTab]) topPageTitle.innerText = titles[currentAnnualLeaveSubTab];
+      if (breadcrumbCurrent && titles[currentAnnualLeaveSubTab]) breadcrumbCurrent.innerText = titles[currentAnnualLeaveSubTab];
+
       if (subTab === 'requests') {
         if (btnRequests) btnRequests.className = activeTabCls;
         if (contentRequests) contentRequests.classList.remove('hidden');
@@ -35980,7 +36023,6 @@
     }
 
     function openScheduleSub(tabKey) {
-      if (tabKey === 'assignments') tabKey = 'matrix';
       switchSidebarModule('work-schedule');
       switchScheduleTab(tabKey);
       updateScheduleSubHighlight(tabKey);
@@ -36164,6 +36206,7 @@
     }
 
     function switchAttendanceTab(tabKey) {
+      currentAttendanceTabKey = tabKey || 'daily';
       const tabs = ['setup', 'exempt', 'raw', 'daily', 'requests', 'lock'];
       tabs.forEach(t => {
         const panel = document.getElementById('att-panel-' + t);
