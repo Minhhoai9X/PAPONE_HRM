@@ -7230,7 +7230,10 @@
                 <span>Ủy quyền duyệt</span>
                 <span id="badge-approval-delegation-active" class="px-1.5 py-0.2 rounded-full bg-emerald-100 text-emerald-800 text-[10px] font-bold">1 Đang hiệu lực</span>
               </button>
-              
+              <button onclick="openApprovalSub('workflow')" id="tab-approval-to-workflow" class="px-3.5 py-2.5 text-xs font-semibold border-b-2 border-transparent text-slate-600 hover:text-[#2E3191] flex items-center space-x-1.5 transition cursor-pointer" title="Cấu hình danh mục nhóm đề xuất và luồng duyệt">
+                <span>⚙️</span>
+                <span>Thiết lập quy trình</span>
+              </button>
             </div>
             <div class="hidden lg:flex items-center text-xs text-slate-700 font-medium space-x-1 pb-1 pr-2">
               <span>Đang đăng nhập:</span>
@@ -7569,6 +7572,10 @@
 
             <!-- Nút Hành động Top -->
             <div class="flex items-center space-x-2 shrink-0">
+              <button type="button" onclick="openApprovalSub('inbox')" class="px-3.5 py-2 bg-white hover:bg-slate-50 text-slate-700 text-xs font-semibold rounded-xl flex items-center space-x-1.5 transition border border-slate-300 shadow-2xs cursor-pointer" title="Quay lại Hộp thư phê duyệt">
+                <span>📥</span>
+                <span>Hộp thư phê duyệt</span>
+              </button>
               <button type="button" onclick="openCreateRequestGroupModal()" class="px-4 py-2 pap-primary text-white text-xs font-bold rounded-xl flex items-center space-x-1.5 shadow-xs transition cursor-pointer hover:bg-[#242775]">
                 <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" /></svg>
                 <span>Tạo nhóm đề xuất</span>
@@ -20119,6 +20126,9 @@
         }
         const catBtn = document.getElementById('side-item-catalog');
         if (catBtn) catBtn.className = "sidebar-btn bg-slate-100 text-slate-900 w-full text-left px-2.5 py-1.5 rounded-lg flex items-center justify-between cursor-pointer transition text-xs font-semibold";
+      } else if (moduleKey === 'approval' || moduleKey === 'approval-workflow') {
+        const appBtn = document.getElementById('side-item-approval');
+        if (appBtn) appBtn.className = "sidebar-btn sidebar-active w-full text-left px-2.5 py-1.5 rounded-lg flex items-center justify-between cursor-pointer transition text-xs";
       } else {
         const activeItem = document.getElementById('side-item-' + moduleKey);
         if (activeItem) {
@@ -31498,12 +31508,28 @@
       if (badge) badge.className = 'px-2.5 py-1 rounded-full bg-amber-100 text-amber-800 text-[11px] font-bold border border-amber-200', badge.innerText = `🟠 Có thay đổi chưa kích hoạt · Đang dùng v${def.version}`;
       const activateBtn = document.getElementById('btn-activate-request-group');
       if (activateBtn) activateBtn.disabled = false, activateBtn.classList.remove('opacity-50');
+
+      // Cập nhật giao diện Base Request Detail
+      const actBtn = document.getElementById('btn-base-activate-version');
+      if (actBtn && currentBaseActiveGroupCode === typeKey) {
+        actBtn.className = "px-3.5 py-2 bg-amber-600 hover:bg-amber-700 text-white text-xs font-bold rounded-xl transition cursor-pointer shadow-2xs flex items-center space-x-1.5 animate-pulse";
+        actBtn.innerHTML = `<span>⚡ Kích hoạt bản sửa đổi (v${(def.version || 1) + 1})</span>`;
+      }
+      const verBadge = document.getElementById('base-detail-version-badge');
+      if (verBadge && currentBaseActiveGroupCode === typeKey) {
+        verBadge.innerText = `🟡 Có thay đổi chưa kích hoạt · v${def.version || 1}`;
+        verBadge.className = 'px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-amber-100 text-amber-800 border border-amber-200';
+      }
     }
 
     function updateApproverMode(typeKey, index, value) {
+      if (!workflowDefinitionsData[typeKey] || !workflowDefinitionsData[typeKey].steps?.[index]) return;
       workflowDefinitionsData[typeKey].steps[index].mode = value;
       markRequestConfigDirty(typeKey);
-      renderWorkflowBuilder();
+      const detailScreen = document.getElementById('base-wf-screen-detail');
+      if (detailScreen && !detailScreen.classList.contains('hidden')) {
+        renderBaseDetailTabContent('general');
+      }
     }
 
     const requestApproverOptions = [
@@ -31524,9 +31550,13 @@
     }
 
     function updateApproverSla(typeKey, index, value) {
+      if (!workflowDefinitionsData[typeKey] || !workflowDefinitionsData[typeKey].steps?.[index]) return;
       workflowDefinitionsData[typeKey].steps[index].slaHours = Math.max(1, Number(value) || 1);
       markRequestConfigDirty(typeKey);
-      renderWorkflowBuilder();
+      const detailScreen = document.getElementById('base-wf-screen-detail');
+      if (detailScreen && !detailScreen.classList.contains('hidden')) {
+        renderBaseDetailTabContent('general');
+      }
     }
 
     function updateRequestReminder(typeKey, value) {
@@ -31572,15 +31602,26 @@
     }
 
     function addRequestFormField(typeKey) {
+      if (!workflowDefinitionsData[typeKey]) return;
+      if (!workflowDefinitionsData[typeKey].formFields) workflowDefinitionsData[typeKey].formFields = [];
       workflowDefinitionsData[typeKey].formFields.push({ label: 'Trường mới', type: 'Văn bản một dòng', required: false });
       markRequestConfigDirty(typeKey);
-      renderWorkflowBuilder();
+      const detailScreen = document.getElementById('base-wf-screen-detail');
+      if (detailScreen && !detailScreen.classList.contains('hidden')) {
+        renderBaseDetailTabContent('form');
+      }
+      showToast('Đã thêm trường dữ liệu mới.');
     }
 
     function removeRequestFormField(typeKey, index) {
+      if (!workflowDefinitionsData[typeKey] || !workflowDefinitionsData[typeKey].formFields) return;
       workflowDefinitionsData[typeKey].formFields.splice(index, 1);
       markRequestConfigDirty(typeKey);
-      renderWorkflowBuilder();
+      const detailScreen = document.getElementById('base-wf-screen-detail');
+      if (detailScreen && !detailScreen.classList.contains('hidden')) {
+        renderBaseDetailTabContent('form');
+      }
+      showToast('Đã xóa trường dữ liệu.');
     }
 
     function createRequestGroupDemo() {
@@ -31695,10 +31736,28 @@
       if (titleEl) titleEl.innerText = def.name;
       if (codeBadge) codeBadge.innerText = def.code;
       if (verBadge) {
-        verBadge.innerText = def.status === 'ACTIVE' ? `🟢 Hoạt động · v${def.version || 1}` : '🟡 Bản nháp · Chưa kích hoạt';
-        verBadge.className = def.status === 'ACTIVE'
-          ? 'px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-emerald-100 text-emerald-800 border border-emerald-200'
-          : 'px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-amber-100 text-amber-800 border border-amber-200';
+        if (def.hasDraftChanges) {
+          verBadge.innerText = `🟡 Có thay đổi chưa kích hoạt · v${def.version || 1}`;
+          verBadge.className = 'px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-amber-100 text-amber-800 border border-amber-200';
+        } else {
+          verBadge.innerText = def.status === 'ACTIVE' ? `🟢 Hoạt động · v${def.version || 1}` : '🟡 Bản nháp · Chưa kích hoạt';
+          verBadge.className = def.status === 'ACTIVE'
+            ? 'px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-emerald-100 text-emerald-800 border border-emerald-200'
+            : 'px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-amber-100 text-amber-800 border border-amber-200';
+        }
+      }
+
+      const actBtn = document.getElementById('btn-base-activate-version');
+      if (actBtn) {
+        if (def.hasDraftChanges) {
+          actBtn.disabled = false;
+          actBtn.className = "px-3.5 py-2 bg-amber-600 hover:bg-amber-700 text-white text-xs font-bold rounded-xl transition cursor-pointer shadow-2xs flex items-center space-x-1.5 animate-pulse";
+          actBtn.innerHTML = `<span>⚡ Kích hoạt bản sửa đổi (v${(def.version || 1) + 1})</span>`;
+        } else {
+          actBtn.disabled = false;
+          actBtn.className = "px-3.5 py-2 pap-primary text-white text-xs font-bold rounded-xl transition cursor-pointer hover:bg-[#242775] shadow-2xs flex items-center space-x-1.5";
+          actBtn.innerHTML = `<span>✓ Đã kích hoạt (v${def.version || 1})</span>`;
+        }
       }
       if (subEl) subEl.innerText = `Phân loại: ${def.category || 'Chung'} • Tích hợp liên thông: ${def.integration || 'Nội bộ'}`;
 
@@ -31886,23 +31945,29 @@
             </div>
           </div>
 
+          <!-- Quy tắc luồng duyệt Base Request -->
+          <div class="p-3.5 bg-blue-50 border border-blue-200 rounded-xl text-xs text-blue-900 flex items-start space-x-2.5 shadow-2xs">
+            <span class="text-base shrink-0">ℹ️</span>
+            <div class="space-y-1">
+              <div class="font-bold text-blue-950">Quy tắc luồng duyệt Base Request:</div>
+              <ul class="list-disc list-inside text-[11px] text-blue-800 space-y-0.5">
+                <li><b>Giữa các khối:</b> Mặc định duyệt lần lượt từ trên xuống dưới theo thứ tự hiển thị.</li>
+                <li><b>Trong từng khối:</b> Tùy chọn <i>Duyệt tuần tự</i>, <i>Duyệt đồng thời (Tất cả người duyệt)</i> hoặc <i>Chỉ cần 1 người duyệt</i>.</li>
+                <li><b>Khi bị từ chối:</b> Chỉ cần 1 người duyệt (cùng khối hoặc khác khối) bấm <b>Từ chối</b>, đề xuất dừng ngay lập tức.</li>
+              </ul>
+            </div>
+          </div>
+
           <!-- Danh sách các khối người duyệt chi tiết -->
           <div class="space-y-3">
             <div class="flex items-center justify-between">
-              <div class="p-3 bg-blue-50 border border-blue-200 rounded-xl text-xs text-blue-900 flex items-start space-x-2.5">
-              <span class="text-base shrink-0">ℹ️</span>
-              <div class="space-y-0.5">
-                <div class="font-bold">Quy tắc luồng duyệt Base Request:</div>
-                <ul class="list-disc list-inside text-[11px] text-blue-800 space-y-0.5">
-                  <li><b>Giữa các khối:</b> Mặc định duyệt lần lượt từ trên xuống dưới theo thứ tự hiển thị.</li>
-                  <li><b>Trong từng khối:</b> Tùy chọn <i>Duyệt tuần tự</i>, <i>Duyệt đồng thời</i> hoặc <i>Chỉ cần 1 người duyệt</i>.</li>
-                  <li><b>Khi bị từ chối:</b> Chỉ cần 1 người duyệt (cùng khối hoặc khác khối) bấm <b>Từ chối</b>, đề xuất dừng ngay lập tức.</li>
-                </ul>
+              <div>
+                <h4 class="text-xs font-bold text-slate-800 uppercase tracking-wider">Danh sách Khối người duyệt (${(def.steps || []).length} khối)</h4>
+                <p class="text-[11px] text-slate-500 mt-0.5">Kéo thả hoặc dùng nút mũi tên để đổi thứ tự duyệt giữa các khối</p>
               </div>
-            </div>
-
-            <h4 class="text-xs font-bold text-slate-800 uppercase tracking-wider">Danh sách Khối người duyệt (${(def.steps || []).length} khối)</h4>
-              <span class="text-[11px] text-slate-500">Kéo thả hoặc dùng nút mũi tên để đổi thứ tự duyệt</span>
+              <button type="button" onclick="openAddApproverBlockModal()" class="px-3 py-1.5 bg-[#2E3191] text-white hover:bg-[#242775] text-xs font-bold rounded-xl flex items-center space-x-1.5 transition cursor-pointer shadow-2xs">
+                <span>＋ Thêm khối</span>
+              </button>
             </div>
 
             <div class="space-y-2.5">
@@ -31969,7 +32034,11 @@
           </div>
 
           <div class="space-y-2">
-            ${(def.formFields || []).map((field, idx) => `
+            ${(def.formFields || []).length === 0 ? `
+              <div class="text-center py-8 text-slate-400 bg-slate-50 rounded-xl border border-dashed border-slate-300 text-xs">
+                Chưa có trường dữ liệu tùy chỉnh nào. Bấm <b>＋ Thêm trường dữ liệu</b> để tạo.
+              </div>
+            ` : (def.formFields || []).map((field, idx) => `
               <div class="grid grid-cols-1 md:grid-cols-[1fr_180px_100px_40px] gap-2.5 items-center bg-slate-50/70 border border-slate-200 p-3 rounded-xl text-xs">
                 <input value="${field.label}" onchange="updateRequestFormField('${currentBaseActiveGroupCode}', ${idx}, 'label', this.value)" placeholder="Tên trường..." class="border border-slate-300 rounded-lg px-2.5 py-1.5 bg-white font-semibold">
                 <select onchange="updateRequestFormField('${currentBaseActiveGroupCode}', ${idx}, 'type', this.value)" class="border border-slate-300 rounded-lg px-2.5 py-1.5 bg-white">
