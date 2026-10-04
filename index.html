@@ -7545,79 +7545,177 @@
       </section>
 
       <!-- ================= PHÂN HỆ: THIẾT LẬP QUY TRÌNH PHÊ DUYỆT (M14 ADMIN) ================= -->
-      <section id="view-approval-workflow" class="space-y-4 hidden">
-        <!-- Header Banner Thiết lập -->
-        <div class="bg-white rounded-xl p-4 sm:p-5 border border-slate-200 shadow-xs flex flex-col md:flex-row md:items-center justify-between gap-4">
-          <div>
-            <div class="flex items-center space-x-2.5">
-              <span class="text-2xl p-2 bg-indigo-50 text-[#2E3191] rounded-xl border border-indigo-100 shrink-0">⚙️</span>
-              <div>
-                <div class="flex items-center space-x-2 flex-wrap gap-y-1">
-                  <h1 class="text-lg sm:text-xl font-bold text-slate-800 tracking-tight">Thiết lập Quy trình Phê duyệt</h1>
-                  <span class="px-2 py-0.5 rounded-full bg-indigo-50 text-[#2E3191] text-[10px] font-bold border border-indigo-200">M14 Admin</span>
-                  <span class="px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-700 text-[10px] font-bold border border-emerald-200">Quản trị quy trình</span>
-                </div>
-                <p class="text-xs text-slate-700 font-medium mt-0.5">Quản lý danh mục nhóm yêu cầu, thiết kế biểu mẫu nhập liệu động, phân quyền truy cập và cấu hình luồng duyệt đa cấp.</p>
+      <section id="view-approval-workflow" class="space-y-3.5 hidden">
+        <!-- Header Banner: Quản trị Quy trình Phê duyệt (HR Admin) -->
+        <div class="bg-white rounded-2xl p-4 sm:p-5 border border-slate-200 shadow-xs flex flex-col md:flex-row md:items-center justify-between gap-4">
+          <div class="flex items-center space-x-3">
+            <span class="text-2xl p-2.5 bg-indigo-50 text-[#2E3191] rounded-2xl border border-indigo-100 shrink-0">⚙️</span>
+            <div>
+              <div class="flex items-center space-x-2 flex-wrap gap-y-1">
+                <h1 class="text-lg sm:text-xl font-bold text-slate-800 tracking-tight">Thiết lập Quy trình Phê duyệt</h1>
+                <span class="px-2 py-0.5 rounded-full bg-indigo-50 text-[#2E3191] text-[10px] font-bold border border-indigo-200">M14 Engine</span>
+                <span class="px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-700 text-[10px] font-bold border border-emerald-200 flex items-center space-x-1">
+                  <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
+                  <span>Quy chuẩn Base Request</span>
+                </span>
               </div>
+              <p class="text-xs text-slate-500 font-medium mt-0.5">Quản lý danh mục nhóm yêu cầu, trực quan hóa tiến trình duyệt đa cấp, thiết kế biểu mẫu động và kiểm soát phân quyền.</p>
+            </div>
+          </div>
+          <div class="flex items-center space-x-2 shrink-0">
+            <button type="button" onclick="openCreateRequestGroupModal()" class="px-3.5 py-2 pap-primary text-white text-xs font-semibold rounded-xl flex items-center space-x-1.5 shadow-xs transition cursor-pointer hover:bg-[#242775]">
+              <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" /></svg>
+              <span>Tạo nhóm yêu cầu mới</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Thanh Tab Điều Hướng 2 Chế Độ: Danh sách nhóm đề xuất & Chi tiết thiết lập -->
+        <div class="bg-white p-1.5 rounded-2xl border border-slate-200 shadow-xs flex items-center space-x-1.5 text-xs font-semibold overflow-x-auto shrink-0">
+          <button type="button" onclick="switchWorkflowAdminSubTab('groups')" id="tab-btn-workflow-groups" class="sub-tab-active px-4 py-2 rounded-xl flex items-center space-x-2 transition cursor-pointer shrink-0">
+            <span>📋</span>
+            <span>Danh mục nhóm yêu cầu</span>
+            <span id="badge-workflow-groups-count" class="ml-1 px-1.5 py-0.2 rounded-full text-[10px] font-bold bg-indigo-50 text-[#2E3191] border border-indigo-200">3</span>
+          </button>
+          <button type="button" onclick="switchWorkflowAdminSubTab('builder')" id="tab-btn-workflow-builder" class="px-4 py-2 rounded-xl text-slate-700 hover:text-[#2E3191] hover:bg-slate-50 flex items-center space-x-2 transition cursor-pointer shrink-0">
+            <span>🔀</span>
+            <span>Thiết lập chi tiết & Sơ đồ luồng</span>
+            <span id="badge-current-group-editing" class="ml-1 px-2 py-0.2 rounded-full text-[10px] font-bold bg-emerald-50 text-emerald-700 border border-emerald-200">LEAVE</span>
+          </button>
+        </div>
+
+        <!-- TAB 1: DANH SÁCH NHÓM ĐỀ XUẤT (HR ADMIN OVERVIEW) -->
+        <div id="workflow-admin-content-groups" class="space-y-3.5">
+          <!-- KPI Summary Cards -->
+          <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
+            <div class="bg-white p-3.5 rounded-2xl border border-slate-200 shadow-2xs">
+              <div class="text-[11px] font-semibold text-slate-400 uppercase tracking-wider">Tổng số nhóm</div>
+              <div id="wf-kpi-total-groups" class="text-xl font-bold text-[#2E3191] mt-1">3</div>
+              <div class="text-[10px] text-slate-500 mt-0.5">Nhóm đề xuất đang quản lý</div>
+            </div>
+            <div class="bg-white p-3.5 rounded-2xl border border-slate-200 shadow-2xs">
+              <div class="text-[11px] font-semibold text-slate-400 uppercase tracking-wider">Đang hoạt động</div>
+              <div id="wf-kpi-active-groups" class="text-xl font-bold text-emerald-600 mt-1">3</div>
+              <div class="text-[10px] text-emerald-600 font-medium mt-0.5">Đã kích hoạt phiên bản</div>
+            </div>
+            <div class="bg-white p-3.5 rounded-2xl border border-slate-200 shadow-2xs">
+              <div class="text-[11px] font-semibold text-slate-400 uppercase tracking-wider">Bản nháp / Cần duyệt</div>
+              <div id="wf-kpi-draft-groups" class="text-xl font-bold text-amber-600 mt-1">0</div>
+              <div class="text-[10px] text-slate-500 mt-0.5">Chưa phát hành thực tế</div>
+            </div>
+            <div class="bg-white p-3.5 rounded-2xl border border-slate-200 shadow-2xs">
+              <div class="text-[11px] font-semibold text-slate-400 uppercase tracking-wider">Tích hợp HRM</div>
+              <div id="wf-kpi-hrm-connected" class="text-xl font-bold text-indigo-600 mt-1">2 / 3</div>
+              <div class="text-[10px] text-indigo-600 font-medium mt-0.5">Tự động trả kết quả M09, M06</div>
+            </div>
+          </div>
+
+          <!-- Bảng Danh mục Nhóm đề xuất -->
+          <div class="bg-white rounded-2xl border border-slate-200 shadow-xs overflow-hidden">
+            <div class="p-4 border-b border-slate-200 flex flex-col sm:flex-row sm:items-center justify-between gap-3 bg-slate-50/70">
+              <div class="flex items-center space-x-2">
+                <div class="relative min-w-[240px]">
+                  <input type="text" id="workflow-group-search" oninput="filterWorkflowGroupsTable()" placeholder="Tìm nhóm theo mã, tên, danh mục..." class="w-full pl-8 pr-3 py-1.5 text-xs border border-slate-300 rounded-lg focus:outline-hidden focus:border-[#2E3191] bg-white">
+                  <span class="absolute left-2.5 top-2 text-slate-400 text-xs">🔍</span>
+                </div>
+                <select id="workflow-group-filter-status" onchange="filterWorkflowGroupsTable()" class="text-xs border border-slate-300 rounded-lg px-3 py-1.5 bg-white text-slate-700 font-medium">
+                  <option value="ALL">Tất cả trạng thái</option>
+                  <option value="ACTIVE">Đang hoạt động</option>
+                  <option value="DRAFT">Bản nháp</option>
+                </select>
+              </div>
+              <div class="text-xs text-slate-500 font-medium flex items-center space-x-1.5">
+                <span>Số lượng:</span>
+                <span id="workflow-groups-table-count" class="font-bold text-slate-800">3 nhóm</span>
+              </div>
+            </div>
+
+            <div class="overflow-x-auto">
+              <table class="w-full text-xs text-left text-slate-600">
+                <thead class="bg-slate-100 text-slate-700 font-semibold uppercase text-[10px] tracking-wider border-b border-slate-200">
+                  <tr>
+                    <th class="py-3 px-3 text-center w-12">STT</th>
+                    <th class="py-3 px-3 text-center w-24">Mã nhóm</th>
+                    <th class="py-3 px-4">Tên nhóm & Diễn giải</th>
+                    <th class="py-3 px-3">Danh mục</th>
+                    <th class="py-3 px-3 text-center">Số cấp duyệt</th>
+                    <th class="py-3 px-3 text-center">SLA tổng</th>
+                    <th class="py-3 px-3 text-center">Phiên bản</th>
+                    <th class="py-3 px-3 text-center">Trạng thái</th>
+                    <th class="py-3 px-4 text-center w-36">Thao tác</th>
+                  </tr>
+                </thead>
+                <tbody id="workflow-groups-tbody" class="divide-y divide-slate-200">
+                  <!-- Rendered dynamically -->
+                </tbody>
+              </table>
             </div>
           </div>
         </div>
 
-        <!-- Khung nội dung Thiết lập luồng duyệt -->
-        <div class="bg-white rounded-xl border border-slate-200 shadow-xs overflow-hidden p-4 space-y-4">
-          <!-- Thiết lập nhóm yêu cầu và phiên bản áp dụng -->
-            <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 bg-slate-50 p-3 rounded-xl border border-slate-200">
-              <div class="flex items-center space-x-2">
-                <span class="text-xs font-bold text-slate-700">Nhóm yêu cầu:</span>
-                <select id="workflow-select-type" onchange="renderWorkflowBuilder()" class="text-xs border border-slate-300 rounded-lg px-3 py-1.5 bg-white text-[#2E3191] font-bold">
-                  <option value="LEAVE">🏖️ Đăng ký Nghỉ phép năm (M09)</option>
-                  <option value="ATTENDANCE">📝 Giải trình Chấm công (M06)</option>
-                  <option value="GENERAL">📄 Đề xuất chung</option>
-                </select>
+        <!-- TAB 2: THIẾT LẬP CHI TIẾT & SƠ ĐỒ LUỒNG (VISUAL WORKFLOW BUILDER) -->
+        <div id="workflow-admin-content-builder" class="space-y-3.5 hidden">
+          <!-- Thanh điều khiển Nhóm đang cấu hình & Phiên bản -->
+          <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 bg-white p-3.5 rounded-2xl border border-slate-200 shadow-2xs">
+            <div class="flex items-center space-x-2.5">
+              <span class="text-xs font-bold text-slate-700 shrink-0">Đang cấu hình:</span>
+              <select id="workflow-select-type" onchange="renderWorkflowBuilder()" class="text-xs border border-slate-300 rounded-xl px-3 py-1.5 bg-indigo-50/50 text-[#2E3191] font-bold focus:ring-2 focus:ring-[#2E3191]">
+                <option value="LEAVE">🏖️ Đăng ký Nghỉ phép năm (M09)</option>
+                <option value="ATTENDANCE">📝 Giải trình Chấm công (M06)</option>
+                <option value="GENERAL">📄 Đề xuất chung</option>
+              </select>
+            </div>
+            <div class="flex items-center space-x-2">
+              <span id="request-group-version-badge" class="px-2.5 py-1 rounded-full bg-emerald-100 text-emerald-800 text-[11px] font-bold border border-emerald-200">🟢 Phiên bản 1 · Đang hoạt động</span>
+              <button type="button" id="btn-activate-request-group" onclick="activateRequestGroupVersion()" class="px-3.5 py-1.5 pap-primary text-white text-xs font-semibold rounded-xl transition cursor-pointer hover:bg-[#242775] shadow-2xs">
+                Kích hoạt phiên bản
+              </button>
+            </div>
+          </div>
+
+          <!-- Bố cục 2 Cột: Cột trái Menu cấu hình - Cột phải Nội dung & Sơ đồ luồng -->
+          <div class="grid grid-cols-1 lg:grid-cols-[230px_minmax(0,1fr)] gap-4 items-start">
+            <nav class="rounded-2xl border border-slate-200 bg-white p-2 flex lg:flex-col gap-1.5 shadow-2xs overflow-x-auto" role="tablist" aria-label="Menu thiết lập nhóm yêu cầu">
+              <button id="request-config-tab-workflow" role="tab" aria-selected="true" onclick="switchRequestConfigTab('workflow')" class="request-config-tab min-w-[170px] lg:min-w-0 w-full rounded-xl bg-indigo-50 text-left px-3.5 py-2.5 text-xs font-bold text-[#2E3191] border border-indigo-100 transition cursor-pointer">
+                <span class="block">🔀 Luồng phê duyệt</span>
+                <span class="block mt-0.5 text-[10px] font-normal text-slate-500">Sơ đồ, khối & người duyệt</span>
+              </button>
+              <button id="request-config-tab-form" role="tab" aria-selected="false" onclick="switchRequestConfigTab('form')" class="request-config-tab min-w-[170px] lg:min-w-0 w-full rounded-xl border border-transparent hover:bg-slate-50 text-left px-3.5 py-2.5 text-xs font-semibold text-slate-700 transition cursor-pointer">
+                <span class="block">🧾 Biểu mẫu nhập liệu</span>
+                <span class="block mt-0.5 text-[10px] font-normal text-slate-500">Trường thông tin cần điền</span>
+              </button>
+              <button id="request-config-tab-access" role="tab" aria-selected="false" onclick="switchRequestConfigTab('access')" class="request-config-tab min-w-[170px] lg:min-w-0 w-full rounded-xl border border-transparent hover:bg-slate-50 text-left px-3.5 py-2.5 text-xs font-semibold text-slate-700 transition cursor-pointer">
+                <span class="block">👥 Quyền truy cập</span>
+                <span class="block mt-0.5 text-[10px] font-normal text-slate-500">Ai được gửi & người theo dõi</span>
+              </button>
+              <button id="request-config-tab-notifications" role="tab" aria-selected="false" onclick="switchRequestConfigTab('notifications')" class="request-config-tab min-w-[170px] lg:min-w-0 w-full rounded-xl border border-transparent hover:bg-slate-50 text-left px-3.5 py-2.5 text-xs font-semibold text-slate-700 transition cursor-pointer">
+                <span class="block">🔔 Thông báo & SLA</span>
+                <span class="block mt-0.5 text-[10px] font-normal text-slate-500">Thời hạn cảnh báo trễ</span>
+              </button>
+              <button id="request-config-tab-general" role="tab" aria-selected="false" onclick="switchRequestConfigTab('general')" class="request-config-tab min-w-[170px] lg:min-w-0 w-full rounded-xl border border-transparent hover:bg-slate-50 text-left px-3.5 py-2.5 text-xs font-semibold text-slate-700 transition cursor-pointer">
+                <span class="block">⚙️ Thông tin chung</span>
+                <span class="block mt-0.5 text-[10px] font-normal text-slate-500">Mã, tên & tích hợp trả kết quả</span>
+              </button>
+            </nav>
+
+            <div class="min-w-0 space-y-4">
+              <!-- Sơ đồ khối trực quan (Visual Node Flowchart) -->
+              <div id="workflow-visual-panel" class="border border-slate-200 rounded-2xl p-5 bg-white shadow-xs">
+                <div class="flex items-center justify-between mb-4">
+                  <div class="text-xs font-bold uppercase text-slate-400 tracking-wider">Sơ đồ tiến trình phê duyệt đa cấp</div>
+                  <span class="text-[11px] text-slate-500 font-medium">Quy chuẩn tuần tự qua các khối</span>
+                </div>
+                <div id="workflow-visual-nodes" class="flex flex-wrap md:flex-nowrap items-center justify-start gap-2.5 overflow-x-auto py-2">
+                  <!-- Dynamic Nodes -->
+                </div>
               </div>
-              <div class="flex items-center space-x-2">
-                <span id="request-group-version-badge" class="px-2.5 py-1 rounded-full bg-emerald-100 text-emerald-800 text-[11px] font-bold border border-emerald-200">🟢 Phiên bản 1 · Đang hoạt động</span>
-                <button onclick="createRequestGroupDemo()" class="px-3 py-1.5 bg-white border border-slate-300 hover:bg-slate-100 text-slate-700 text-xs font-semibold rounded-lg transition cursor-pointer">
-                  <span>＋ Tạo nhóm</span>
-                </button>
-                <button id="btn-activate-request-group" onclick="activateRequestGroupVersion()" class="px-3 py-1.5 pap-primary text-white text-xs font-semibold rounded-lg transition cursor-pointer hover:bg-[#242775]">Kích hoạt phiên bản</button>
+
+              <!-- Nội dung mục cấu hình đang chọn -->
+              <div id="workflow-step-details" role="tabpanel" class="bg-white rounded-2xl border border-slate-200 shadow-xs p-5 space-y-4">
+                <!-- Rendered dynamically -->
               </div>
             </div>
-
-            <div class="grid grid-cols-1 lg:grid-cols-[230px_minmax(0,1fr)] gap-4 items-start">
-              <nav class="rounded-xl border border-slate-200 bg-slate-50 p-2 flex lg:flex-col gap-1 overflow-x-auto" role="tablist" aria-label="Menu thiết lập nhóm yêu cầu">
-                <button id="request-config-tab-general" role="tab" aria-controls="workflow-step-details" aria-selected="true" onclick="switchRequestConfigTab('general')" class="request-config-tab min-w-[170px] lg:min-w-0 w-full rounded-lg bg-indigo-50 text-left px-3 py-2.5 text-xs font-bold text-[#2E3191] border border-indigo-100">
-                  <span class="block">⚙️ Chung</span><span class="block mt-0.5 text-[10px] font-normal text-slate-500">Tên nhóm, mã và trạng thái</span>
-                </button>
-                <button id="request-config-tab-form" role="tab" aria-controls="workflow-step-details" aria-selected="false" onclick="switchRequestConfigTab('form')" class="request-config-tab min-w-[170px] lg:min-w-0 w-full rounded-lg border border-transparent hover:bg-white text-left px-3 py-2.5 text-xs font-semibold text-slate-700">
-                  <span class="block">🧾 Mẫu form</span><span class="block mt-0.5 text-[10px] font-normal text-slate-500">Trường người gửi cần nhập</span>
-                </button>
-                <button id="request-config-tab-access" role="tab" aria-controls="workflow-step-details" aria-selected="false" onclick="switchRequestConfigTab('access')" class="request-config-tab min-w-[170px] lg:min-w-0 w-full rounded-lg border border-transparent hover:bg-white text-left px-3 py-2.5 text-xs font-semibold text-slate-700">
-                  <span class="block">👥 Quyền truy cập</span><span class="block mt-0.5 text-[10px] font-normal text-slate-500">Ai được tạo và theo dõi</span>
-                </button>
-                <button id="request-config-tab-workflow" role="tab" aria-controls="workflow-step-details" aria-selected="false" onclick="switchRequestConfigTab('workflow')" class="request-config-tab min-w-[170px] lg:min-w-0 w-full rounded-lg border border-transparent hover:bg-white text-left px-3 py-2.5 text-xs font-semibold text-slate-700">
-                  <span class="block">🔀 Luồng duyệt</span><span class="block mt-0.5 text-[10px] font-normal text-slate-500">Khối, người duyệt và cách duyệt</span>
-                </button>
-                <button id="request-config-tab-notifications" role="tab" aria-controls="workflow-step-details" aria-selected="false" onclick="switchRequestConfigTab('notifications')" class="request-config-tab min-w-[170px] lg:min-w-0 w-full rounded-lg border border-transparent hover:bg-white text-left px-3 py-2.5 text-xs font-semibold text-slate-700">
-                  <span class="block">🔔 Thông báo & SLA</span><span class="block mt-0.5 text-[10px] font-normal text-slate-500">Thời hạn và nhắc việc</span>
-                </button>
-              </nav>
-
-              <div class="min-w-0 space-y-4">
-                <!-- Sơ đồ khối chỉ hiển thị tại mục Luồng duyệt -->
-                <div id="workflow-visual-panel" class="border border-slate-200 rounded-xl p-5 bg-white shadow-xs hidden">
-                  <div class="text-xs font-bold uppercase text-slate-400 tracking-wider mb-4">Sơ đồ các bước phê duyệt đa cấp</div>
-                  <div id="workflow-visual-nodes" class="flex flex-wrap md:flex-nowrap items-center justify-start gap-2 overflow-x-auto py-2">
-                    <!-- Dynamic Nodes -->
-                  </div>
-                </div>
-
-                <!-- Nội dung mục menu đang chọn -->
-                <div id="workflow-step-details" role="tabpanel" class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                  <!-- Rendered dynamically -->
-                </div>
-              </div>
-            </div>
+          </div>
         </div>
       </section>
 
@@ -11828,6 +11926,72 @@
             <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
             <span id="modal-cat-skill-submit-text">Lưu vào Danh mục</span>
           </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ================= MODAL: TẠO / SỬA NHÓM YÊU CẦU PHÊ DUYỆT (M14) ================= -->
+  <div id="modal-add-request-group" class="fixed inset-0 bg-slate-900/50 backdrop-blur-xs z-[60] flex items-center justify-center p-4 hidden">
+    <div class="bg-white rounded-2xl max-w-lg w-full shadow-2xl border border-slate-200 overflow-hidden transform transition-all">
+      <div class="pap-primary text-white px-5 py-4 flex items-center justify-between">
+        <div class="flex items-center space-x-2">
+          <span class="text-lg">📋</span>
+          <div>
+            <h3 class="text-sm font-bold" id="modal-request-group-title">Tạo nhóm yêu cầu phê duyệt mới</h3>
+            <p class="text-[10px] text-blue-200">Cấu hình mã, tên, danh mục và tích hợp phân hệ nghiệp vụ</p>
+          </div>
+        </div>
+        <button type="button" onclick="closeCreateRequestGroupModal()" class="text-slate-300 hover:text-white text-xl leading-none cursor-pointer p-1">&times;</button>
+      </div>
+
+      <form onsubmit="handleSaveRequestGroup(event)" class="p-5 space-y-3.5 text-xs">
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="block font-semibold text-slate-700 mb-1">Mã nhóm đề xuất <span class="text-rose-500">*</span></label>
+            <input id="group-form-code" required placeholder="VD: OVERTIME, ASSET" uppercase class="w-full px-3 py-2 border border-slate-300 rounded-lg bg-white uppercase font-bold text-[#2E3191]">
+          </div>
+          <div>
+            <label class="block font-semibold text-slate-700 mb-1">Danh mục nghiệp vụ <span class="text-rose-500">*</span></label>
+            <select id="group-form-category" required class="w-full px-3 py-2 border border-slate-300 rounded-lg bg-white font-medium text-slate-700">
+              <option value="Nghỉ phép">Nghỉ phép (M09)</option>
+              <option value="Chấm công">Chấm công (M06)</option>
+              <option value="Ca làm việc">Ca làm việc (M07)</option>
+              <option value="Hành chính - Tài sản">Hành chính - Tài sản</option>
+              <option value="Khác">Đề xuất chung khác</option>
+            </select>
+          </div>
+        </div>
+
+        <div>
+          <label class="block font-semibold text-slate-700 mb-1">Tên nhóm đề xuất <span class="text-rose-500">*</span></label>
+          <input id="group-form-name" required placeholder="VD: Đăng ký làm thêm giờ (OT)" class="w-full px-3 py-2 border border-slate-300 rounded-lg bg-white">
+        </div>
+
+        <div>
+          <label class="block font-semibold text-slate-700 mb-1">Mô tả mục đích / Hướng dẫn nhân sự</label>
+          <textarea id="group-form-desc" rows="2" placeholder="Nêu rõ mục đích áp dụng và các giấy tờ minh chứng cần thiết..." class="w-full px-3 py-2 border border-slate-300 rounded-lg bg-white"></textarea>
+        </div>
+
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="block font-semibold text-slate-700 mb-1">Thời hạn xử lý SLA (giờ)</label>
+            <input type="number" id="group-form-sla" min="1" value="48" class="w-full px-3 py-2 border border-slate-300 rounded-lg bg-white">
+          </div>
+          <div>
+            <label class="block font-semibold text-slate-700 mb-1">Tích hợp trả kết quả</label>
+            <select id="group-form-integration" class="w-full px-3 py-2 border border-slate-300 rounded-lg bg-white">
+              <option value="Tự động cập nhật M09">M09 · Đơn nghỉ phép & Sổ phép</option>
+              <option value="Tự động cập nhật M06">M06 · Giải trình chấm công</option>
+              <option value="Tự động cập nhật M07">M07 · Đổi ca làm việc</option>
+              <option value="Không tích hợp tự động">Lưu trữ phê duyệt nội bộ</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="pt-2 border-t border-slate-200 flex items-center justify-end space-x-2">
+          <button type="button" onclick="closeCreateRequestGroupModal()" class="px-3.5 py-2 border border-slate-300 rounded-lg text-slate-700 hover:bg-slate-100 transition">Hủy bỏ</button>
+          <button type="submit" class="px-4 py-2 pap-primary text-white font-bold rounded-lg hover:bg-[#242775] transition">Lưu nhóm đề xuất</button>
         </div>
       </form>
     </div>
@@ -19881,7 +20045,7 @@
           if (appChevron) appChevron.innerText = '▼';
         }
         if (typeof updateApprovalSubHighlight === 'function') updateApprovalSubHighlight('workflow');
-        if (typeof renderWorkflowBuilder === 'function') renderWorkflowBuilder();
+        if (typeof switchWorkflowAdminSubTab === 'function') switchWorkflowAdminSubTab('groups'); else if (typeof renderWorkflowBuilder === 'function') renderWorkflowBuilder();
       }
       if (moduleKey === 'approval') {
         const appSubMenu = document.getElementById('approval-sub-menu');
@@ -31263,6 +31427,37 @@
       markRequestConfigDirty(typeKey);
     }
 
+    function addWorkflowStep(typeKey) {
+      const def = workflowDefinitionsData[typeKey];
+      if (!def) return;
+      const nextLevel = (def.steps || []).length + 1;
+      def.steps.push({
+        level: nextLevel,
+        name: `Khối duyệt ${nextLevel}`,
+        approverRole: 'Quản lý phụ trách',
+        approvers: ['DIRECT_MANAGER'],
+        mode: 'ANY',
+        slaHours: 24
+      });
+      markRequestConfigDirty(typeKey);
+      renderWorkflowBuilder();
+      showToast(`✓ Đã thêm Khối duyệt ${nextLevel} vào quy trình!`);
+    }
+
+    function removeWorkflowStep(typeKey, index) {
+      const def = workflowDefinitionsData[typeKey];
+      if (!def || def.steps.length <= 1) {
+        showToast('Quy trình phải có ít nhất 1 khối duyệt!');
+        return;
+      }
+      def.steps.splice(index, 1);
+      // Re-index levels
+      def.steps.forEach((s, idx) => s.level = idx + 1);
+      markRequestConfigDirty(typeKey);
+      renderWorkflowBuilder();
+      showToast('Đã xóa khối duyệt khỏi quy trình.');
+    }
+
     function addRequestFormField(typeKey) {
       workflowDefinitionsData[typeKey].formFields.push({ label: 'Trường mới', type: 'Văn bản một dòng', required: false });
       markRequestConfigDirty(typeKey);
@@ -31353,6 +31548,205 @@
       renderWorkflowBuilder();
     }
 
+    // ==========================================
+    // PHÂN HỆ QUẢN TRỊ QUY TRÌNH PHÊ DUYỆT (HR ADMIN - M14)
+    // ==========================================
+    let currentWorkflowAdminSubTab = 'groups'; // 'groups' | 'builder'
+
+    function switchWorkflowAdminSubTab(subTab) {
+      currentWorkflowAdminSubTab = subTab;
+      const tabGroupsBtn = document.getElementById('tab-btn-workflow-groups');
+      const tabBuilderBtn = document.getElementById('tab-btn-workflow-builder');
+      const contentGroups = document.getElementById('workflow-admin-content-groups');
+      const contentBuilder = document.getElementById('workflow-admin-content-builder');
+
+      const activeCls = 'sub-tab-active px-4 py-2 rounded-xl flex items-center space-x-2 transition cursor-pointer shrink-0';
+      const inactiveCls = 'px-4 py-2 rounded-xl text-slate-700 hover:text-[#2E3191] hover:bg-slate-50 flex items-center space-x-2 transition cursor-pointer shrink-0';
+
+      if (subTab === 'groups') {
+        if (tabGroupsBtn) tabGroupsBtn.className = activeCls;
+        if (tabBuilderBtn) tabBuilderBtn.className = inactiveCls;
+        if (contentGroups) contentGroups.classList.remove('hidden');
+        if (contentBuilder) contentBuilder.classList.add('hidden');
+        renderWorkflowGroupsTable();
+      } else {
+        if (tabGroupsBtn) tabGroupsBtn.className = inactiveCls;
+        if (tabBuilderBtn) tabBuilderBtn.className = activeCls;
+        if (contentGroups) contentGroups.classList.add('hidden');
+        if (contentBuilder) contentBuilder.classList.remove('hidden');
+        renderWorkflowBuilder();
+      }
+    }
+
+    function renderWorkflowGroupsTable() {
+      const tbody = document.getElementById('workflow-groups-tbody');
+      const search = (document.getElementById('workflow-group-search')?.value || '').toLowerCase().trim();
+      const statusFilter = document.getElementById('workflow-group-filter-status')?.value || 'ALL';
+
+      const groups = Object.values(workflowDefinitionsData);
+      
+      // Update KPIs
+      const totalCount = groups.length;
+      const activeCount = groups.filter(g => g.status === 'ACTIVE').length;
+      const draftCount = groups.filter(g => g.status === 'DRAFT').length;
+      const hrmCount = groups.filter(g => g.integration && g.integration.includes('M0')).length;
+
+      const elTotal = document.getElementById('wf-kpi-total-groups');
+      const elActive = document.getElementById('wf-kpi-active-groups');
+      const elDraft = document.getElementById('wf-kpi-draft-groups');
+      const elHrm = document.getElementById('wf-kpi-hrm-connected');
+      const elBadge = document.getElementById('badge-workflow-groups-count');
+      const elTableCount = document.getElementById('workflow-groups-table-count');
+
+      if (elTotal) elTotal.innerText = totalCount;
+      if (elActive) elActive.innerText = activeCount;
+      if (elDraft) elDraft.innerText = draftCount;
+      if (elHrm) elHrm.innerText = `${hrmCount} / ${totalCount}`;
+      if (elBadge) elBadge.innerText = totalCount;
+
+      const filtered = groups.filter(g => {
+        const matchSearch = !search || g.code.toLowerCase().includes(search) || g.name.toLowerCase().includes(search) || (g.category || '').toLowerCase().includes(search);
+        const matchStatus = statusFilter === 'ALL' || g.status === statusFilter;
+        return matchSearch && matchStatus;
+      });
+
+      if (elTableCount) elTableCount.innerText = `${filtered.length} nhóm`;
+      if (!tbody) return;
+
+      if (filtered.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="9" class="text-center py-8 text-slate-400">Không tìm thấy nhóm yêu cầu nào phù hợp.</td></tr>';
+        return;
+      }
+
+      tbody.innerHTML = filtered.map((g, idx) => {
+        const isActive = g.status === 'ACTIVE';
+        const statusBadge = isActive
+          ? '<span class="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-emerald-100 text-emerald-800 border border-emerald-200">🟢 Hoạt động</span>'
+          : '<span class="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-amber-100 text-amber-800 border border-amber-200">🟡 Bản nháp</span>';
+
+        return `
+          <tr class="hover:bg-slate-50/80 transition border-b border-slate-100">
+            <td class="py-3 px-3 text-center text-slate-400 font-medium">${idx + 1}</td>
+            <td class="py-3 px-3 text-center">
+              <span class="px-2 py-0.5 rounded text-xs font-bold bg-indigo-50 text-[#2E3191] border border-indigo-200">${g.code}</span>
+            </td>
+            <td class="py-3 px-4">
+              <div class="font-bold text-slate-800 text-xs">${g.name}</div>
+              <div class="text-[11px] text-slate-400 line-clamp-1 mt-0.5">${g.description || 'Không có mô tả'}</div>
+            </td>
+            <td class="py-3 px-3">
+              <span class="px-2 py-0.5 rounded text-[11px] font-medium bg-slate-100 text-slate-700">${g.category || 'Chung'}</span>
+            </td>
+            <td class="py-3 px-3 text-center">
+              <span class="font-bold text-slate-800">${(g.steps || []).length}</span> <span class="text-slate-400">cấp</span>
+            </td>
+            <td class="py-3 px-3 text-center font-semibold text-slate-700">
+              ${g.requestSlaHours || 48}h
+            </td>
+            <td class="py-3 px-3 text-center">
+              <span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-slate-100 text-slate-700">v${g.version || 1}</span>
+            </td>
+            <td class="py-3 px-3 text-center">
+              ${statusBadge}
+            </td>
+            <td class="py-3 px-4 text-center">
+              <div class="flex items-center justify-center space-x-1.5">
+                <button type="button" onclick="openConfigureGroupDetail('${g.code}')" class="px-2.5 py-1 bg-indigo-50 hover:bg-indigo-100 text-[#2E3191] font-bold rounded-lg text-[11px] transition cursor-pointer border border-indigo-200 flex items-center space-x-1" title="Cấu hình luồng và biểu mẫu">
+                  <span>⚙️</span>
+                  <span>Cấu hình</span>
+                </button>
+              </div>
+            </td>
+          </tr>
+        `;
+      }).join('');
+    }
+
+    function filterWorkflowGroupsTable() {
+      renderWorkflowGroupsTable();
+    }
+
+    function openConfigureGroupDetail(groupCode) {
+      const select = document.getElementById('workflow-select-type');
+      if (select) select.value = groupCode;
+      const badgeEditing = document.getElementById('badge-current-group-editing');
+      if (badgeEditing) badgeEditing.innerText = groupCode;
+      currentRequestConfigTab = 'workflow';
+      switchWorkflowAdminSubTab('builder');
+      switchRequestConfigTab('workflow');
+    }
+
+    function openCreateRequestGroupModal() {
+      const modal = document.getElementById('modal-add-request-group');
+      if (modal) {
+        modal.classList.remove('hidden');
+        document.getElementById('group-form-code').value = '';
+        document.getElementById('group-form-name').value = '';
+        document.getElementById('group-form-desc').value = '';
+        document.getElementById('group-form-sla').value = 48;
+      }
+    }
+
+    function closeCreateRequestGroupModal() {
+      const modal = document.getElementById('modal-add-request-group');
+      if (modal) modal.classList.add('hidden');
+    }
+
+    function handleSaveRequestGroup(event) {
+      if (event) event.preventDefault();
+      const code = document.getElementById('group-form-code').value.trim().toUpperCase();
+      const name = document.getElementById('group-form-name').value.trim();
+      const category = document.getElementById('group-form-category').value;
+      const desc = document.getElementById('group-form-desc').value.trim();
+      const sla = Number(document.getElementById('group-form-sla').value) || 48;
+      const integration = document.getElementById('group-form-integration').value;
+
+      if (!code || !name) {
+        showToast('Vui lòng nhập đầy đủ mã và tên nhóm đề xuất!');
+        return;
+      }
+
+      if (workflowDefinitionsData[code]) {
+        showToast(`Mã nhóm [${code}] đã tồn tại, vui lòng chọn mã khác!`);
+        return;
+      }
+
+      workflowDefinitionsData[code] = {
+        type: code,
+        code: code,
+        name: name,
+        category: category,
+        description: desc || name,
+        integration: integration,
+        status: 'DRAFT',
+        version: 0,
+        requestSlaHours: sla,
+        reminderLeadHours: 8,
+        creators: ['Toàn bộ nhân viên'],
+        watchers: ['Phòng Nhân sự'],
+        formFields: [
+          { label: 'Tiêu đề đề xuất', type: 'Văn bản một dòng', required: true },
+          { label: 'Nội dung chi tiết', type: 'Văn bản nhiều dòng', required: true },
+          { label: 'Tệp đính kèm', type: 'Tệp đính kèm', required: false }
+        ],
+        steps: [
+          { level: 1, name: 'Quản lý trực tiếp', approverRole: 'Quản lý trực tiếp của người gửi', approvers: ['DIRECT_MANAGER'], mode: 'ANY', slaHours: 24 }
+        ],
+        hasDraftChanges: true
+      };
+
+      // Add to select dropdown
+      const select = document.getElementById('workflow-select-type');
+      if (select) {
+        select.add(new Option(`📄 ${name} (${code})`, code));
+      }
+
+      closeCreateRequestGroupModal();
+      renderWorkflowGroupsTable();
+      showToast(`✓ Đã tạo thành công nhóm đề xuất [${code}] ở trạng thái Bản nháp!`);
+      openConfigureGroupDetail(code);
+    }
+
     function renderWorkflowBuilder() {
       const select = document.getElementById('workflow-select-type');
       const typeKey = select ? select.value : 'LEAVE';
@@ -31385,7 +31779,7 @@
       } else if (currentRequestConfigTab === 'access') {
         details.innerHTML = `${notice}<div class="grid md:grid-cols-2 gap-3"><div class="rounded-xl border border-slate-200 p-4"><h4 class="font-bold text-sm mb-2">Ai được tạo yêu cầu</h4>${def.creators.map(item => `<div class="text-xs py-1">✓ ${item}</div>`).join('')}<button onclick="showToast('Bộ chọn người/đơn vị tạo là dữ liệu minh họa.')" class="mt-3 text-indigo-700 text-xs font-semibold">＋ Thêm đối tượng</button></div><div class="rounded-xl border border-slate-200 p-4"><h4 class="font-bold text-sm mb-2">Người xem (chỉ đọc)</h4>${def.watchers.map(item => `<div class="flex justify-between text-xs py-1"><span>👁️ ${item}</span><span class="text-slate-500">Không được duyệt</span></div>`).join('')}<p class="mt-2 text-[11px] text-slate-500">Quyền xem chi tiết nhạy cảm và tệp đính kèm cần cấp riêng.</p><button onclick="openApprovalViewerDemo()" class="mt-3 px-3 py-2 bg-sky-50 text-sky-800 border border-sky-200 rounded-lg text-xs font-semibold">Xem thử bằng quyền người theo dõi</button></div></div>`;
       } else if (currentRequestConfigTab === 'workflow') {
-        details.innerHTML = `${notice}<div class="space-y-3">${def.steps.map((step, index) => `<div class="rounded-xl border border-slate-200 p-4 space-y-3"><div class="flex justify-between"><h4 class="font-bold">Khối duyệt ${index + 1}: ${step.name}</h4><span class="text-xs text-slate-500">Khối chạy tuần tự theo thứ tự</span></div><label class="block text-xs font-semibold">Người duyệt trong khối (chọn một hoặc nhiều)<select multiple size="4" class="mt-1 w-full border border-slate-300 rounded-lg p-2" onchange="updateApproverAssignees('${typeKey}',${index},this)">${requestApproverOptions.map(([value,label]) => `<option value="${value}" ${(step.approvers || []).includes(value) ? 'selected' : ''}>${label}</option>`).join('')}</select><span class="text-[10px] text-slate-500">Dùng Ctrl để chọn nhiều người; chế độ dưới đây quyết định tiêu chí hoàn tất trong khối.</span></label><div class="grid sm:grid-cols-2 gap-3"><label class="text-xs font-semibold">Cách xử lý trong khối<select class="mt-1 w-full border border-slate-300 rounded-lg p-2" onchange="updateApproverMode('${typeKey}',${index},this.value)"><option value="ANY" ${step.mode === 'ANY' ? 'selected' : ''}>Một người duyệt là đủ</option><option value="ALL" ${step.mode === 'ALL' ? 'selected' : ''}>Tất cả người duyệt đều phải duyệt</option><option value="SEQUENTIAL" ${step.mode === 'SEQUENTIAL' ? 'selected' : ''}>Duyệt lần lượt theo thứ tự</option></select></label><label class="text-xs font-semibold">Nhắc khi chờ quá (giờ)<input type="number" min="1" value="${step.slaHours}" onchange="updateApproverSla('${typeKey}',${index},this.value)" class="mt-1 w-full border border-slate-300 rounded-lg p-2"></label></div><p class="text-[11px] text-slate-500">Từ chối ở bất kỳ khối nào sẽ kết thúc toàn bộ yêu cầu; cần nhập lý do và đóng các lượt duyệt còn chờ.</p></div>`).join('')}</div><label class="flex items-center gap-2 rounded-lg border border-amber-200 bg-amber-50 p-3 text-xs"><input type="checkbox" ${simulateMissingApprover ? 'checked' : ''} onchange="simulateMissingApproverChange(this.checked)"> Mô phỏng lỗi: không tìm thấy người duyệt khi gửi</label><div class="rounded-xl border border-rose-200 bg-rose-50 p-4"><div class="font-bold text-rose-900">Yêu cầu đang chờ xử lý định tuyến</div><div class="text-xs mt-1">${routeIssueDemo.id} · ${routeIssueDemo.currentApprover} · Trạng thái: Chờ duyệt</div><button onclick="openApproverReplacementModal('${routeIssueDemo.id}')" class="mt-2 px-3 py-2 bg-white border border-rose-300 rounded-lg text-xs font-semibold text-rose-800">HR Admin chỉ định người duyệt thay</button><p class="text-[11px] text-rose-800 mt-2">Không tự chuyển người duyệt. Bắt buộc lý do và audit; yêu cầu vẫn Chờ duyệt.</p></div>`;
+        details.innerHTML = `${notice}<div class="space-y-3">${def.steps.map((step, index) => `<div class="rounded-xl border border-slate-200 p-4 space-y-3"><div class="flex justify-between"><h4 class="font-bold">Khối duyệt ${index + 1}: ${step.name}</h4><span class="text-xs text-slate-500">Khối chạy tuần tự theo thứ tự</span></div><label class="block text-xs font-semibold">Người duyệt trong khối (chọn một hoặc nhiều)<select multiple size="4" class="mt-1 w-full border border-slate-300 rounded-lg p-2" onchange="updateApproverAssignees('${typeKey}',${index},this)">${requestApproverOptions.map(([value,label]) => `<option value="${value}" ${(step.approvers || []).includes(value) ? 'selected' : ''}>${label}</option>`).join('')}</select><span class="text-[10px] text-slate-500">Dùng Ctrl để chọn nhiều người; chế độ dưới đây quyết định tiêu chí hoàn tất trong khối.</span></label><div class="grid sm:grid-cols-2 gap-3"><label class="text-xs font-semibold">Cách xử lý trong khối<select class="mt-1 w-full border border-slate-300 rounded-lg p-2" onchange="updateApproverMode('${typeKey}',${index},this.value)"><option value="ANY" ${step.mode === 'ANY' ? 'selected' : ''}>Một người duyệt là đủ</option><option value="ALL" ${step.mode === 'ALL' ? 'selected' : ''}>Tất cả người duyệt đều phải duyệt</option><option value="SEQUENTIAL" ${step.mode === 'SEQUENTIAL' ? 'selected' : ''}>Duyệt lần lượt theo thứ tự</option></select></label><label class="text-xs font-semibold">Nhắc khi chờ quá (giờ)<input type="number" min="1" value="${step.slaHours}" onchange="updateApproverSla('${typeKey}',${index},this.value)" class="mt-1 w-full border border-slate-300 rounded-lg p-2"></label></div><div class="flex items-center justify-between pt-2 border-t border-slate-100"><p class="text-[11px] text-slate-500">Từ chối ở bất kỳ khối nào sẽ kết thúc toàn bộ yêu cầu; cần nhập lý do và đóng các lượt duyệt còn chờ.</p><button type="button" onclick="removeWorkflowStep('${typeKey}',${index})" class="text-rose-600 hover:text-rose-800 text-xs font-semibold">✕ Xóa khối này</button></div></div>`).join('')}</div><button type="button" class="px-4 py-2 bg-indigo-50 hover:bg-indigo-100 text-[#2E3191] font-bold rounded-xl text-xs transition cursor-pointer border border-indigo-200 flex items-center space-x-1.5" onclick="addWorkflowStep('${typeKey}')"><span>＋ Thêm khối duyệt mới</span></button><label class="flex items-center gap-2 rounded-lg border border-amber-200 bg-amber-50 p-3 text-xs"><input type="checkbox" ${simulateMissingApprover ? 'checked' : ''} onchange="simulateMissingApproverChange(this.checked)"> Mô phỏng lỗi: không tìm thấy người duyệt khi gửi</label><div class="rounded-xl border border-rose-200 bg-rose-50 p-4"><div class="font-bold text-rose-900">Yêu cầu đang chờ xử lý định tuyến</div><div class="text-xs mt-1">${routeIssueDemo.id} · ${routeIssueDemo.currentApprover} · Trạng thái: Chờ duyệt</div><button onclick="openApproverReplacementModal('${routeIssueDemo.id}')" class="mt-2 px-3 py-2 bg-white border border-rose-300 rounded-lg text-xs font-semibold text-rose-800">HR Admin chỉ định người duyệt thay</button><p class="text-[11px] text-rose-800 mt-2">Không tự chuyển người duyệt. Bắt buộc lý do và audit; yêu cầu vẫn Chờ duyệt.</p></div>`;
       } else {
         details.innerHTML = `${notice}<div class="grid md:grid-cols-2 gap-3"><label class="text-xs font-semibold">SLA tổng của yêu cầu (giờ)<input type="number" value="${def.requestSlaHours}" onchange="workflowDefinitionsData['${typeKey}'].requestSlaHours=Math.max(1,Number(this.value)||1);markRequestConfigDirty('${typeKey}')" class="mt-1 w-full border border-slate-300 rounded-lg p-2"></label><label class="text-xs font-semibold">Nhắc trước hạn (giờ)<input type="number" value="${def.reminderLeadHours}" onchange="updateRequestReminder('${typeKey}',this.value)" class="mt-1 w-full border border-slate-300 rounded-lg p-2"></label></div><div class="rounded-lg border border-amber-200 bg-amber-50 p-3 text-xs">Quá hạn: chỉ gửi nhắc việc/cảnh báo đến người xử lý và HR Admin. Không tự duyệt, từ chối, bỏ qua người duyệt hoặc chuyển bước.</div><div class="text-xs text-slate-600">Tần suất nhắc và kênh thông báo cần HR Admin cấu hình theo chính sách nội bộ.</div>`;
       }
