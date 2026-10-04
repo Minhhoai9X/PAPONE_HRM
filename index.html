@@ -6118,6 +6118,10 @@
                     <option value="2026-07">🔒 Kỳ Tháng 07/2026 (Đã chốt - v1.2)</option>
                   </select>
                 </div>
+                <button type="button" onclick="reloadAttendanceLockDemoData()" class="px-3 py-2 bg-indigo-50 hover:bg-indigo-100 text-[#2E3191] text-xs font-bold rounded-xl border border-indigo-200 shadow-2xs transition flex items-center space-x-1.5 cursor-pointer" title="Nạp lại bộ dữ liệu mẫu chốt công chuẩn">
+                  <span>⚡</span>
+                  <span>Nạp dữ liệu mẫu</span>
+                </button>
                 <button type="button" onclick="exportAttendanceSummaryExcel()" class="px-3 py-2 bg-white hover:bg-slate-50 text-slate-700 text-xs font-semibold rounded-xl border border-slate-300 shadow-2xs transition flex items-center space-x-1.5 cursor-pointer" title="Xuất Bảng công tổng hợp ra file Excel">
                   <span>📥</span>
                   <span>Xuất Excel</span>
@@ -6247,11 +6251,14 @@
                   <input type="text" id="lock-step1-search" oninput="renderLockStep1Table()" placeholder="Tìm mã NV, họ tên..." class="px-3 py-1.5 border border-slate-300 rounded-xl text-xs w-52 bg-white">
                   <select id="lock-step1-dept-filter" onchange="renderLockStep1Table()" class="px-3 py-1.5 border border-slate-300 rounded-xl text-xs bg-white text-slate-700">
                     <option value="ALL">Tất cả phòng ban</option>
-                    <option value="PHÒNG KHAI THÁC CẢNG">Phòng Khai thác Cảng</option>
-                    <option value="PHÒNG KỸ THUẬT CÔNG NGHỆ">Phòng Kỹ thuật Công nghệ</option>
-                    <option value="PHÒNG LOGISTICS & DỊCH VỤ">Phòng Logistics & Dịch vụ</option>
-                    <option value="PHÒNG TÀI CHÍNH KẾ TOÁN">Phòng Tài chính Kế toán</option>
-                    <option value="PHÒNG HÀNH CHÍNH NHÂN SỰ">Phòng Hành chính Nhân sự</option>
+                    <option value="CÔNG TY CP CẢNG PHƯỚC AN">Ban Giám đốc</option>
+                    <option value="Phòng Phát triển Phần mềm">Phòng Phát triển Phần mềm</option>
+                    <option value="Phòng Vận hành Cầu bến">Phòng Vận hành Cầu bến</option>
+                    <option value="Phòng Khai thác Cảng">Phòng Khai thác Cảng</option>
+                    <option value="Phòng Kỹ thuật Công nghệ">Phòng Kỹ thuật Công nghệ</option>
+                    <option value="Phòng Logistics & Dịch vụ">Phòng Logistics & Dịch vụ</option>
+                    <option value="Phòng Tài chính Kế toán">Phòng Tài chính Kế toán</option>
+                    <option value="Phòng Hành chính Nhân sự">Phòng Hành chính Nhân sự</option>
                   </select>
                 </div>
                 <div class="text-xs text-slate-500 font-medium">
@@ -6444,20 +6451,33 @@
                   <input type="text" id="lock-step4-search" oninput="renderLockStep4Table()" placeholder="Tìm theo mã NV, họ tên..." class="px-3 py-1.5 border border-slate-300 rounded-xl text-xs w-56 bg-white">
                   <select id="lock-step4-dept-filter" onchange="renderLockStep4Table()" class="px-3 py-1.5 border border-slate-300 rounded-xl text-xs bg-white text-slate-700">
                     <option value="ALL">Tất cả phòng ban</option>
-                    <option value="PHÒNG KHAI THÁC CẢNG">Phòng Khai thác Cảng</option>
-                    <option value="PHÒNG KỸ THUẬT CÔNG NGHỆ">Phòng Kỹ thuật Công nghệ</option>
-                    <option value="PHÒNG LOGISTICS & DỊCH VỤ">Phòng Logistics & Dịch vụ</option>
-                    <option value="PHÒNG TÀI CHÍNH KẾ TOÁN">Phòng Tài chính Kế toán</option>
-                    <option value="PHÒNG HÀNH CHÍNH NHÂN SỰ">Phòng Hành chính Nhân sự</option>
+                    <option value="CÔNG TY CP CẢNG PHƯỚC AN">Ban Giám đốc</option>
+                    <option value="Phòng Phát triển Phần mềm">Phòng Phát triển Phần mềm</option>
+                    <option value="Phòng Vận hành Cầu bến">Phòng Vận hành Cầu bến</option>
+                    <option value="Phòng Khai thác Cảng">Phòng Khai thác Cảng</option>
+                    <option value="Phòng Kỹ thuật Công nghệ">Phòng Kỹ thuật Công nghệ</option>
+                    <option value="Phòng Logistics & Dịch vụ">Phòng Logistics & Dịch vụ</option>
+                    <option value="Phòng Tài chính Kế toán">Phòng Tài chính Kế toán</option>
+                    <option value="Phòng Hành chính Nhân sự">Phòng Hành chính Nhân sự</option>
                   </select>
                 </div>
-                <div class="text-[11px] text-slate-500 italic">
-                  * Nhấp chuột trực tiếp vào số công hoặc nút [✏️ Sửa công] để điều chỉnh ngoại lệ.
+                <div class="flex items-center space-x-2">
+                  <div class="flex items-center space-x-1 bg-slate-100 p-1 rounded-xl text-xs">
+                    <button type="button" id="btn-toggle-step4-summary" onclick="toggleStep4ViewMode('summary')" class="px-2.5 py-1 rounded-lg text-xs font-bold bg-white text-[#2E3191] shadow-2xs transition cursor-pointer">
+                      📊 Bảng tổng hợp
+                    </button>
+                    <button type="button" id="btn-toggle-step4-matrix" onclick="toggleStep4ViewMode('matrix')" class="px-2.5 py-1 rounded-lg text-xs font-semibold text-slate-600 hover:text-slate-900 transition cursor-pointer">
+                      📅 Ma trận 30 ngày
+                    </button>
+                  </div>
+                  <div class="text-[11px] text-slate-500 italic hidden sm:block">
+                    * Nhấp chuột vào số công để điều chỉnh ngoại lệ.
+                  </div>
                 </div>
               </div>
 
-              <!-- Bảng Ma trận Tổng hợp Công Kỳ của Nhân viên -->
-              <div class="overflow-x-auto mt-3 border border-slate-200 rounded-xl">
+              <!-- Container 1: Bảng Ma trận Tổng hợp Công Kỳ của Nhân viên -->
+              <div id="lock-step4-summary-container" class="overflow-x-auto mt-3 border border-slate-200 rounded-xl">
                 <table class="w-full text-left text-xs border-collapse">
                   <thead class="bg-slate-100 text-slate-700 font-semibold uppercase text-[10px] tracking-wider border-b border-slate-200">
                     <tr>
@@ -6480,6 +6500,32 @@
                     <!-- Rendered dynamically -->
                   </tbody>
                 </table>
+              </div>
+
+              <!-- Container 2: Bảng Ma trận Công chi tiết theo Ngày (1..30) -->
+              <div id="lock-step4-matrix-container" class="overflow-x-auto mt-3 border border-slate-200 rounded-xl hidden">
+                <div class="p-3 bg-slate-50 border-b border-slate-200 text-xs flex items-center justify-between">
+                  <div class="flex items-center space-x-2">
+                    <span class="font-bold text-slate-800">Ký hiệu công:</span>
+                    <span class="px-1.5 py-0.5 rounded bg-emerald-100 text-emerald-800 font-bold text-[10px]">X: Đủ công (1.0)</span>
+                    <span class="px-1.5 py-0.5 rounded bg-blue-100 text-blue-800 font-bold text-[10px]">X/2: Nửa công (0.5)</span>
+                    <span class="px-1.5 py-0.5 rounded bg-purple-100 text-purple-800 font-bold text-[10px]">P: Phép năm (1.0)</span>
+                    <span class="px-1.5 py-0.5 rounded bg-slate-200 text-slate-700 font-bold text-[10px]">OFF: Nghỉ tuần</span>
+                    <span class="px-1.5 py-0.5 rounded bg-indigo-100 text-indigo-900 font-bold text-[10px]">⭐: Miễn công</span>
+                    <span class="px-1.5 py-0.5 rounded bg-amber-100 text-amber-800 font-bold text-[10px]">OT: Làm thêm giờ</span>
+                  </div>
+                  <span class="text-slate-500 text-[11px]">Hiển thị toàn bộ 30 ngày trong kỳ</span>
+                </div>
+                <div class="overflow-x-auto max-h-[500px]">
+                  <table class="w-full text-left text-xs border-collapse">
+                    <thead id="lock-step4-matrix-thead" class="bg-slate-100 text-slate-700 font-semibold uppercase text-[10px] sticky top-0 z-10 border-b border-slate-200">
+                      <!-- Rendered dynamically -->
+                    </thead>
+                    <tbody id="lock-step4-matrix-tbody" class="divide-y divide-slate-200 bg-white">
+                      <!-- Rendered dynamically -->
+                    </tbody>
+                  </table>
+                </div>
               </div>
             </div>
           </div>
@@ -6559,6 +6605,77 @@
                     <p class="text-slate-600 text-[11px]">Toàn bộ các ngày nghỉ phép được phê duyệt trên M09 đã tự động ánh xạ vào Bảng công.</p>
                   </div>
                 </div>
+              </div>
+            </div>
+
+            <!-- BẢNG CÔNG KỲ ĐÃ CHỐT & CHUYỂN TÍNH LƯƠNG (CHẾ ĐỘ CHỈ ĐỌC) -->
+            <div class="bg-white rounded-xl border border-slate-200 shadow-xs p-4 sm:p-5 space-y-3">
+              <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-slate-100">
+                <div class="flex items-center space-x-2.5">
+                  <div class="w-9 h-9 rounded-xl bg-emerald-50 text-emerald-700 flex items-center justify-center font-bold text-lg shrink-0 border border-emerald-100">
+                    📊
+                  </div>
+                  <div>
+                    <h3 class="font-bold text-sm text-slate-900 flex items-center space-x-2">
+                      <span id="lock-step5-table-title">BẢNG CÔNG TỔNG HỢP KỲ</span>
+                      <span id="lock-step5-status-pill" class="px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800 text-[10px] font-bold">🔒 CHẾ ĐỘ CHỈ ĐỌC</span>
+                    </h3>
+                    <p class="text-xs text-slate-500 mt-0.5">Dữ liệu công chính thức phục vụ đối chiếu và kết xuất chuyển dữ liệu sang phân hệ Bảng lương (M10).</p>
+                  </div>
+                </div>
+                <div class="flex items-center space-x-2 shrink-0">
+                  <button type="button" onclick="exportAttendanceSummaryExcel()" class="px-3.5 py-1.5 pap-primary text-white text-xs font-bold rounded-xl shadow-xs transition hover:bg-[#242775] cursor-pointer flex items-center space-x-1.5">
+                    <span>📥</span>
+                    <span>Xuất Excel (.xlsx)</span>
+                  </button>
+                </div>
+              </div>
+
+              <!-- Search & Filter Bar Step 5 -->
+              <div class="flex flex-wrap items-center justify-between gap-2.5 text-xs">
+                <div class="flex flex-wrap items-center gap-2">
+                  <input type="text" id="lock-step5-search" oninput="renderLockStep5Table()" placeholder="Tìm theo mã NV, họ tên..." class="px-3 py-1.5 border border-slate-300 rounded-xl text-xs w-56 bg-white">
+                  <select id="lock-step5-dept-filter" onchange="renderLockStep5Table()" class="px-3 py-1.5 border border-slate-300 rounded-xl text-xs bg-white text-slate-700">
+                    <option value="ALL">Tất cả phòng ban</option>
+                    <option value="CÔNG TY CP CẢNG PHƯỚC AN">Ban Giám đốc</option>
+                    <option value="Phòng Phát triển Phần mềm">Phòng Phát triển Phần mềm</option>
+                    <option value="Phòng Vận hành Cầu bến">Phòng Vận hành Cầu bến</option>
+                    <option value="Phòng Khai thác Cảng">Phòng Khai thác Cảng</option>
+                    <option value="Phòng Kỹ thuật Công nghệ">Phòng Kỹ thuật Công nghệ</option>
+                    <option value="Phòng Logistics & Dịch vụ">Phòng Logistics & Dịch vụ</option>
+                    <option value="Phòng Tài chính Kế toán">Phòng Tài chính Kế toán</option>
+                    <option value="Phòng Hành chính Nhân sự">Phòng Hành chính Nhân sự</option>
+                  </select>
+                </div>
+                <div class="text-xs text-slate-500 font-medium">
+                  Hiển thị: <strong id="lock-step5-count-badge" class="text-slate-800 font-bold">13 nhân viên</strong>
+                </div>
+              </div>
+
+              <!-- Bảng công đã chốt -->
+              <div class="overflow-x-auto border border-slate-200 rounded-xl">
+                <table class="w-full text-left text-xs border-collapse">
+                  <thead class="bg-slate-100 text-slate-700 font-semibold uppercase text-[10px] tracking-wider border-b border-slate-200">
+                    <tr>
+                      <th class="py-2.5 px-3 text-center w-12">STT</th>
+                      <th class="py-2.5 px-3 w-24">Mã NV</th>
+                      <th class="py-2.5 px-3 min-w-[150px]">Họ và tên</th>
+                      <th class="py-2.5 px-3 min-w-[150px]">Phòng ban</th>
+                      <th class="py-2.5 px-3 text-center w-24">Công chuẩn</th>
+                      <th class="py-2.5 px-3 text-center w-24 font-bold text-[#2E3191]">Công thực tế</th>
+                      <th class="py-2.5 px-3 text-center w-20">Phép AL</th>
+                      <th class="py-2.5 px-3 text-center w-20">Đi trễ</th>
+                      <th class="py-2.5 px-3 text-center w-20">Về sớm</th>
+                      <th class="py-2.5 px-3 text-center w-24">Giờ OT</th>
+                      <th class="py-2.5 px-3 text-center w-28 font-bold text-emerald-700 bg-emerald-50/50">Công tính lương</th>
+                      <th class="py-2.5 px-3 text-center w-28">Trạng thái khóa</th>
+                      <th class="py-2.5 px-3 min-w-[180px]">Ghi chú điều chỉnh</th>
+                    </tr>
+                  </thead>
+                  <tbody id="lock-step5-tbody" class="divide-y divide-slate-200 bg-white">
+                    <!-- Rendered dynamically via renderLockStep5Table() -->
+                  </tbody>
+                </table>
               </div>
             </div>
 
@@ -36822,13 +36939,15 @@
     }
 
     // =========================================================================
-    // TAB 5: CHỐT BẢNG CÔNG KỲ & VALIDATION
+    // TAB 5: CHỐT BẢNG CÔNG KỲ & VALIDATION (CHUẨN DOANH NGHIỆP PAP)
     // =========================================================================
 
-    
-    // =========================================================================
-    // DỮ LIỆU & QUY TRÌNH CHỐT BẢNG CÔNG CUỐI CHU KỲ (CHUẨN DOANH NGHIỆP PAP)
-    // =========================================================================
+    let attendancePeriodLockState = {
+      period: '09/2026',
+      isLocked: false,
+      lockedAt: null,
+      lockedBy: null
+    };
 
     let attendancePeriodsData = [
       {
@@ -36844,10 +36963,10 @@
         sentAt: '28/09/2026 16:00',
         currentStep: 4,
         formulaApplied: true,
-        totalEmployees: 245,
-        totalActualDays: 5348.5,
-        totalOtHours: 482.0,
-        leaveDays: 142.0,
+        totalEmployees: 13,
+        totalActualDays: 279.0,
+        totalOtHours: 108.0,
+        leaveDays: 5.5,
         missingPunchCount: 8,
         pendingRequestsCount: 5
       },
@@ -36864,10 +36983,10 @@
         sentAt: '30/08/2026 10:00',
         currentStep: 5,
         formulaApplied: true,
-        totalEmployees: 245,
-        totalActualDays: 5360.0,
-        totalOtHours: 512.5,
-        leaveDays: 138.0,
+        totalEmployees: 13,
+        totalActualDays: 282.5,
+        totalOtHours: 114.0,
+        leaveDays: 4.0,
         missingPunchCount: 0,
         pendingRequestsCount: 0
       },
@@ -36884,10 +37003,10 @@
         sentAt: '30/07/2026 15:00',
         currentStep: 5,
         formulaApplied: true,
-        totalEmployees: 242,
-        totalActualDays: 5520.0,
-        totalOtHours: 460.0,
-        leaveDays: 150.0,
+        totalEmployees: 13,
+        totalActualDays: 295.0,
+        totalOtHours: 98.0,
+        leaveDays: 6.0,
         missingPunchCount: 0,
         pendingRequestsCount: 0
       }
@@ -36895,34 +37014,217 @@
 
     let currentAttendancePeriodId = '2026-09';
     let currentAttendanceLockStep = 4; // 1 to 5
+    let currentStep4ViewMode = 'summary'; // 'summary' | 'matrix'
+    let currentMissingPunchFilter = 'ALL';
 
-    let attendanceMissingPunches = [
-      { id: 'MP001', pap: 'PAP0005', name: 'Hoàng Văn Em', dept: 'Phòng Khai thác Cảng', date: '25/09/2026', shift: 'C1 (06:00 - 14:00)', inTime: '05:55', outTime: '--:--', type: 'Thiếu giờ ra', reason: 'Vội về giao ca quên quẹt thẻ' },
-      { id: 'MP002', pap: 'PAP0007', name: 'Đỗ Văn Giang', dept: 'Phòng Kỹ thuật Công nghệ', date: '26/09/2026', shift: 'HC (08:00 - 17:00)', inTime: '--:--', outTime: '17:05', type: 'Thiếu giờ vào', reason: 'Đi hỗ trợ cẩu bờ khẩn cấp' },
-      { id: 'MP003', pap: 'PAP0008', name: 'Bùi Thị Hà', dept: 'Phòng Khai thác Cảng', date: '24/09/2026', shift: 'C2 (14:00 - 22:00)', inTime: '13:58', outTime: '--:--', type: 'Thiếu giờ ra', reason: 'Quên chấm công lúc 22h' },
-      { id: 'MP004', pap: 'PAP0009', name: 'Vũ Văn Hùng', dept: 'Phòng Logistics & Dịch vụ', date: '27/09/2026', shift: 'HC (08:00 - 17:00)', inTime: '--:--', outTime: '--:--', type: 'Quên cả vào & ra', reason: 'Đi kiểm hóa ngoài hiện trường cả ngày' },
-      { id: 'MP005', pap: 'PAP0010', name: 'Ngô Thị Lan', dept: 'Phòng Khai thác Cảng', date: '22/09/2026', shift: 'C3 (22:00 - 06:00)', inTime: '21:50', outTime: '--:--', type: 'Thiếu giờ ra', reason: 'Thiếu check-out sáng 23/09' },
-      { id: 'MP006', pap: 'PAP0003', name: 'Lê Văn Cường', dept: 'Phòng Khai thác Cảng', date: '21/09/2026', shift: 'HC (08:00 - 17:00)', inTime: '08:02', outTime: '--:--', type: 'Thiếu giờ ra', reason: 'Họp đột xuất bàn giao ca' },
-      { id: 'MP007', pap: 'PAP0004', name: 'Phạm Thị Dung', dept: 'Phòng Tài chính Kế toán', date: '23/09/2026', shift: 'HC (08:00 - 17:00)', inTime: '--:--', outTime: '17:15', type: 'Thiếu giờ vào', reason: 'Gặp đối tác ngân hàng đầu giờ' },
-      { id: 'MP008', pap: 'PAP0011', name: 'Đinh Văn Minh', dept: 'Phòng Logistics & Dịch vụ', date: '26/09/2026', shift: 'HC (08:00 - 17:00)', inTime: '07:55', outTime: '--:--', type: 'Thiếu giờ ra', reason: 'Quên quẹt thẻ ra về' }
-    ];
+    // Per-period data stores
+    let attendancePeriodSummaryStore = {};
+    let attendanceDailyMatrixStore = {};
+    let attendanceMissingPunches = [];
+    let attendancePeriodHistoryStore = {};
 
-    let attendancePeriodSummaryData = [
-      { pap: 'PAP0001', name: 'Nguyễn Văn A', title: 'Tổng Giám đốc', dept: 'Ban Giám đốc', standardDays: 22, actualDays: 22.0, leaveDays: 0, lateCount: 0, earlyCount: 0, otHours: 0.0, paidDays: 22.0, note: 'Miễn chấm công (Lãnh đạo)' },
-      { pap: 'PAP0002', name: 'Trần Thị B', title: 'Kế toán trưởng', dept: 'Phòng Tài chính Kế toán', standardDays: 22, actualDays: 21.0, leaveDays: 1.0, lateCount: 0, earlyCount: 0, otHours: 4.0, paidDays: 22.0, note: 'Nghỉ 1 ngày phép năm 15/09' },
-      { pap: 'PAP0003', name: 'Lê Văn Cường', title: 'Trưởng ca Khai thác', dept: 'Phòng Khai thác Cảng', standardDays: 22, actualDays: 22.0, leaveDays: 0, lateCount: 1, earlyCount: 0, otHours: 16.0, paidDays: 22.0, note: 'Làm thêm 2 ca trực tàu' },
-      { pap: 'PAP0004', name: 'Phạm Thị Dung', title: 'Chuyên viên Kế toán', dept: 'Phòng Tài chính Kế toán', standardDays: 22, actualDays: 22.0, leaveDays: 0, lateCount: 1, earlyCount: 0, otHours: 2.5, paidDays: 22.0, note: '' },
-      { pap: 'PAP0005', name: 'Hoàng Văn Em', title: 'Công nhân Cẩu bờ', dept: 'Phòng Khai thác Cảng', standardDays: 22, actualDays: 21.5, leaveDays: 0.5, lateCount: 0, earlyCount: 0, otHours: 24.0, paidDays: 22.0, note: 'Bổ sung giờ ra 25/09' },
-      { pap: 'PAP0006', name: 'Vũ Thị Phương', title: 'Chuyên viên Nhân sự', dept: 'Phòng Hành chính Nhân sự', standardDays: 22, actualDays: 22.0, leaveDays: 0, lateCount: 0, earlyCount: 0, otHours: 0.0, paidDays: 22.0, note: '' },
-      { pap: 'PAP0007', name: 'Đỗ Văn Giang', title: 'Kỹ sư Cơ giới', dept: 'Phòng Kỹ thuật Công nghệ', standardDays: 22, actualDays: 22.0, leaveDays: 0, lateCount: 0, earlyCount: 0, otHours: 12.0, paidDays: 22.0, note: 'Trực kỹ thuật cẩu đêm' },
-      { pap: 'PAP0008', name: 'Bùi Thị Hà', title: 'Điều độ viên Cảng', dept: 'Phòng Khai thác Cảng', standardDays: 22, actualDays: 20.0, leaveDays: 2.0, lateCount: 1, earlyCount: 0, otHours: 8.0, paidDays: 22.0, note: 'Phép năm 2 ngày 10-11/09' },
-      { pap: 'PAP0009', name: 'Vũ Văn Hùng', title: 'Chuyên viên Giao nhận', dept: 'Phòng Logistics & Dịch vụ', standardDays: 22, actualDays: 22.0, leaveDays: 0, lateCount: 0, earlyCount: 0, otHours: 10.0, paidDays: 22.0, note: 'Kiểm hóa ngoài hiện trường' },
-      { pap: 'PAP0010', name: 'Ngô Thị Lan', title: 'Nhân viên Cổng Port', dept: 'Phòng Khai thác Cảng', standardDays: 22, actualDays: 21.0, leaveDays: 1.0, lateCount: 0, earlyCount: 0, otHours: 6.0, paidDays: 22.0, note: '' }
-    ];
+    // Khởi tạo & nạp dữ liệu mẫu đồng bộ với employeesData
+    function initAttendanceLockData() {
+      // 1. Dữ liệu thiếu chấm công mẫu (8 lượt cho Kỳ T09/2026)
+      attendanceMissingPunches = [
+        { id: 'MP001', pap: 'PAP0299', name: 'Lê Văn E', dept: 'Phòng Vận hành Cầu bến', date: '25/09/2026', shift: 'C1 (06:00 - 14:00)', inTime: '05:55', outTime: '--:--', type: 'Thiếu giờ ra', reason: 'Vội bàn giao ca cẩu RTG quên quẹt thẻ ra' },
+        { id: 'MP002', pap: 'PAP0154', name: 'Nguyễn Văn D', dept: 'Phòng Vận hành Cầu bến', date: '26/09/2026', shift: 'HC (08:00 - 17:00)', inTime: '--:--', outTime: '17:05', type: 'Thiếu giờ vào', reason: 'Hỗ trợ kiểm tra kỹ thuật cẩu STS khẩn cấp' },
+        { id: 'MP003', pap: 'PAP0411', name: 'Vũ Văn G', dept: 'Phòng Vận hành Cầu bến', date: '24/09/2026', shift: 'C2 (14:00 - 22:00)', inTime: '13:58', outTime: '--:--', type: 'Thiếu giờ ra', reason: 'Rời buồng lái hoa tiêu lúc 22h quên check-out' },
+        { id: 'MP004', pap: 'PAP0034', name: 'Phạm Văn F', dept: 'Phòng Vận hành Cầu bến', date: '27/09/2026', shift: 'HC (08:00 - 17:00)', inTime: '--:--', outTime: '--:--', type: 'Quên cả vào & ra', reason: 'Dẫn luồng kiểm tra ngoài phao tiêu cả ngày' },
+        { id: 'MP005', pap: 'PAP0611', name: 'Đặng Văn F', dept: 'Phòng Phát triển Phần mềm', date: '22/09/2026', shift: 'HC (08:00 - 17:00)', inTime: '08:02', outTime: '--:--', type: 'Thiếu giờ ra', reason: 'Họp bàn giao sprint màn hình TOS muộn' },
+        { id: 'MP006', pap: 'PAP0312', name: 'Phạm Văn D', dept: 'Phòng Phát triển Phần mềm', date: '21/09/2026', shift: 'HC (08:00 - 17:00)', inTime: '--:--', outTime: '17:15', type: 'Thiếu giờ vào', reason: 'Xử lý sự cố trạm phát sóng WiFi cảng đầu giờ' },
+        { id: 'MP007', pap: 'PAP0108', name: 'Trần Văn B', dept: 'Phòng Phát triển Phần mềm', date: '23/09/2026', shift: 'HC (08:00 - 17:00)', inTime: '--:--', outTime: '17:30', type: 'Thiếu giờ vào', reason: 'Làm việc trực tiếp tại Hải quan Cảng đầu giờ' },
+        { id: 'MP008', pap: 'PAP0245', name: 'Lê Văn C', dept: 'Phòng Phát triển Phần mềm', date: '26/09/2026', shift: 'HC (08:00 - 17:00)', inTime: '07:55', outTime: '--:--', type: 'Thiếu giờ ra', reason: 'Quên quẹt thẻ ra về tại cổng Port' }
+      ];
+
+      // 2. Dữ liệu tổng hợp công theo kỳ cho toàn bộ 13 nhân sự employeesData
+      const periods = ['2026-09', '2026-08', '2026-07'];
+      periods.forEach(pId => {
+        const pObj = attendancePeriodsData.find(p => p.id === pId);
+        const stdDays = pObj ? pObj.standardDays : 22;
+        const isLocked = pObj ? pObj.isLocked : false;
+
+        attendancePeriodSummaryStore[pId] = (employeesData || []).map(emp => {
+          const isExempt = !!emp.isExempt || (typeof isEmployeeAttendanceExempt === 'function' && isEmployeeAttendanceExempt(emp));
+          let actualDays = stdDays;
+          let leaveDays = 0;
+          let lateCount = 0;
+          let earlyCount = 0;
+          let otHours = 0;
+          let note = '';
+
+          if (isExempt) {
+            actualDays = stdDays;
+            note = 'Miễn chấm công (Lãnh đạo HĐQT)';
+          } else if (emp.pap === 'PAP0009') {
+            actualDays = stdDays - 1.0;
+            leaveDays = 1.0;
+            otHours = 4.0;
+            note = pId === '2026-09' ? 'Trực hệ thống server cảng ngày nghỉ' : 'Đủ công';
+          } else if (emp.pap === 'PAP0108') {
+            actualDays = stdDays;
+            lateCount = 1;
+            otHours = 6.0;
+            note = pId === '2026-09' ? 'Họp go-live phần mềm TOS cảng' : '';
+          } else if (emp.pap === 'PAP0034') {
+            actualDays = stdDays - 0.5;
+            leaveDays = 0.5;
+            otHours = 18.0;
+            note = 'Dẫn luồng hoa tiêu ca đêm';
+          } else if (emp.pap === 'PAP0089') {
+            actualDays = stdDays;
+            otHours = 12.0;
+            note = 'Trực chỉ đạo bốc dỡ hàng cầu bến';
+          } else if (emp.pap === 'PAP0154') {
+            actualDays = stdDays;
+            lateCount = 1;
+            otHours = 24.0;
+            note = 'Làm thêm ca trực cẩu STS giải phóng tàu';
+          } else if (emp.pap === 'PAP0245') {
+            actualDays = stdDays - 2.0;
+            leaveDays = 2.0;
+            otHours = 2.0;
+            note = 'Nghỉ phép năm đã phê duyệt M09';
+          } else if (emp.pap === 'PAP0299') {
+            actualDays = stdDays - 0.5;
+            leaveDays = 0.5;
+            otHours = 16.0;
+            note = pId === '2026-09' ? 'Bổ sung giờ ra ngày 25/09' : 'Ca cẩu RTG';
+          } else if (emp.pap === 'PAP0312') {
+            actualDays = stdDays;
+            lateCount = 1;
+            otHours = 8.0;
+            note = 'Bảo trì hạ tầng CNTT định kỳ';
+          } else if (emp.pap === 'PAP0411') {
+            actualDays = stdDays - 1.0;
+            leaveDays = 1.0;
+            otHours = 14.0;
+            note = 'Trực hoa tiêu luồng Soài Rạp';
+          } else if (emp.pap === 'PAP0520') {
+            actualDays = stdDays;
+            note = '';
+          } else if (emp.pap === 'PAP0611') {
+            actualDays = stdDays;
+            otHours = 4.0;
+            note = 'Hỗ trợ giao diện màn hình điều độ';
+          }
+
+          const paidDays = actualDays + leaveDays;
+
+          return {
+            pap: emp.pap,
+            name: emp.name,
+            dept: emp.dept,
+            title: emp.title || emp.position || 'Nhân sự',
+            standardDays: stdDays,
+            actualDays: actualDays,
+            leaveDays: leaveDays,
+            lateCount: lateCount,
+            earlyCount: earlyCount,
+            otHours: otHours,
+            paidDays: paidDays,
+            isLocked: isLocked,
+            note: note
+          };
+        });
+
+        // 3. Dữ liệu ma trận chi tiết ngày (1..30 hoặc 1..31)
+        const daysInMonth = (pId === '2026-09') ? 30 : 31;
+        attendanceDailyMatrixStore[pId] = (attendancePeriodSummaryStore[pId] || []).map(emp => {
+          const isExempt = !!emp.isExempt || emp.note.includes('Miễn');
+          const dayRecords = [];
+          for (let d = 1; d <= daysInMonth; d++) {
+            const dateStr = `${pId}-${String(d).padStart(2, '0')}`;
+            const dayOfWeek = new Date(dateStr + 'T00:00:00').getDay();
+            const isWeekend = (dayOfWeek === 0 || dayOfWeek === 6);
+
+            let symbol = 'X';
+            let label = '1.0';
+
+            if (isExempt) {
+              symbol = isWeekend ? 'OFF' : '⭐';
+              label = isWeekend ? '0' : '1.0';
+            } else if (isWeekend) {
+              symbol = 'OFF';
+              label = '0';
+              if (emp.otHours > 0 && d === 13) { symbol = 'OT'; label = '+4h'; }
+            } else {
+              if (emp.leaveDays >= 1 && d === 18) { symbol = 'P'; label = 'AL'; }
+              else if (emp.leaveDays >= 2 && d === 19) { symbol = 'P'; label = 'AL'; }
+              else if (emp.actualDays < emp.standardDays && d === 25) { symbol = 'X/2'; label = '0.5'; }
+              else if (emp.otHours >= 16 && (d === 10 || d === 20)) { symbol = 'X+OT'; label = '1.0+OT'; }
+              else { symbol = 'X'; label = '1.0'; }
+            }
+
+            dayRecords.push({ day: d, symbol: symbol, label: label, isWeekend: isWeekend });
+          }
+          return { pap: emp.pap, name: emp.name, dept: emp.dept, days: dayRecords };
+        });
+      });
+
+      // 4. Lịch sử Audit Trail theo kỳ
+      attendancePeriodHistoryStore['2026-09'] = [
+        { ver: 'v1.2', time: '28/09/2026 15:30', actor: 'Nguyễn Thị Mai (HR Admin)', action: 'Tính lại công', total: '279.0 c', note: 'Đồng bộ lại sau khi duyệt 24 đề xuất giải trình công đợt 2.' },
+        { ver: 'v1.1', time: '25/09/2026 17:00', actor: 'Trần Văn Hùng (HR C&B)', action: 'Cập nhật phép', total: '278.0 c', note: 'Ánh xạ 7 ngày nghỉ phép năm đã duyệt từ phân hệ M09.' },
+        { ver: 'v1.0', time: '20/09/2026 09:00', actor: 'Hệ thống (Auto System)', action: 'Khởi tạo kỳ', total: '275.0 c', note: 'Khởi tạo Bảng công tự động đầu tiên cho Tháng 09/2026.' }
+      ];
+      attendancePeriodHistoryStore['2026-08'] = [
+        { ver: 'v1.3', time: '31/08/2026 18:00', actor: 'Nguyễn Thị Mai (HR Admin)', action: 'Chốt & Khóa kỳ', total: '282.5 c', note: 'Hoàn tất quy trình 5 bước chốt bảng công kỳ Tháng 08/2026. Khóa dữ liệu chuyển lương M10.' },
+        { ver: 'v1.2', time: '30/08/2026 16:00', actor: 'Trần Văn Hùng (HR C&B)', action: 'Tính lại công', total: '282.5 c', note: 'Hoàn tất giải trình công nhân viên khối Cầu bến.' },
+        { ver: 'v1.0', time: '20/08/2026 09:00', actor: 'Hệ thống (Auto System)', action: 'Khởi tạo kỳ', total: '280.0 c', note: 'Khởi tạo Bảng công tự động Tháng 08/2026.' }
+      ];
+      attendancePeriodHistoryStore['2026-07'] = [
+        { ver: 'v1.2', time: '31/07/2026 17:30', actor: 'Nguyễn Thị Mai (HR Admin)', action: 'Chốt & Khóa kỳ', total: '295.0 c', note: 'Hoàn tất chốt bảng công Tháng 07/2026 (chuẩn 23 ngày công).' },
+        { ver: 'v1.0', time: '20/07/2026 09:00', actor: 'Hệ thống (Auto System)', action: 'Khởi tạo kỳ', total: '292.0 c', note: 'Khởi tạo Bảng công tự động Tháng 07/2026.' }
+      ];
+    }
+
+    // Helper: Lấy danh sách tổng hợp công của kỳ
+    initAttendanceLockData();
+
+    // Helper: Lấy danh sách tổng hợp công của kỳ
+    function getAttendancePeriodSummaryData(periodId) {
+      const pid = periodId || currentAttendancePeriodId;
+      if (!attendancePeriodSummaryStore[pid] || attendancePeriodSummaryStore[pid].length === 0) {
+        initAttendanceLockData();
+      }
+      return attendancePeriodSummaryStore[pid] || [];
+    }
 
     // Helper: Lấy thông tin chu kỳ hiện tại
     function getCurrentAttendancePeriod() {
       return attendancePeriodsData.find(p => p.id === currentAttendancePeriodId) || attendancePeriodsData[0];
+    }
+
+    // Nút Nạp lại dữ liệu mẫu Demo
+    function reloadAttendanceLockDemoData() {
+      initAttendanceLockData();
+      const p = getCurrentAttendancePeriod();
+      currentAttendanceLockStep = p.isLocked ? 5 : (p.currentStep || 4);
+      renderAttendanceLockStatus();
+      showToast('⚡ Đã nạp thành công bộ dữ liệu mẫu Chốt bảng công (Đầy đủ 13 nhân sự, dữ liệu ca & công chi tiết)!');
+    }
+
+    // Chuyển chế độ xem ở Bước 4 (Tổng hợp vs Ma trận)
+    function toggleStep4ViewMode(mode) {
+      currentStep4ViewMode = mode || 'summary';
+      const btnSum = document.getElementById('btn-toggle-step4-summary');
+      const btnMat = document.getElementById('btn-toggle-step4-matrix');
+      const paneSum = document.getElementById('lock-step4-summary-container');
+      const paneMat = document.getElementById('lock-step4-matrix-container');
+
+      if (currentStep4ViewMode === 'summary') {
+        if (btnSum) btnSum.className = "px-2.5 py-1 rounded-lg text-xs font-bold bg-white text-[#2E3191] shadow-2xs transition cursor-pointer";
+        if (btnMat) btnMat.className = "px-2.5 py-1 rounded-lg text-xs font-semibold text-slate-600 hover:text-slate-900 transition cursor-pointer";
+        if (paneSum) paneSum.classList.remove('hidden');
+        if (paneMat) paneMat.classList.add('hidden');
+      } else {
+        if (btnSum) btnSum.className = "px-2.5 py-1 rounded-lg text-xs font-semibold text-slate-600 hover:text-slate-900 transition cursor-pointer";
+        if (btnMat) btnMat.className = "px-2.5 py-1 rounded-lg text-xs font-bold bg-white text-[#2E3191] shadow-2xs transition cursor-pointer";
+        if (paneSum) paneSum.classList.add('hidden');
+        if (paneMat) paneMat.classList.remove('hidden');
+      }
+      renderLockStep4Table();
     }
 
     // Đổi chu kỳ
@@ -36930,6 +37232,8 @@
       currentAttendancePeriodId = periodId;
       const period = getCurrentAttendancePeriod();
       currentAttendanceLockStep = period.isLocked ? 5 : (period.currentStep || 4);
+      const sel = document.getElementById('select-attendance-period');
+      if (sel) sel.value = periodId;
       renderAttendanceLockStatus();
       showToast(`Đã chuyển sang ${period.name}`);
     }
@@ -36994,10 +37298,11 @@
       const elMiss = document.getElementById('kpi-lock-missing-punches');
       const elReq = document.getElementById('kpi-lock-pending-requests');
 
-      if (elEmp) elEmp.innerText = period.totalEmployees;
+      const sumData = getAttendancePeriodSummaryData(period.id);
+      if (elEmp) elEmp.innerText = sumData.length;
       if (elAct) elAct.innerText = formatNumCompact(period.totalActualDays);
       if (elOt) elOt.innerText = formatNumCompact(period.totalOtHours) + ' h';
-      if (elLeave) elLeave.innerText = formatNumCompact(period.leaveDays || 142);
+      if (elLeave) elLeave.innerText = formatNumCompact(period.leaveDays || 5.5);
       if (elMiss) elMiss.innerText = period.isLocked ? '0 lượt' : `${attendanceMissingPunches.length} lượt`;
       if (elReq) elReq.innerText = period.isLocked ? '0 đơn' : `${period.pendingRequestsCount} đơn`;
 
@@ -37046,7 +37351,10 @@
       if (currentAttendanceLockStep === 1) renderLockStep1Table();
       else if (currentAttendanceLockStep === 2) renderLockStep2Table();
       else if (currentAttendanceLockStep === 4) renderLockStep4Table();
-      else if (currentAttendanceLockStep === 5) renderLockStep5BannerAndHistory();
+      else if (currentAttendanceLockStep === 5) {
+        renderLockStep5BannerAndHistory();
+        renderLockStep5Table();
+      }
     }
 
     // 1. RENDER BƯỚC 1: CA & LỊCH LÀM VIỆC
@@ -37056,9 +37364,9 @@
       const search = (document.getElementById('lock-step1-search')?.value || '').toLowerCase().trim();
       const deptFilter = document.getElementById('lock-step1-dept-filter')?.value || 'ALL';
 
-      let filtered = employeesData.filter(e => {
+      let filtered = (employeesData || []).filter(e => {
         const mSearch = !search || e.pap.toLowerCase().includes(search) || e.name.toLowerCase().includes(search);
-        const mDept = deptFilter === 'ALL' || e.dept.toUpperCase() === deptFilter.toUpperCase();
+        const mDept = deptFilter === 'ALL' || e.dept.toLowerCase().includes(deptFilter.toLowerCase()) || deptFilter.toLowerCase().includes(e.dept.toLowerCase());
         return mSearch && mDept;
       });
 
@@ -37067,7 +37375,7 @@
 
       tbody.innerHTML = filtered.map((emp, idx) => {
         const isFlexible = emp.scheduleMode === 'FLEXIBLE';
-        const isExempt = emp.isExemptFromAttendance;
+        const isExempt = !!emp.isExempt || (typeof isEmployeeAttendanceExempt === 'function' && isEmployeeAttendanceExempt(emp));
         const modeLabel = isExempt ? 'Miễn chấm công' : (isFlexible ? 'Xếp ca linh hoạt' : 'Hành chính cố định');
         const badgeCls = isExempt ? 'bg-purple-100 text-purple-800' : (isFlexible ? 'bg-blue-100 text-[#2E3191]' : 'bg-slate-100 text-slate-800');
 
@@ -37098,7 +37406,14 @@
       const tbody = document.getElementById('lock-step2-tbody');
       if (!tbody) return;
 
-      if (attendanceMissingPunches.length === 0) {
+      let list = attendanceMissingPunches;
+      if (currentMissingPunchFilter === 'MISS_IN') {
+        list = attendanceMissingPunches.filter(p => p.type.includes('vào') || p.inTime === '--:--');
+      } else if (currentMissingPunchFilter === 'MISS_OUT') {
+        list = attendanceMissingPunches.filter(p => p.type.includes('ra') || p.outTime === '--:--');
+      }
+
+      if (list.length === 0) {
         tbody.innerHTML = `
           <tr>
             <td colspan="10" class="py-8 text-center text-slate-500">
@@ -37111,7 +37426,7 @@
         return;
       }
 
-      tbody.innerHTML = attendanceMissingPunches.map((item, idx) => {
+      tbody.innerHTML = list.map((item, idx) => {
         return `
           <tr class="hover:bg-slate-50/80 transition">
             <td class="py-2.5 px-3 text-center text-slate-500">${idx + 1}</td>
@@ -37134,6 +37449,11 @@
           </tr>
         `;
       }).join('');
+    }
+
+    function filterAttendanceMissingPunches(filterType) {
+      currentMissingPunchFilter = filterType || 'ALL';
+      renderLockStep2Table();
     }
 
     // Modal Bổ sung giờ (Bước 2)
@@ -37183,63 +37503,132 @@
       setTimeout(() => {
         const period = getCurrentAttendancePeriod();
         period.formulaApplied = true;
-        period.totalActualDays = 5348.5;
-        period.totalOtHours = 482.0;
-        showToast('✓ Đã áp dụng công thức thành công cho 245 nhân sự trong kỳ!');
+        showToast(`✓ Đã áp dụng công thức tính công thành công cho toàn bộ nhân sự kỳ ${period.name}!`);
         renderAttendanceLockStatus();
       }, 500);
     }
 
     // 4. RENDER BƯỚC 4: SỬA SỐ CÔNG & GỬI NHÂN VIÊN ĐỐI SOÁT
     function renderLockStep4Table() {
-      const tbody = document.getElementById('lock-step4-tbody');
-      if (!tbody) return;
-
       const search = (document.getElementById('lock-step4-search')?.value || '').toLowerCase().trim();
       const deptFilter = document.getElementById('lock-step4-dept-filter')?.value || 'ALL';
 
-      let filtered = attendancePeriodSummaryData.filter(e => {
+      const allData = getAttendancePeriodSummaryData(currentAttendancePeriodId);
+      let filtered = allData.filter(e => {
         const mSearch = !search || e.pap.toLowerCase().includes(search) || e.name.toLowerCase().includes(search);
-        const mDept = deptFilter === 'ALL' || e.dept.toUpperCase() === deptFilter.toUpperCase();
+        const mDept = deptFilter === 'ALL' || e.dept.toLowerCase().includes(deptFilter.toLowerCase()) || deptFilter.toLowerCase().includes(e.dept.toLowerCase());
         return mSearch && mDept;
       });
 
-      tbody.innerHTML = filtered.map((emp, idx) => {
-        return `
-          <tr class="hover:bg-slate-50/80 transition">
-            <td class="py-2.5 px-3 text-center text-slate-500">${idx + 1}</td>
-            <td class="py-2.5 px-3 font-mono font-bold text-[#2E3191]">${emp.pap}</td>
-            <td class="py-2.5 px-3 font-semibold text-slate-900">${emp.name}</td>
-            <td class="py-2.5 px-3 text-slate-600">${emp.dept}</td>
-            <td class="py-2.5 px-3 text-center font-bold text-slate-700">${emp.standardDays}</td>
-            <td class="py-2.5 px-3 text-center bg-blue-50/60 cursor-pointer group" onclick="openEditSummaryWorkModal('${emp.pap}')" title="Nhấp vào để chỉnh sửa số công">
-              <span class="font-bold text-[#2E3191] group-hover:underline">${emp.actualDays.toFixed(2)}</span>
-              <span class="text-[10px] text-slate-400 opacity-0 group-hover:opacity-100 ml-1">✏️</span>
-            </td>
-            <td class="py-2.5 px-3 text-center text-emerald-700 font-semibold">${emp.leaveDays > 0 ? emp.leaveDays.toFixed(1) : '-'}</td>
-            <td class="py-2.5 px-3 text-center ${emp.lateCount > 0 ? 'text-amber-700 font-bold' : 'text-slate-400'}">${emp.lateCount || '-'}</td>
-            <td class="py-2.5 px-3 text-center ${emp.earlyCount > 0 ? 'text-amber-700 font-bold' : 'text-slate-400'}">${emp.earlyCount || '-'}</td>
-            <td class="py-2.5 px-3 text-center ${emp.otHours > 0 ? 'text-amber-700 font-bold' : 'text-slate-400'}">${emp.otHours > 0 ? emp.otHours.toFixed(1) + 'h' : '-'}</td>
-            <td class="py-2.5 px-3 text-center font-bold text-emerald-800 bg-emerald-50/40">${emp.paidDays.toFixed(2)}</td>
-            <td class="py-2.5 px-3 text-slate-600 text-[11px] truncate max-w-[200px]" title="${emp.note}">${emp.note || '-'}</td>
-            <td class="py-2.5 px-3 text-center">
-              <button type="button" onclick="openEditSummaryWorkModal('${emp.pap}')" class="px-2.5 py-1 bg-white hover:bg-slate-100 text-slate-700 font-semibold rounded text-xs border border-slate-300 shadow-2xs">Sửa</button>
-            </td>
+      if (currentStep4ViewMode === 'summary') {
+        const tbody = document.getElementById('lock-step4-tbody');
+        if (!tbody) return;
+
+        if (filtered.length === 0) {
+          tbody.innerHTML = '<tr><td colspan="13" class="py-8 text-center text-slate-400">Không tìm thấy nhân sự phù hợp với bộ lọc</td></tr>';
+          return;
+        }
+
+        tbody.innerHTML = filtered.map((emp, idx) => {
+          return `
+            <tr class="hover:bg-slate-50/80 transition">
+              <td class="py-2.5 px-3 text-center text-slate-500">${idx + 1}</td>
+              <td class="py-2.5 px-3 font-mono font-bold text-[#2E3191]">${emp.pap}</td>
+              <td class="py-2.5 px-3 font-semibold text-slate-900">${emp.name}</td>
+              <td class="py-2.5 px-3 text-slate-600">${emp.dept}</td>
+              <td class="py-2.5 px-3 text-center font-bold text-slate-700">${emp.standardDays}</td>
+              <td class="py-2.5 px-3 text-center bg-blue-50/60 cursor-pointer group" onclick="openEditSummaryWorkModal('${emp.pap}')" title="Nhấp vào để chỉnh sửa số công">
+                <span class="font-bold text-[#2E3191] group-hover:underline">${Number(emp.actualDays).toFixed(2)}</span>
+                <span class="text-[10px] text-slate-400 opacity-0 group-hover:opacity-100 ml-1">✏️</span>
+              </td>
+              <td class="py-2.5 px-3 text-center text-emerald-700 font-semibold">${emp.leaveDays > 0 ? Number(emp.leaveDays).toFixed(1) : '-'}</td>
+              <td class="py-2.5 px-3 text-center ${emp.lateCount > 0 ? 'text-amber-700 font-bold' : 'text-slate-400'}">${emp.lateCount || '-'}</td>
+              <td class="py-2.5 px-3 text-center ${emp.earlyCount > 0 ? 'text-amber-700 font-bold' : 'text-slate-400'}">${emp.earlyCount || '-'}</td>
+              <td class="py-2.5 px-3 text-center ${emp.otHours > 0 ? 'text-amber-700 font-bold' : 'text-slate-400'}">${emp.otHours > 0 ? Number(emp.otHours).toFixed(1) + 'h' : '-'}</td>
+              <td class="py-2.5 px-3 text-center font-bold text-emerald-800 bg-emerald-50/40">${Number(emp.paidDays).toFixed(2)}</td>
+              <td class="py-2.5 px-3 text-slate-600 text-[11px] truncate max-w-[200px]" title="${emp.note}">${emp.note || '-'}</td>
+              <td class="py-2.5 px-3 text-center">
+                <button type="button" onclick="openEditSummaryWorkModal('${emp.pap}')" class="px-2.5 py-1 bg-white hover:bg-slate-100 text-slate-700 font-semibold rounded text-xs border border-slate-300 shadow-2xs">Sửa</button>
+              </td>
+            </tr>
+          `;
+        }).join('');
+      } else {
+        // Render 30-day daily matrix
+        const thead = document.getElementById('lock-step4-matrix-thead');
+        const tbody = document.getElementById('lock-step4-matrix-tbody');
+        if (!thead || !tbody) return;
+
+        const daysInMonth = currentAttendancePeriodId === '2026-09' ? 30 : 31;
+        let headThs = `
+          <tr>
+            <th class="py-2.5 px-2 text-center w-10">STT</th>
+            <th class="py-2.5 px-2.5 w-20">Mã NV</th>
+            <th class="py-2.5 px-3 min-w-[150px]">Họ và tên</th>
+            <th class="py-2.5 px-3 min-w-[130px]">Phòng ban</th>
+        `;
+        for (let d = 1; d <= daysInMonth; d++) {
+          const dateStr = `${currentAttendancePeriodId}-${String(d).padStart(2, '0')}`;
+          const isWeekend = [0, 6].includes(new Date(dateStr + 'T00:00:00').getDay());
+          headThs += `<th class="py-2 px-1.5 text-center min-w-[32px] ${isWeekend ? 'bg-amber-50 text-amber-800' : 'text-slate-700'}">${d}</th>`;
+        }
+        headThs += `
+            <th class="py-2.5 px-2 text-center w-16 bg-blue-50 text-[#2E3191]">Công</th>
+            <th class="py-2.5 px-2 text-center w-14 bg-emerald-50 text-emerald-800">Phép</th>
+            <th class="py-2.5 px-2 text-center w-14 bg-amber-50 text-amber-800">OT</th>
           </tr>
         `;
-      }).join('');
+        thead.innerHTML = headThs;
+
+        const matrixData = attendanceDailyMatrixStore[currentAttendancePeriodId] || [];
+        const filteredMatrix = matrixData.filter(m => {
+          const mSearch = !search || m.pap.toLowerCase().includes(search) || m.name.toLowerCase().includes(search);
+          const mDept = deptFilter === 'ALL' || m.dept.toLowerCase().includes(deptFilter.toLowerCase()) || deptFilter.toLowerCase().includes(m.dept.toLowerCase());
+          return mSearch && mDept;
+        });
+
+        tbody.innerHTML = filteredMatrix.map((empM, idx) => {
+          const sumInfo = allData.find(e => e.pap === empM.pap) || {};
+          let tds = `
+            <tr class="hover:bg-slate-50/80 transition">
+              <td class="py-2 px-2 text-center text-slate-500 font-mono">${idx + 1}</td>
+              <td class="py-2 px-2.5 font-mono font-bold text-[#2E3191]">${empM.pap}</td>
+              <td class="py-2 px-3 font-semibold text-slate-900 truncate">${empM.name}</td>
+              <td class="py-2 px-3 text-slate-600 truncate">${empM.dept}</td>
+          `;
+          empM.days.forEach(dayRec => {
+            let badgeClass = 'text-slate-800 font-semibold';
+            if (dayRec.symbol === 'X') badgeClass = 'text-emerald-700 font-bold';
+            else if (dayRec.symbol === 'X/2') badgeClass = 'text-blue-700 font-bold bg-blue-50 rounded';
+            else if (dayRec.symbol === 'P') badgeClass = 'text-purple-700 font-bold bg-purple-50 rounded';
+            else if (dayRec.symbol === 'OFF') badgeClass = 'text-slate-400';
+            else if (dayRec.symbol === '⭐') badgeClass = 'text-indigo-700 font-bold';
+            else if (dayRec.symbol.includes('OT')) badgeClass = 'text-amber-700 font-bold bg-amber-50 rounded';
+
+            tds += `<td class="py-2 px-1 text-center text-[10px] ${dayRec.isWeekend ? 'bg-slate-50/60' : ''} ${badgeClass}" title="Ngày ${dayRec.day}: ${dayRec.symbol}">${dayRec.symbol}</td>`;
+          });
+          tds += `
+              <td class="py-2 px-2 text-center font-bold text-[#2E3191] bg-blue-50/40">${Number(sumInfo.actualDays || 22).toFixed(1)}</td>
+              <td class="py-2 px-2 text-center font-semibold text-emerald-700 bg-emerald-50/40">${sumInfo.leaveDays || '-'}</td>
+              <td class="py-2 px-2 text-center font-semibold text-amber-700 bg-amber-50/40">${sumInfo.otHours ? sumInfo.otHours + 'h' : '-'}</td>
+            </tr>
+          `;
+          return tds;
+        }).join('');
+      }
     }
 
     // Modal Sửa công (Bước 4)
     function openEditSummaryWorkModal(pap) {
-      const emp = attendancePeriodSummaryData.find(e => e.pap === pap);
+      const list = getAttendancePeriodSummaryData(currentAttendancePeriodId);
+      const emp = list.find(e => e.pap === pap);
       if (!emp) return;
 
       document.getElementById('edit-work-pap').value = emp.pap;
       document.getElementById('edit-work-name').innerText = emp.name;
       document.getElementById('edit-work-code').innerText = emp.pap;
       document.getElementById('edit-work-dept').innerText = emp.dept;
-      document.getElementById('edit-work-orig-days').innerText = emp.actualDays.toFixed(2) + ' ngày';
+      document.getElementById('edit-work-orig-days').innerText = Number(emp.actualDays).toFixed(2) + ' ngày';
       document.getElementById('edit-work-new-days').value = emp.actualDays;
       document.getElementById('edit-work-reason').value = emp.note || '';
 
@@ -37258,10 +37647,11 @@
       const newDays = parseFloat(document.getElementById('edit-work-new-days').value);
       const reason = document.getElementById('edit-work-reason').value;
 
-      const emp = attendancePeriodSummaryData.find(e => e.pap === pap);
+      const list = getAttendancePeriodSummaryData(currentAttendancePeriodId);
+      const emp = list.find(e => e.pap === pap);
       if (emp) {
         emp.actualDays = newDays;
-        emp.paidDays = newDays + emp.leaveDays;
+        emp.paidDays = newDays + (emp.leaveDays || 0);
         emp.note = reason;
         showToast(`✓ Đã cập nhật công cho ${emp.name}: ${newDays.toFixed(2)} công`);
       }
@@ -37286,7 +37676,7 @@
       const period = getCurrentAttendancePeriod();
       period.sentForReview = true;
       period.sentAt = new Date().toLocaleDateString('vi-VN') + ' ' + new Date().toLocaleTimeString().slice(0, 5);
-      showToast('📤 Đã gửi bảng công đối soát đến 245 nhân viên thành công qua Email & App!');
+      showToast(`📤 Đã phát hành bảng công đối soát ${period.name} đến toàn bộ nhân viên thành công qua Email & App!`);
       renderAttendanceLockStatus();
     }
 
@@ -37308,7 +37698,7 @@
                   <h3 class="font-bold text-sm uppercase">${period.name.toUpperCase()} ĐÃ ĐƯỢC CHỐT & KHÓA DỮ LIỆU</h3>
                   <span class="px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800 text-[10px] font-bold">Trạng thái: LOCKED</span>
                 </div>
-                <p class="text-xs text-indigo-900 mt-0.5">Khóa lúc ${period.lockedAt || '17:00 28/09/2026'} bởi ${period.lockedBy || 'Nguyễn Thị Mai (HR Admin)'}. Bảng công ở chế độ CHỈ ĐỌC để phục vụ tính lương (M10).</p>
+                <p class="text-xs text-indigo-900 mt-0.5">Khóa lúc ${period.lockedAt || '31/08/2026 18:00'} bởi ${period.lockedBy || 'Nguyễn Thị Mai (HR Admin)'}. Bảng công ở chế độ CHỈ ĐỌC để phục vụ tính lương (M10).</p>
               </div>
             </div>
             <div class="flex items-center space-x-2">
@@ -37342,6 +37732,82 @@
           `;
         }
       }
+
+      // Render Lịch sử audit trail
+      const tbody = document.getElementById('attendance-period-history-tbody');
+      if (tbody) {
+        const historyList = attendancePeriodHistoryStore[period.id] || attendancePeriodHistoryStore['2026-09'] || [];
+        tbody.innerHTML = historyList.map(h => `
+          <tr class="hover:bg-slate-50/80 transition">
+            <td class="py-2.5 px-3 font-bold font-mono text-[#2E3191]">${h.ver}</td>
+            <td class="py-2.5 px-3 text-slate-600 font-mono">${h.time}</td>
+            <td class="py-2.5 px-3 font-medium text-slate-900">${h.actor}</td>
+            <td class="py-2.5 px-3 text-center"><span class="px-2 py-0.5 rounded-full ${h.action.includes('Khóa') ? 'bg-rose-100 text-rose-800' : 'bg-blue-50 text-[#2E3191]'} text-[10px] font-bold">${h.action}</span></td>
+            <td class="py-2.5 px-3 text-center font-bold text-slate-800">${h.total}</td>
+            <td class="py-2.5 px-3 text-slate-600">${h.note}</td>
+          </tr>
+        `).join('');
+      }
+    }
+
+    // 5b. RENDER BẢNG CÔNG KỲ ĐÃ CHỐT KHÓA (READ-ONLY) Ở BƯỚC 5
+    function renderLockStep5Table() {
+      const tbody = document.getElementById('lock-step5-tbody');
+      if (!tbody) return;
+
+      const period = getCurrentAttendancePeriod();
+      const search = (document.getElementById('lock-step5-search')?.value || '').toLowerCase().trim();
+      const deptFilter = document.getElementById('lock-step5-dept-filter')?.value || 'ALL';
+
+      const allData = getAttendancePeriodSummaryData(period.id);
+      let filtered = allData.filter(e => {
+        const mSearch = !search || e.pap.toLowerCase().includes(search) || e.name.toLowerCase().includes(search);
+        const mDept = deptFilter === 'ALL' || e.dept.toLowerCase().includes(deptFilter.toLowerCase()) || deptFilter.toLowerCase().includes(e.dept.toLowerCase());
+        return mSearch && mDept;
+      });
+
+      const countBadge = document.getElementById('lock-step5-count-badge');
+      if (countBadge) countBadge.innerText = `${filtered.length} nhân viên`;
+
+      const tblTitle = document.getElementById('lock-step5-table-title');
+      if (tblTitle) tblTitle.innerText = `BẢNG CÔNG TỔNG HỢP ${period.name.toUpperCase()}`;
+
+      const statusPill = document.getElementById('lock-step5-status-pill');
+      if (statusPill) {
+        statusPill.className = period.isLocked 
+          ? "px-2 py-0.5 rounded-full bg-indigo-100 text-indigo-900 text-[10px] font-bold"
+          : "px-2 py-0.5 rounded-full bg-amber-100 text-amber-800 text-[10px] font-bold";
+        statusPill.innerText = period.isLocked ? "🔒 CHẾ ĐỘ CHỈ ĐỌC (ĐÃ CHỐT)" : "🔓 CHẾ ĐỘ XEM TRƯỚC (CHƯA KHÓA)";
+      }
+
+      if (filtered.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="13" class="py-8 text-center text-slate-400">Không tìm thấy dữ liệu nhân sự phù hợp</td></tr>';
+        return;
+      }
+
+      tbody.innerHTML = filtered.map((emp, idx) => {
+        return `
+          <tr class="hover:bg-slate-50/80 transition">
+            <td class="py-2.5 px-3 text-center text-slate-500 font-mono">${idx + 1}</td>
+            <td class="py-2.5 px-3 font-mono font-bold text-[#2E3191]">${emp.pap}</td>
+            <td class="py-2.5 px-3 font-semibold text-slate-900">${emp.name}</td>
+            <td class="py-2.5 px-3 text-slate-600">${emp.dept}</td>
+            <td class="py-2.5 px-3 text-center font-bold text-slate-700">${emp.standardDays}</td>
+            <td class="py-2.5 px-3 text-center font-bold text-[#2E3191] bg-slate-50/60">${Number(emp.actualDays).toFixed(2)}</td>
+            <td class="py-2.5 px-3 text-center text-emerald-700 font-semibold">${emp.leaveDays > 0 ? Number(emp.leaveDays).toFixed(1) : '-'}</td>
+            <td class="py-2.5 px-3 text-center ${emp.lateCount > 0 ? 'text-amber-700 font-bold' : 'text-slate-400'}">${emp.lateCount || '-'}</td>
+            <td class="py-2.5 px-3 text-center ${emp.earlyCount > 0 ? 'text-amber-700 font-bold' : 'text-slate-400'}">${emp.earlyCount || '-'}</td>
+            <td class="py-2.5 px-3 text-center ${emp.otHours > 0 ? 'text-amber-700 font-bold' : 'text-slate-400'}">${emp.otHours > 0 ? Number(emp.otHours).toFixed(1) + 'h' : '-'}</td>
+            <td class="py-2.5 px-3 text-center font-bold text-emerald-800 bg-emerald-50/40">${Number(emp.paidDays).toFixed(2)}</td>
+            <td class="py-2.5 px-3 text-center">
+              <span class="px-2 py-0.5 rounded-full ${period.isLocked ? 'bg-indigo-100 text-indigo-900' : 'bg-amber-100 text-amber-800'} text-[10px] font-bold">
+                ${period.isLocked ? '🔒 Đã chốt khóa' : 'Đang xử lý'}
+              </span>
+            </td>
+            <td class="py-2.5 px-3 text-slate-600 text-[11px] truncate max-w-[200px]" title="${emp.note}">${emp.note || '-'}</td>
+          </tr>
+        `;
+      }).join('');
     }
 
     // Top action click
@@ -37358,14 +37824,69 @@
     function syncShiftsFromScheduleModule() {
       showToast('Đang kết nối và đồng bộ dữ liệu phân ca từ phân hệ M07...');
       setTimeout(() => {
-        showToast('✓ Đã đồng bộ thành công phân ca cho toàn bộ 245 nhân sự trong kỳ!');
+        showToast('✓ Đã đồng bộ thành công phân ca cho toàn bộ nhân sự trong kỳ!');
       }, 400);
     }
 
-    // Xuất Excel
+    // Xuất Excel chuẩn SheetJS XLSX
     function exportAttendanceSummaryExcel() {
       const period = getCurrentAttendancePeriod();
-      showToast(`📥 Đang tải xuống Bảng công tổng hợp ${period.name} (.xlsx)...`);
+      const summaryData = getAttendancePeriodSummaryData(period.id);
+
+      if (typeof XLSX === 'undefined') {
+        showToast(`📥 Đang xuất Bảng công tổng hợp ${period.name}...`);
+        return;
+      }
+
+      try {
+        const headers = [
+          'STT', 'Mã NV (PAP)', 'Họ và tên', 'Phòng ban', 'Chức vụ / Chức danh',
+          'Công chuẩn kỳ', 'Công thực tế', 'Nghỉ phép (AL)', 'Đi trễ (lượt)', 'Về sớm (lượt)',
+          'Giờ làm thêm (OT)', 'Công tính lương', 'Trạng thái chốt', 'Ghi chú điều chỉnh'
+        ];
+
+        const rows = summaryData.map((emp, idx) => [
+          idx + 1,
+          emp.pap,
+          emp.name,
+          emp.dept,
+          emp.title || emp.position || '',
+          emp.standardDays,
+          emp.actualDays,
+          emp.leaveDays || 0,
+          emp.lateCount || 0,
+          emp.earlyCount || 0,
+          emp.otHours || 0,
+          emp.paidDays,
+          period.isLocked ? 'Đã chốt & Khóa' : 'Đang mở (Chưa khóa)',
+          emp.note || ''
+        ]);
+
+        const ws = XLSX.utils.aoa_to_sheet([headers, ...rows]);
+        const wb = XLSX.utils.book_new();
+        XLSX.utils.book_append_sheet(wb, ws, 'BangCong_' + period.id.replace('-', '_'));
+
+        const infoRows = [
+          ['THÔNG TIN KỲ CHỐT BẢNG CÔNG', ''],
+          ['Kỳ công:', period.name],
+          ['Thời gian chu kỳ:', period.startDate + ' đến ' + period.endDate],
+          ['Công chuẩn kỳ:', period.standardDays + ' ngày'],
+          ['Trạng thái:', period.isLocked ? 'ĐÃ CHỐT & KHÓA (LOCKED)' : 'ĐANG MỞ'],
+          ['Thời gian chốt:', period.lockedAt || 'Chưa khóa'],
+          ['Người thực hiện:', period.lockedBy || 'HR Admin'],
+          ['Tổng nhân sự:', summaryData.length],
+          ['Tổng công thực tế:', period.totalActualDays],
+          ['Tổng giờ OT:', period.totalOtHours + ' giờ'],
+          ['Ngày xuất file:', new Date().toLocaleDateString('vi-VN') + ' ' + new Date().toLocaleTimeString().slice(0, 5)]
+        ];
+        const wsInfo = XLSX.utils.aoa_to_sheet(infoRows);
+        XLSX.utils.book_append_sheet(wb, wsInfo, 'ThongTinKy');
+
+        XLSX.writeFile(wb, `Bang_cong_chot_ky_${period.id}.xlsx`);
+        showToast(`📥 Đã xuất thành công Bảng công ${period.name} (.xlsx)!`);
+      } catch (err) {
+        showToast(`📥 Đã tải xuống file Bảng công ${period.name}!`);
+      }
     }
 
     // Xác nhận Khóa kỳ công
@@ -37377,35 +37898,25 @@
       period.currentStep = 5;
       currentAttendanceLockStep = 5;
 
+      // Cập nhật trạng thái trong summary store
+      const list = getAttendancePeriodSummaryData(period.id);
+      list.forEach(e => { e.isLocked = true; });
+
       // Thêm dòng lịch sử audit
-      const tbody = document.getElementById('attendance-period-history-tbody');
-      if (tbody) {
-        const tr = document.createElement('tr');
-        tr.className = "hover:bg-slate-50/80 transition";
-        tr.innerHTML = `
-          <td class="py-2.5 px-3 font-bold font-mono text-[#2E3191]">v1.3</td>
-          <td class="py-2.5 px-3 text-slate-600 font-mono">${period.lockedAt}</td>
-          <td class="py-2.5 px-3 font-medium text-slate-900">${period.lockedBy}</td>
-          <td class="py-2.5 px-3 text-center"><span class="px-2 py-0.5 rounded-full bg-rose-100 text-rose-800 text-[10px] font-bold">Chốt & Khóa kỳ</span></td>
-          <td class="py-2.5 px-3 text-center font-bold text-slate-800">${formatNumCompact(period.totalActualDays)} c</td>
-          <td class="py-2.5 px-3 text-slate-600">Hoàn tất quy trình 5 bước chốt bảng công kỳ ${period.name}. Khóa dữ liệu phục vụ chuyển lương M10.</td>
-        `;
-        tbody.insertBefore(tr, tbody.firstChild);
-      }
+      if (!attendancePeriodHistoryStore[period.id]) attendancePeriodHistoryStore[period.id] = [];
+      attendancePeriodHistoryStore[period.id].unshift({
+        ver: 'v1.3',
+        time: period.lockedAt,
+        actor: period.lockedBy,
+        action: 'Chốt & Khóa kỳ',
+        total: `${formatNumCompact(period.totalActualDays)} c`,
+        note: `Hoàn tất quy trình 5 bước chốt bảng công kỳ ${period.name}. Khóa dữ liệu phục vụ chuyển lương M10.`
+      });
 
       closeAttLockModal();
       showToast(`🔒 ĐÃ CHỐT & KHÓA BẢNG CÔNG ${period.name.toUpperCase()} THÀNH CÔNG!`);
       renderAttendanceLockStatus();
     }
-
-    // Mở khóa kỳ công
-    
-    let attendancePeriodLockState = {
-      period: '09/2026',
-      isLocked: false,
-      lockedAt: null,
-      lockedBy: null
-    };
 
     function openAttLockModal() {
       const modal = document.getElementById('modal-att-lock-confirm');
@@ -37429,6 +37940,32 @@
     function closeAttUnlockModal() {
       const modal = document.getElementById('modal-att-unlock-confirm');
       if (modal) modal.classList.add('hidden');
+    }
+
+    function confirmUnlockAttendancePeriod() {
+      const reason = document.getElementById('att-unlock-reason')?.value;
+      if (!reason || reason.trim() === '') {
+        alert('Vui lòng nhập lý do mở khóa bảng công kỳ!');
+        return;
+      }
+
+      const period = getCurrentAttendancePeriod();
+      period.isLocked = false;
+      const unlockedAt = new Date().toLocaleDateString('vi-VN') + ' ' + new Date().toLocaleTimeString().slice(0, 5);
+
+      if (!attendancePeriodHistoryStore[period.id]) attendancePeriodHistoryStore[period.id] = [];
+      attendancePeriodHistoryStore[period.id].unshift({
+        ver: 'v1.4',
+        time: unlockedAt,
+        actor: 'Nguyễn Thị Mai (HR Admin)',
+        action: 'Mở khóa kỳ',
+        total: `${formatNumCompact(period.totalActualDays)} c`,
+        note: `Mở khóa: ${reason}`
+      });
+
+      closeAttUnlockModal();
+      showToast(`🔓 Đã mở khóa ${period.name} thành công. Dữ liệu có thể được điều chỉnh.`);
+      renderAttendanceLockStatus();
     }
 
     function runAttendanceValidationCheck() {
@@ -37463,56 +38000,6 @@
       }
     }
 
-    let currentMissingPunchFilter = 'ALL';
-    function filterAttendanceMissingPunches(filterType) {
-      currentMissingPunchFilter = filterType || 'ALL';
-      const tbody = document.getElementById('lock-step2-tbody');
-      if (!tbody) return;
-
-      let filtered = attendanceMissingPunches;
-      if (currentMissingPunchFilter === 'MISS_IN') {
-        filtered = attendanceMissingPunches.filter(p => p.type.includes('vào') || p.inTime === '--:--');
-      } else if (currentMissingPunchFilter === 'MISS_OUT') {
-        filtered = attendanceMissingPunches.filter(p => p.type.includes('ra') || p.outTime === '--:--');
-      }
-
-      if (filtered.length === 0) {
-        tbody.innerHTML = `
-          <tr>
-            <td colspan="10" class="py-8 text-center text-slate-500">
-              <div class="text-2xl mb-1">🎉</div>
-              <div class="font-bold text-slate-800 text-xs">Không có bản ghi nào khớp với bộ lọc!</div>
-            </td>
-          </tr>
-        `;
-        return;
-      }
-
-      tbody.innerHTML = filtered.map((item, idx) => {
-        return `
-          <tr class="hover:bg-slate-50/80 transition">
-            <td class="py-2.5 px-3 text-center text-slate-500">${idx + 1}</td>
-            <td class="py-2.5 px-3 font-mono font-bold text-[#2E3191]">${item.pap}</td>
-            <td class="py-2.5 px-3 font-semibold text-slate-900">${item.name}</td>
-            <td class="py-2.5 px-3 text-slate-600">${item.dept}</td>
-            <td class="py-2.5 px-3 text-center font-mono text-slate-700">${item.date}</td>
-            <td class="py-2.5 px-3 text-slate-700 font-medium">${item.shift}</td>
-            <td class="py-2.5 px-3 text-center font-mono ${item.inTime === '--:--' ? 'text-rose-600 font-bold bg-rose-50/60 rounded' : 'text-slate-800'}">${item.inTime}</td>
-            <td class="py-2.5 px-3 text-center font-mono ${item.outTime === '--:--' ? 'text-rose-600 font-bold bg-rose-50/60 rounded' : 'text-slate-800'}">${item.outTime}</td>
-            <td class="py-2.5 px-3">
-              <span class="px-2 py-0.5 rounded-full bg-rose-100 text-rose-800 text-[10px] font-bold">${item.type}</span>
-            </td>
-            <td class="py-2.5 px-3 text-center">
-              <button type="button" onclick="openQuickFixPunchModal('${item.id}')" class="px-2.5 py-1 bg-indigo-50 hover:bg-indigo-100 text-[#2E3191] font-bold rounded-lg text-xs border border-indigo-200 shadow-2xs transition cursor-pointer flex items-center justify-center space-x-1 mx-auto">
-                <span>⏱️</span>
-                <span>Bổ sung giờ</span>
-              </button>
-            </td>
-          </tr>
-        `;
-      }).join('');
-    }
-
     function filterAttendanceSummary(dept) {
       const select = document.getElementById('lock-step4-dept-filter');
       if (select) {
@@ -37520,114 +38007,6 @@
         renderLockStep4Table();
       }
     }
-
-    function confirmUnlockAttendancePeriod() {
-      const reason = document.getElementById('att-unlock-reason')?.value;
-      if (!reason || reason.trim() === '') {
-        alert('Vui lòng nhập lý do mở khóa bảng công kỳ!');
-        return;
-      }
-
-      const period = getCurrentAttendancePeriod();
-      period.isLocked = false;
-      const unlockedAt = new Date().toLocaleDateString('vi-VN') + ' ' + new Date().toLocaleTimeString().slice(0, 5);
-
-      const tbody = document.getElementById('attendance-period-history-tbody');
-      if (tbody) {
-        const tr = document.createElement('tr');
-        tr.className = "hover:bg-slate-50/80 transition";
-        tr.innerHTML = `
-          <td class="py-2.5 px-3 font-bold font-mono text-amber-700">v1.4</td>
-          <td class="py-2.5 px-3 text-slate-600 font-mono">${unlockedAt}</td>
-          <td class="py-2.5 px-3 font-medium text-slate-900">Nguyễn Thị Mai (HR Admin)</td>
-          <td class="py-2.5 px-3 text-center"><span class="px-2 py-0.5 rounded-full bg-amber-100 text-amber-800 text-[10px] font-bold">Mở khóa kỳ</span></td>
-          <td class="py-2.5 px-3 text-center font-bold text-slate-800">${formatNumCompact(period.totalActualDays)} c</td>
-          <td class="py-2.5 px-3 text-slate-600">Mở khóa: ${reason}</td>
-        `;
-        tbody.insertBefore(tr, tbody.firstChild);
-      }
-
-      closeAttUnlockModal();
-      showToast(`🔓 Đã mở khóa ${period.name} thành công. Dữ liệu có thể được điều chỉnh.`);
-      renderAttendanceLockStatus();
-    }
-
-
-    function openAttSelfieModal(name, time, loc, dist, dev, isValid) {
-      const modal = document.getElementById('modal-att-selfie');
-      if (!modal) return;
-      document.getElementById('selfie-modal-name').innerText = name;
-      document.getElementById('selfie-modal-time').innerText = time;
-      document.getElementById('selfie-modal-loc').innerText = loc;
-      document.getElementById('selfie-modal-dist').innerText = dist;
-      document.getElementById('selfie-modal-dev').innerText = dev;
-      document.getElementById('selfie-modal-status').innerHTML = isValid 
-        ? '<span class="text-emerald-700 font-bold">🟢 Hợp lệ trong bán kính Geofencing</span>'
-        : '<span class="text-rose-700 font-bold">🔴 Cảnh báo: Ngoài bán kính Geofencing</span>';
-      modal.classList.remove('hidden');
-    }
-
-    function closeAttSelfieModal() {
-      const modal = document.getElementById('modal-att-selfie');
-      if (modal) modal.classList.add('hidden');
-    }
-
-
-    // Attach attendance functions to window
-    window.openAttendanceSub = openAttendanceSub;
-    window.switchAttendanceTab = switchAttendanceTab;
-    window.toggleAttendanceSubmenu = toggleAttendanceSubmenu;
-    window.updateAttendanceSubHighlight = updateAttendanceSubHighlight;
-    window.renderAttendanceRawLogs = renderAttendanceRawLogs;
-    window.renderAttendanceDailyTimesheet = renderAttendanceDailyTimesheet;
-    window.renderAttendanceRequests = renderAttendanceRequests;
-    window.renderAttendanceLockStatus = renderAttendanceLockStatus;
-
-    window.changeAttendancePeriod = changeAttendancePeriod;
-    window.switchAttendanceLockStep = switchAttendanceLockStep;
-    window.renderLockStep1Table = renderLockStep1Table;
-    window.renderLockStep2Table = renderLockStep2Table;
-    window.renderLockStep4Table = renderLockStep4Table;
-    window.renderLockStep5BannerAndHistory = renderLockStep5BannerAndHistory;
-    window.openQuickFixPunchModal = openQuickFixPunchModal;
-    window.closeQuickFixPunchModal = closeQuickFixPunchModal;
-    window.saveQuickFixPunch = saveQuickFixPunch;
-    window.executeCalculateAttendanceFormula = executeCalculateAttendanceFormula;
-    window.openEditSummaryWorkModal = openEditSummaryWorkModal;
-    window.closeEditSummaryWorkModal = closeEditSummaryWorkModal;
-    window.saveEditSummaryWork = saveEditSummaryWork;
-    window.openSendReviewConfirmModal = openSendReviewConfirmModal;
-    window.closeSendReviewConfirmModal = closeSendReviewConfirmModal;
-    window.confirmSendAttendanceReview = confirmSendAttendanceReview;
-    window.handlePeriodLockActionClick = handlePeriodLockActionClick;
-    window.syncShiftsFromScheduleModule = syncShiftsFromScheduleModule;
-    window.exportAttendanceSummaryExcel = exportAttendanceSummaryExcel;
-
-    window.openAttSelfieModal = openAttSelfieModal;
-    window.closeAttSelfieModal = closeAttSelfieModal;
-    window.openAttRequestDetail = openAttRequestDetail;
-    window.closeAttRequestDetail = closeAttRequestDetail;
-    window.approveAttRequest = approveAttRequest;
-    window.rejectAttRequest = rejectAttRequest;
-    window.openAttNewRequestModal = openAttNewRequestModal;
-    window.closeAttNewRequestModal = closeAttNewRequestModal;
-    window.submitAttNewRequest = submitAttNewRequest;
-    window.runAttendanceValidationCheck = runAttendanceValidationCheck;
-    window.openAttLockModal = openAttLockModal;
-    window.closeAttLockModal = closeAttLockModal;
-    window.confirmLockAttendancePeriod = confirmLockAttendancePeriod;
-    window.openAttUnlockModal = openAttUnlockModal;
-    window.closeAttUnlockModal = closeAttUnlockModal;
-    window.confirmUnlockAttendancePeriod = confirmUnlockAttendancePeriod;
-    window.openAttLockModal = openAttLockModal;
-    window.closeAttLockModal = closeAttLockModal;
-    window.openAttUnlockModal = openAttUnlockModal;
-    window.closeAttUnlockModal = closeAttUnlockModal;
-    window.runAttendanceValidationCheck = runAttendanceValidationCheck;
-    window.openShiftAssignmentModal = openShiftAssignmentModal;
-    window.showColPicker = showColPicker;
-    window.filterAttendanceMissingPunches = filterAttendanceMissingPunches;
-    window.filterAttendanceSummary = filterAttendanceSummary;
 
     window.changeDailyAttendanceDate = changeDailyAttendanceDate;
     window.recalculateDailyAttendance = recalculateDailyAttendance;
