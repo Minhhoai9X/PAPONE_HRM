@@ -32231,6 +32231,400 @@ nual-leave-content-policies" class="space-y-3 hidden">
       }
     }
 
+    
+    // =========================================================================
+    // CÁC HÀM XỬ LÝ FORM THIẾT LẬP CHÍNH SÁCH NGHỈ PHÉP (CHUẨN MISA AMIS HRM)
+    // =========================================================================
+    function onAccrualMethodChange() {
+      const method = document.getElementById('new-policy-accrual-method')?.value;
+      const minWrap = document.getElementById('new-policy-min-days-wrap');
+      const timingWrap = document.getElementById('new-policy-timing-wrap');
+      if (method === 'MONTHLY') {
+        if (minWrap) minWrap.classList.remove('hidden');
+        if (timingWrap) timingWrap.classList.remove('hidden');
+      } else {
+        if (minWrap) minWrap.classList.add('hidden');
+        if (timingWrap) timingWrap.classList.add('hidden');
+      }
+    }
+
+    function onAccrualTimingRadioChange() {
+      const isAdvance = document.getElementById('timing-advance')?.checked;
+      const advDayInput = document.getElementById('new-policy-advance-day');
+      if (advDayInput) {
+        advDayInput.disabled = !isAdvance;
+        if (isAdvance) {
+          advDayInput.classList.remove('bg-slate-100', 'text-slate-400');
+          advDayInput.classList.add('bg-white', 'text-[#2E3191]');
+        } else {
+          advDayInput.classList.add('bg-slate-100', 'text-slate-400');
+          advDayInput.classList.remove('bg-white', 'text-[#2E3191]');
+        }
+      }
+    }
+
+    function onFirstMonthRuleChange() {
+      const isCustom = document.getElementById('first-month-custom')?.checked;
+      const detail = document.getElementById('first-month-custom-detail');
+      if (detail) {
+        detail.style.display = isCustom ? 'block' : 'none';
+      }
+    }
+
+    function onFirstMonthCutoffInput() {
+      const val = document.getElementById('first-month-cutoff-day')?.value || 16;
+      const afterInp = document.getElementById('first-month-cutoff-after');
+      if (afterInp) afterInp.value = val;
+    }
+
+    function onCarryoverAllowChange() {
+      const isYes = document.getElementById('carryover-allow-yes')?.checked;
+      const fields = document.getElementById('new-policy-carryover-fields');
+      if (fields) {
+        if (isYes) {
+          fields.classList.remove('hidden');
+        } else {
+          fields.classList.add('hidden');
+        }
+      }
+    }
+
+    function onCarryoverScopeChange() {
+      const isMax = document.getElementById('carryover-scope-max')?.checked;
+      const maxInp = document.getElementById('new-policy-max-carryover-days');
+      if (maxInp) {
+        maxInp.disabled = !isMax;
+        if (isMax) {
+          maxInp.classList.remove('bg-slate-100', 'text-slate-400', 'cursor-not-allowed');
+          maxInp.classList.add('bg-white', 'text-slate-800');
+        } else {
+          maxInp.classList.add('bg-slate-100', 'text-slate-400', 'cursor-not-allowed');
+          maxInp.classList.remove('bg-white', 'text-slate-800');
+        }
+      }
+    }
+
+    function onCarryoverTimeLimitChange() {
+      const hasLimit = document.getElementById('policy-carryover-has-timelimit')?.checked;
+      const wrap = document.getElementById('carryover-timelimit-wrap');
+      const mInp = document.getElementById('policy-carryover-months');
+      if (wrap) wrap.style.opacity = hasLimit ? '1' : '0.5';
+      if (mInp) mInp.disabled = !hasLimit;
+    }
+
+    function toggleContractTypesDropdown(event) {
+      if (event) event.stopPropagation();
+      const menu = document.getElementById('dropdown-menu-contract-types');
+      if (menu) menu.classList.toggle('hidden');
+    }
+
+    function selectAllContractTypes(selectAll) {
+      const chks = document.querySelectorAll('input[name="policy-contract-types"]');
+      chks.forEach(c => c.checked = selectAll);
+      renderContractTypesTags();
+    }
+
+    function onContractTypesCheckboxChange() {
+      renderContractTypesTags();
+    }
+
+    function renderContractTypesTags() {
+      const container = document.getElementById('contract-types-selected-tags');
+      if (!container) return;
+      const checkedBoxes = Array.from(document.querySelectorAll('input[name="policy-contract-types"]:checked'));
+      if (checkedBoxes.length === 0) {
+        container.innerHTML = '<span class="text-slate-400 italic">Chọn ít nhất một loại hợp đồng áp dụng...</span>';
+        return;
+      }
+      container.innerHTML = checkedBoxes.map(cb => `
+        <span class="inline-flex items-center space-x-1 px-2 py-0.5 rounded-full text-[10.5px] font-semibold bg-indigo-50 text-[#2E3191] border border-indigo-200">
+          <span>${cb.value}</span>
+        </span>
+      `).join('');
+    }
+
+    function switchLeavePolicyModalTab(tabKey) {
+      const paneGeneral = document.getElementById('tab-pane-leave-general');
+      if (paneGeneral) paneGeneral.classList.remove('hidden');
+    }
+
+    function openAddLeavePolicyModal() {
+      switchLeavePolicyModalTab('general');
+      document.getElementById('modal-add-leave-policy-title').innerText = 'Thêm chính sách nghỉ phép mới (Chuẩn AMIS)';
+      document.getElementById('new-policy-code').value = 'LP-NEW-' + (leavePoliciesData.length + 1);
+      document.getElementById('new-policy-code').disabled = false;
+      document.getElementById('new-policy-name').value = '';
+      document.getElementById('new-policy-eff-from').value = '2026-01-01';
+      document.getElementById('new-policy-eff-to').value = '';
+      document.getElementById('new-policy-status').value = 'ACTIVE';
+      document.getElementById('new-policy-days').value = '12';
+      document.getElementById('new-policy-accrual-method').value = 'MONTHLY';
+      document.getElementById('new-policy-min-work-days').value = '12';
+
+      // Accrual Timing
+      const timingRadioAdv = document.getElementById('timing-advance');
+      if (timingRadioAdv) timingRadioAdv.checked = true;
+      const advDayInput = document.getElementById('new-policy-advance-day');
+      if (advDayInput) advDayInput.value = '1';
+
+      // Mốc bắt đầu tính tích lũy phép (Dropdown)
+      const startCalcEl = document.getElementById('new-policy-start-calc-date');
+      if (startCalcEl) startCalcEl.value = 'START_DATE';
+
+      // Quy tắc tháng đầu tiên
+      const rCust = document.getElementById('first-month-custom');
+      if (rCust) rCust.checked = true;
+      const coDay = document.getElementById('first-month-cutoff-day');
+      if (coDay) coDay.value = '16';
+      const coAfter = document.getElementById('first-month-cutoff-after');
+      if (coAfter) coAfter.value = '16';
+      const bfDays = document.getElementById('first-month-before-days');
+      if (bfDays) bfDays.value = '1';
+      const afDays = document.getElementById('first-month-after-days');
+      if (afDays) afDays.value = '0';
+
+      onFirstMonthRuleChange();
+      onAccrualTimingRadioChange();
+
+      // Carryover defaults
+      const rYes = document.getElementById('carryover-allow-yes');
+      if (rYes) rYes.checked = true;
+      const rScopeAll = document.getElementById('carryover-scope-all');
+      if (rScopeAll) rScopeAll.checked = true;
+      const maxInput = document.getElementById('new-policy-max-carryover-days');
+      if (maxInput) maxInput.value = '1';
+      const chkLimit = document.getElementById('policy-carryover-has-timelimit');
+      if (chkLimit) chkLimit.checked = true;
+      const mInput = document.getElementById('policy-carryover-months');
+      if (mInput) mInput.value = '3';
+
+      onCarryoverAllowChange();
+      onCarryoverScopeChange();
+      onCarryoverTimeLimitChange();
+
+      const deductCarryEl = document.getElementById('new-policy-deduct-carryover-first');
+      if (deductCarryEl) deductCarryEl.checked = true;
+      document.getElementById('new-policy-seniority-years').value = '5';
+      document.getElementById('new-policy-seniority-days').value = '1.0';
+      document.getElementById('new-policy-seniority-base-date').value = 'START_DATE';
+      document.getElementById('new-policy-dept-scope').value = 'ALL';
+      document.getElementById('new-policy-law').value = 'Điều 113, 114 Bộ luật Lao động 2019';
+      document.getElementById('new-policy-desc').value = '';
+
+      // Checkboxes contract types
+      const chks = document.querySelectorAll('input[name="policy-contract-types"]');
+      chks.forEach(c => {
+        c.checked = c.value.includes('xác định');
+      });
+      renderContractTypesTags();
+
+      onAccrualMethodChange();
+
+      document.getElementById('modal-add-leave-policy').classList.remove('hidden');
+    }
+
+    function openEditLeavePolicyModal(code) {
+      const policy = leavePoliciesData.find(p => p.code === code);
+      if (!policy) return;
+      switchLeavePolicyModalTab('general');
+      document.getElementById('modal-add-leave-policy-title').innerText = 'Chỉnh sửa chính sách: ' + policy.name;
+      document.getElementById('new-policy-code').value = policy.code;
+      document.getElementById('new-policy-code').disabled = true;
+      document.getElementById('new-policy-name').value = policy.name;
+      document.getElementById('new-policy-eff-from').value = policy.effectiveFrom || '2026-01-01';
+      document.getElementById('new-policy-eff-to').value = policy.effectiveTo || '';
+      document.getElementById('new-policy-status').value = policy.status || 'ACTIVE';
+      document.getElementById('new-policy-days').value = policy.baseDays || 12;
+      document.getElementById('new-policy-accrual-method').value = policy.accrualMethod || 'MONTHLY';
+      document.getElementById('new-policy-min-work-days').value = policy.minWorkDaysForAccrual || 12;
+
+      // Accrual Timing
+      const timingVal = policy.accrualTiming || 'START_OF_MONTH';
+      if (timingVal === 'END_OF_MONTH') {
+        const rPost = document.getElementById('timing-post');
+        if (rPost) rPost.checked = true;
+      } else {
+        const rAdv = document.getElementById('timing-advance');
+        if (rAdv) rAdv.checked = true;
+      }
+      const advDayInput = document.getElementById('new-policy-advance-day');
+      if (advDayInput) advDayInput.value = policy.advanceAccrualDay || 1;
+      onAccrualTimingRadioChange();
+
+      // Mốc bắt đầu tính tích lũy phép (Dropdown)
+      const startCalcEl = document.getElementById('new-policy-start-calc-date');
+      if (startCalcEl) {
+        startCalcEl.value = policy.startCalcDateType || 'START_DATE';
+      }
+
+      // Quy tắc tháng đầu tiên
+      const fmRule = policy.firstMonthRule || 'CUSTOM';
+      if (fmRule === 'ANY_DAY') {
+        const r = document.getElementById('first-month-any');
+        if (r) r.checked = true;
+      } else {
+        const r = document.getElementById('first-month-custom');
+        if (r) r.checked = true;
+      }
+      const coDay = document.getElementById('first-month-cutoff-day');
+      if (coDay) coDay.value = policy.firstMonthCutoffDay || 16;
+      const coAfter = document.getElementById('first-month-cutoff-after');
+      if (coAfter) coAfter.value = policy.firstMonthCutoffDay || 16;
+      const bfDays = document.getElementById('first-month-before-days');
+      if (bfDays) bfDays.value = policy.firstMonthBeforeDays !== undefined ? policy.firstMonthBeforeDays : '1';
+      const afDays = document.getElementById('first-month-after-days');
+      if (afDays) afDays.value = policy.firstMonthAfterDays !== undefined ? policy.firstMonthAfterDays : '0';
+
+      onFirstMonthRuleChange();
+
+      // Carryover
+      const allowCarry = policy.allowCarryover !== false;
+      if (allowCarry) {
+        const r = document.getElementById('carryover-allow-yes');
+        if (r) r.checked = true;
+      } else {
+        const r = document.getElementById('carryover-allow-no');
+        if (r) r.checked = true;
+      }
+      const isMaxScope = (policy.maxCarryoverDays > 0);
+      if (isMaxScope) {
+        const r = document.getElementById('carryover-scope-max');
+        if (r) r.checked = true;
+      } else {
+        const r = document.getElementById('carryover-scope-all');
+        if (r) r.checked = true;
+      }
+      const maxInp = document.getElementById('new-policy-max-carryover-days');
+      if (maxInp) maxInp.value = policy.maxCarryoverDays || 1;
+
+      const hasLim = policy.carryoverHasTimeLimit !== false;
+      const chkLim = document.getElementById('policy-carryover-has-timelimit');
+      if (chkLim) chkLim.checked = hasLim;
+      const mInp = document.getElementById('policy-carryover-months');
+      if (mInp) mInp.value = policy.carryoverMonths || 3;
+
+      onCarryoverAllowChange();
+      onCarryoverScopeChange();
+      onCarryoverTimeLimitChange();
+
+      const deductCarryEl = document.getElementById('new-policy-deduct-carryover-first');
+      if (deductCarryEl) deductCarryEl.checked = policy.deductCarryoverFirst !== false;
+      document.getElementById('new-policy-seniority-years').value = policy.seniorityAfterYears || 5;
+      document.getElementById('new-policy-seniority-days').value = policy.seniorityDaysPerCycle || 1.0;
+      document.getElementById('new-policy-seniority-base-date').value = policy.seniorityBaseDateType || 'START_DATE';
+      document.getElementById('new-policy-dept-scope').value = policy.deptScope || 'ALL';
+      document.getElementById('new-policy-law').value = policy.lawArticle || 'Điều 113, 114 BLLĐ 2019';
+      document.getElementById('new-policy-desc').value = policy.description || '';
+
+      // Contract Types checkboxes
+      const savedTypes = policy.contractTypes || ['HĐLĐ xác định thời hạn', 'HĐLĐ không xác định thời hạn'];
+      const chks = document.querySelectorAll('input[name="policy-contract-types"]');
+      chks.forEach(c => {
+        c.checked = savedTypes.includes(c.value);
+      });
+      renderContractTypesTags();
+
+      onAccrualMethodChange();
+
+      document.getElementById('modal-add-leave-policy').classList.remove('hidden');
+    }
+
+    function closeAddLeavePolicyModal() {
+      document.getElementById('modal-add-leave-policy').classList.add('hidden');
+      const menu = document.getElementById('dropdown-menu-contract-types');
+      if (menu) menu.classList.add('hidden');
+    }
+
+    function handleSaveNewLeavePolicy(event) {
+      if (event) event.preventDefault();
+      const code = document.getElementById('new-policy-code').value.trim().toUpperCase();
+      const name = document.getElementById('new-policy-name').value.trim();
+      const effFrom = document.getElementById('new-policy-eff-from').value;
+      const effTo = document.getElementById('new-policy-eff-to').value;
+      const status = document.getElementById('new-policy-status').value;
+      const baseDays = parseFloat(document.getElementById('new-policy-days').value) || 12;
+      const accrualMethod = document.getElementById('new-policy-accrual-method').value;
+      const minWorkDaysForAccrual = parseInt(document.getElementById('new-policy-min-work-days').value) || 12;
+      
+      const accrualTiming = document.getElementById('timing-advance')?.checked ? 'START_OF_MONTH' : 'END_OF_MONTH';
+      const advanceAccrualDay = parseInt(document.getElementById('new-policy-advance-day')?.value) || 1;
+      const startCalcDateType = document.getElementById('new-policy-start-calc-date')?.value || 'START_DATE';
+      
+      const firstMonthRule = document.getElementById('first-month-custom')?.checked ? 'CUSTOM' : 'ANY_DAY';
+      const firstMonthCutoffDay = parseInt(document.getElementById('first-month-cutoff-day')?.value) || 16;
+      const firstMonthBeforeDays = parseFloat(document.getElementById('first-month-before-days')?.value) || 1;
+      const firstMonthAfterDays = parseFloat(document.getElementById('first-month-after-days')?.value) || 0;
+
+      const allowCarryover = document.getElementById('carryover-allow-yes')?.checked;
+      const maxCarryoverDays = document.getElementById('carryover-scope-max')?.checked ? (parseFloat(document.getElementById('new-policy-max-carryover-days')?.value) || 1) : 0;
+      const carryoverHasTimeLimit = document.getElementById('policy-carryover-has-timelimit')?.checked;
+      const carryoverMonths = parseInt(document.getElementById('policy-carryover-months')?.value) || 3;
+      const deductCarryoverFirst = document.getElementById('new-policy-deduct-carryover-first')?.checked;
+
+      const seniorityAfterYears = parseInt(document.getElementById('new-policy-seniority-years').value) || 5;
+      const seniorityDaysPerCycle = parseFloat(document.getElementById('new-policy-seniority-days').value) || 1.0;
+      const seniorityBaseDateType = document.getElementById('new-policy-seniority-base-date').value;
+
+      const checkedContracts = Array.from(document.querySelectorAll('input[name="policy-contract-types"]:checked')).map(c => c.value);
+      if (checkedContracts.length === 0) {
+        showToast('Vui lòng chọn ít nhất một Loại hợp đồng lao động áp dụng!');
+        return;
+      }
+
+      const deptScope = document.getElementById('new-policy-dept-scope').value;
+      const law = document.getElementById('new-policy-law').value.trim();
+      const desc = document.getElementById('new-policy-desc').value.trim();
+
+      if (!code || !name) {
+        showToast('Vui lòng nhập Mã và Tên chính sách nghỉ phép!');
+        return;
+      }
+
+      const existingIndex = leavePoliciesData.findIndex(p => p.code === code);
+      const policyObj = {
+        code,
+        name,
+        effectiveFrom: effFrom,
+        effectiveTo: effTo,
+        status,
+        baseDays,
+        accrualMethod,
+        minWorkDaysForAccrual,
+        accrualTiming,
+        advanceAccrualDay,
+        startCalcDateType,
+        firstMonthRule,
+        firstMonthCutoffDay,
+        firstMonthBeforeDays,
+        firstMonthAfterDays,
+        allowCarryover,
+        maxCarryoverDays,
+        carryoverHasTimeLimit,
+        carryoverMonths,
+        deductCarryoverFirst,
+        seniorityAfterYears,
+        seniorityDaysPerCycle,
+        seniorityBaseDateType,
+        contractTypes: checkedContracts,
+        deptScope,
+        targetAudience: checkedContracts.join(', '),
+        lawArticle: law,
+        description: desc,
+        appliedEmployeesCount: existingIndex >= 0 ? (leavePoliciesData[existingIndex].appliedEmployeesCount || 10) : 10
+      };
+
+      if (existingIndex >= 0) {
+        leavePoliciesData[existingIndex] = policyObj;
+      } else {
+        leavePoliciesData.push(policyObj);
+      }
+
+      closeAddLeavePolicyModal();
+      renderAnnualLeavePoliciesTable();
+      showToast(`✓ Đã lưu thành công chính sách: "${name}" (${code})!`);
+    }
+
+
     // =========================================================================
     // DANH MỤC CHÍNH SÁCH PHÉP NĂM CHUẨN CẢNG PHƯỚC AN (STANDARD LEAVE POLICIES)
     // Căn cứ Điều 113, 114 Bộ luật Lao động 2019 & Quy chế Quản trị Nhân sự Cảng
@@ -32697,69 +33091,6 @@ nual-leave-content-policies" class="space-y-3 hidden">
       } else {
         showToast('⚠️ Có lỗi khi cập nhật chính sách. Vui lòng thử lại!');
       }
-    }
-
-    function openAddLeavePolicyModal() {
-      document.getElementById('modal-add-leave-policy-title').innerText = 'Thêm chính sách nghỉ phép mới (M09)';
-      document.getElementById('new-policy-code').value = 'CS-NEW-' + (leavePoliciesData.length + 1);
-      document.getElementById('new-policy-name').value = '';
-      document.getElementById('new-policy-days').value = '12';
-      document.getElementById('new-policy-audience').value = 'Khối Văn phòng & Vận hành';
-      document.getElementById('new-policy-desc').value = '';
-      document.getElementById('modal-add-leave-policy').classList.remove('hidden');
-    }
-
-    function openEditLeavePolicyModal(code) {
-      const policy = getLeavePolicy(code);
-      if (!policy) return;
-      document.getElementById('modal-add-leave-policy-title').innerText = 'Chỉnh sửa chính sách: ' + policy.name;
-      document.getElementById('new-policy-code').value = policy.code;
-      document.getElementById('new-policy-name').value = policy.name;
-      document.getElementById('new-policy-days').value = policy.baseDays;
-      document.getElementById('new-policy-seniority').value = policy.seniorityRule || '';
-      document.getElementById('new-policy-audience').value = policy.targetAudience || '';
-      document.getElementById('new-policy-law').value = policy.lawArticle || '';
-      document.getElementById('new-policy-desc').value = policy.description || '';
-      document.getElementById('modal-add-leave-policy').classList.remove('hidden');
-    }
-
-    function closeAddLeavePolicyModal() {
-      document.getElementById('modal-add-leave-policy').classList.add('hidden');
-    }
-
-    function handleSaveNewLeavePolicy(event) {
-      if (event) event.preventDefault();
-      const code = document.getElementById('new-policy-code').value.trim();
-      const name = document.getElementById('new-policy-name').value.trim();
-      const days = parseFloat(document.getElementById('new-policy-days').value) || 12.0;
-      const seniority = document.getElementById('new-policy-seniority').value.trim();
-      const audience = document.getElementById('new-policy-audience').value.trim();
-      const law = document.getElementById('new-policy-law').value.trim();
-      const desc = document.getElementById('new-policy-desc').value.trim();
-
-      const existingIdx = leavePoliciesData.findIndex(p => p.code === code);
-      const policyObj = {
-        code,
-        name,
-        shortName: name,
-        baseDays: days,
-        seniorityRule: seniority,
-        targetAudience: audience,
-        badgeCls: days >= 16 ? 'bg-rose-50 text-rose-800 border-rose-200' : days >= 14 ? 'bg-amber-50 text-amber-800 border-amber-200' : 'bg-indigo-50 text-[#2E3191] border-indigo-200',
-        lawArticle: law,
-        description: desc
-      };
-
-      if (existingIdx >= 0) {
-        leavePoliciesData[existingIdx] = policyObj;
-      } else {
-        leavePoliciesData.push(policyObj);
-      }
-
-      closeAddLeavePolicyModal();
-      renderAnnualLeavePoliciesTable();
-      populateLeavePolicyDropdown(code);
-      showToast(`✓ Đã lưu chính sách nghỉ phép: "${name}" (${days} ngày/năm)!`);
     }
 
     // QUẢN LÝ SỔ THEO DÕI & LỊCH SỬ PHÉP NĂM CÁC NĂM TRƯỚC (LEAVE LEDGER M03/M06)
@@ -35556,56 +35887,387 @@ nual-leave-content-policies" class="space-y-3 hidden">
     </div>
   </div>
 
-  <div id="modal-add-leave-policy" class="fixed inset-0 bg-slate-900/50 backdrop-blur-xs z-50 flex items-center justify-center p-4 hidden">
-    <div class="bg-white rounded-2xl max-w-lg w-full shadow-2xl border border-slate-200 overflow-hidden transform transition-all">
-      <div class="pap-primary text-white p-4 flex items-center justify-between">
-        <h3 class="text-sm font-bold flex items-center space-x-2">
-          <span>📋</span>
-          <span id="modal-add-leave-policy-title">Thêm chính sách nghỉ phép mới</span>
-        </h3>
-        <button type="button" onclick="closeAddLeavePolicyModal()" class="text-slate-300 hover:text-white text-xl leading-none cursor-pointer p-1">&times;</button>
+    <!-- ================= MODAL: THÊM / CẬP NHẬT CHÍNH SÁCH NGHỈ PHÉP (M09) ================= -->
+  <div id="modal-add-leave-policy" class="fixed inset-0 bg-slate-900/60 backdrop-blur-xs z-50 flex items-center justify-center p-3 sm:p-5 hidden">
+    <div class="bg-white rounded-2xl max-w-4xl w-full shadow-2xl border border-slate-200 overflow-hidden flex flex-col max-h-[92vh] animate-in fade-in duration-200">
+      <!-- Modal Header -->
+      <div class="bg-[#2E3191] text-white px-5 py-3.5 flex items-center justify-between shrink-0 shadow-xs">
+        <div class="flex items-center space-x-2.5">
+          <span class="text-xl">🏖️</span>
+          <div>
+            <h3 class="text-sm font-bold flex items-center space-x-2">
+              <span id="modal-add-leave-policy-title">Thiết lập Chính sách Nghỉ phép</span>
+              <span class="text-[10px] bg-white/20 text-white px-2 py-0.5 rounded-full font-medium">Chuẩn MISA AMIS HRM</span>
+            </h3>
+            <p class="text-[11px] text-white/80">Cấu hình chu kỳ cấp phép, phép tồn 31/03, thâm niên BLLĐ và phạm vi áp dụng</p>
+          </div>
+        </div>
+        <button type="button" onclick="closeAddLeavePolicyModal()" class="text-white/70 hover:text-white text-2xl leading-none cursor-pointer p-1 transition">&times;</button>
       </div>
 
-      <form onsubmit="handleSaveNewLeavePolicy(event)" class="p-5 space-y-3.5 text-xs max-h-[85vh] overflow-y-auto">
-        <div class="grid grid-cols-2 gap-3">
-          <div>
-            <label class="block font-semibold text-slate-700 mb-1">Mã chính sách <span class="text-rose-500">*</span></label>
-            <input type="text" id="new-policy-code" required placeholder="VD: CS-NEW-2..." class="w-full px-3 py-2 border border-slate-300 rounded-lg text-xs font-bold uppercase focus:ring-2 focus:ring-[#2E3191]">
+      <!-- Form Content (Scrollable, Đơn phẳng không chia tab loại nghỉ) -->
+      <form id="form-leave-policy" onsubmit="handleSaveNewLeavePolicy(event)" class="flex-1 overflow-y-auto p-5 space-y-4 text-xs">
+        <div id="tab-pane-leave-general" class="space-y-4">
+          <!-- Khối 1: Thông tin cơ bản -->
+          <div class="p-3.5 bg-slate-50/70 rounded-xl border border-slate-200 space-y-3">
+            <div class="text-xs font-bold text-[#2E3191] flex items-center justify-between border-b border-slate-200/80 pb-2">
+              <span class="flex items-center space-x-1.5">
+                <span>🏷️</span>
+                <span>Thông tin nhận diện & Khoảng hiệu lực</span>
+              </span>
+              <span class="text-[11px] font-normal text-slate-500">Mã chính sách định danh duy nhất</span>
+            </div>
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+              <div>
+                <label class="block font-semibold text-slate-700 mb-1">Mã chính sách <span class="text-rose-500">*</span></label>
+                <input type="text" id="new-policy-code" required placeholder="VD: LP-STANDARD..." class="w-full px-3 py-2 border border-slate-300 rounded-lg text-xs font-bold uppercase focus:ring-2 focus:ring-[#2E3191] bg-white">
+              </div>
+              <div class="sm:col-span-2">
+                <label class="block font-semibold text-slate-700 mb-1">Tên chính sách nghỉ phép <span class="text-rose-500">*</span></label>
+                <input type="text" id="new-policy-name" required placeholder="VD: Chính sách Phép năm Tiêu chuẩn..." class="w-full px-3 py-2 border border-slate-300 rounded-lg text-xs font-semibold focus:ring-2 focus:ring-[#2E3191] bg-white">
+              </div>
+            </div>
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+              <div>
+                <label class="block font-semibold text-slate-700 mb-1">Hiệu lực từ ngày</label>
+                <input type="date" id="new-policy-eff-from" class="w-full px-3 py-2 border border-slate-300 rounded-lg text-xs bg-white focus:ring-2 focus:ring-[#2E3191] cursor-pointer">
+              </div>
+              <div>
+                <label class="block font-semibold text-slate-700 mb-1">Hiệu lực đến ngày <span class="text-slate-400 font-normal">(bỏ trống = vô hạn)</span></label>
+                <input type="date" id="new-policy-eff-to" class="w-full px-3 py-2 border border-slate-300 rounded-lg text-xs bg-white focus:ring-2 focus:ring-[#2E3191] cursor-pointer">
+              </div>
+              <div>
+                <label class="block font-semibold text-slate-700 mb-1">Trạng thái áp dụng</label>
+                <select id="new-policy-status" class="w-full px-3 py-2 border border-slate-300 rounded-lg text-xs font-medium bg-white focus:ring-2 focus:ring-[#2E3191]">
+                  <option value="ACTIVE">🟢 Đang áp dụng</option>
+                  <option value="INACTIVE">⚪ Ngừng áp dụng</option>
+                </select>
+              </div>
+            </div>
           </div>
-          <div>
-            <label class="block font-semibold text-slate-700 mb-1">Mức ngày phép chuẩn/năm <span class="text-rose-500">*</span></label>
-            <input type="number" id="new-policy-days" required step="0.5" min="1" value="12" class="w-full px-3 py-2 border border-slate-300 rounded-lg text-xs font-bold focus:ring-2 focus:ring-[#2E3191]">
+
+          <!-- Khối 2: Phương thức Cấp phép & Điều kiện ngày công -->
+          <div class="p-3.5 bg-slate-50/70 rounded-xl border border-slate-200 space-y-3">
+            <div class="text-xs font-bold text-[#2E3191] flex items-center justify-between border-b border-slate-200/80 pb-2">
+              <span class="flex items-center space-x-1.5">
+                <span>⚡</span>
+                <span>Quy định Cấp phép & Tích lũy hàng tháng (Accrual)</span>
+              </span>
+              <span class="text-[11px] font-normal text-slate-500">Chuẩn AMIS Chấm công - Nghỉ phép</span>
+            </div>
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+              <div>
+                <label class="block font-semibold text-slate-700 mb-1">Mức chuẩn năm <span class="text-rose-500">*</span></label>
+                <div class="relative flex items-center">
+                  <input type="number" id="new-policy-days" required step="0.5" min="1" value="12" class="w-full px-3 py-2 pr-16 border border-slate-300 rounded-lg text-xs font-bold focus:ring-2 focus:ring-[#2E3191] bg-white">
+                  <span class="absolute right-3 text-slate-500 font-medium text-[11px] pointer-events-none">ngày/năm</span>
+                </div>
+              </div>
+              <div>
+                <label class="block font-semibold text-slate-700 mb-1">Phương thức cấp phép</label>
+                <select id="new-policy-accrual-method" onchange="onAccrualMethodChange()" class="w-full px-3 py-2 border border-slate-300 rounded-lg text-xs font-medium bg-white focus:ring-2 focus:ring-[#2E3191]">
+                  <option value="MONTHLY">Tích lũy từng tháng (1 ngày/tháng)</option>
+                  <option value="ANNUAL">Cấp toàn bộ vào đầu năm</option>
+                </select>
+              </div>
+              <div id="new-policy-min-days-wrap">
+                <label class="block font-semibold text-slate-700 mb-1">Công tối thiểu để cộng phép/tháng</label>
+                <div class="relative flex items-center">
+                  <input type="number" id="new-policy-min-work-days" min="0" max="31" value="12" class="w-full px-3 py-2 pr-16 border border-slate-300 rounded-lg text-xs font-semibold focus:ring-2 focus:ring-[#2E3191] bg-white">
+                  <span class="absolute right-3 text-slate-500 font-medium text-[11px] pointer-events-none">ngày công</span>
+                </div>
+              </div>
+            </div>
+            <!-- Cấu hình thời điểm ghi nhận phép tháng & tạm ứng đầu tháng -->
+            <div id="new-policy-timing-wrap" class="pt-2 border-t border-slate-200/60">
+              <label class="block font-semibold text-slate-700 mb-1.5 flex items-center space-x-1">
+                <span>⏱️</span>
+                <span>Thời điểm ghi nhận phép tháng & Cơ chế tạm ứng (Chuẩn AMIS)</span>
+              </label>
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 bg-white p-2.5 rounded-lg border border-slate-200">
+                <label class="flex items-start space-x-2 cursor-pointer p-1.5 rounded hover:bg-slate-50">
+                  <input type="radio" name="policy-accrual-timing" id="timing-advance" value="START_OF_MONTH" checked onchange="onAccrualTimingRadioChange()" class="mt-0.5 text-[#2E3191] focus:ring-[#2E3191]">
+                  <div class="flex-1">
+                    <div class="flex items-center space-x-1.5">
+                      <span class="font-bold text-slate-800 text-xs">Cấp tạm ứng vào ngày:</span>
+                      <div class="relative inline-flex items-center" onclick="event.stopPropagation()">
+                        <input type="number" id="new-policy-advance-day" min="1" max="28" value="1" class="w-14 px-1.5 py-0.5 border border-slate-300 rounded text-center font-bold text-xs bg-white text-[#2E3191] focus:ring-1 focus:ring-[#2E3191]">
+                        <span class="text-[11px] text-slate-500 ml-1">hàng tháng</span>
+                      </div>
+                    </div>
+                    <div class="text-[10.5px] text-slate-500 mt-1">Cho nhân viên dùng phép ngay từ ngày được chọn; tự động thu hồi cuối tháng nếu làm dưới mốc công quy định.</div>
+                  </div>
+                </label>
+                <label class="flex items-start space-x-2 cursor-pointer p-1.5 rounded hover:bg-slate-50">
+                  <input type="radio" name="policy-accrual-timing" id="timing-post" value="END_OF_MONTH" onchange="onAccrualTimingRadioChange()" class="mt-0.5 text-[#2E3191] focus:ring-[#2E3191]">
+                  <div>
+                    <div class="font-bold text-slate-800 text-xs">Cộng khi chốt bảng công cuối tháng</div>
+                    <div class="text-[10.5px] text-slate-500 mt-1">Chỉ cộng vào quỹ phép sau khi HR chốt công và xác nhận nhân viên đạt đủ số ngày công.</div>
+                  </div>
+                </label>
+              </div>
+            </div>
+            <div class="text-[11px] text-slate-500 italic bg-white p-2 rounded-lg border border-slate-200">
+              💡 <strong>Lưu ý nghiệp vụ:</strong> Nếu chọn tích lũy từng tháng, nhân viên làm việc từ số ngày công tối thiểu trở lên sẽ được cộng 1 ngày phép vào kỳ tính công. Nhân viên vào giữa năm được cấp theo tỷ lệ số tháng làm việc thực tế.
+            </div>
+          </div>
+
+          <!-- Khối 3: Thời điểm bắt đầu tính phép & Quy tắc tháng đầu tiên (Chuẩn AMIS) -->
+          <div class="p-3.5 bg-slate-50/70 rounded-xl border border-slate-200 space-y-3.5">
+            <div class="text-xs font-bold text-[#2E3191] flex items-center justify-between border-b border-slate-200/80 pb-2">
+              <span class="flex items-center space-x-1.5">
+                <span>⏱️</span>
+                <span>Thời điểm bắt đầu tính phép & Quy tắc tháng đầu tiên</span>
+              </span>
+              <span class="text-[11px] font-normal text-slate-500">Chuẩn thiết lập AMIS HRM</span>
+            </div>
+
+            <!-- Mục 1: Mốc bắt đầu tính phép -->
+            <div>
+              <label class="block font-semibold text-slate-700 mb-1.5">Mốc bắt đầu tính tích lũy phép</label>
+              <div class="bg-white p-2.5 rounded-lg border border-slate-200">
+                <select id="new-policy-start-calc-date" class="w-full sm:w-80 px-3 py-2 border border-slate-300 rounded-lg text-xs font-semibold text-slate-800 bg-white focus:ring-2 focus:ring-[#2E3191]">
+                  <option value="START_DATE">Ngày bắt đầu</option>
+                  <option value="FIRST_OFFICIAL_CONTRACT_DATE">Ngày ký chính thức đầu tiên</option>
+                </select>
+                <div class="text-[11px] text-slate-500 mt-1.5">
+                  Căn cứ mốc ngày của nhân viên để bắt đầu tính chu kỳ tích lũy phép năm hàng tháng.
+                </div>
+              </div>
+            </div>
+
+            <!-- Mục 2: Tháng đầu tiên được tính phép nếu -->
+            <div>
+              <label class="block font-semibold text-slate-700 mb-1.5">Tháng đầu tiên được tính phép nếu:</label>
+              <div class="space-y-2 bg-white p-2.5 rounded-lg border border-slate-200">
+                <label class="flex items-center space-x-2 cursor-pointer">
+                  <input type="radio" name="policy-first-month-rule" id="first-month-any" value="ANY_DAY" onchange="onFirstMonthRuleChange()" class="text-[#2E3191] focus:ring-[#2E3191]">
+                  <span class="text-xs text-slate-700">Tiếp nhận ngày bất kỳ trong tháng</span>
+                </label>
+
+                <div class="space-y-2">
+                  <label class="flex items-center space-x-2 cursor-pointer">
+                    <input type="radio" name="policy-first-month-rule" id="first-month-custom" value="CUSTOM" checked onchange="onFirstMonthRuleChange()" class="text-[#2E3191] focus:ring-[#2E3191]">
+                    <span class="text-xs font-bold text-slate-800">Tùy chọn mốc ngày tiếp nhận:</span>
+                  </label>
+                  
+                  <div id="first-month-custom-detail" class="pl-6 space-y-2 pt-0.5">
+                    <!-- Điều kiện 1: Trước ngày X -->
+                    <div class="flex flex-wrap items-center gap-2 text-xs text-slate-700">
+                      <span>Tiếp nhận trước ngày</span>
+                      <input type="number" id="first-month-cutoff-day" min="1" max="31" value="16" oninput="onFirstMonthCutoffInput()" class="w-14 px-1.5 py-1 border border-slate-300 rounded text-center font-bold text-xs bg-white text-[#2E3191]">
+                      <span>thì được tính</span>
+                      <select id="first-month-before-days" class="px-2 py-1 border border-slate-300 rounded text-xs bg-white font-bold text-indigo-700">
+                        <option value="1">1</option>
+                        <option value="0.5">0.5</option>
+                        <option value="0">0</option>
+                      </select>
+                      <span>ngày phép</span>
+                    </div>
+
+                    <!-- Điều kiện 2: Từ ngày X trở về sau -->
+                    <div class="flex flex-wrap items-center gap-2 text-xs text-slate-700">
+                      <span>Tiếp nhận từ ngày</span>
+                      <input type="number" id="first-month-cutoff-after" readonly value="16" class="w-14 px-1.5 py-1 border border-slate-200 rounded text-center font-bold text-xs bg-slate-100 text-slate-500 cursor-not-allowed">
+                      <span>trở về sau thì được tính</span>
+                      <select id="first-month-after-days" class="px-2 py-1 border border-slate-300 rounded text-xs bg-white font-bold text-slate-700">
+                        <option value="0">0</option>
+                        <option value="0.5">0.5</option>
+                        <option value="1">1</option>
+                      </select>
+                      <span>ngày phép</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Khối 4: Chuyển ngày phép chưa dùng từ năm cũ sang năm mới (Chuẩn AMIS) -->
+          <div class="p-3.5 bg-slate-50/70 rounded-xl border border-slate-200 space-y-3">
+            <div class="flex flex-wrap items-center justify-between border-b border-slate-200/80 pb-2 gap-2">
+              <span class="flex items-center space-x-1.5 text-xs font-bold text-[#2E3191]">
+                <span>🔄</span>
+                <span>Chuyển ngày phép chưa dùng từ năm cũ sang năm mới</span>
+              </span>
+              <!-- Radio Có / Không -->
+              <div class="flex items-center space-x-3 text-xs">
+                <label class="inline-flex items-center space-x-1.5 cursor-pointer">
+                  <input type="radio" name="policy-carryover-allow" id="carryover-allow-yes" value="YES" checked onchange="onCarryoverAllowChange()" class="text-[#2E3191] focus:ring-[#2E3191]">
+                  <span class="font-bold text-slate-800">Có</span>
+                </label>
+                <label class="inline-flex items-center space-x-1.5 cursor-pointer">
+                  <input type="radio" name="policy-carryover-allow" id="carryover-allow-no" value="NO" onchange="onCarryoverAllowChange()" class="text-[#2E3191] focus:ring-[#2E3191]">
+                  <span class="font-bold text-slate-600">Không</span>
+                </label>
+              </div>
+            </div>
+
+            <!-- Vùng thiết lập khi chọn Có -->
+            <div id="new-policy-carryover-fields" class="space-y-3 pt-1">
+              <!-- Nhóm 1: Chuyển tất cả vs Tối đa X ngày -->
+              <div class="bg-white p-3 rounded-lg border border-slate-200 space-y-2.5">
+                <div>
+                  <label class="inline-flex items-center space-x-2 cursor-pointer">
+                    <input type="radio" name="policy-carryover-scope" id="carryover-scope-all" value="ALL" checked onchange="onCarryoverScopeChange()" class="text-[#2E3191] focus:ring-[#2E3191]">
+                    <span class="text-xs font-bold text-slate-800">Chuyển tất cả ngày phép</span>
+                  </label>
+                </div>
+
+                <div class="flex items-center space-x-2">
+                  <label class="inline-flex items-center space-x-2 cursor-pointer">
+                    <input type="radio" name="policy-carryover-scope" id="carryover-scope-max" value="MAX" onchange="onCarryoverScopeChange()" class="text-[#2E3191] focus:ring-[#2E3191]">
+                    <span class="text-xs font-semibold text-slate-700">Tối đa</span>
+                  </label>
+                  <input type="number" id="new-policy-max-carryover-days" min="0.5" step="0.5" value="1" disabled class="w-16 px-2 py-1 border border-slate-200 rounded text-center font-bold text-xs bg-slate-100 text-slate-400 cursor-not-allowed">
+                  <span class="text-xs text-slate-600">Ngày</span>
+                </div>
+              </div>
+
+              <!-- Nhóm 2: Thời gian sử dụng & Hạn chót -->
+              <div class="bg-white p-3 rounded-lg border border-slate-200 space-y-2.5">
+                <div class="flex flex-wrap items-center gap-2 text-xs">
+                  <label class="inline-flex items-center space-x-2 cursor-pointer">
+                    <input type="checkbox" id="policy-carryover-has-timelimit" checked onchange="onCarryoverTimeLimitChange()" class="w-4 h-4 rounded text-[#2E3191] border-slate-300 focus:ring-[#2E3191]">
+                    <span class="font-bold text-slate-800">Thời gian sử dụng:</span>
+                  </label>
+                  <div id="carryover-timelimit-wrap" class="inline-flex flex-wrap items-center gap-2">
+                    <div class="inline-flex items-center space-x-1">
+                      <input type="number" id="policy-carryover-months" min="1" max="24" value="3" class="w-14 px-1.5 py-1 border border-slate-300 rounded text-center font-bold text-xs bg-white text-[#2E3191]">
+                      <span class="text-slate-600 font-medium">tháng (VD: 3 tháng = đến 31/03)</span>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="pt-2 border-t border-slate-100 flex items-center justify-between">
+                  <label class="inline-flex items-center space-x-2 cursor-pointer">
+                    <input type="checkbox" id="new-policy-deduct-carryover-first" checked class="w-4 h-4 rounded text-[#2E3191] border-slate-300 focus:ring-[#2E3191]">
+                    <span class="font-medium text-slate-700 text-xs">Ưu tiên trừ ngày phép tồn năm cũ trước khi trừ phép năm hiện tại</span>
+                  </label>
+                  <span class="text-[10px] text-amber-700 bg-amber-50 px-2 py-0.5 rounded border border-amber-200">Hết hạn tự hủy</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Khối 5: Thâm niên BLLĐ -->
+          <div class="p-3.5 bg-slate-50/70 rounded-xl border border-slate-200 space-y-3">
+            <div class="text-xs font-bold text-[#2E3191] flex items-center justify-between border-b border-slate-200/80 pb-2">
+              <span class="flex items-center space-x-1.5">
+                <span>🎖️</span>
+                <span>Quy chế Thâm niên (Điều 114 BLLĐ)</span>
+              </span>
+              <span class="text-[11px] font-normal text-slate-500">Cơ chế tự động cộng phép theo năm làm việc</span>
+            </div>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+              <div>
+                <label class="block font-semibold text-slate-700 mb-1">Quy định thâm niên</label>
+                <div class="flex items-center space-x-1">
+                  <span class="text-slate-600 font-medium text-xs">Đủ</span>
+                  <input type="number" id="new-policy-seniority-years" value="5" min="1" max="20" class="w-16 px-2 py-2 border border-slate-300 rounded-lg text-xs font-bold text-center bg-white">
+                  <span class="text-slate-600 font-medium text-xs">năm, cộng</span>
+                  <input type="number" id="new-policy-seniority-days" value="1.0" step="0.5" min="0.5" class="w-16 px-2 py-2 border border-slate-300 rounded-lg text-xs font-bold text-center bg-white">
+                  <span class="text-slate-600 font-medium text-xs">ngày</span>
+                </div>
+              </div>
+              <div>
+                <label class="block font-semibold text-slate-700 mb-1">Mốc ngày tính thâm niên</label>
+                <select id="new-policy-seniority-base-date" class="w-full px-3 py-2 border border-slate-300 rounded-lg text-xs font-medium bg-white focus:ring-2 focus:ring-[#2E3191]">
+                  <option value="START_DATE">Ngày bắt đầu làm việc (Ngày vào làm)</option>
+                  <option value="OFFICIAL_DATE">Ngày ký HĐLĐ chính thức</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <!-- Khối 6: Phạm vi áp dụng chính sách -->
+          <div class="p-3.5 bg-slate-50/70 rounded-xl border border-slate-200 space-y-3">
+            <div class="text-xs font-bold text-[#2E3191] flex items-center justify-between border-b border-slate-200/80 pb-2">
+              <span class="flex items-center space-x-1.5">
+                <span>🎯</span>
+                <span>Phạm vi áp dụng chính sách</span>
+              </span>
+              <span class="text-[11px] font-normal text-slate-500">Đối chiếu tự động khi gán hồ sơ nhân viên</span>
+            </div>
+            <!-- Loại HĐLĐ Dropdown Multiselect -->
+            <div class="relative">
+              <label class="block font-semibold text-slate-700 mb-1.5">Loại Hợp đồng áp dụng <span class="text-rose-500">*</span></label>
+              <div class="relative">
+                <button type="button" id="btn-dropdown-contract-types" onclick="toggleContractTypesDropdown(event)" class="w-full min-h-[38px] px-3 py-1.5 border border-slate-300 rounded-lg text-xs bg-white text-left flex items-center justify-between focus:ring-2 focus:ring-[#2E3191] cursor-pointer">
+                  <div id="contract-types-selected-tags" class="flex flex-wrap gap-1.5 items-center flex-1 pr-2">
+                    <!-- Populated dynamically by renderContractTypesTags() -->
+                  </div>
+                  <span class="text-slate-400 text-xs shrink-0">▼</span>
+                </button>
+
+                <!-- Dropdown panel list -->
+                <div id="dropdown-menu-contract-types" class="absolute left-0 right-0 top-full mt-1 bg-white border border-slate-200 rounded-xl shadow-xl z-50 p-2 space-y-1 hidden">
+                  <div class="px-2 py-1 text-[11px] font-bold text-slate-400 uppercase tracking-wider border-b border-slate-100 flex items-center justify-between">
+                    <span>Chọn loại hợp đồng</span>
+                    <button type="button" onclick="selectAllContractTypes(true)" class="text-[#2E3191] hover:underline cursor-pointer">Chọn tất cả</button>
+                  </div>
+                  <div class="space-y-0.5 max-h-48 overflow-y-auto pt-1">
+                    <label class="flex items-center space-x-2 px-2.5 py-1.5 rounded-lg hover:bg-slate-50 cursor-pointer">
+                      <input type="checkbox" name="policy-contract-types" value="HĐLĐ xác định thời hạn" checked onchange="onContractTypesCheckboxChange()" class="w-4 h-4 rounded text-[#2E3191] border-slate-300 focus:ring-[#2E3191]">
+                      <span class="text-xs font-medium text-slate-800">HĐLĐ xác định thời hạn</span>
+                    </label>
+                    <label class="flex items-center space-x-2 px-2.5 py-1.5 rounded-lg hover:bg-slate-50 cursor-pointer">
+                      <input type="checkbox" name="policy-contract-types" value="HĐLĐ không xác định thời hạn" checked onchange="onContractTypesCheckboxChange()" class="w-4 h-4 rounded text-[#2E3191] border-slate-300 focus:ring-[#2E3191]">
+                      <span class="text-xs font-medium text-slate-800">HĐLĐ không xác định thời hạn</span>
+                    </label>
+                    <label class="flex items-center space-x-2 px-2.5 py-1.5 rounded-lg hover:bg-slate-50 cursor-pointer">
+                      <input type="checkbox" name="policy-contract-types" value="Thỏa thuận thử việc" onchange="onContractTypesCheckboxChange()" class="w-4 h-4 rounded text-[#2E3191] border-slate-300 focus:ring-[#2E3191]">
+                      <span class="text-xs font-medium text-slate-800">Thỏa thuận thử việc</span>
+                    </label>
+                    <label class="flex items-center space-x-2 px-2.5 py-1.5 rounded-lg hover:bg-slate-50 cursor-pointer">
+                      <input type="checkbox" name="policy-contract-types" value="HĐLĐ theo mùa vụ / công việc nhất định" onchange="onContractTypesCheckboxChange()" class="w-4 h-4 rounded text-[#2E3191] border-slate-300 focus:ring-[#2E3191]">
+                      <span class="text-xs font-medium text-slate-800">HĐLĐ theo mùa vụ / công việc nhất định</span>
+                    </label>
+                    <label class="flex items-center space-x-2 px-2.5 py-1.5 rounded-lg hover:bg-slate-50 cursor-pointer">
+                      <input type="checkbox" name="policy-contract-types" value="Hợp đồng thực tập sinh" onchange="onContractTypesCheckboxChange()" class="w-4 h-4 rounded text-[#2E3191] border-slate-300 focus:ring-[#2E3191]">
+                      <span class="text-xs font-medium text-slate-800">Hợp đồng thực tập sinh</span>
+                    </label>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!-- Đơn vị/ Phòng ban áp dụng -->
+            <div>
+              <label class="block font-semibold text-slate-700 mb-1">Đơn vị/ Phòng ban áp dụng</label>
+              <select id="new-policy-dept-scope" class="w-full px-3 py-2 border border-slate-300 rounded-lg text-xs font-medium bg-white focus:ring-2 focus:ring-[#2E3191]">
+                <option value="ALL">🏢 Toàn bộ Đơn vị/ Phòng ban trong Công ty</option>
+                <option value="Khối Vận hành">Khối Vận hành Khai thác Cảng</option>
+                <option value="Khối Kỹ thuật">Khối Kỹ thuật - Bảo trì Cơ giới</option>
+                <option value="Khối Văn phòng">Khối Văn phòng - Gián tiếp</option>
+                <option value="Khối Hàng hải">Khối Hàng hải - Hoa tiêu Cảng</option>
+              </select>
+            </div>
+            <!-- Căn cứ pháp lý & Mô tả -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-1">
+              <div>
+                <label class="block font-semibold text-slate-700 mb-1">Căn cứ pháp lý</label>
+                <input type="text" id="new-policy-law" value="Điều 113, 114 Bộ luật Lao động 2019" class="w-full px-3 py-2 border border-slate-300 rounded-lg text-xs focus:ring-2 focus:ring-[#2E3191] bg-white">
+              </div>
+              <div>
+                <label class="block font-semibold text-slate-700 mb-1">Mô tả tóm tắt quy chế</label>
+                <input type="text" id="new-policy-desc" placeholder="Ghi chú thêm về phạm vi & chính sách..." class="w-full px-3 py-2 border border-slate-300 rounded-lg text-xs focus:ring-2 focus:ring-[#2E3191] bg-white">
+              </div>
+            </div>
           </div>
         </div>
 
-        <div>
-          <label class="block font-semibold text-slate-700 mb-1">Tên chính sách nghỉ phép <span class="text-rose-500">*</span></label>
-          <input type="text" id="new-policy-name" required placeholder="VD: CS NEW 2 hoặc Chính sách Nghỉ phép Kỹ sư Cảng..." class="w-full px-3 py-2 border border-slate-300 rounded-lg text-xs font-semibold focus:ring-2 focus:ring-[#2E3191]">
-        </div>
-
-        <div>
-          <label class="block font-semibold text-slate-700 mb-1">Quy chế thâm niên công tác</label>
-          <input type="text" id="new-policy-seniority" value="Cứ đủ 05 năm làm việc tại Cảng Phước An được cộng thêm +1 ngày phép (Điều 114 BLLĐ)" class="w-full px-3 py-2 border border-slate-300 rounded-lg text-xs focus:ring-2 focus:ring-[#2E3191]">
-        </div>
-
-        <div>
-          <label class="block font-semibold text-slate-700 mb-1">Đối tượng áp dụng</label>
-          <input type="text" id="new-policy-audience" placeholder="VD: Khối Văn phòng, Kỹ sư hiện trường..." class="w-full px-3 py-2 border border-slate-300 rounded-lg text-xs focus:ring-2 focus:ring-[#2E3191]">
-        </div>
-
-        <div>
-          <label class="block font-semibold text-slate-700 mb-1">Căn cứ pháp lý</label>
-          <input type="text" id="new-policy-law" value="Điều 113 Bộ luật Lao động 2019" class="w-full px-3 py-2 border border-slate-300 rounded-lg text-xs focus:ring-2 focus:ring-[#2E3191]">
-        </div>
-
-        <div>
-          <label class="block font-semibold text-slate-700 mb-1">Mô tả tóm tắt</label>
-          <textarea id="new-policy-desc" rows="2" placeholder="Ghi chú thêm về quy chế..." class="w-full px-3 py-2 border border-slate-300 rounded-lg text-xs focus:ring-2 focus:ring-[#2E3191]"></textarea>
-        </div>
-
-        <div class="pt-2 flex items-center justify-end space-x-2 border-t border-slate-200">
-          <button type="button" onclick="closeAddLeavePolicyModal()" class="px-4 py-2 border border-slate-300 text-slate-700 font-medium rounded-lg hover:bg-slate-50 transition cursor-pointer">Hủy</button>
-          <button type="submit" class="px-5 py-2 pap-primary text-white rounded-lg font-bold shadow-xs transition cursor-pointer">Lưu chính sách</button>
+        <!-- Modal Footer Actions -->
+        <div class="pt-3 flex items-center justify-between border-t border-slate-200 shrink-0">
+          <div class="text-[11px] text-slate-500 italic">
+            * Nhấn "Lưu chính sách" để cập nhật bảng danh mục và tự động đồng bộ vào Hồ sơ nhân sự.
+          </div>
+          <div class="flex items-center space-x-2">
+            <button type="button" onclick="closeAddLeavePolicyModal()" class="px-4 py-2 border border-slate-300 text-slate-700 font-semibold rounded-lg hover:bg-slate-50 transition cursor-pointer">Hủy</button>
+            <button type="submit" class="px-5 py-2 pap-primary text-white rounded-lg font-bold shadow-xs hover:opacity-95 transition cursor-pointer flex items-center space-x-1.5">
+              <span>💾</span>
+              <span>Lưu chính sách nghỉ phép</span>
+            </button>
+          </div>
         </div>
       </form>
     </div>
