@@ -3724,11 +3724,11 @@
                     </div>
                   </th>
 
-                  <!-- Ngày chính thức -->
+                  <!-- Ngày ký hợp đồng -->
                   <th class="py-2.5 px-3 min-w-[125px] text-center sticky top-0 bg-[#2E3191] z-20">
                     <div class="inline-flex items-center justify-center">
                       <span class="inline-flex items-center text-white/40 hover:text-white/80 cursor-grab mr-1 shrink-0 select-none" title="Kéo đổi vị trí cột"><svg class="w-2.5 h-3.5" viewBox="0 0 8 14" fill="currentColor"><circle cx="2" cy="2" r="1.1"/><circle cx="6" cy="2" r="1.1"/><circle cx="2" cy="7" r="1.1"/><circle cx="6" cy="7" r="1.1"/><circle cx="2" cy="12" r="1.1"/><circle cx="6" cy="12" r="1.1"/></svg></span>
-                      <span class="cursor-pointer" onclick="sortEmpList('officialDate')">Ngày chính thức</span>
+                      <span class="cursor-pointer" onclick="sortEmpList('officialDate')">Ngày ký hợp đồng</span>
                       <span class="inline-flex flex-col items-center justify-center cursor-pointer text-white/70 hover:text-white transition-colors ml-1 select-none p-0.5 group/sort shrink-0" onclick="handleTableSort('officialDate')" title="Sắp xếp cột"><svg class="w-2.5 h-3" viewBox="0 0 10 12" fill="currentColor"><path d="M5 1L9 5H1L5 1Z" class="group-hover/sort:text-white" /><path d="M1 7H9L5 11L1 7Z" class="group-hover/sort:text-white" /></svg></span>
                     </div>
                   </th>
@@ -3896,7 +3896,7 @@
                 <span id="prof-card-joindate" class="text-slate-700 text-right font-medium">01/01/2026</span>
               </div>
               <div class="flex items-start justify-between py-1 border-b border-slate-50">
-                <span class="text-slate-400">Ngày chính thức:</span>
+                <span class="text-slate-400">Ngày ký hợp đồng:</span>
                 <span id="prof-card-officialdate" class="text-slate-700 text-right font-medium">01/01/2026</span>
               </div>
               <div class="flex items-start justify-between py-1 border-b border-slate-50">
@@ -4239,7 +4239,7 @@
                     <input type="text" id="prof-work-status" readonly value="🟢 Đang làm việc" class="w-full px-3 py-2 bg-slate-100 border border-slate-200 rounded-lg font-semibold text-emerald-700 cursor-not-allowed">
                   </div>
 
-                  <!-- Hàng 4: Ngày bắt đầu & Ngày chính thức -->
+                  <!-- Hàng 4: Ngày bắt đầu & Ngày ký hợp đồng -->
                   <div>
                     <label class="block font-semibold text-slate-700 mb-1 flex items-center space-x-1">
                       <span>📅</span>
@@ -4250,7 +4250,7 @@
                   <div>
                     <label class="block font-semibold text-slate-700 mb-1 flex items-center space-x-1">
                       <span>🎯</span>
-                      <span>Ngày chính thức</span>
+                      <span>Ngày ký hợp đồng</span>
                     </label>
                     <input type="text" id="prof-work-officialdate" readonly value="01/01/2026" class="w-full px-3 py-2 bg-slate-100 border border-slate-200 rounded-lg font-semibold text-slate-800 cursor-not-allowed">
                   </div>
@@ -11435,7 +11435,7 @@
           </div>
         </div>
 
-        <!-- 2 TRƯỜNG NGHIỆP VỤ: Ngày bắt đầu & Ngày chính thức -->
+        <!-- 2 TRƯỜNG NGHIỆP VỤ: Ngày bắt đầu & Ngày ký hợp đồng -->
         <div class="grid grid-cols-2 gap-3">
           <div>
             <label class="block font-semibold text-slate-700 mb-1 flex items-center justify-between">
@@ -11446,7 +11446,7 @@
           </div>
           <div>
             <label class="block font-semibold text-slate-700 mb-1 flex items-center justify-between">
-              <span>Ngày chính thức</span>
+              <span>Ngày ký hợp đồng</span>
               <span class="text-[10px] text-slate-400">Hợp đồng chính</span>
             </label>
             <input type="date" id="new-emp-officialdate" value="2026-03-01" class="w-full px-3 py-2 border border-slate-300 rounded-lg text-slate-800 focus:ring-2 focus:ring-[#2E3191]">
@@ -11983,14 +11983,14 @@
           </div>
         </div>
 
-        <!-- 2 TRƯỜNG NGHIỆP VỤ: NGÀY VÀO LÀM & NGÀY CHÍNH THỨC -->
+        <!-- 2 TRƯỜNG NGHIỆP VỤ: NGÀY VÀO LÀM & NGÀY KÝ HỢP ĐỒNG -->
         <div class="grid grid-cols-2 gap-3">
           <div>
             <label class="block font-semibold text-slate-700 mb-1">Ngày bắt đầu <span class="text-rose-500">*</span></label>
             <input type="date" id="edit-emp-startdate" required class="w-full px-3 py-2 border border-slate-300 rounded-lg text-slate-800 focus:ring-2 focus:ring-[#2E3191]">
           </div>
           <div>
-            <label class="block font-semibold text-slate-700 mb-1">Ngày chính thức</label>
+            <label class="block font-semibold text-slate-700 mb-1">Ngày ký hợp đồng</label>
             <input type="date" id="edit-emp-officialdate" class="w-full px-3 py-2 border border-slate-300 rounded-lg text-slate-800 focus:ring-2 focus:ring-[#2E3191]">
           </div>
         </div>
@@ -14195,7 +14195,7 @@
               ${startDateStr}
             </td>
 
-            <!-- 8. Ngày chính thức -->
+            <!-- 8. Ngày ký hợp đồng -->
             <td class="py-2 px-3 text-center text-xs whitespace-nowrap">
               ${isProbation 
                 ? `<span class="px-1.5 py-0.5 rounded-full text-[10px] font-bold bg-amber-50 text-amber-700 border border-amber-200">Đang thử việc</span>`
@@ -17015,7 +17015,7 @@
         workplaceCode: ['mavanphong', 'madiadiemlamviec', 'madiadiemgps', 'mavanphonglamviec', 'workplacecode'],
         dept: ['donviphongban', 'phongban', 'donvi'], position: ['chucvu', 'chucvuquanly'], title: ['chucdanhchuyenmon', 'chucdanh'],
         contract: ['loaihopdong', 'hopdong'], status: ['trangthainhansu', 'trangthai'],
-        startDate: ['ngayvaolamddmmyyyy', 'ngayvaolam', 'ngaybatdau'], officialDate: ['ngaychinhthucddmmyyyy', 'ngaychinhthuc']
+        startDate: ['ngayvaolamddmmyyyy', 'ngayvaolam', 'ngaybatdau'], officialDate: ['ngaychinhthucddmmyyyy', 'ngaychinhthuc', 'ngaykyhopdongddmmyyyy', 'ngaykyhopdong']
       };
       const header = (rows[0] || []).map(headerKey);
       const columnMap = {};
@@ -17087,9 +17087,9 @@
     function closeEmployeeImportModal() { document.getElementById('modal-employee-import').classList.add('hidden'); }
     function downloadEmployeeImportTemplate() {
       if (typeof XLSX === 'undefined') { showToast('Không tải được thư viện Excel. Vui lòng kiểm tra kết nối rồi thử lại.'); return; }
-      const headers = ['Mã nhân viên (PAP)', 'Họ và tên', 'Email nội bộ', 'Số điện thoại', 'Mã văn phòng', 'Đơn vị/Phòng ban', 'Chức vụ', 'Chức danh chuyên môn', 'Loại hợp đồng', 'Trạng thái nhân sự', 'Ngày bắt đầu (DD/MM/YYYY)', 'Ngày chính thức (DD/MM/YYYY)'];
+      const headers = ['Mã nhân viên (PAP)', 'Họ và tên', 'Email nội bộ', 'Số điện thoại', 'Mã văn phòng', 'Đơn vị/Phòng ban', 'Chức vụ', 'Chức danh chuyên môn', 'Loại hợp đồng', 'Trạng thái nhân sự', 'Ngày bắt đầu (DD/MM/YYYY)', 'Ngày ký hợp đồng (DD/MM/YYYY)'];
       const catalogs = getEmployeeImportCatalogs();
-      const guide = [['CỘT', 'BẮT BUỘC', 'GIÁ TRỊ/DẠNG DỮ LIỆU'], ['Mã nhân viên (PAP)', 'Có', 'PAP + số; không được trùng mã đã tồn tại'], ['Họ và tên', 'Có', 'Văn bản'], ['Email nội bộ', 'Có', 'Email hợp lệ'], ['Số điện thoại', 'Không', 'Văn bản'], ['Mã văn phòng', 'Có', catalogs.workplaces.join(' | ')], ['Đơn vị/Phòng ban', 'Có', catalogs.departments.join(' | ')], ['Chức vụ', 'Không', catalogs.positions.join(' | ')], ['Chức danh chuyên môn', 'Có', catalogs.titles.join(' | ')], ['Loại hợp đồng', 'Có', catalogs.contracts.join(' | ')], ['Trạng thái nhân sự', 'Có', catalogs.statuses.join(' | ')], ['Ngày bắt đầu (DD/MM/YYYY)', 'Có', 'Ngày hợp lệ, ví dụ 01/09/2026'], ['Ngày chính thức (DD/MM/YYYY)', 'Không', 'Có thể để trống; ngày hợp lệ nếu nhập'], [], ['Lưu ý', '', 'Tệp chỉ thêm hồ sơ mới. Dòng lỗi không được thêm. Trường thông tin cá nhân/tài chính không có trong mẫu sẽ để trống.']];
+      const guide = [['CỘT', 'BẮT BUỘC', 'GIÁ TRỊ/DẠNG DỮ LIỆU'], ['Mã nhân viên (PAP)', 'Có', 'PAP + số; không được trùng mã đã tồn tại'], ['Họ và tên', 'Có', 'Văn bản'], ['Email nội bộ', 'Có', 'Email hợp lệ'], ['Số điện thoại', 'Không', 'Văn bản'], ['Mã văn phòng', 'Có', catalogs.workplaces.join(' | ')], ['Đơn vị/Phòng ban', 'Có', catalogs.departments.join(' | ')], ['Chức vụ', 'Không', catalogs.positions.join(' | ')], ['Chức danh chuyên môn', 'Có', catalogs.titles.join(' | ')], ['Loại hợp đồng', 'Có', catalogs.contracts.join(' | ')], ['Trạng thái nhân sự', 'Có', catalogs.statuses.join(' | ')], ['Ngày bắt đầu (DD/MM/YYYY)', 'Có', 'Ngày hợp lệ, ví dụ 01/09/2026'], ['Ngày ký hợp đồng (DD/MM/YYYY)', 'Không', 'Có thể để trống; ngày hợp lệ nếu nhập'], [], ['Lưu ý', '', 'Tệp chỉ thêm hồ sơ mới. Dòng lỗi không được thêm. Trường thông tin cá nhân/tài chính không có trong mẫu sẽ để trống.']];
       const workbook = XLSX.utils.book_new(); XLSX.utils.book_append_sheet(workbook, XLSX.utils.aoa_to_sheet([headers]), 'NhanVien'); XLSX.utils.book_append_sheet(workbook, XLSX.utils.aoa_to_sheet(guide), 'HuongDan'); XLSX.writeFile(workbook, 'Mau_nhap_nhan_vien.xlsx');
     }
     async function handleEmployeeImportFile(event) {
@@ -18628,7 +18628,7 @@
       document.getElementById('edit-emp-email').value = emp.email;
       document.getElementById('edit-emp-phone').value = emp.phone;
 
-      // Nạp ngày vào làm và ngày chính thức
+      // Nạp ngày vào làm và ngày ký hợp đồng
       const startDateInput = document.getElementById('edit-emp-startdate');
       if (startDateInput) startDateInput.value = parseDateToInputFormat(emp.startDate || emp.joindate || '01/11/2025');
       const officialDateInput = document.getElementById('edit-emp-officialdate');
