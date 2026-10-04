@@ -617,6 +617,13 @@
                 </div>
                 <span class="text-[9px] px-1 rounded bg-indigo-50 text-[#2E3191] font-bold" id="sidebar-leave-policies-count">4</span>
               </button>
+              <button onclick="openAnnualLeaveSub('types')" id="sub-item-leave-types" class="sidebar-sub-item w-full text-left px-2 py-1.5 rounded flex items-center justify-between cursor-pointer transition text-[11px] text-slate-700 font-medium hover:text-[#2E3191] hover:bg-slate-50 group" title="Danh mục loại nghỉ phép">
+                <div class="flex items-center space-x-1.5 truncate">
+                  <span class="w-1.5 h-1.5 rounded-full bg-slate-300 group-hover:bg-[#2E3191]"></span>
+                  <span class="truncate">Loại nghỉ phép</span>
+                </div>
+                <span class="text-[9px] px-1 rounded bg-indigo-50 text-[#2E3191] font-bold" id="sidebar-leave-types-count">6</span>
+              </button>
             </div>
           </div>
           <button onclick="switchSidebarModule('approval')" id="side-item-approval" class="sidebar-btn hover:bg-slate-100 hover:text-slate-900 w-full text-left px-3 py-2 rounded-lg flex items-center justify-between cursor-pointer transition text-slate-800 font-medium" title="Hộp thư Phê duyệt tập trung">
@@ -4826,6 +4833,11 @@
             <span>Chính sách nghỉ phép</span>
             <span id="badge-annual-leave-policies" class="ml-1 px-1.5 py-0.2 rounded-full text-[10px] font-bold bg-indigo-50 text-[#2E3191] border border-indigo-200">4</span>
           </button>
+          <button type="button" onclick="switchAnnualLeaveSubTab('types')" id="tab-btn-annual-leave-types" class="px-4 py-2 rounded-xl text-slate-700 hover:text-[#2E3191] hover:bg-slate-50 flex items-center space-x-2 transition cursor-pointer shrink-0">
+            <span>📑</span>
+            <span>Loại nghỉ phép</span>
+            <span id="badge-annual-leave-types" class="ml-1 px-1.5 py-0.2 rounded-full text-[10px] font-bold bg-indigo-50 text-[#2E3191] border border-indigo-200">6</span>
+          </button>
         </div>
 
         <!-- 1. NỘI DUNG TAB SỔ THEO DÕI PHÉP NĂM -->
@@ -5174,6 +5186,71 @@
             </div>
           </div>
         </div>
+
+        <!-- 3. NỘI DUNG TAB DANH MỤC LOẠI NGHỈ PHÉP (M09.0) -->
+        <div id="annual-leave-content-types" class="space-y-3 hidden">
+          <!-- Header Loại nghỉ phép -->
+          <div class="bg-white p-4 rounded-2xl border border-slate-200 shadow-xs flex flex-col md:flex-row md:items-center md:justify-between gap-3">
+            <div>
+              <div class="flex items-center space-x-2 text-xs text-slate-700 font-medium mb-1">
+                <span>Quản lý nhân sự</span>
+                <span>/</span>
+                <span>Quản lý nghỉ phép</span>
+                <span>/</span>
+                <span class="text-[#2E3191] font-semibold">Loại nghỉ phép</span>
+              </div>
+              <h2 class="text-base font-bold text-slate-900 flex items-center space-x-2">
+                <span>📑</span>
+                <span>DANH MỤC LOẠI NGHỈ PHÉP (M09.0)</span>
+              </h2>
+              <p class="text-xs text-slate-500 mt-0.5">Khai báo danh mục các loại nghỉ phép, chế độ hưởng lương, quy định trừ phép năm và chứng từ minh chứng bắt buộc theo Bộ luật Lao động & Quy chế Cảng Phước An.</p>
+            </div>
+
+            <div class="flex items-center flex-wrap gap-2">
+              <button type="button" onclick="openAddLeaveTypeModal()" class="px-3.5 py-2 pap-primary text-white rounded-lg text-xs font-semibold pap-primary-hover shadow-xs flex items-center space-x-1.5 transition cursor-pointer">
+                <span>➕</span>
+                <span>Thêm loại nghỉ mới</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Bảng Danh mục Loại nghỉ phép -->
+          <div class="bg-white rounded-2xl border border-slate-200 shadow-xs overflow-hidden">
+            <div class="p-3.5 border-b border-slate-100 flex flex-wrap items-center justify-between gap-2">
+              <div class="font-bold text-slate-800 text-xs flex items-center space-x-2">
+                <span>Danh mục loại nghỉ đang áp dụng:</span>
+                <span id="table-leave-types-count" class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-indigo-50 text-[#2E3191] border border-indigo-200">6 loại nghỉ</span>
+              </div>
+              <div class="flex items-center space-x-2">
+                <input type="text" id="search-leave-types" oninput="renderLeaveTypesTable()" placeholder="Tìm theo mã, tên loại nghỉ..." class="px-3 py-1.5 border border-slate-200 rounded-lg text-xs focus:ring-2 focus:ring-[#2E3191] w-64 bg-slate-50">
+              </div>
+            </div>
+
+            <div class="overflow-x-auto pap-table-frame">
+              <table id="annual-leave-types-table" class="w-full text-left text-xs border-collapse pap-data-table">
+                <thead class="bg-[#2E3191] text-white select-none border-b border-[#2E3191] shadow-xs">
+                  <tr class="text-xs font-bold divide-x divide-white/10">
+                    <th class="py-2.5 px-3 text-center w-12">STT</th>
+                    <th class="py-2.5 px-3 text-center w-24">Mã loại</th>
+                    <th class="py-2.5 px-3.5 min-w-[200px]">Tên loại ngày nghỉ</th>
+                    <th class="py-2.5 px-3 text-center w-24">Ký hiệu công</th>
+                    <th class="py-2.5 px-3 text-center min-w-[140px]">Chế độ lương</th>
+                    <th class="py-2.5 px-3 text-center min-w-[130px]">Trừ phép năm</th>
+                    <th class="py-2.5 px-3 text-center min-w-[130px]">Chứng từ</th>
+                    <th class="py-2.5 px-3 min-w-[180px]">Hạn mức tối đa</th>
+                    <th class="py-2.5 px-3 min-w-[180px]">Căn cứ pháp lý</th>
+                    <th class="py-2.5 px-3 text-center w-28">Trạng thái</th>
+                    <th class="py-2.5 px-3 text-center w-24">Thao tác</th>
+                  </tr>
+                </thead>
+                <tbody id="annual-leave-types-tbody" class="divide-y divide-slate-100 bg-white">
+                  <!-- Rendered dynamically by renderLeaveTypesTable() -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
 </section>
 
       <!-- ===================================================================== -->
@@ -30898,7 +30975,436 @@
 
   
     // =========================================================================
+        
         // =========================================================================
+    // DANH MỤC LOẠI NGHỈ PHÉP CHUẨN CẢNG PHƯỚC AN (M09.0 - LEAVE TYPES)
+    // =========================================================================
+    const leaveTypesData = [
+      {
+        code: 'AL',
+        name: 'Nghỉ Phép năm (Annual Leave)',
+        shortName: 'Phép năm',
+        symbol: 'P',
+        paidRate: 100,
+        paidType: '100% Lương',
+        deductQuota: true,
+        requireAttachment: false,
+        maxDaysYear: 12,
+        limitMonthCheck: false,
+        limitMonthVal: null,
+        limitWeekCheck: false,
+        limitWeekVal: null,
+        minDaysPerTime: 0.5,
+        maxDays: 'Theo quỹ phép năm (12 ngày/năm)',
+        badgeCls: 'bg-emerald-50 text-emerald-700 border-emerald-200',
+        lawArticle: 'Điều 113 Bộ luật Lao động 2019',
+        status: 'ACTIVE',
+        description: 'Nghỉ phép theo chế độ hàng năm, hưởng nguyên lương theo hợp đồng lao động.'
+      },
+      {
+        code: 'UL',
+        name: 'Nghỉ Không hưởng lương (Unpaid Leave)',
+        shortName: 'Không lương',
+        symbol: 'KL',
+        paidRate: 0,
+        paidType: '0% Lương',
+        deductQuota: false,
+        requireAttachment: false,
+        maxDaysYear: 14,
+        limitMonthCheck: false,
+        limitMonthVal: null,
+        limitWeekCheck: false,
+        limitWeekVal: null,
+        minDaysPerTime: 1,
+        maxDays: 'Tối đa 14 ngày/năm',
+        badgeCls: 'bg-slate-100 text-slate-700 border-slate-200',
+        lawArticle: 'Khoản 3 Điều 115 BLLĐ 2019',
+        status: 'ACTIVE',
+        description: 'Nghỉ việc riêng không hưởng lương theo thỏa thuận giữa NLĐ và người sử dụng lao động.'
+      },
+      {
+        code: 'SL',
+        name: 'Nghỉ Ốm đau (BHXH) (Sick Leave)',
+        shortName: 'Ốm đau (BHXH)',
+        symbol: 'Ô',
+        paidRate: 75,
+        paidType: '75% Lương (BHXH)',
+        deductQuota: false,
+        requireAttachment: true,
+        maxDaysYear: 30,
+        limitMonthCheck: false,
+        limitMonthVal: null,
+        limitWeekCheck: false,
+        limitWeekVal: null,
+        minDaysPerTime: 1,
+        maxDays: 'Theo chỉ định y tế (tối đa 30-60 ngày/năm)',
+        badgeCls: 'bg-blue-50 text-blue-700 border-blue-200',
+        lawArticle: 'Điều 25, 26 Luật BHXH 2014',
+        status: 'ACTIVE',
+        description: 'Nghỉ ốm đau có xác nhận của cơ sở y tế (mẫu C65-HD), hưởng trợ cấp 75% mức đóng BHXH.'
+      },
+      {
+        code: 'ML',
+        name: 'Nghỉ Thai sản (Maternity Leave)',
+        shortName: 'Thai sản (BHXH)',
+        symbol: 'TS',
+        paidRate: 100,
+        paidType: '100% Lương (BHXH)',
+        deductQuota: false,
+        requireAttachment: true,
+        maxDaysYear: 180,
+        limitMonthCheck: false,
+        limitMonthVal: null,
+        limitWeekCheck: false,
+        limitWeekVal: null,
+        minDaysPerTime: 1,
+        maxDays: '6 tháng (Nữ) / 5 - 14 ngày (Nam)',
+        badgeCls: 'bg-purple-50 text-purple-700 border-purple-200',
+        lawArticle: 'Điều 34 Luật BHXH 2014',
+        status: 'ACTIVE',
+        description: 'Nghỉ thai sản nam/nữ, khám thai, sinh con theo chế độ thai sản của Luật BHXH.'
+      },
+      {
+        code: 'PL',
+        name: 'Nghỉ Việc riêng có lương (Hiếu hỷ)',
+        shortName: 'Việc riêng có lương',
+        symbol: 'VR',
+        paidRate: 100,
+        paidType: '100% Lương',
+        deductQuota: false,
+        requireAttachment: true,
+        maxDaysYear: 3,
+        limitMonthCheck: false,
+        limitMonthVal: null,
+        limitWeekCheck: false,
+        limitWeekVal: null,
+        minDaysPerTime: 1,
+        maxDays: '1 - 3 ngày / lần',
+        badgeCls: 'bg-emerald-50 text-emerald-700 border-emerald-200',
+        lawArticle: 'Khoản 1 Điều 115 BLLĐ 2019',
+        status: 'ACTIVE',
+        description: 'Kết hôn (3 ngày), con kết hôn (1 ngày), cha mẹ/vợ chồng/con mất (3 ngày) hưởng nguyên lương.'
+      },
+      {
+        code: 'CL',
+        name: 'Nghỉ Bù làm thêm giờ (Compensatory Leave)',
+        shortName: 'Nghỉ bù OT',
+        symbol: 'NB',
+        paidRate: 100,
+        paidType: '100% Lương',
+        deductQuota: false,
+        requireAttachment: false,
+        maxDaysYear: null,
+        limitMonthCheck: false,
+        limitMonthVal: null,
+        limitWeekCheck: false,
+        limitWeekVal: null,
+        minDaysPerTime: 0.5,
+        maxDays: 'Theo quỹ giờ OT tích lũy',
+        badgeCls: 'bg-amber-50 text-amber-800 border-amber-200',
+        lawArticle: 'Quy chế làm thêm giờ Cảng Phước An',
+        status: 'ACTIVE',
+        description: 'Nghỉ bù cho số giờ làm thêm (OT) đã được phê duyệt và tích lũy trong kỳ.'
+      }
+    ];
+
+    function toggleLtLimit(type) {
+      if (type === 'month') {
+        const chk = document.getElementById('lt-limit-month-check');
+        const input = document.getElementById('lt-limit-month-val');
+        if (chk && input) {
+          input.disabled = !chk.checked;
+          if (chk.checked) {
+            input.classList.remove('bg-slate-100');
+            input.classList.add('bg-white');
+            input.focus();
+          } else {
+            input.classList.add('bg-slate-100');
+            input.classList.remove('bg-white');
+            input.value = '';
+          }
+        }
+      } else if (type === 'week') {
+        const chk = document.getElementById('lt-limit-week-check');
+        const input = document.getElementById('lt-limit-week-val');
+        if (chk && input) {
+          input.disabled = !chk.checked;
+          if (chk.checked) {
+            input.classList.remove('bg-slate-100');
+            input.classList.add('bg-white');
+            input.focus();
+          } else {
+            input.classList.add('bg-slate-100');
+            input.classList.remove('bg-white');
+            input.value = '';
+          }
+        }
+      }
+    }
+
+    function renderLeaveTypesTable() {
+      const tbody = document.getElementById('annual-leave-types-tbody');
+      const badge = document.getElementById('badge-annual-leave-types');
+      const sideBadge = document.getElementById('sidebar-leave-types-count');
+      const tableCount = document.getElementById('table-leave-types-count');
+      const searchVal = (document.getElementById('search-leave-types')?.value || '').toLowerCase().trim();
+
+      if (badge) badge.innerText = leaveTypesData.length;
+      if (sideBadge) sideBadge.innerText = leaveTypesData.length;
+      if (tableCount) tableCount.innerText = leaveTypesData.length + ' loại nghỉ';
+      if (!tbody) return;
+
+      const filtered = leaveTypesData.filter(lt => {
+        if (!searchVal) return true;
+        return lt.code.toLowerCase().includes(searchVal) || 
+               lt.name.toLowerCase().includes(searchVal) ||
+               lt.symbol.toLowerCase().includes(searchVal);
+      });
+
+      if (filtered.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="11" class="py-8 text-center text-slate-400 italic text-xs">Không tìm thấy loại nghỉ phép nào phù hợp</td></tr>';
+        return;
+      }
+
+      tbody.innerHTML = filtered.map((lt, idx) => {
+        const displayPaid = lt.paidRate !== undefined && lt.paidRate !== null ? (lt.paidRate + '% Lương') : (lt.paidType || '100% Lương');
+        const badgeCls = (lt.paidRate === 0 || (lt.paidType && lt.paidType.includes('0%'))) ? 'bg-slate-100 text-slate-700 border-slate-200'
+                       : (lt.paidRate && lt.paidRate < 100) ? 'bg-blue-50 text-blue-700 border-blue-200'
+                       : 'bg-emerald-50 text-emerald-700 border-emerald-200';
+
+        let maxDaysDisplay = lt.maxDays || '—';
+        if (lt.maxDaysYear !== undefined && lt.maxDaysYear !== null) {
+          maxDaysDisplay = lt.maxDaysYear + ' ngày/năm';
+          if (lt.limitMonthVal) maxDaysDisplay += ` • ${lt.limitMonthVal} ngày/tháng`;
+          if (lt.limitWeekVal) maxDaysDisplay += ` • ${lt.limitWeekVal} ngày/tuần`;
+        }
+
+        return `
+        <tr class="hover:bg-indigo-50/30 transition border-b border-slate-100">
+          <td class="py-3 px-3 text-center text-slate-500 font-medium">${idx + 1}</td>
+          <td class="py-3 px-3 text-center">
+            <span class="font-mono font-bold text-xs bg-slate-100 text-slate-800 px-2 py-0.5 rounded border border-slate-200">${lt.code}</span>
+          </td>
+          <td class="py-3 px-3.5 font-bold text-slate-900">
+            <div>${lt.name}</div>
+            <div class="text-[10.5px] text-slate-500 font-normal mt-0.5">${lt.description || ''}</div>
+          </td>
+          <td class="py-3 px-3 text-center">
+            <span class="w-7 h-7 inline-flex items-center justify-center rounded-lg font-bold text-xs bg-[#2E3191] text-white shadow-2xs">${lt.symbol}</span>
+          </td>
+          <td class="py-3 px-3 text-center">
+            <span class="px-2 py-0.5 rounded text-[10.5px] font-bold border ${badgeCls}">${displayPaid}</span>
+          </td>
+          <td class="py-3 px-3 text-center font-medium">
+            ${lt.deductQuota ? '<span class="text-rose-700 font-bold flex items-center justify-center space-x-1"><span class="w-1.5 h-1.5 rounded-full bg-rose-500 inline-block"></span><span>Trừ phép năm</span></span>' : '<span class="text-slate-400">Không trừ</span>'}
+          </td>
+          <td class="py-3 px-3 text-center">
+            ${lt.requireAttachment ? '<span class="px-2 py-0.5 rounded text-[10px] font-semibold bg-amber-50 text-amber-800 border border-amber-200">📎 Bắt buộc</span>' : '<span class="text-slate-400 text-[11px]">Tùy chọn</span>'}
+          </td>
+          <td class="py-3 px-3 text-slate-700 font-medium">${maxDaysDisplay}</td>
+          <td class="py-3 px-3 text-slate-600 text-[11px]">${lt.lawArticle || '—'}</td>
+          <td class="py-3 px-3 text-center">
+            ${lt.status === 'ACTIVE' 
+              ? '<span class="px-2 py-0.5 rounded-full text-[10.5px] font-semibold bg-emerald-50 text-emerald-700 border border-emerald-200">🟢 Đang áp dụng</span>'
+              : '<span class="px-2 py-0.5 rounded-full text-[10.5px] font-medium bg-slate-100 text-slate-500 border border-slate-200">⚪ Ngừng áp dụng</span>'}
+          </td>
+          <td class="py-3 px-3 text-center">
+            <div class="flex items-center justify-center space-x-1">
+              <button type="button" onclick="openEditLeaveTypeModal('${lt.code}')" class="p-1.5 text-slate-500 hover:text-[#2E3191] hover:bg-slate-100 rounded-lg transition cursor-pointer" title="Chỉnh sửa loại nghỉ">
+                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0115.75 21H5.25A2.25 2.25 0 013 18.75V8.25A2.25 2.25 0 015.25 6H10" /></svg>
+              </button>
+              <button type="button" onclick="deleteLeaveType('${lt.code}')" class="p-1.5 text-slate-400 hover:text-rose-600 hover:bg-rose-50 rounded-lg transition cursor-pointer" title="Xóa loại nghỉ">
+                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0" /></svg>
+              </button>
+            </div>
+          </td>
+        </tr>`;
+      }).join('');
+    }
+
+    function openAddLeaveTypeModal() {
+      document.getElementById('modal-leave-type-title').innerText = 'Thêm loại nghỉ phép mới (M09.0)';
+      document.getElementById('leave-type-is-edit').value = 'false';
+      document.getElementById('lt-code').value = '';
+      document.getElementById('lt-code').disabled = false;
+      document.getElementById('lt-symbol').value = '';
+      document.getElementById('lt-name').value = '';
+      document.getElementById('lt-paid-rate').value = '';
+      document.getElementById('lt-max-days-year').value = '';
+      document.getElementById('lt-limit-month-check').checked = false;
+      document.getElementById('lt-limit-month-val').value = '';
+      document.getElementById('lt-limit-month-val').disabled = true;
+      document.getElementById('lt-limit-month-val').classList.add('bg-slate-100');
+      document.getElementById('lt-limit-month-val').classList.remove('bg-white');
+      document.getElementById('lt-limit-week-check').checked = false;
+      document.getElementById('lt-limit-week-val').value = '';
+      document.getElementById('lt-limit-week-val').disabled = true;
+      document.getElementById('lt-limit-week-val').classList.add('bg-slate-100');
+      document.getElementById('lt-limit-week-val').classList.remove('bg-white');
+      document.getElementById('lt-min-days-per-time').value = '';
+      document.getElementById('lt-deduct-quota').checked = false;
+      document.getElementById('lt-require-attachment').checked = false;
+      document.getElementById('lt-law').value = '';
+      document.getElementById('lt-description').value = '';
+      document.getElementById('lt-status').value = 'ACTIVE';
+      document.getElementById('modal-leave-type').classList.remove('hidden');
+    }
+
+    function openEditLeaveTypeModal(code) {
+      const lt = leaveTypesData.find(item => item.code === code);
+      if (!lt) return;
+      document.getElementById('modal-leave-type-title').innerText = 'Chỉnh sửa loại nghỉ: ' + lt.name;
+      document.getElementById('leave-type-is-edit').value = 'true';
+      document.getElementById('lt-code').value = lt.code;
+      document.getElementById('lt-code').disabled = true;
+      document.getElementById('lt-symbol').value = lt.symbol;
+      document.getElementById('lt-name').value = lt.name;
+      
+      const rateVal = lt.paidRate !== undefined && lt.paidRate !== null ? lt.paidRate : (lt.paidType ? parseInt(lt.paidType) || 0 : '');
+      document.getElementById('lt-paid-rate').value = rateVal;
+
+      const maxYearVal = lt.maxDaysYear !== undefined && lt.maxDaysYear !== null ? lt.maxDaysYear : (parseInt(lt.maxDays) || '');
+      document.getElementById('lt-max-days-year').value = maxYearVal;
+
+      const hasMonthLimit = !!lt.limitMonthCheck || (lt.limitMonthVal !== undefined && lt.limitMonthVal !== null && lt.limitMonthVal !== '');
+      document.getElementById('lt-limit-month-check').checked = hasMonthLimit;
+      document.getElementById('lt-limit-month-val').disabled = !hasMonthLimit;
+      document.getElementById('lt-limit-month-val').value = lt.limitMonthVal || '';
+      if (hasMonthLimit) {
+        document.getElementById('lt-limit-month-val').classList.remove('bg-slate-100');
+        document.getElementById('lt-limit-month-val').classList.add('bg-white');
+      } else {
+        document.getElementById('lt-limit-month-val').classList.add('bg-slate-100');
+        document.getElementById('lt-limit-month-val').classList.remove('bg-white');
+      }
+
+      const hasWeekLimit = !!lt.limitWeekCheck || (lt.limitWeekVal !== undefined && lt.limitWeekVal !== null && lt.limitWeekVal !== '');
+      document.getElementById('lt-limit-week-check').checked = hasWeekLimit;
+      document.getElementById('lt-limit-week-val').disabled = !hasWeekLimit;
+      document.getElementById('lt-limit-week-val').value = lt.limitWeekVal || '';
+      if (hasWeekLimit) {
+        document.getElementById('lt-limit-week-val').classList.remove('bg-slate-100');
+        document.getElementById('lt-limit-week-val').classList.add('bg-white');
+      } else {
+        document.getElementById('lt-limit-week-val').classList.add('bg-slate-100');
+        document.getElementById('lt-limit-week-val').classList.remove('bg-white');
+      }
+
+      document.getElementById('lt-min-days-per-time').value = lt.minDaysPerTime !== undefined && lt.minDaysPerTime !== null ? lt.minDaysPerTime : '';
+      document.getElementById('lt-deduct-quota').checked = !!lt.deductQuota;
+      document.getElementById('lt-require-attachment').checked = !!lt.requireAttachment;
+      document.getElementById('lt-law').value = lt.lawArticle || '';
+      document.getElementById('lt-description').value = lt.description || '';
+      document.getElementById('lt-status').value = lt.status || 'ACTIVE';
+      document.getElementById('modal-leave-type').classList.remove('hidden');
+    }
+
+    function closeLeaveTypeModal() {
+      document.getElementById('modal-leave-type').classList.add('hidden');
+    }
+
+    function handleSaveLeaveType(event) {
+      if (event) event.preventDefault();
+      const isEdit = document.getElementById('leave-type-is-edit').value === 'true';
+      const code = document.getElementById('lt-code').value.trim().toUpperCase();
+      const symbol = document.getElementById('lt-symbol').value.trim();
+      const name = document.getElementById('lt-name').value.trim();
+      
+      const paidRateRaw = document.getElementById('lt-paid-rate').value;
+      const paidRate = paidRateRaw !== '' ? parseFloat(paidRateRaw) : 0;
+      
+      const maxDaysYearRaw = document.getElementById('lt-max-days-year').value;
+      const maxDaysYear = maxDaysYearRaw !== '' ? parseFloat(maxDaysYearRaw) : null;
+      
+      const limitMonthCheck = document.getElementById('lt-limit-month-check').checked;
+      const limitMonthVal = limitMonthCheck ? (parseFloat(document.getElementById('lt-limit-month-val').value) || null) : null;
+      
+      const limitWeekCheck = document.getElementById('lt-limit-week-check').checked;
+      const limitWeekVal = limitWeekCheck ? (parseFloat(document.getElementById('lt-limit-week-val').value) || null) : null;
+      
+      const minDaysPerTimeRaw = document.getElementById('lt-min-days-per-time').value;
+      const minDaysPerTime = minDaysPerTimeRaw !== '' ? parseFloat(minDaysPerTimeRaw) : null;
+      
+      const deductQuota = document.getElementById('lt-deduct-quota').checked;
+      const requireAttachment = document.getElementById('lt-require-attachment').checked;
+      const law = document.getElementById('lt-law').value.trim();
+      const desc = document.getElementById('lt-description').value.trim();
+      const status = document.getElementById('lt-status').value;
+
+      if (!code || !name || !symbol) {
+        showToast('Vui lòng nhập đầy đủ Mã, Ký hiệu và Tên loại nghỉ!');
+        return;
+      }
+
+      if (paidRateRaw === '') {
+        showToast('Vui lòng nhập Tỷ lệ hưởng lương (%)!');
+        return;
+      }
+
+      const paidType = paidRate + '% Lương';
+      const badgeCls = paidRate >= 100 ? 'bg-emerald-50 text-emerald-700 border-emerald-200'
+                     : paidRate === 0 ? 'bg-slate-100 text-slate-700 border-slate-200'
+                     : 'bg-blue-50 text-blue-700 border-blue-200';
+
+      let maxDaysText = '';
+      if (maxDaysYear !== null) {
+        maxDaysText = maxDaysYear + ' ngày/năm';
+      } else {
+        maxDaysText = 'Không giới hạn/năm';
+      }
+      if (limitMonthVal !== null) {
+        maxDaysText += ` • ${limitMonthVal} ngày/tháng`;
+      }
+      if (limitWeekVal !== null) {
+        maxDaysText += ` • ${limitWeekVal} ngày/tuần`;
+      }
+
+      const existingIdx = leaveTypesData.findIndex(item => item.code === code);
+      const leaveTypeObj = {
+        code,
+        name,
+        shortName: name,
+        symbol,
+        paidRate,
+        paidType,
+        maxDaysYear,
+        limitMonthCheck,
+        limitMonthVal,
+        limitWeekCheck,
+        limitWeekVal,
+        minDaysPerTime,
+        maxDays: maxDaysText,
+        deductQuota,
+        requireAttachment,
+        badgeCls,
+        lawArticle: law,
+        status,
+        description: desc
+      };
+
+      if (existingIdx >= 0) {
+        leaveTypesData[existingIdx] = leaveTypeObj;
+      } else {
+        leaveTypesData.push(leaveTypeObj);
+      }
+
+      closeLeaveTypeModal();
+      renderLeaveTypesTable();
+      showToast(`✓ Đã lưu thành công loại nghỉ phép: "${name}" (${code})!`);
+    }
+
+    function deleteLeaveType(code) {
+      const idx = leaveTypesData.findIndex(item => item.code === code);
+      if (idx === -1) return;
+      const item = leaveTypesData[idx];
+      if (confirm(`Bạn có chắc chắn muốn xóa loại nghỉ phép "${item.name}" (${code}) khỏi danh mục?`)) {
+        leaveTypesData.splice(idx, 1);
+        renderLeaveTypesTable();
+        showToast(`Đã xóa loại nghỉ phép "${item.name}" khỏi danh mục!`);
+      }
+    }
+
+    // =========================================================================
     // DANH MỤC CHÍNH SÁCH PHÉP NĂM CHUẨN CẢNG PHƯỚC AN (STANDARD LEAVE POLICIES)
     // Căn cứ Điều 113, 114 Bộ luật Lao động 2019 & Quy chế Quản trị Nhân sự Cảng
     // =========================================================================
@@ -31161,26 +31667,44 @@
     function switchAnnualLeaveSubTab(subTab) {
       const btnLedger = document.getElementById('tab-btn-annual-leave-ledger');
       const btnPolicies = document.getElementById('tab-btn-annual-leave-policies');
+      const btnTypes = document.getElementById('tab-btn-annual-leave-types');
       const contentLedger = document.getElementById('annual-leave-content-ledger');
       const contentPolicies = document.getElementById('annual-leave-content-policies');
+      const contentTypes = document.getElementById('annual-leave-content-types');
       const subItemLedger = document.getElementById('sub-item-leave-ledger');
       const subItemPolicies = document.getElementById('sub-item-leave-policies');
+      const subItemTypes = document.getElementById('sub-item-leave-types');
 
-      if (subTab === 'policies') {
-        if (btnLedger) btnLedger.className = 'px-4 py-2 rounded-xl text-slate-700 hover:text-[#2E3191] hover:bg-slate-50 flex items-center space-x-2 transition cursor-pointer shrink-0';
-        if (btnPolicies) btnPolicies.className = 'sub-tab-active px-4 py-2 rounded-xl flex items-center space-x-2 transition cursor-pointer shrink-0';
-        if (contentLedger) contentLedger.classList.add('hidden');
+      const inactiveTabCls = 'px-4 py-2 rounded-xl text-slate-700 hover:text-[#2E3191] hover:bg-slate-50 flex items-center space-x-2 transition cursor-pointer shrink-0';
+      const activeTabCls = 'sub-tab-active px-4 py-2 rounded-xl flex items-center space-x-2 transition cursor-pointer shrink-0';
+      const inactiveSubCls = 'sidebar-sub-item w-full text-left px-2 py-1.5 rounded flex items-center justify-between cursor-pointer transition text-[11px] text-slate-700 font-medium hover:text-[#2E3191] hover:bg-slate-50 group';
+      const activeSubCls = 'sidebar-sub-item w-full text-left px-2 py-1.5 rounded flex items-center justify-between cursor-pointer transition text-[11px] font-bold text-[#2E3191] bg-indigo-50/70 border border-indigo-100 group';
+
+      // Reset all tabs & panes
+      if (btnLedger) btnLedger.className = inactiveTabCls;
+      if (btnPolicies) btnPolicies.className = inactiveTabCls;
+      if (btnTypes) btnTypes.className = inactiveTabCls;
+      if (contentLedger) contentLedger.classList.add('hidden');
+      if (contentPolicies) contentPolicies.classList.add('hidden');
+      if (contentTypes) contentTypes.classList.add('hidden');
+      if (subItemLedger) subItemLedger.className = inactiveSubCls;
+      if (subItemPolicies) subItemPolicies.className = inactiveSubCls;
+      if (subItemTypes) subItemTypes.className = inactiveSubCls;
+
+      if (subTab === 'types') {
+        if (btnTypes) btnTypes.className = activeTabCls;
+        if (contentTypes) contentTypes.classList.remove('hidden');
+        if (subItemTypes) subItemTypes.className = activeSubCls;
+        renderLeaveTypesTable();
+      } else if (subTab === 'policies') {
+        if (btnPolicies) btnPolicies.className = activeTabCls;
         if (contentPolicies) contentPolicies.classList.remove('hidden');
-        if (subItemLedger) subItemLedger.className = 'sidebar-sub-item w-full text-left px-2 py-1.5 rounded flex items-center justify-between cursor-pointer transition text-[11px] text-slate-700 font-medium hover:text-[#2E3191] hover:bg-slate-50 group';
-        if (subItemPolicies) subItemPolicies.className = 'sidebar-sub-item w-full text-left px-2 py-1.5 rounded flex items-center justify-between cursor-pointer transition text-[11px] font-bold text-[#2E3191] bg-indigo-50/70 border border-indigo-100 group';
+        if (subItemPolicies) subItemPolicies.className = activeSubCls;
         renderAnnualLeavePoliciesTable();
       } else {
-        if (btnLedger) btnLedger.className = 'sub-tab-active px-4 py-2 rounded-xl flex items-center space-x-2 transition cursor-pointer shrink-0';
-        if (btnPolicies) btnPolicies.className = 'px-4 py-2 rounded-xl text-slate-700 hover:text-[#2E3191] hover:bg-slate-50 flex items-center space-x-2 transition cursor-pointer shrink-0';
+        if (btnLedger) btnLedger.className = activeTabCls;
         if (contentLedger) contentLedger.classList.remove('hidden');
-        if (contentPolicies) contentPolicies.classList.add('hidden');
-        if (subItemLedger) subItemLedger.className = 'sidebar-sub-item w-full text-left px-2 py-1.5 rounded flex items-center justify-between cursor-pointer transition text-[11px] font-bold text-[#2E3191] bg-indigo-50/70 border border-indigo-100 group';
-        if (subItemPolicies) subItemPolicies.className = 'sidebar-sub-item w-full text-left px-2 py-1.5 rounded flex items-center justify-between cursor-pointer transition text-[11px] text-slate-700 font-medium hover:text-[#2E3191] hover:bg-slate-50 group';
+        if (subItemLedger) subItemLedger.className = activeSubCls;
         if (typeof renderLeaveTable === 'function') renderLeaveTable();
       }
     }
@@ -33014,6 +33538,9 @@
     window.expandAllAttendanceClientOrgUnits = expandAllAttendanceClientOrgUnits;
     window.collapseAllAttendanceClientOrgUnits = collapseAllAttendanceClientOrgUnits;
     window.getAttendanceClientAppliedEmployeesForClient = getAttendanceClientAppliedEmployeesForClient;
+        function updateGpsBranchPreview() {}
+    function filterAttendanceClientScope() {}
+
     window.openAttendanceClientScopePreviewModal = openAttendanceClientScopePreviewModal;
     window.closeAttendanceClientScopePreviewModal = closeAttendanceClientScopePreviewModal;
     window.renderAttendanceClientScopePreviewList = renderAttendanceClientScopePreviewList;
@@ -33824,6 +34351,140 @@
 
 
   <!-- ================= MODAL: THÊM / SỬA CHÍNH SÁCH NGHỈ PHÉP (M09) ================= -->
+      <!-- ================= MODAL: THÊM / SỬA LOẠI NGHỈ PHÉP (M09.0) ================= -->
+  <div id="modal-leave-type" class="fixed inset-0 bg-slate-900/60 backdrop-blur-xs z-50 flex items-center justify-center p-3 sm:p-5 hidden">
+    <div class="bg-white rounded-2xl max-w-xl w-full shadow-2xl border border-slate-200 overflow-hidden flex flex-col max-h-[92vh] animate-in fade-in duration-200">
+      <div class="bg-[#2E3191] text-white px-5 py-3.5 flex items-center justify-between shrink-0 shadow-xs">
+        <div class="flex items-center space-x-2.5">
+          <span class="text-xl">📑</span>
+          <div>
+            <h3 class="text-sm font-bold" id="modal-leave-type-title">Thêm loại nghỉ phép mới</h3>
+            <p class="text-[11px] text-white/80">Cấu hình mã, tên, tỷ lệ lương, hạn mức nghỉ và căn cứ quy chế</p>
+          </div>
+        </div>
+        <button type="button" onclick="closeLeaveTypeModal()" class="text-white/70 hover:text-white text-2xl leading-none cursor-pointer p-1 transition">&times;</button>
+      </div>
+
+      <form onsubmit="handleSaveLeaveType(event)" class="p-5 overflow-y-auto space-y-3.5 text-xs">
+        <input type="hidden" id="leave-type-is-edit" value="false">
+        
+        <!-- Mã loại nghỉ & Ký hiệu chấm công -->
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="block font-semibold text-slate-700 text-xs mb-1">Mã loại nghỉ <span class="text-rose-500">*</span></label>
+            <input type="text" id="lt-code" required placeholder="VD: AL, KL, OM..." class="w-full px-3 py-2 border border-slate-300 rounded-lg text-xs uppercase font-bold focus:ring-2 focus:ring-[#2E3191]">
+          </div>
+          <div>
+            <label class="block font-semibold text-slate-700 text-xs mb-1">Ký hiệu chấm công <span class="text-rose-500">*</span></label>
+            <input type="text" id="lt-symbol" required maxlength="5" placeholder="VD: P, KL, Ô, TS..." class="w-full px-3 py-2 border border-slate-300 rounded-lg text-xs text-center font-bold text-[#2E3191] focus:ring-2 focus:ring-[#2E3191]">
+          </div>
+        </div>
+
+        <!-- Tên loại ngày nghỉ -->
+        <div>
+          <label class="block font-semibold text-slate-700 text-xs mb-1">Tên loại ngày nghỉ <span class="text-rose-500">*</span></label>
+          <input type="text" id="lt-name" required placeholder="VD: Nghỉ Phép năm, Nghỉ không hưởng lương..." class="w-full px-3 py-2 border border-slate-300 rounded-lg text-xs font-semibold focus:ring-2 focus:ring-[#2E3191]">
+        </div>
+
+        <!-- Tỷ lệ hưởng lương & Số ngày nghỉ tối đa -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          <div>
+            <label class="block font-semibold text-slate-700 text-xs mb-1">Tỷ lệ hưởng lương <span class="text-rose-500">*</span></label>
+            <div class="relative flex items-center">
+              <input type="number" id="lt-paid-rate" min="0" max="100" step="1" placeholder="VD: 100, 75, 0" required class="w-full pl-3 pr-8 py-2 border border-slate-300 rounded-lg text-xs font-bold text-slate-800 focus:ring-2 focus:ring-[#2E3191]">
+              <span class="absolute right-3 text-xs text-slate-500 font-bold select-none">%</span>
+            </div>
+          </div>
+          <div>
+            <label class="block font-semibold text-slate-700 text-xs mb-1">Số ngày nghỉ tối đa</label>
+            <div class="relative flex items-center">
+              <input type="number" id="lt-max-days-year" min="0" step="0.5" placeholder="VD: 10, 12, 14..." class="w-full pl-3 pr-20 py-2 border border-slate-300 rounded-lg text-xs font-bold text-slate-800 focus:ring-2 focus:ring-[#2E3191]">
+              <span class="absolute right-3 text-xs text-slate-500 font-semibold select-none">ngày/năm</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Giới hạn theo tháng & Giới hạn theo tuần -->
+        <div class="p-3 bg-slate-50 rounded-xl border border-slate-200 space-y-2.5">
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <div class="space-y-1.5">
+              <label class="flex items-center space-x-2 cursor-pointer">
+                <input type="checkbox" id="lt-limit-month-check" onchange="toggleLtLimit('month')" class="w-4 h-4 rounded text-[#2E3191] border-slate-300 focus:ring-[#2E3191]">
+                <span class="text-xs font-medium text-slate-700">Giới hạn theo tháng</span>
+              </label>
+              <div class="relative flex items-center">
+                <input type="number" id="lt-limit-month-val" disabled min="0" step="0.5" placeholder="0" class="w-full pl-3 pr-22 py-1.5 border border-slate-300 rounded-lg text-xs bg-slate-100 disabled:opacity-60 focus:ring-2 focus:ring-[#2E3191]">
+                <span class="absolute right-3 text-xs text-slate-500 font-semibold select-none">ngày/tháng</span>
+              </div>
+            </div>
+
+            <div class="space-y-1.5">
+              <label class="flex items-center space-x-2 cursor-pointer">
+                <input type="checkbox" id="lt-limit-week-check" onchange="toggleLtLimit('week')" class="w-4 h-4 rounded text-[#2E3191] border-slate-300 focus:ring-[#2E3191]">
+                <span class="text-xs font-medium text-slate-700">Giới hạn theo tuần</span>
+              </label>
+              <div class="relative flex items-center">
+                <input type="number" id="lt-limit-week-val" disabled min="0" step="0.5" placeholder="0" class="w-full pl-3 pr-20 py-1.5 border border-slate-300 rounded-lg text-xs bg-slate-100 disabled:opacity-60 focus:ring-2 focus:ring-[#2E3191]">
+                <span class="absolute right-3 text-xs text-slate-500 font-semibold select-none">ngày/tuần</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Thời gian nghỉ tối thiểu -->
+        <div>
+          <label class="block font-semibold text-slate-700 text-xs mb-1">Thời gian nghỉ tối thiểu</label>
+          <div class="relative flex items-center max-w-xs">
+            <input type="number" id="lt-min-days-per-time" min="0" step="0.5" placeholder="VD: 0.5 hoặc 1" class="w-full pl-3 pr-20 py-2 border border-slate-300 rounded-lg text-xs focus:ring-2 focus:ring-[#2E3191]">
+            <span class="absolute right-3 text-xs text-slate-500 font-semibold select-none">ngày/lần</span>
+          </div>
+        </div>
+
+        <!-- Trừ phép & Đính kèm chứng từ -->
+        <div class="p-3 bg-slate-50 rounded-xl border border-slate-200 space-y-2">
+          <label class="flex items-center space-x-2 cursor-pointer">
+            <input type="checkbox" id="lt-deduct-quota" class="w-4 h-4 rounded text-[#2E3191] border-slate-300 focus:ring-[#2E3191]">
+            <span class="text-xs font-semibold text-slate-800">Trừ vào quỹ ngày phép năm của nhân viên</span>
+          </label>
+          <label class="flex items-center space-x-2 cursor-pointer">
+            <input type="checkbox" id="lt-require-attachment" class="w-4 h-4 rounded text-[#2E3191] border-slate-300 focus:ring-[#2E3191]">
+            <span class="text-xs font-semibold text-slate-800">Bắt buộc đính kèm chứng từ minh chứng (giấy viện, khai sinh, kết hôn...)</span>
+          </label>
+        </div>
+
+        <!-- Căn cứ pháp lý / Quy chế -->
+        <div>
+          <label class="block font-semibold text-slate-700 text-xs mb-1">Căn cứ pháp lý / Quy chế</label>
+          <input type="text" id="lt-law" placeholder="VD: Điều 113 BLLĐ 2019, Luật BHXH..." class="w-full px-3 py-2 border border-slate-300 rounded-lg text-xs focus:ring-2 focus:ring-[#2E3191]">
+        </div>
+
+        <!-- Mô tả / Hướng dẫn nghiệp vụ -->
+        <div>
+          <label class="block font-semibold text-slate-700 text-xs mb-1">Mô tả / Hướng dẫn nghiệp vụ</label>
+          <textarea id="lt-description" rows="2" placeholder="Ghi chú điều kiện hưởng hoặc hướng dẫn nộp đơn..." class="w-full px-3 py-2 border border-slate-300 rounded-lg text-xs focus:ring-2 focus:ring-[#2E3191]"></textarea>
+        </div>
+
+        <!-- Trạng thái áp dụng (Đem xuống cuối form theo yêu cầu người dùng) -->
+        <div class="pt-1">
+          <label class="block font-semibold text-slate-700 text-xs mb-1">Trạng thái áp dụng</label>
+          <select id="lt-status" class="w-full px-3 py-2 border border-slate-300 rounded-lg text-xs font-semibold bg-white focus:ring-2 focus:ring-[#2E3191]">
+            <option value="ACTIVE">🟢 Đang áp dụng</option>
+            <option value="INACTIVE">⚪ Ngừng áp dụng</option>
+          </select>
+        </div>
+
+        <!-- Footer Buttons -->
+        <div class="pt-3 flex items-center justify-end space-x-2 border-t border-slate-200">
+          <button type="button" onclick="closeLeaveTypeModal()" class="px-4 py-2 border border-slate-300 text-slate-700 font-semibold rounded-lg hover:bg-slate-50 transition cursor-pointer text-xs">Hủy</button>
+          <button type="submit" class="px-5 py-2 pap-primary text-white rounded-lg font-bold shadow-xs hover:opacity-95 transition cursor-pointer flex items-center space-x-1.5 text-xs">
+            <span>💾</span>
+            <span>Lưu loại nghỉ phép</span>
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
   <div id="modal-add-leave-policy" class="fixed inset-0 bg-slate-900/50 backdrop-blur-xs z-50 flex items-center justify-center p-4 hidden">
     <div class="bg-white rounded-2xl max-w-lg w-full shadow-2xl border border-slate-200 overflow-hidden transform transition-all">
       <div class="pap-primary text-white p-4 flex items-center justify-between">
