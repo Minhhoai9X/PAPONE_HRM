@@ -7182,7 +7182,7 @@
                     <span>Sẵn sàng xử lý</span>
                   </span>
                 </div>
-                <p class="text-xs text-slate-700 font-medium mt-0.5">Tạo nhóm yêu cầu, thiết kế biểu mẫu và xử lý phê duyệt; các đơn HRM đã tích hợp trả kết quả về đúng phân hệ nghiệp vụ.</p>
+                <p class="text-xs text-slate-700 font-medium mt-0.5">Xử lý tập trung các đề xuất Đổi ca, Nghỉ phép, Tăng ca OT, Giải trình công với quy trình đa cấp & cảnh báo SLA.</p>
               </div>
             </div>
           </div>
@@ -7540,9 +7540,32 @@
             </div>
           </div>
 
-          <!-- TAB 5: CẤU HÌNH LUỒNG DUYỆT (SCR-APR-01 Visual Workflow Builder) -->
-          <div id="content-approval-workflow" class="p-4 space-y-4 hidden">
-            <!-- Thiết lập nhóm yêu cầu và phiên bản áp dụng -->
+          </div>
+        </div>
+      </section>
+
+      <!-- ================= PHÂN HỆ: THIẾT LẬP QUY TRÌNH PHÊ DUYỆT (M14 ADMIN) ================= -->
+      <section id="view-approval-workflow" class="space-y-4 hidden">
+        <!-- Header Banner Thiết lập -->
+        <div class="bg-white rounded-xl p-4 sm:p-5 border border-slate-200 shadow-xs flex flex-col md:flex-row md:items-center justify-between gap-4">
+          <div>
+            <div class="flex items-center space-x-2.5">
+              <span class="text-2xl p-2 bg-indigo-50 text-[#2E3191] rounded-xl border border-indigo-100 shrink-0">⚙️</span>
+              <div>
+                <div class="flex items-center space-x-2 flex-wrap gap-y-1">
+                  <h1 class="text-lg sm:text-xl font-bold text-slate-800 tracking-tight">Thiết lập Quy trình Phê duyệt</h1>
+                  <span class="px-2 py-0.5 rounded-full bg-indigo-50 text-[#2E3191] text-[10px] font-bold border border-indigo-200">M14 Admin</span>
+                  <span class="px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-700 text-[10px] font-bold border border-emerald-200">Quản trị quy trình</span>
+                </div>
+                <p class="text-xs text-slate-700 font-medium mt-0.5">Quản lý danh mục nhóm yêu cầu, thiết kế biểu mẫu nhập liệu động, phân quyền truy cập và cấu hình luồng duyệt đa cấp.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Khung nội dung Thiết lập luồng duyệt -->
+        <div class="bg-white rounded-xl border border-slate-200 shadow-xs overflow-hidden p-4 space-y-4">
+          <!-- Thiết lập nhóm yêu cầu và phiên bản áp dụng -->
             <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 bg-slate-50 p-3 rounded-xl border border-slate-200">
               <div class="flex items-center space-x-2">
                 <span class="text-xs font-bold text-slate-700">Nhóm yêu cầu:</span>
@@ -7595,7 +7618,6 @@
                 </div>
               </div>
             </div>
-          </div>
         </div>
       </section>
 
@@ -19680,14 +19702,19 @@
     }
 
     function openApprovalSub(subTab) {
-      switchSidebarModule('approval');
       const menu = document.getElementById('approval-sub-menu');
       const chevron = document.getElementById('approval-chevron');
       if (menu && menu.classList.contains('hidden')) {
         menu.classList.remove('hidden');
         if (chevron) chevron.innerText = '▼';
       }
-      switchApprovalTab(subTab);
+      if (subTab === 'workflow') {
+        switchSidebarModule('approval-workflow');
+        if (typeof renderWorkflowBuilder === 'function') renderWorkflowBuilder();
+      } else {
+        switchSidebarModule('approval');
+        switchApprovalTab(subTab);
+      }
       updateApprovalSubHighlight(subTab);
     }
 
@@ -19727,7 +19754,7 @@
     }
 
     function switchSidebarModule(moduleKey) {
-      const allViews = ['company', 'org', 'catalog', 'employee-list', 'employee-profile', 'annual-leave', 'work-schedule', 'approval', 'gps-setup', 'attendance'];
+      const allViews = ['company', 'org', 'catalog', 'employee-list', 'employee-profile', 'annual-leave', 'work-schedule', 'approval', 'approval-workflow', 'gps-setup', 'attendance'];
       allViews.forEach(v => {
         const el = document.getElementById('view-' + v);
         if (el) el.classList.add('hidden');
@@ -19795,6 +19822,7 @@
         'annual-leave': { parent: 'Quản lý nhân sự', current: 'Quản lý phép năm' },
         'work-schedule': { parent: 'Chấm công & Ca kíp', current: 'Bảng lịch làm việc' },
         'approval': { parent: 'Hệ thống Phê duyệt', current: 'Hộp thư phê duyệt (M14)' },
+        'approval-workflow': { parent: 'Hệ thống Phê duyệt', current: 'Thiết lập quy trình phê duyệt' },
         'gps-setup': { parent: 'Quản lý chấm công', current: 'Thiết lập chấm công (M06)' },
         'attendance': { parent: 'Quản lý chấm công', current: 'Bảng công ngày (Core ⭐)' }
       };
@@ -19844,6 +19872,16 @@
       }
       if (moduleKey === 'work-schedule') {
         if (typeof renderWorkSchedule === 'function') renderWorkSchedule();
+      }
+      if (moduleKey === 'approval-workflow') {
+        const appSubMenu = document.getElementById('approval-sub-menu');
+        const appChevron = document.getElementById('approval-chevron');
+        if (appSubMenu && appSubMenu.classList.contains('hidden')) {
+          appSubMenu.classList.remove('hidden');
+          if (appChevron) appChevron.innerText = '▼';
+        }
+        if (typeof updateApprovalSubHighlight === 'function') updateApprovalSubHighlight('workflow');
+        if (typeof renderWorkflowBuilder === 'function') renderWorkflowBuilder();
       }
       if (moduleKey === 'approval') {
         const appSubMenu = document.getElementById('approval-sub-menu');
@@ -30234,7 +30272,7 @@
     // Chuyển đổi tab trong phân hệ Phê duyệt
     function switchApprovalTab(tabKey) {
       currentApprovalTab = tabKey;
-      const tabs = ['inbox', 'my-requests', 'history', 'delegation', 'workflow'];
+      const tabs = ['inbox', 'my-requests', 'history', 'delegation'];
       tabs.forEach(t => {
         const btn = document.getElementById(`tab-approval-${t}`);
         const content = document.getElementById(`content-approval-${t}`);
