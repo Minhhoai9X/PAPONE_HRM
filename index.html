@@ -12000,6 +12000,17 @@
         </div>
 
         <div>
+          <label class="block font-semibold text-slate-700 mb-1">Quy trình xử lý <span class="text-rose-500">*</span></label>
+          <select id="group-form-process-type" class="w-full px-3 py-2 border border-slate-300 rounded-lg bg-white font-semibold text-[#2E3191]">
+            <option value="BLOCK_BASED" selected>Luồng duyệt trong khối người duyệt (Chuẩn Base Request)</option>
+            <option value="SEQUENTIAL">Duyệt tuần tự (Lần lượt qua từng khối)</option>
+            <option value="PARALLEL">Duyệt đồng thời (Tất cả duyệt cùng lúc)</option>
+            <option value="ANY_ONE">Chỉ cần 1 người duyệt</option>
+          </select>
+          <span class="text-[10px] text-slate-500 mt-1 block">Khuyến nghị Base: Mỗi khối sẽ cấu hình luồng duyệt riêng (Tuần tự, Đồng thời, hoặc 1 người).</span>
+        </div>
+
+        <div>
           <label class="block font-semibold text-slate-700 mb-1">Mô tả mục đích / Hướng dẫn nhân sự</label>
           <textarea id="group-form-desc" rows="2" placeholder="Nêu rõ mục đích áp dụng và các giấy tờ minh chứng cần thiết..." class="w-full px-3 py-2 border border-slate-300 rounded-lg bg-white"></textarea>
         </div>
@@ -12035,7 +12046,8 @@
         <div class="flex items-center space-x-2">
           <span class="text-lg">➕</span>
           <div>
-            <h3 class="text-sm font-bold">Thêm Khối Người Duyệt</h3>
+            <h3 class="text-sm font-bold" id="approver-block-modal-title">Thêm Khối Người Duyệt</h3>
+        <input type="hidden" id="block-form-edit-index" value="-1">
             <p class="text-[10px] text-blue-200">Chọn loại khối người duyệt theo quy chuẩn Base Request</p>
           </div>
         </div>
@@ -12075,10 +12087,10 @@
         <div class="grid grid-cols-2 gap-3">
           <div>
             <label class="block font-semibold text-slate-700 mb-1">Luồng duyệt trong khối <span class="text-rose-500">*</span></label>
-            <select id="block-form-mode" class="w-full px-3 py-2 border border-slate-300 rounded-lg bg-white">
-              <option value="ANY">Chỉ cần 1 người duyệt</option>
-              <option value="ALL">Tất cả người duyệt đồng thời</option>
-              <option value="SEQUENTIAL">Duyệt lần lượt theo thứ tự</option>
+            <select id="block-form-mode" class="w-full px-3 py-2 border border-slate-300 rounded-lg bg-white font-semibold text-[#2E3191]">
+              <option value="ANY">Chỉ cần 1 người duyệt (1 trong các người duyệt duyệt là chuyển khối)</option>
+              <option value="ALL">Duyệt đồng thời (Các người duyệt cùng duyệt, không cần thứ tự)</option>
+              <option value="SEQUENTIAL">Duyệt tuần tự (Lần lượt từng người duyệt xong mới chuyển khối)</option>
             </select>
           </div>
           <div>
@@ -12089,7 +12101,7 @@
 
         <div class="pt-2 border-t border-slate-200 flex items-center justify-end space-x-2">
           <button type="button" onclick="closeAddApproverBlockModal()" class="px-3.5 py-2 border border-slate-300 rounded-lg text-slate-700 hover:bg-slate-100 transition">Hủy bỏ</button>
-          <button type="submit" class="px-4 py-2 pap-primary text-white font-bold rounded-lg hover:bg-[#242775] transition">Thêm khối người duyệt</button>
+          <button type="submit" id="btn-save-approver-block" class="px-4 py-2 pap-primary text-white font-bold rounded-lg hover:bg-[#242775] transition">Lưu khối người duyệt</button>
         </div>
       </form>
     </div>
@@ -30487,6 +30499,7 @@
     const workflowDefinitionsData = {
       'LEAVE': {
         type: 'LEAVE', code: 'LEAVE', name: 'Đăng ký nghỉ phép', category: 'Nghỉ phép', description: 'Yêu cầu nghỉ phép được duyệt theo các khối cấu hình. Khi hoàn tất, kết quả được chuyển về phân hệ M09.', integration: 'M09 · Cập nhật kết quả nghỉ phép sau khi duyệt hoàn tất', status: 'ACTIVE', version: 1, requestSlaHours: 48, reminderLeadHours: 8,
+        processType: 'BLOCK_BASED', blockNotification: 'YES',
         creators: ['Toàn bộ nhân viên'], watchers: ['Quản lý trực tiếp', 'Chuyên viên Tiền lương'],
         formFields: [{ label: 'Loại nghỉ', type: 'Danh mục M09', required: true }, { label: 'Từ ngày – Đến ngày', type: 'Khoảng ngày', required: true }, { label: 'Người bàn giao', type: 'Nhân viên', required: false }, { label: 'Lý do', type: 'Văn bản nhiều dòng', required: true }],
         steps: [
@@ -30496,6 +30509,7 @@
       },
       'ATTENDANCE': {
         type: 'ATTENDANCE', code: 'ATTENDANCE', name: 'Giải trình chấm công', category: 'Chấm công', description: 'Yêu cầu giải trình được duyệt theo các khối cấu hình. Khi hoàn tất, kết quả được chuyển về phân hệ M06 để xử lý tiếp.', integration: 'M06 · Chuyển kết quả giải trình sau khi duyệt hoàn tất', status: 'ACTIVE', version: 1, requestSlaHours: 48, reminderLeadHours: 8,
+        processType: 'BLOCK_BASED', blockNotification: 'YES',
         creators: ['Toàn bộ nhân viên'], watchers: ['Quản lý trực tiếp', 'Chuyên viên chấm công'],
         formFields: [{ label: 'Ngày cần giải trình', type: 'Ngày', required: true }, { label: 'Loại sự cố', type: 'Danh mục M06', required: true }, { label: 'Ca làm việc', type: 'Ca đã phân', required: true }, { label: 'Lý do', type: 'Văn bản nhiều dòng', required: true }, { label: 'Tệp minh chứng', type: 'Tệp đính kèm', required: false }],
         steps: [
@@ -30505,6 +30519,7 @@
       },
       'GENERAL': {
         type: 'GENERAL', code: 'GENERAL', name: 'Đề xuất chung', category: 'Khác', description: 'Nhóm yêu cầu phê duyệt thuần; không tự ghi dữ liệu vào phân hệ nghiệp vụ khác.', integration: 'Không tích hợp nghiệp vụ · Chỉ lưu kết quả phê duyệt và lịch sử', status: 'ACTIVE', version: 1, requestSlaHours: 72, reminderLeadHours: 8,
+        processType: 'BLOCK_BASED', blockNotification: 'NO',
         creators: ['Toàn bộ nhân viên'], watchers: ['Quản lý đơn vị'],
         formFields: [{ label: 'Tiêu đề', type: 'Văn bản một dòng', required: true }, { label: 'Nội dung đề xuất', type: 'Văn bản nhiều dòng', required: true }, { label: 'Tệp đính kèm', type: 'Tệp đính kèm', required: false }],
         steps: [
@@ -31741,7 +31756,8 @@
           ? '<span class="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-emerald-100 text-emerald-800 border border-emerald-200">🟢 Hoạt động</span>'
           : '<span class="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-amber-100 text-amber-800 border border-amber-200">🟡 Bản nháp</span>';
 
-        const procType = (g.steps && g.steps.length > 1) ? 'Xử lý lần lượt qua các khối' : (g.steps && g.steps[0]?.mode === 'ALL' ? 'Xử lý đồng thời' : 'Chỉ cần một người duyệt');
+        const pType = g.processType || 'BLOCK_BASED';
+        const procType = pType === 'BLOCK_BASED' ? '<span class="px-2 py-0.5 rounded text-[11px] font-bold bg-indigo-50 text-[#2E3191] border border-indigo-200">Luồng duyệt trong khối</span>' : (pType === 'SEQUENTIAL' ? 'Duyệt tuần tự' : (pType === 'PARALLEL' ? 'Duyệt đồng thời' : 'Chỉ cần 1 người'));
 
         return `
           <tr class="hover:bg-indigo-50/40 transition border-b border-slate-100 cursor-pointer" onclick="showBaseDetailScreen('${g.code}')">
@@ -31841,11 +31857,12 @@
               </select>
             </div>
             <div>
-              <label class="block text-xs font-semibold text-slate-700 mb-1">Quy trình xử lý</label>
-              <select onchange="workflowDefinitionsData['${currentBaseActiveGroupCode}'].processType=this.value; markRequestConfigDirty('${currentBaseActiveGroupCode}'); renderWorkflowBuilder();" class="w-full px-3 py-2 border border-slate-300 rounded-lg text-xs bg-white font-semibold text-[#2E3191]">
-                <option value="SEQUENTIAL">Xử lý lần lượt (Khối trên duyệt xong mới đến khối dưới)</option>
-                <option value="PARALLEL">Xử lý đồng thời (Các khối duyệt cùng lúc)</option>
-                <option value="ANY_ONE">Chỉ cần 1 người duyệt thông qua</option>
+              <label class="block text-xs font-semibold text-slate-700 mb-1">Quy trình xử lý <span class="text-[#2E3191] font-bold">(Chuẩn Base)</span></label>
+              <select onchange="workflowDefinitionsData['${currentBaseActiveGroupCode}'].processType=this.value; markRequestConfigDirty('${currentBaseActiveGroupCode}'); renderBaseDetailTabContent('general');" class="w-full px-3 py-2 border border-slate-300 rounded-lg text-xs bg-white font-bold text-[#2E3191]">
+                <option value="BLOCK_BASED" ${(def.processType || 'BLOCK_BASED') === 'BLOCK_BASED' ? 'selected' : ''}>Luồng duyệt trong khối người duyệt (Mặc định Base)</option>
+                <option value="SEQUENTIAL" ${def.processType === 'SEQUENTIAL' ? 'selected' : ''}>Duyệt tuần tự (Lần lượt từng khối)</option>
+                <option value="PARALLEL" ${def.processType === 'PARALLEL' ? 'selected' : ''}>Duyệt đồng thời (Tất cả khối cùng lúc)</option>
+                <option value="ANY_ONE" ${def.processType === 'ANY_ONE' ? 'selected' : ''}>Chỉ cần 1 người duyệt thông qua</option>
               </select>
             </div>
           </div>
@@ -31872,7 +31889,19 @@
           <!-- Danh sách các khối người duyệt chi tiết -->
           <div class="space-y-3">
             <div class="flex items-center justify-between">
-              <h4 class="text-xs font-bold text-slate-800 uppercase tracking-wider">Danh sách Khối người duyệt (${(def.steps || []).length} khối)</h4>
+              <div class="p-3 bg-blue-50 border border-blue-200 rounded-xl text-xs text-blue-900 flex items-start space-x-2.5">
+              <span class="text-base shrink-0">ℹ️</span>
+              <div class="space-y-0.5">
+                <div class="font-bold">Quy tắc luồng duyệt Base Request:</div>
+                <ul class="list-disc list-inside text-[11px] text-blue-800 space-y-0.5">
+                  <li><b>Giữa các khối:</b> Mặc định duyệt lần lượt từ trên xuống dưới theo thứ tự hiển thị.</li>
+                  <li><b>Trong từng khối:</b> Tùy chọn <i>Duyệt tuần tự</i>, <i>Duyệt đồng thời</i> hoặc <i>Chỉ cần 1 người duyệt</i>.</li>
+                  <li><b>Khi bị từ chối:</b> Chỉ cần 1 người duyệt (cùng khối hoặc khác khối) bấm <b>Từ chối</b>, đề xuất dừng ngay lập tức.</li>
+                </ul>
+              </div>
+            </div>
+
+            <h4 class="text-xs font-bold text-slate-800 uppercase tracking-wider">Danh sách Khối người duyệt (${(def.steps || []).length} khối)</h4>
               <span class="text-[11px] text-slate-500">Kéo thả hoặc dùng nút mũi tên để đổi thứ tự duyệt</span>
             </div>
 
@@ -31890,6 +31919,7 @@
                     <div class="flex items-center space-x-1.5">
                       ${index > 0 ? `<button type="button" onclick="moveApproverBlock('${currentBaseActiveGroupCode}', ${index}, -1)" class="px-2 py-1 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded text-xs" title="Di chuyển lên trên">▲</button>` : ''}
                       ${index < def.steps.length - 1 ? `<button type="button" onclick="moveApproverBlock('${currentBaseActiveGroupCode}', ${index}, 1)" class="px-2 py-1 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded text-xs" title="Di chuyển xuống dưới">▼</button>` : ''}
+                      <button type="button" onclick="openEditApproverBlockModal('${currentBaseActiveGroupCode}', ${index})" class="px-2.5 py-1 bg-indigo-50 hover:bg-indigo-100 text-[#2E3191] font-bold rounded text-xs border border-indigo-200 transition" title="Chỉnh sửa quy trình khối">✏️ Chỉnh sửa</button>
                       <button type="button" onclick="removeApproverBlock('${currentBaseActiveGroupCode}', ${index})" class="px-2 py-1 bg-rose-50 hover:bg-rose-100 text-rose-700 font-bold rounded text-xs" title="Xóa khối">✕ Xóa</button>
                     </div>
                   </div>
@@ -32073,6 +32103,35 @@
               <input type="number" min="1" value="${def.reminderLeadHours || 8}" class="w-full px-3 py-2 border border-slate-300 rounded-lg bg-white">
             </div>
           </div>
+          <!-- Thiết lập thông báo / email theo từng khối duyệt (Chuẩn Base Request) -->
+          <div class="p-4 bg-slate-50 border border-slate-200 rounded-xl space-y-3">
+            <div>
+              <label class="block text-xs font-bold text-slate-800">Loại luồng duyệt trong khối người duyệt, thông báo theo từng khối người duyệt <span class="text-[#2E3191] font-semibold">(Mục 2 Hướng dẫn Base)</span></label>
+              <p class="text-[11px] text-slate-500 mt-0.5">Kiểm soát phạm vi gửi email & notification giữa các khối người duyệt trong quy trình.</p>
+            </div>
+
+            <div class="grid sm:grid-cols-2 gap-3 pt-1">
+              <label class="flex items-start space-x-2.5 p-3 rounded-xl border cursor-pointer transition ${(def.blockNotification || 'YES') === 'NO' ? 'bg-indigo-50/60 border-indigo-300 ring-1 ring-[#2E3191]' : 'bg-white border-slate-200 hover:border-slate-300'}">
+                <input type="radio" name="base-block-notification" value="NO" ${(def.blockNotification || 'YES') === 'NO' ? 'checked' : ''} onchange="workflowDefinitionsData['${currentBaseActiveGroupCode}'].blockNotification='NO'; markRequestConfigDirty('${currentBaseActiveGroupCode}'); renderBaseDetailTabContent('notifications');" class="mt-0.5 text-[#2E3191]">
+                <div class="text-xs space-y-1">
+                  <span class="font-bold text-slate-900 block">Không (Tất cả cùng nhận thông báo)</span>
+                  <span class="text-[11px] text-slate-600 block leading-relaxed">Tất cả người duyệt xuất hiện trong các khối người duyệt đều nhận được thông báo/email khi đề xuất được tạo, chỉnh sửa, xử lý dù họ chưa đến lượt duyệt hoặc đã duyệt xong.</span>
+                </div>
+              </label>
+
+              <label class="flex items-start space-x-2.5 p-3 rounded-xl border cursor-pointer transition ${(def.blockNotification || 'YES') === 'YES' ? 'bg-indigo-50/60 border-indigo-300 ring-1 ring-[#2E3191]' : 'bg-white border-slate-200 hover:border-slate-300'}">
+                <input type="radio" name="base-block-notification" value="YES" ${(def.blockNotification || 'YES') === 'YES' ? 'checked' : ''} onchange="workflowDefinitionsData['${currentBaseActiveGroupCode}'].blockNotification='YES'; markRequestConfigDirty('${currentBaseActiveGroupCode}'); renderBaseDetailTabContent('notifications');" class="mt-0.5 text-[#2E3191]">
+                <div class="text-xs space-y-1">
+                  <div class="flex items-center space-x-1.5">
+                    <span class="font-bold text-slate-900">Có (Thông báo theo từng khối - Khuyên dùng)</span>
+                    <span class="px-1.5 py-0.2 rounded bg-emerald-100 text-emerald-800 text-[9px] font-bold">Chuẩn Base</span>
+                  </div>
+                  <span class="text-[11px] text-slate-600 block leading-relaxed">• Người duyệt trong khối nào chỉ nhận thông báo khi người duyệt cùng khối xử lý đề xuất.<br>• Khi đã chuyển sang khối tiếp theo, người ở luồng duyệt phía trước sẽ không nhận thông báo nữa.</span>
+                </div>
+              </label>
+            </div>
+          </div>
+
           <div class="p-3.5 bg-amber-50 rounded-xl border border-amber-200 text-xs text-amber-800">
             Khi gần quá hạn (&lt; 8 giờ), hệ thống tự động gắn thẻ <b>🚨 Khẩn cấp</b> và phát chuông nhắc việc đến người duyệt đang giữ lượt.
           </div>
@@ -32085,8 +32144,52 @@
       const modal = document.getElementById('modal-add-approver-block');
       if (modal) {
         modal.classList.remove('hidden');
+        const editIdxInput = document.getElementById('block-form-edit-index');
+        if (editIdxInput) editIdxInput.value = '-1';
+        const titleEl = document.getElementById('approver-block-modal-title');
+        if (titleEl) titleEl.innerText = 'Thêm Khối Người Duyệt';
+        const saveBtn = document.getElementById('btn-save-approver-block');
+        if (saveBtn) saveBtn.innerText = 'Thêm khối người duyệt';
         document.getElementById('block-form-name').value = '';
+        document.getElementById('block-form-type').value = 'DIRECT_MANAGER';
+        document.getElementById('block-form-mode').value = 'ANY';
         document.getElementById('block-form-sla').value = 24;
+        onBlockTypeChange();
+      }
+    }
+
+    function openEditApproverBlockModal(groupCode, index) {
+      const def = workflowDefinitionsData[groupCode];
+      if (!def || !def.steps || !def.steps[index]) return;
+      const step = def.steps[index];
+      const modal = document.getElementById('modal-add-approver-block');
+      if (modal) {
+        modal.classList.remove('hidden');
+        const editIdxInput = document.getElementById('block-form-edit-index');
+        if (editIdxInput) editIdxInput.value = String(index);
+        const titleEl = document.getElementById('approver-block-modal-title');
+        if (titleEl) titleEl.innerText = `Chỉnh sửa Khối người duyệt #${index + 1}`;
+        const saveBtn = document.getElementById('btn-save-approver-block');
+        if (saveBtn) saveBtn.innerText = 'Lưu thay đổi khối';
+        document.getElementById('block-form-name').value = step.name || '';
+        document.getElementById('block-form-mode').value = step.mode || 'ANY';
+        document.getElementById('block-form-sla').value = step.slaHours || 24;
+
+        const primaryApprover = (step.approvers && step.approvers[0]) || 'DIRECT_MANAGER';
+        const typeSelect = document.getElementById('block-form-type');
+        if (['DIRECT_MANAGER', 'FIXED', 'DYNAMIC', 'CONDITIONAL'].includes(primaryApprover)) {
+          typeSelect.value = primaryApprover;
+        } else {
+          typeSelect.value = 'FIXED';
+        }
+
+        const assigneesSelect = document.getElementById('block-form-assignees');
+        if (assigneesSelect && step.approvers) {
+          Array.from(assigneesSelect.options).forEach(opt => {
+            opt.selected = step.approvers.includes(opt.value);
+          });
+        }
+        onBlockTypeChange();
       }
     }
 
@@ -32105,6 +32208,7 @@
 
     function handleSaveApproverBlock(event) {
       if (event) event.preventDefault();
+      const editIndex = Number(document.getElementById('block-form-edit-index')?.value ?? -1);
       const name = document.getElementById('block-form-name').value.trim();
       const type = document.getElementById('block-form-type').value;
       const mode = document.getElementById('block-form-mode').value;
@@ -32116,25 +32220,41 @@
       if (!def) return;
       if (!def.steps) def.steps = [];
 
+      let selectedApprovers = [type];
+      const assigneesSelect = document.getElementById('block-form-assignees');
+      if (type === 'FIXED' && assigneesSelect) {
+        const picked = Array.from(assigneesSelect.selectedOptions).map(o => o.value);
+        if (picked.length > 0) selectedApprovers = picked;
+      }
+
       let roleText = 'Quản lý phụ trách';
       if (type === 'DIRECT_MANAGER') roleText = 'Quản lý trực tiếp của người gửi';
       else if (type === 'DYNAMIC') roleText = 'Người tạo chỉ định khi gửi đơn';
       else if (type === 'CONDITIONAL') roleText = 'Duyệt theo điều kiện giá trị';
-      else roleText = 'Người duyệt được phân công';
+      else roleText = selectedApprovers.map(v => requestApproverOptions.find(o => o[0] === v)?.[1] || v).join(', ');
 
-      def.steps.push({
-        level: def.steps.length + 1,
-        name: name,
-        approverRole: roleText,
-        approvers: [type],
-        mode: mode,
-        slaHours: sla
-      });
+      if (editIndex >= 0 && editIndex < def.steps.length) {
+        def.steps[editIndex].name = name;
+        def.steps[editIndex].approverRole = roleText;
+        def.steps[editIndex].approvers = selectedApprovers;
+        def.steps[editIndex].mode = mode;
+        def.steps[editIndex].slaHours = sla;
+        showToast(`✓ Đã cập nhật khối người duyệt [${name}]!`);
+      } else {
+        def.steps.push({
+          level: def.steps.length + 1,
+          name: name,
+          approverRole: roleText,
+          approvers: selectedApprovers,
+          mode: mode,
+          slaHours: sla
+        });
+        showToast(`✓ Đã thêm khối người duyệt [${name}]!`);
+      }
 
       markRequestConfigDirty(currentBaseActiveGroupCode);
       closeAddApproverBlockModal();
       renderBaseDetailTabContent('general');
-      showToast(`✓ Đã thêm khối người duyệt [${name}]!`);
     }
 
     function moveApproverBlock(groupCode, index, direction) {
@@ -32204,7 +32324,11 @@
         return;
       }
 
+      
+      const processType = document.getElementById('group-form-process-type')?.value || 'BLOCK_BASED';
       workflowDefinitionsData[code] = {
+        processType: processType,
+        blockNotification: 'YES',
         type: code,
         code: code,
         name: name,
