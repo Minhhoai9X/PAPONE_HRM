@@ -629,7 +629,7 @@
                   <span class="w-1.5 h-1.5 rounded-full bg-slate-300 group-hover:bg-[#2E3191]"></span>
                   <span class="truncate">Loại nghỉ phép</span>
                 </div>
-                <span class="text-[9px] px-1 rounded bg-indigo-50 text-[#2E3191] font-bold" id="sidebar-leave-types-count">6</span>
+                <span class="text-[9px] px-1 rounded bg-indigo-50 text-[#2E3191] font-bold" id="sidebar-leave-types-count">13</span>
               </button>
             </div>
           </div>
@@ -4848,7 +4848,7 @@
           <button type="button" onclick="switchAnnualLeaveSubTab('types')" id="tab-btn-annual-leave-types" class="px-4 py-2 rounded-xl text-slate-700 hover:text-[#2E3191] hover:bg-slate-50 flex items-center space-x-2 transition cursor-pointer shrink-0">
             <span>📑</span>
             <span>Loại nghỉ phép</span>
-            <span id="badge-annual-leave-types" class="ml-1 px-1.5 py-0.2 rounded-full text-[10px] font-bold bg-indigo-50 text-[#2E3191] border border-indigo-200">6</span>
+            <span id="badge-annual-leave-types" class="ml-1 px-1.5 py-0.2 rounded-full text-[10px] font-bold bg-indigo-50 text-[#2E3191] border border-indigo-200">13</span>
           </button>
         </div>
 
@@ -5232,13 +5232,20 @@
               </select>
 
               <select id="filter-leave-request-type" onchange="renderLeaveRequestsTable()" class="px-2.5 py-1.5 border border-slate-200 rounded-lg text-xs bg-white text-slate-700 focus:ring-2 focus:ring-[#2E3191]">
-                <option value="">📑 Tất cả loại nghỉ</option>
-                <option value="AL">Phép năm (AL)</option>
-                <option value="UL">Không hưởng lương (UL)</option>
-                <option value="SL">Ốm đau BHXH (SL)</option>
-                <option value="ML">Thai sản (ML)</option>
-                <option value="PL">Việc riêng có lương (PL)</option>
-                <option value="CL">Nghỉ bù OT (CL)</option>
+                <option value="">📑 Tất cả loại nghỉ (13 loại)</option>
+                <option value="AL">Phép năm (P - 100% lương, Trừ phép)</option>
+                <option value="PL">Việc riêng có lương (VR - 100% lương)</option>
+                <option value="UL">Không hưởng lương (KL - 0% lương)</option>
+                <option value="SL">Ốm đau bản thân (Ô - 75% BHXH)</option>
+                <option value="SCL">Chăm con ốm (CÔ - 75% BHXH)</option>
+                <option value="ML">Thai sản nữ sinh con (TS - 100% BHXH)</option>
+                <option value="PL-M">Thai sản nam (TN - 100% BHXH)</option>
+                <option value="PC">Khám thai (KT - 100% BHXH)</option>
+                <option value="WI">Tai nạn LĐ (TNLĐ - 100% lương)</option>
+                <option value="CVL">Dưỡng sức sau ốm/TS (DS - 30% lương CS)</option>
+                <option value="CL">Nghỉ bù OT / Lễ (NB - 100% lương)</option>
+                <option value="FL">Chế độ Lao động Nữ (CĐN - 100% lương)</option>
+                <option value="HL">Nghỉ Ngày Lễ, Tết (L - 100% lương)</option>
               </select>
 
               <select id="filter-leave-request-status" onchange="renderLeaveRequestsTable()" class="px-2.5 py-1.5 border border-slate-200 rounded-lg text-xs bg-white text-slate-700 focus:ring-2 focus:ring-[#2E3191]">
@@ -5383,7 +5390,7 @@ nual-leave-content-policies" class="space-y-3 hidden">
             <div class="p-3.5 border-b border-slate-100 flex flex-wrap items-center justify-between gap-2">
               <div class="font-bold text-slate-800 text-xs flex items-center space-x-2">
                 <span>Danh mục loại nghỉ đang áp dụng:</span>
-                <span id="table-leave-types-count" class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-indigo-50 text-[#2E3191] border border-indigo-200">6 loại nghỉ</span>
+                <span id="table-leave-types-count" class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-indigo-50 text-[#2E3191] border border-indigo-200">13 loại nghỉ</span>
               </div>
               <div class="flex items-center space-x-2">
                 <input type="text" id="search-leave-types" oninput="renderLeaveTypesTable()" placeholder="Tìm theo mã, tên loại nghỉ..." class="px-3 py-1.5 border border-slate-200 rounded-lg text-xs focus:ring-2 focus:ring-[#2E3191] w-64 bg-slate-50">
@@ -31144,6 +31151,9 @@ nual-leave-content-policies" class="space-y-3 hidden">
     // =========================================================================
     // DỮ LIỆU VÀ QUẢN LÝ ĐƠN NGHỈ PHÉP (M09.3 - LEAVE REQUESTS & WORKFLOW M14)
     // =========================================================================
+        // =========================================================================
+    // DỮ LIỆU VÀ QUẢN LÝ ĐƠN NGHỈ PHÉP (M09.3 - LEAVE REQUESTS & WORKFLOW M14)
+    // =========================================================================
     let leaveRequestsData = [
       {
         id: 'DON-2026-001',
@@ -31154,7 +31164,7 @@ nual-leave-content-policies" class="space-y-3 hidden">
         empInitials: 'TA',
         empColor: 'bg-blue-700',
         typeCode: 'AL',
-        typeName: 'Nghỉ Phép năm',
+        typeName: 'Nghỉ Phép năm (Annual Leave)',
         session: 'FULL',
         fromDate: '2026-02-10',
         toDate: '2026-02-11',
@@ -31167,7 +31177,7 @@ nual-leave-content-policies" class="space-y-3 hidden">
         status: 'APPROVED',
         approver: 'HĐQT Cảng Phước An',
         approvedAt: '09/02/2026 14:30',
-        note: 'Đã hoàn tất kiểm tra số dư và trừ quỹ phép năm'
+        note: 'Đã hoàn tất kiểm tra số dư và trừ 2.0 ngày quỹ phép năm'
       },
       {
         id: 'DON-2026-002',
@@ -31178,20 +31188,20 @@ nual-leave-content-policies" class="space-y-3 hidden">
         empInitials: 'VB',
         empColor: 'bg-emerald-600',
         typeCode: 'PL',
-        typeName: 'Nghỉ Việc riêng có lương (Hiếu hỷ)',
+        typeName: 'Nghỉ Việc riêng có hưởng lương (Hiếu - Hỷ)',
         session: 'FULL',
-        fromDate: '2026-03-15',
-        toDate: '2026-03-17',
-        days: 2.5,
+        fromDate: '2026-03-16',
+        toDate: '2026-03-18',
+        days: 3.0,
         handoverCode: 'PAP0001',
         handoverName: 'Phạm Quốc Tuấn',
-        reason: 'Việc hiếu gia đình tại quê nhà',
-        attachment: 'Giay_bao_tu_scan.pdf',
-        createdAt: '14/03/2026',
+        reason: 'Kết hôn bản thân (Được nghỉ 3 ngày hưởng nguyên lương theo Khoản 1 Điều 115 BLLĐ)',
+        attachment: 'Giay_dang_ky_ket_hon_scan.pdf',
+        createdAt: '10/03/2026',
         status: 'APPROVED',
         approver: 'Phạm Quốc Tuấn (TGĐ)',
-        approvedAt: '14/03/2026 17:00',
-        note: 'Duyệt nghỉ việc riêng theo Điều 115 BLLĐ'
+        approvedAt: '11/03/2026 10:15',
+        note: 'Chế độ hưởng 100% lương, không trừ vào quỹ ngày phép năm'
       },
       {
         id: 'DON-2026-003',
@@ -31202,7 +31212,7 @@ nual-leave-content-policies" class="space-y-3 hidden">
         empInitials: 'VC',
         empColor: 'bg-amber-600',
         typeCode: 'SL',
-        typeName: 'Nghỉ Ốm đau (BHXH)',
+        typeName: 'Nghỉ Ốm đau bản thân (Sick Leave - BHXH)',
         session: 'FULL',
         fromDate: '2026-05-12',
         toDate: '2026-05-14',
@@ -31212,10 +31222,10 @@ nual-leave-content-policies" class="space-y-3 hidden">
         reason: 'Điều trị nội trú tại Bệnh viện Đa khoa Long Thành',
         attachment: 'Giay_ra_vien_C65HD.pdf',
         createdAt: '11/05/2026',
-        status: 'PENDING',
+        status: 'APPROVED',
         approver: 'Trưởng phòng Khai thác cảng',
-        approvedAt: null,
-        note: 'Chờ Trưởng phòng phê duyệt xác nhận chứng từ BHXH'
+        approvedAt: '12/05/2026 08:30',
+        note: 'BHXH chi trả 75% mức tiền lương đóng BHXH, không trừ quỹ phép năm'
       },
       {
         id: 'DON-2026-004',
@@ -31225,21 +31235,21 @@ nual-leave-content-policies" class="space-y-3 hidden">
         empAvatar: '',
         empInitials: 'TD',
         empColor: 'bg-purple-600',
-        typeCode: 'AL',
-        typeName: 'Nghỉ Phép năm',
-        session: 'MORNING',
-        fromDate: '2026-06-20',
-        toDate: '2026-06-20',
-        days: 0.5,
-        handoverCode: 'PAP0002',
-        handoverName: 'Nguyễn Văn B',
-        reason: 'Đi làm thủ tục hành chính tại cơ quan thuế buổi sáng',
-        attachment: '',
-        createdAt: '18/06/2026',
-        status: 'PENDING',
+        typeCode: 'SCL',
+        typeName: 'Nghỉ Chăm sóc con ốm (Sick Child Leave - BHXH)',
+        session: 'FULL',
+        fromDate: '2026-06-08',
+        toDate: '2026-06-09',
+        days: 2.0,
+        handoverCode: 'PAP0006',
+        handoverName: 'Đặng Thị F',
+        reason: 'Chăm sóc con 3 tuổi bị sốt virus điều trị ngoại trú',
+        attachment: 'Giay_nghi_BHXH_con_om_C65HD.pdf',
+        createdAt: '07/06/2026',
+        status: 'APPROVED',
         approver: 'Kế toán trưởng',
-        approvedAt: null,
-        note: 'Chờ Kế toán trưởng duyệt'
+        approvedAt: '07/06/2026 16:45',
+        note: 'BHXH chi trả 75% mức tiền lương đóng BHXH, không trừ quỹ phép năm'
       },
       {
         id: 'DON-2026-005',
@@ -31249,21 +31259,21 @@ nual-leave-content-policies" class="space-y-3 hidden">
         empAvatar: '',
         empInitials: 'VE',
         empColor: 'bg-indigo-600',
-        typeCode: 'CL',
-        typeName: 'Nghỉ Bù làm thêm giờ',
+        typeCode: 'PL-M',
+        typeName: 'Nghỉ Thai sản - Nam khi vợ sinh con (Paternity Leave)',
         session: 'FULL',
-        fromDate: '2026-07-05',
-        toDate: '2026-07-05',
-        days: 1.0,
+        fromDate: '2026-06-15',
+        toDate: '2026-06-19',
+        days: 5.0,
         handoverCode: 'PAP0003',
         handoverName: 'Lê Văn C',
-        reason: 'Nghỉ bù ca trực bốc dỡ hàng ban đêm ngày chủ nhật 28/06',
-        attachment: 'Phieu_xac_nhan_OT_2806.pdf',
-        createdAt: '01/07/2026',
-        status: 'PENDING',
+        reason: 'Vợ sinh con đầu lòng (sinh thường được nghỉ 5 ngày theo Khoản 2 Điều 34 Luật BHXH)',
+        attachment: 'Giay_chung_sinh_BV_Tu_Du.pdf',
+        createdAt: '12/06/2026',
+        status: 'APPROVED',
         approver: 'Trưởng phòng Kỹ thuật công nghệ',
-        approvedAt: null,
-        note: 'Chờ xác nhận quỹ giờ OT tích lũy'
+        approvedAt: '13/06/2026 09:20',
+        note: 'BHXH chi trả 100% bình quân tiền lương đóng BHXH, không trừ quỹ phép năm'
       },
       {
         id: 'DON-2026-006',
@@ -31273,21 +31283,21 @@ nual-leave-content-policies" class="space-y-3 hidden">
         empAvatar: '',
         empInitials: 'TF',
         empColor: 'bg-pink-600',
-        typeCode: 'AL',
-        typeName: 'Nghỉ Phép năm',
+        typeCode: 'PC',
+        typeName: 'Nghỉ Khám thai định kỳ (Prenatal Care Leave)',
         session: 'FULL',
-        fromDate: '2026-08-10',
-        toDate: '2026-08-11',
-        days: 2.0,
+        fromDate: '2026-07-10',
+        toDate: '2026-07-10',
+        days: 1.0,
         handoverCode: 'PAP0001',
         handoverName: 'Phạm Quốc Tuấn',
-        reason: 'Nghỉ phép năm kết hợp du lịch gia đình',
-        attachment: '',
-        createdAt: '05/08/2026',
+        reason: 'Khám thai định kỳ tháng thứ 6 theo chỉ định của Bệnh viện Phụ sản',
+        attachment: 'So_kham_thai_dinh_ky.pdf',
+        createdAt: '08/07/2026',
         status: 'APPROVED',
         approver: 'Trưởng phòng HC-NS',
-        approvedAt: '06/08/2026 09:15',
-        note: 'Đã trừ 2.0 ngày phép năm'
+        approvedAt: '09/07/2026 11:30',
+        note: 'BHXH chi trả 100% trợ cấp khám thai, không trừ quỹ phép năm'
       },
       {
         id: 'DON-2026-007',
@@ -31297,45 +31307,117 @@ nual-leave-content-policies" class="space-y-3 hidden">
         empAvatar: '',
         empInitials: 'VG',
         empColor: 'bg-cyan-600',
-        typeCode: 'UL',
-        typeName: 'Nghỉ Không hưởng lương',
+        typeCode: 'CL',
+        typeName: 'Nghỉ Bù làm thêm giờ / Trực lễ (Compensatory Leave)',
         session: 'FULL',
-        fromDate: '2026-09-01',
-        toDate: '2026-09-03',
-        days: 3.0,
+        fromDate: '2026-07-20',
+        toDate: '2026-07-20',
+        days: 1.0,
         handoverCode: 'PAP0005',
         handoverName: 'Hoàng Văn E',
-        reason: 'Giải quyết việc riêng gia đình dài ngày',
-        attachment: '',
-        createdAt: '28/08/2026',
-        status: 'REJECTED',
+        reason: 'Nghỉ bù ca trực bốc dỡ hàng ban đêm ngày Chủ nhật 12/07',
+        attachment: 'Phieu_xac_nhan_OT_1207.pdf',
+        createdAt: '15/07/2026',
+        status: 'APPROVED',
         approver: 'Đội trưởng Vận hành',
-        approvedAt: '29/08/2026 11:20',
-        note: 'Từ chối do trùng lịch tàu cập cầu cảng lớn, thiếu nhân lực vận hành cẩu'
+        approvedAt: '16/07/2026 14:00',
+        note: 'Hưởng 100% lương, khấu trừ quỹ giờ làm thêm OT tích lũy (không trừ phép năm)'
       },
       {
         id: 'DON-2026-008',
-        empCode: 'PAP0001',
-        empName: 'Phạm Quốc Tuấn',
-        empDept: 'CÔNG TY CP CẢNG PHƯỚC AN',
+        empCode: 'PAP0008',
+        empName: 'Bùi Thị H',
+        empDept: 'Phòng Điều độ & Cảng vụ',
         empAvatar: '',
-        empInitials: 'TA',
-        empColor: 'bg-blue-700',
-        typeCode: 'AL',
-        typeName: 'Nghỉ Phép năm',
+        empInitials: 'TH',
+        empColor: 'bg-teal-600',
+        typeCode: 'UL',
+        typeName: 'Nghỉ Việc riêng không hưởng lương (Unpaid Leave)',
         session: 'FULL',
-        fromDate: '2026-04-25',
-        toDate: '2026-04-25',
-        days: 1.0,
+        fromDate: '2026-08-03',
+        toDate: '2026-08-04',
+        days: 2.0,
+        handoverCode: 'PAP0003',
+        handoverName: 'Lê Văn C',
+        reason: 'Giải quyết việc sửa chữa nhà ở gia đình theo thỏa thuận',
+        attachment: '',
+        createdAt: '28/07/2026',
+        status: 'APPROVED',
+        approver: 'Trưởng phòng Điều độ & Cảng vụ',
+        approvedAt: '29/07/2026 15:10',
+        note: 'Chế độ 0% lương theo Khoản 3 Điều 115 BLLĐ, không trừ quỹ phép năm'
+      },
+      {
+        id: 'DON-2026-009',
+        empCode: 'PAP0009',
+        empName: 'Đỗ Văn I',
+        empDept: 'Kho bãi & Tiếp vận',
+        empAvatar: '',
+        empInitials: 'VI',
+        empColor: 'bg-rose-600',
+        typeCode: 'WI',
+        typeName: 'Nghỉ Tai nạn lao động & Bệnh nghề nghiệp (Work Injury)',
+        session: 'FULL',
+        fromDate: '2026-08-17',
+        toDate: '2026-08-20',
+        days: 4.0,
+        handoverCode: 'PAP0007',
+        handoverName: 'Vũ Văn G',
+        reason: 'Nghỉ điều trị phục hồi sau chấn thương trượt ngã tại cầu cảng',
+        attachment: 'Bien_ban_dieu_tra_TNLD_benh_an.pdf',
+        createdAt: '15/08/2026',
+        status: 'APPROVED',
+        approver: 'Trưởng phòng HC-NS & An toàn',
+        approvedAt: '16/08/2026 17:00',
+        note: 'Công ty chi trả 100% lương theo Điều 38 Luật ATVSLĐ, không trừ phép năm'
+      },
+      {
+        id: 'DON-2026-010',
+        empCode: 'PAP0004',
+        empName: 'Phạm Thị D',
+        empDept: 'Phòng Kế toán - Tài chính',
+        empAvatar: '',
+        empInitials: 'TD',
+        empColor: 'bg-purple-600',
+        typeCode: 'CVL',
+        typeName: 'Nghỉ Dưỡng sức sau ốm đau / thai sản (Convalescence)',
+        session: 'FULL',
+        fromDate: '2026-09-07',
+        toDate: '2026-09-11',
+        days: 5.0,
         handoverCode: 'PAP0002',
         handoverName: 'Nguyễn Văn B',
-        reason: 'Nghỉ khám sức khỏe định kỳ',
-        attachment: '',
-        createdAt: '22/04/2026',
+        reason: 'Nghỉ dưỡng sức phục hồi sau đợt phẫu thuật nội soi điều trị',
+        attachment: 'De_nghi_Cong_doan_duong_suc.pdf',
+        createdAt: '03/09/2026',
         status: 'PENDING',
-        approver: 'HĐQT',
+        approver: 'Kế toán trưởng & Ban Chấp hành Công đoàn',
         approvedAt: null,
-        note: 'Chờ HĐQT phê duyệt'
+        note: 'Đang chờ duyệt; Trợ cấp BHXH 30% lương cơ sở/ngày, không trừ phép năm'
+      },
+      {
+        id: 'DON-2026-011',
+        empCode: 'PAP0007',
+        empName: 'Vũ Văn G',
+        empDept: 'Đội Vận hành Cẩu bờ',
+        empAvatar: '',
+        empInitials: 'VG',
+        empColor: 'bg-cyan-600',
+        typeCode: 'AL',
+        typeName: 'Nghỉ Phép năm (Annual Leave)',
+        session: 'MORNING',
+        fromDate: '2026-09-15',
+        toDate: '2026-09-15',
+        days: 0.5,
+        handoverCode: 'PAP0005',
+        handoverName: 'Hoàng Văn E',
+        reason: 'Nghỉ buổi sáng giải quyết việc gia đình',
+        attachment: '',
+        createdAt: '12/09/2026',
+        status: 'PENDING',
+        approver: 'Đội trưởng Vận hành',
+        approvedAt: null,
+        note: 'Chờ phê duyệt; Hưởng 100% lương, khấu trừ 0.5 ngày phép năm'
       }
     ];
 
@@ -31393,11 +31475,8 @@ nual-leave-content-policies" class="space-y-3 hidden">
       }
 
       tbody.innerHTML = filtered.map((req, idx) => {
-        const typeBadgeCls = req.typeCode === 'AL' ? 'bg-emerald-50 text-emerald-700 border-emerald-200'
-                           : req.typeCode === 'UL' ? 'bg-slate-100 text-slate-700 border-slate-200'
-                           : req.typeCode === 'SL' ? 'bg-blue-50 text-blue-700 border-blue-200'
-                           : req.typeCode === 'ML' ? 'bg-purple-50 text-purple-700 border-purple-200'
-                           : 'bg-amber-50 text-amber-800 border-amber-200';
+        const matchedLt = typeof leaveTypesData !== 'undefined' ? leaveTypesData.find(t => t.code === req.typeCode) : null;
+        const typeBadgeCls = matchedLt ? matchedLt.badgeCls : (req.typeCode === 'AL' ? 'bg-emerald-50 text-emerald-700 border-emerald-200' : 'bg-slate-100 text-slate-700 border-slate-200');
 
         const statusBadge = req.status === 'PENDING'
           ? '<span class="px-2.5 py-1 rounded-full text-[10.5px] font-bold bg-amber-50 text-amber-800 border border-amber-200 inline-flex items-center"><span class="w-1.5 h-1.5 rounded-full bg-amber-500 mr-1 animate-pulse"></span>Chờ duyệt</span>'
@@ -31678,7 +31757,13 @@ nual-leave-content-policies" class="space-y-3 hidden">
           : '<span class="px-2.5 py-1 rounded-full text-xs font-bold bg-rose-50 text-rose-700 border border-rose-200">🔴 Bị từ chối</span>';
       }
 
-      document.getElementById('detail-req-type').innerText = req.typeName + ' (' + req.typeCode + ')';
+      const matchedReqLt = typeof leaveTypesData !== 'undefined' ? leaveTypesData.find(t => t.code === req.typeCode) : null;
+      let reqTypeSummary = req.typeName + ' (' + req.typeCode + ')';
+      if (matchedReqLt) {
+        reqTypeSummary += ' • ' + (matchedReqLt.paidType || (matchedReqLt.paidRate + '% Lương'));
+        reqTypeSummary += matchedReqLt.deductQuota ? ' • [Trừ quỹ phép năm]' : ' • [Không trừ phép năm]';
+      }
+      document.getElementById('detail-req-type').innerText = reqTypeSummary;
       document.getElementById('detail-req-days').innerText = req.days.toFixed(1) + ' ngày';
       document.getElementById('detail-req-time').innerText = req.fromDate + ' ➔ ' + req.toDate;
       document.getElementById('detail-req-session').innerText = req.session === 'MORNING' ? 'Buổi sáng (0.5 ngày)' : req.session === 'AFTERNOON' ? 'Buổi chiều (0.5 ngày)' : 'Cả ngày (1.0 ngày)';
@@ -31806,6 +31891,9 @@ nual-leave-content-policies" class="space-y-3 hidden">
     // =========================================================================
     // DANH MỤC LOẠI NGHỈ PHÉP CHUẨN CẢNG PHƯỚC AN (M09.0 - LEAVE TYPES)
     // =========================================================================
+        // =========================================================================
+    // DANH MỤC LOẠI NGHỈ PHÉP CHUẨN PHÁP LUẬT VIỆT NAM (BLLĐ 2019 & LUẬT BHXH)
+    // =========================================================================
     const leaveTypesData = [
       {
         code: 'AL',
@@ -31814,7 +31902,7 @@ nual-leave-content-policies" class="space-y-3 hidden">
         symbol: 'P',
         paidRate: 100,
         paidType: '100% Lương',
-        deductQuota: true,
+        deductQuota: true, // DUY NHẤT LOẠI NÀY TRỪ QUỸ PHÉP NĂM
         requireAttachment: false,
         maxDaysYear: 12,
         limitMonthCheck: false,
@@ -31822,83 +31910,20 @@ nual-leave-content-policies" class="space-y-3 hidden">
         limitWeekCheck: false,
         limitWeekVal: null,
         minDaysPerTime: 0.5,
-        maxDays: 'Theo quỹ phép năm (12 ngày/năm)',
+        maxDays: 'Theo quỹ phép năm (12 - 16 ngày/năm)',
         badgeCls: 'bg-emerald-50 text-emerald-700 border-emerald-200',
-        lawArticle: 'Điều 113 Bộ luật Lao động 2019',
+        lawArticle: 'Điều 113, 114 Bộ luật Lao động 2019',
         status: 'ACTIVE',
-        description: 'Nghỉ phép theo chế độ hàng năm, hưởng nguyên lương theo hợp đồng lao động.'
-      },
-      {
-        code: 'UL',
-        name: 'Nghỉ Không hưởng lương (Unpaid Leave)',
-        shortName: 'Không lương',
-        symbol: 'KL',
-        paidRate: 0,
-        paidType: '0% Lương',
-        deductQuota: false,
-        requireAttachment: false,
-        maxDaysYear: 14,
-        limitMonthCheck: false,
-        limitMonthVal: null,
-        limitWeekCheck: false,
-        limitWeekVal: null,
-        minDaysPerTime: 1,
-        maxDays: 'Tối đa 14 ngày/năm',
-        badgeCls: 'bg-slate-100 text-slate-700 border-slate-200',
-        lawArticle: 'Khoản 3 Điều 115 BLLĐ 2019',
-        status: 'ACTIVE',
-        description: 'Nghỉ việc riêng không hưởng lương theo thỏa thuận giữa NLĐ và người sử dụng lao động.'
-      },
-      {
-        code: 'SL',
-        name: 'Nghỉ Ốm đau (BHXH) (Sick Leave)',
-        shortName: 'Ốm đau (BHXH)',
-        symbol: 'Ô',
-        paidRate: 75,
-        paidType: '75% Lương (BHXH)',
-        deductQuota: false,
-        requireAttachment: true,
-        maxDaysYear: 30,
-        limitMonthCheck: false,
-        limitMonthVal: null,
-        limitWeekCheck: false,
-        limitWeekVal: null,
-        minDaysPerTime: 1,
-        maxDays: 'Theo chỉ định y tế (tối đa 30-60 ngày/năm)',
-        badgeCls: 'bg-blue-50 text-blue-700 border-blue-200',
-        lawArticle: 'Điều 25, 26 Luật BHXH 2014',
-        status: 'ACTIVE',
-        description: 'Nghỉ ốm đau có xác nhận của cơ sở y tế (mẫu C65-HD), hưởng trợ cấp 75% mức đóng BHXH.'
-      },
-      {
-        code: 'ML',
-        name: 'Nghỉ Thai sản (Maternity Leave)',
-        shortName: 'Thai sản (BHXH)',
-        symbol: 'TS',
-        paidRate: 100,
-        paidType: '100% Lương (BHXH)',
-        deductQuota: false,
-        requireAttachment: true,
-        maxDaysYear: 180,
-        limitMonthCheck: false,
-        limitMonthVal: null,
-        limitWeekCheck: false,
-        limitWeekVal: null,
-        minDaysPerTime: 1,
-        maxDays: '6 tháng (Nữ) / 5 - 14 ngày (Nam)',
-        badgeCls: 'bg-purple-50 text-purple-700 border-purple-200',
-        lawArticle: 'Điều 34 Luật BHXH 2014',
-        status: 'ACTIVE',
-        description: 'Nghỉ thai sản nam/nữ, khám thai, sinh con theo chế độ thai sản của Luật BHXH.'
+        description: 'Nghỉ phép hằng năm hưởng nguyên 100% lương theo HĐLĐ. Duy nhất loại nghỉ này khấu trừ trực tiếp vào quỹ ngày phép năm của nhân sự.'
       },
       {
         code: 'PL',
-        name: 'Nghỉ Việc riêng có lương (Hiếu hỷ)',
+        name: 'Nghỉ Việc riêng có hưởng lương (Hiếu - Hỷ)',
         shortName: 'Việc riêng có lương',
         symbol: 'VR',
         paidRate: 100,
         paidType: '100% Lương',
-        deductQuota: false,
+        deductQuota: false, // KHÔNG TRỪ PHÉP NĂM
         requireAttachment: true,
         maxDaysYear: 3,
         limitMonthCheck: false,
@@ -31906,20 +31931,188 @@ nual-leave-content-policies" class="space-y-3 hidden">
         limitWeekCheck: false,
         limitWeekVal: null,
         minDaysPerTime: 1,
-        maxDays: '1 - 3 ngày / lần',
+        maxDays: '1 - 3 ngày / sự việc',
         badgeCls: 'bg-emerald-50 text-emerald-700 border-emerald-200',
-        lawArticle: 'Khoản 1 Điều 115 BLLĐ 2019',
+        lawArticle: 'Khoản 1 Điều 115 Bộ luật Lao động 2019',
         status: 'ACTIVE',
-        description: 'Kết hôn (3 ngày), con kết hôn (1 ngày), cha mẹ/vợ chồng/con mất (3 ngày) hưởng nguyên lương.'
+        description: 'Hưởng nguyên 100% lương: Kết hôn (3 ngày), con kết hôn (1 ngày), cha mẹ/vợ chồng/con chết (3 ngày). Không trừ vào quỹ phép năm.'
+      },
+      {
+        code: 'UL',
+        name: 'Nghỉ Việc riêng không hưởng lương (Unpaid Leave)',
+        shortName: 'Không hưởng lương',
+        symbol: 'KL',
+        paidRate: 0,
+        paidType: '0% Lương',
+        deductQuota: false, // KHÔNG TRỪ PHÉP NĂM
+        requireAttachment: false,
+        maxDaysYear: 30,
+        limitMonthCheck: false,
+        limitMonthVal: null,
+        limitWeekCheck: false,
+        limitWeekVal: null,
+        minDaysPerTime: 0.5,
+        maxDays: 'Tối đa 30 ngày/năm (thỏa thuận)',
+        badgeCls: 'bg-slate-100 text-slate-700 border-slate-200',
+        lawArticle: 'Khoản 2, Khoản 3 Điều 115 BLLĐ 2019',
+        status: 'ACTIVE',
+        description: 'Nghỉ không hưởng lương diện người thân (ông bà, anh chị em) hoặc thỏa thuận giữa người lao động và công ty. Không trừ phép năm.'
+      },
+      {
+        code: 'SL',
+        name: 'Nghỉ Ốm đau bản thân (Sick Leave - BHXH)',
+        shortName: 'Ốm đau (BHXH)',
+        symbol: 'Ô',
+        paidRate: 75,
+        paidType: '75% Lương (BHXH)',
+        deductQuota: false, // KHÔNG TRỪ PHÉP NĂM
+        requireAttachment: true,
+        maxDaysYear: 30,
+        limitMonthCheck: false,
+        limitMonthVal: null,
+        limitWeekCheck: false,
+        limitWeekVal: null,
+        minDaysPerTime: 1,
+        maxDays: '30 - 60 ngày/năm (Bệnh dài ngày 180 ngày)',
+        badgeCls: 'bg-blue-50 text-blue-700 border-blue-200',
+        lawArticle: 'Điều 25, 26, 28 Luật BHXH 2014',
+        status: 'ACTIVE',
+        description: 'Nghỉ ốm đau có giấy xác nhận y tế C65-HD/giấy ra viện. Cơ quan BHXH chi trả trợ cấp 75% mức tiền lương đóng BHXH. Không trừ phép năm.'
+      },
+      {
+        code: 'SCL',
+        name: 'Nghỉ Chăm sóc con ốm (Sick Child Leave - BHXH)',
+        shortName: 'Con ốm (BHXH)',
+        symbol: 'CÔ',
+        paidRate: 75,
+        paidType: '75% Lương (BHXH)',
+        deductQuota: false, // KHÔNG TRỪ PHÉP NĂM
+        requireAttachment: true,
+        maxDaysYear: 20,
+        limitMonthCheck: false,
+        limitMonthVal: null,
+        limitWeekCheck: false,
+        limitWeekVal: null,
+        minDaysPerTime: 1,
+        maxDays: 'Con < 3 tuổi: 20 ngày; Con 3-7 tuổi: 15 ngày',
+        badgeCls: 'bg-blue-50 text-blue-700 border-blue-200',
+        lawArticle: 'Điều 27, 28 Luật BHXH 2014',
+        status: 'ACTIVE',
+        description: 'Nghỉ chăm sóc khi con dưới 7 tuổi bị ốm đau. Cơ quan BHXH chi trả trợ cấp 75% mức tiền lương đóng BHXH. Không trừ phép năm.'
+      },
+      {
+        code: 'ML',
+        name: 'Nghỉ Thai sản - Lao động nữ sinh con (Maternity Leave)',
+        shortName: 'Thai sản - Nữ (BHXH)',
+        symbol: 'TS',
+        paidRate: 100,
+        paidType: '100% Lương (BHXH)',
+        deductQuota: false, // KHÔNG TRỪ PHÉP NĂM (VẪN ĐƯỢC TÍCH LŨY PHÉP)
+        requireAttachment: true,
+        maxDaysYear: 180,
+        limitMonthCheck: false,
+        limitMonthVal: null,
+        limitWeekCheck: false,
+        limitWeekVal: null,
+        minDaysPerTime: 1,
+        maxDays: '06 tháng (Sinh đôi trở lên +1 tháng/con)',
+        badgeCls: 'bg-purple-50 text-purple-700 border-purple-200',
+        lawArticle: 'Điều 34, 39 Luật BHXH & Điều 139 BLLĐ',
+        status: 'ACTIVE',
+        description: 'BHXH chi trả 100% bình quân tiền lương đóng BHXH 6 tháng liền kề + trợ cấp một lần. Thời gian nghỉ vẫn được tích lũy phép năm theo NĐ 145.'
+      },
+      {
+        code: 'PL-M',
+        name: 'Nghỉ Thai sản - Nam khi vợ sinh con (Paternity Leave)',
+        shortName: 'Thai sản - Nam (BHXH)',
+        symbol: 'TN',
+        paidRate: 100,
+        paidType: '100% Lương (BHXH)',
+        deductQuota: false, // KHÔNG TRỪ PHÉP NĂM
+        requireAttachment: true,
+        maxDaysYear: 14,
+        limitMonthCheck: false,
+        limitMonthVal: null,
+        limitWeekCheck: false,
+        limitWeekVal: null,
+        minDaysPerTime: 1,
+        maxDays: '5 - 14 ngày làm việc / lần vợ sinh',
+        badgeCls: 'bg-purple-50 text-purple-700 border-purple-200',
+        lawArticle: 'Khoản 2 Điều 34 Luật BHXH 2014',
+        status: 'ACTIVE',
+        description: 'Lao động nam có vợ sinh con: Sinh thường 5 ngày, mổ/dưới 32 tuần 7 ngày, sinh đôi 10-14 ngày. Cơ quan BHXH chi trả 100% lương. Không trừ phép.'
+      },
+      {
+        code: 'PC',
+        name: 'Nghỉ Khám thai định kỳ (Prenatal Care Leave)',
+        shortName: 'Khám thai (BHXH)',
+        symbol: 'KT',
+        paidRate: 100,
+        paidType: '100% Lương (BHXH)',
+        deductQuota: false, // KHÔNG TRỪ PHÉP NĂM
+        requireAttachment: true,
+        maxDaysYear: 5,
+        limitMonthCheck: false,
+        limitMonthVal: null,
+        limitWeekCheck: false,
+        limitWeekVal: null,
+        minDaysPerTime: 1,
+        maxDays: '5 lần x 1 ngày (Bệnh lý/ở xa: 2 ngày/lần)',
+        badgeCls: 'bg-purple-50 text-purple-700 border-purple-200',
+        lawArticle: 'Điều 32 Luật BHXH 2014',
+        status: 'ACTIVE',
+        description: 'Lao động nữ được nghỉ khám thai 5 lần trong thai kỳ, mỗi lần 01 ngày (bệnh lý hoặc xa được 02 ngày). BHXH chi trả 100%. Không trừ phép năm.'
+      },
+      {
+        code: 'WI',
+        name: 'Nghỉ Tai nạn lao động & Bệnh nghề nghiệp (Work Injury)',
+        shortName: 'Tai nạn LĐ - BNN',
+        symbol: 'TNLĐ',
+        paidRate: 100,
+        paidType: '100% Lương (CTy)',
+        deductQuota: false, // KHÔNG TRỪ PHÉP NĂM
+        requireAttachment: true,
+        maxDaysYear: null,
+        limitMonthCheck: false,
+        limitMonthVal: null,
+        limitWeekCheck: false,
+        limitWeekVal: null,
+        minDaysPerTime: 1,
+        maxDays: 'Theo thời gian điều trị của cơ sở y tế',
+        badgeCls: 'bg-rose-50 text-rose-700 border-rose-200',
+        lawArticle: 'Điều 38 Luật ATVSLĐ 2015',
+        status: 'ACTIVE',
+        description: 'Người sử dụng lao động trả đủ 100% tiền lương theo HĐLĐ trong suốt thời gian điều trị phục hồi thương tật. Không trừ phép năm.'
+      },
+      {
+        code: 'CVL',
+        name: 'Nghỉ Dưỡng sức sau ốm đau / thai sản (Convalescence)',
+        shortName: 'Dưỡng sức sau ốm/TS',
+        symbol: 'DS',
+        paidRate: 30,
+        paidType: '30% Lương cơ sở (BHXH)',
+        deductQuota: false, // KHÔNG TRỪ PHÉP NĂM
+        requireAttachment: true,
+        maxDaysYear: 10,
+        limitMonthCheck: false,
+        limitMonthVal: null,
+        limitWeekCheck: false,
+        limitWeekVal: null,
+        minDaysPerTime: 1,
+        maxDays: '5 - 10 ngày / năm',
+        badgeCls: 'bg-blue-50 text-blue-700 border-blue-200',
+        lawArticle: 'Điều 29, 41 Luật BHXH 2014',
+        status: 'ACTIVE',
+        description: 'Nghỉ dưỡng sức trong vòng 30 ngày đầu quay lại làm việc nếu sức khỏe chưa phục hồi. BHXH trợ cấp 30% mức lương cơ sở/ngày. Không trừ phép năm.'
       },
       {
         code: 'CL',
-        name: 'Nghỉ Bù làm thêm giờ (Compensatory Leave)',
-        shortName: 'Nghỉ bù OT',
+        name: 'Nghỉ Bù làm thêm giờ / Trực lễ (Compensatory Leave)',
+        shortName: 'Nghỉ bù OT / Lễ',
         symbol: 'NB',
         paidRate: 100,
         paidType: '100% Lương',
-        deductQuota: false,
+        deductQuota: false, // KHÔNG TRỪ PHÉP NĂM (TRỪ QUỸ GIỜ OT TÍCH LŨY)
         requireAttachment: false,
         maxDaysYear: null,
         limitMonthCheck: false,
@@ -31927,11 +32120,53 @@ nual-leave-content-policies" class="space-y-3 hidden">
         limitWeekCheck: false,
         limitWeekVal: null,
         minDaysPerTime: 0.5,
-        maxDays: 'Theo quỹ giờ OT tích lũy',
+        maxDays: 'Theo quỹ giờ làm thêm tích lũy',
         badgeCls: 'bg-amber-50 text-amber-800 border-amber-200',
-        lawArticle: 'Quy chế làm thêm giờ Cảng Phước An',
+        lawArticle: 'Khoản 3 Điều 111 BLLĐ 2019',
         status: 'ACTIVE',
-        description: 'Nghỉ bù cho số giờ làm thêm (OT) đã được phê duyệt và tích lũy trong kỳ.'
+        description: 'Nghỉ bù tương ứng với số giờ làm thêm (OT) hoặc trực ca lễ tết đã tích lũy. Hưởng nguyên 100% lương, khấu trừ quỹ OT, không trừ quỹ phép năm.'
+      },
+      {
+        code: 'FL',
+        name: 'Nghỉ Chế độ Lao động Nữ (Hành kinh & Nuôi con nhỏ)',
+        shortName: 'Chế độ Nữ',
+        symbol: 'CĐN',
+        paidRate: 100,
+        paidType: '100% Lương',
+        deductQuota: false, // KHÔNG TRỪ PHÉP NĂM
+        requireAttachment: false,
+        maxDaysYear: null,
+        limitMonthCheck: true,
+        limitMonthVal: 3,
+        limitWeekCheck: false,
+        limitWeekVal: null,
+        minDaysPerTime: 0.5,
+        maxDays: '30 phút/ngày (hành kinh) - 60 phút/ngày (nuôi con <12th)',
+        badgeCls: 'bg-pink-50 text-pink-700 border-pink-200',
+        lawArticle: 'Khoản 4 Điều 137 BLLĐ & NĐ 145/2020',
+        status: 'ACTIVE',
+        description: 'Lao động nữ hành kinh nghỉ 30 phút/ngày; nuôi con dưới 12 tháng nghỉ 60 phút/ngày tính vào giờ làm việc, hưởng 100% lương. Không trừ phép năm.'
+      },
+      {
+        code: 'HL',
+        name: 'Nghỉ Ngày Lễ, Tết chính thức (Public Holidays)',
+        shortName: 'Nghỉ Lễ, Tết',
+        symbol: 'L',
+        paidRate: 100,
+        paidType: '100% Lương',
+        deductQuota: false, // KHÔNG TRỪ PHÉP NĂM
+        requireAttachment: false,
+        maxDaysYear: 11,
+        limitMonthCheck: false,
+        limitMonthVal: null,
+        limitWeekCheck: false,
+        limitWeekVal: null,
+        minDaysPerTime: 1,
+        maxDays: '11 ngày/năm theo luật định',
+        badgeCls: 'bg-emerald-50 text-emerald-700 border-emerald-200',
+        lawArticle: 'Điều 112 Bộ luật Lao động 2019',
+        status: 'ACTIVE',
+        description: 'Nghỉ 11 ngày lễ, tết chính thức trong năm theo quy định của Nhà nước, hưởng nguyên 100% tiền lương. Không trừ vào quỹ phép năm.'
       }
     ];
 
@@ -31994,8 +32229,9 @@ nual-leave-content-policies" class="space-y-3 hidden">
       }
 
       tbody.innerHTML = filtered.map((lt, idx) => {
-        const displayPaid = lt.paidRate !== undefined && lt.paidRate !== null ? (lt.paidRate + '% Lương') : (lt.paidType || '100% Lương');
+        const displayPaid = lt.paidType || (lt.paidRate !== undefined && lt.paidRate !== null ? (lt.paidRate + '% Lương') : '100% Lương');
         const badgeCls = (lt.paidRate === 0 || (lt.paidType && lt.paidType.includes('0%'))) ? 'bg-slate-100 text-slate-700 border-slate-200'
+                       : (lt.paidType && lt.paidType.includes('BHXH') && lt.paidRate >= 100) ? 'bg-purple-50 text-purple-700 border-purple-200'
                        : (lt.paidRate && lt.paidRate < 100) ? 'bg-blue-50 text-blue-700 border-blue-200'
                        : 'bg-emerald-50 text-emerald-700 border-emerald-200';
 
