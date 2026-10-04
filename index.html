@@ -6047,130 +6047,534 @@
           </div>
         </div>
 
-        <!-- ================= PANEL 5: CHỐT BẢNG CÔNG KỲ ================= -->
-        <div id="att-panel-lock" class="space-y-3 hidden">
-          <!-- Banner Trạng thái Khóa Kỳ công -->
-          <div id="att-lock-status-banner" class="p-4 rounded-xl border border-amber-200 bg-amber-50/80 shadow-2xs flex flex-wrap items-center justify-between gap-3 text-amber-900">
-            <div class="flex items-center space-x-3">
-              <div class="w-10 h-10 rounded-xl bg-amber-100 text-amber-700 flex items-center justify-center font-bold text-xl shrink-0">
-                🔓
+                <!-- ================= PANEL 5: CHỐT BẢNG CÔNG KỲ (QUY TRÌNH 5 BƯỚC CHUẨN DOANH NGHIỆP) ================= -->
+        <div id="att-panel-lock" class="space-y-4 hidden">
+          <!-- Top Control Header: Chọn Chu kỳ & Trạng thái Khóa -->
+          <div class="bg-white rounded-2xl border border-slate-200 shadow-xs p-4 sm:p-5">
+            <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
+              <div class="flex items-start sm:items-center space-x-3.5">
+                <div class="w-12 h-12 rounded-2xl bg-indigo-50 border border-indigo-100 text-[#2E3191] flex items-center justify-center font-bold text-2xl shrink-0 shadow-2xs">
+                  🔒
+                </div>
+                <div>
+                  <div class="flex flex-wrap items-center gap-2">
+                    <h2 class="text-base sm:text-lg font-bold text-slate-900 tracking-tight">CHỐT BẢNG CÔNG CUỐI CHU KỲ</h2>
+                    <span id="att-period-lock-badge" class="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-amber-100 text-amber-800 border border-amber-200 flex items-center space-x-1">
+                      <span class="w-1.5 h-1.5 rounded-full bg-amber-500 animate-pulse"></span>
+                      <span id="att-period-lock-badge-text">Đang mở (Chưa khóa)</span>
+                    </span>
+                    <span class="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-indigo-50 text-[#2E3191] border border-indigo-200">245 Nhân sự</span>
+                  </div>
+                  <div class="flex flex-wrap items-center gap-x-4 gap-y-1 text-xs text-slate-500 font-medium mt-1">
+                    <span>Chu kỳ: <strong id="att-period-daterange-text" class="text-slate-700">01/09/2026 - 30/09/2026</strong></span>
+                    <span>•</span>
+                    <span>Công chuẩn kỳ: <strong id="att-period-standard-days-text" class="text-slate-700">22 ngày</strong></span>
+                    <span>•</span>
+                    <span>Kỳ lương: <strong class="text-slate-700">Tháng 09/2026</strong></span>
+                  </div>
+                </div>
               </div>
-              <div>
+
+              <!-- Chu kỳ Selector & Nút Hành động Top -->
+              <div class="flex flex-wrap items-center gap-2 shrink-0">
+                <div class="relative">
+                  <select id="select-attendance-period" onchange="changeAttendancePeriod(this.value)" class="text-xs font-bold border border-slate-300 rounded-xl px-3 py-2 bg-white text-slate-800 shadow-2xs focus:ring-2 focus:ring-[#2E3191]">
+                    <option value="2026-09" selected>📅 Kỳ Tháng 09/2026 (Đang xử lý chốt)</option>
+                    <option value="2026-08">🔒 Kỳ Tháng 08/2026 (Đã chốt - v1.3)</option>
+                    <option value="2026-07">🔒 Kỳ Tháng 07/2026 (Đã chốt - v1.2)</option>
+                  </select>
+                </div>
+                <button type="button" onclick="exportAttendanceSummaryExcel()" class="px-3 py-2 bg-white hover:bg-slate-50 text-slate-700 text-xs font-semibold rounded-xl border border-slate-300 shadow-2xs transition flex items-center space-x-1.5 cursor-pointer" title="Xuất Bảng công tổng hợp ra file Excel">
+                  <span>📥</span>
+                  <span>Xuất Excel</span>
+                </button>
+                <button type="button" id="btn-top-lock-period" onclick="handlePeriodLockActionClick()" class="px-3.5 py-2 pap-primary text-white text-xs font-bold rounded-xl shadow-xs transition hover:bg-[#242775] cursor-pointer flex items-center space-x-1.5">
+                  <span id="btn-top-lock-period-icon">🔒</span>
+                  <span id="btn-top-lock-period-text">Chốt bảng công</span>
+                </button>
+              </div>
+            </div>
+
+            <!-- KPI Cards Tổng hợp Kỳ công -->
+            <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-2.5 mt-4 pt-4 border-t border-slate-100">
+              <div class="p-2.5 rounded-xl bg-slate-50 border border-slate-200/60">
+                <div class="text-[10px] font-bold uppercase tracking-wider text-slate-400">Tổng nhân sự</div>
+                <div id="kpi-lock-employees" class="text-lg font-bold text-slate-800 mt-0.5">245</div>
+                <div class="text-[10px] text-slate-500">100% đã phân ca</div>
+              </div>
+              <div class="p-2.5 rounded-xl bg-slate-50 border border-slate-200/60">
+                <div class="text-[10px] font-bold uppercase tracking-wider text-slate-400">Tổng công thực tế</div>
+                <div id="kpi-lock-actual-work" class="text-lg font-bold text-[#2E3191] mt-0.5">5,348.5</div>
+                <div class="text-[10px] text-indigo-600 font-medium">Bình quân 21.8 công/NV</div>
+              </div>
+              <div class="p-2.5 rounded-xl bg-slate-50 border border-slate-200/60">
+                <div class="text-[10px] font-bold uppercase tracking-wider text-slate-400">Làm thêm giờ (OT)</div>
+                <div id="kpi-lock-ot-hours" class="text-lg font-bold text-amber-600 mt-0.5">482.0 h</div>
+                <div class="text-[10px] text-amber-600 font-medium">Đã bao gồm hệ số ca</div>
+              </div>
+              <div class="p-2.5 rounded-xl bg-slate-50 border border-slate-200/60">
+                <div class="text-[10px] font-bold uppercase tracking-wider text-slate-400">Nghỉ phép hưởng lương</div>
+                <div id="kpi-lock-leave-days" class="text-lg font-bold text-emerald-600 mt-0.5">142.0</div>
+                <div class="text-[10px] text-emerald-600 font-medium">Ánh xạ từ M09</div>
+              </div>
+              <div class="p-2.5 rounded-xl bg-slate-50 border border-slate-200/60">
+                <div class="text-[10px] font-bold uppercase tracking-wider text-slate-400">Thiếu chấm công</div>
+                <div id="kpi-lock-missing-punches" class="text-lg font-bold text-rose-600 mt-0.5">8 lượt</div>
+                <div class="text-[10px] text-rose-600 font-medium">Cần bổ sung ở Bước 2</div>
+              </div>
+              <div class="p-2.5 rounded-xl bg-slate-50 border border-slate-200/60">
+                <div class="text-[10px] font-bold uppercase tracking-wider text-slate-400">Giải trình chờ duyệt</div>
+                <div id="kpi-lock-pending-requests" class="text-lg font-bold text-indigo-600 mt-0.5">5 đơn</div>
+                <div class="text-[10px] text-indigo-600 font-medium">24 đã phê duyệt</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Stepper Wizard 5 Bước: Quy trình Chốt Bảng công Chuẩn Doanh nghiệp -->
+          <div class="bg-white rounded-2xl border border-slate-200 shadow-xs p-3 sm:p-4">
+            <div class="text-xs font-bold text-slate-800 uppercase tracking-wider mb-2.5 px-1 flex items-center justify-between">
+              <span class="flex items-center space-x-2">
+                <span>🔄</span>
+                <span>QUY TRÌNH 5 BƯỚC CHỐT BẢNG CÔNG CUỐI CHU KỲ (CHUẨN DOANH NGHIỆP)</span>
+              </span>
+              <span class="text-[11px] font-semibold text-slate-500">Bước đang chọn: <strong id="att-lock-active-step-label" class="text-[#2E3191]">Bước 4: Chỉnh sửa số công & Gửi đối soát</strong></span>
+            </div>
+
+            <nav class="grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-5 gap-2" role="tablist" aria-label="Quy trình chốt bảng công">
+              <!-- Step 1 -->
+              <button type="button" id="step-btn-att-1" onclick="switchAttendanceLockStep(1)" class="att-lock-step-btn text-left p-3 rounded-xl border border-transparent hover:bg-slate-50 transition cursor-pointer flex items-start space-x-2.5 group">
+                <div class="w-6 h-6 rounded-full bg-slate-200 text-slate-700 flex items-center justify-center text-xs font-bold shrink-0 mt-0.5 group-hover:bg-indigo-100 group-hover:text-[#2E3191]">1</div>
+                <div class="min-w-0">
+                  <div class="font-bold text-xs text-slate-800 truncate">1. Lịch & Ca làm việc</div>
+                  <div class="text-[10px] text-slate-500 truncate">Rà soát phân ca M07</div>
+                </div>
+              </button>
+
+              <!-- Step 2 -->
+              <button type="button" id="step-btn-att-2" onclick="switchAttendanceLockStep(2)" class="att-lock-step-btn text-left p-3 rounded-xl border border-transparent hover:bg-slate-50 transition cursor-pointer flex items-start space-x-2.5 group">
+                <div class="w-6 h-6 rounded-full bg-slate-200 text-slate-700 flex items-center justify-center text-xs font-bold shrink-0 mt-0.5 group-hover:bg-indigo-100 group-hover:text-[#2E3191]">2</div>
+                <div class="min-w-0">
+                  <div class="font-bold text-xs text-slate-800 truncate">2. Giờ chấm công vào/ra</div>
+                  <div class="text-[10px] text-slate-500 truncate">Bổ sung 8 lượt thiếu giờ</div>
+                </div>
+              </button>
+
+              <!-- Step 3 -->
+              <button type="button" id="step-btn-att-3" onclick="switchAttendanceLockStep(3)" class="att-lock-step-btn text-left p-3 rounded-xl border border-transparent hover:bg-slate-50 transition cursor-pointer flex items-start space-x-2.5 group">
+                <div class="w-6 h-6 rounded-full bg-slate-200 text-slate-700 flex items-center justify-center text-xs font-bold shrink-0 mt-0.5 group-hover:bg-indigo-100 group-hover:text-[#2E3191]">3</div>
+                <div class="min-w-0">
+                  <div class="font-bold text-xs text-slate-800 truncate">3. Áp dụng công thức công</div>
+                  <div class="text-[10px] text-slate-500 truncate">Tính giờ OT, trễ, phép</div>
+                </div>
+              </button>
+
+              <!-- Step 4 -->
+              <button type="button" id="step-btn-att-4" onclick="switchAttendanceLockStep(4)" class="att-lock-step-btn text-left p-3 rounded-xl border border-indigo-200 bg-indigo-50/80 transition cursor-pointer flex items-start space-x-2.5 group">
+                <div class="w-6 h-6 rounded-full bg-[#2E3191] text-white flex items-center justify-center text-xs font-bold shrink-0 mt-0.5">4</div>
+                <div class="min-w-0">
+                  <div class="font-bold text-xs text-[#2E3191] truncate">4. Sửa công & Gửi đối soát</div>
+                  <div class="text-[10px] text-indigo-700 font-medium truncate">Edit công & Gửi 245 NV</div>
+                </div>
+              </button>
+
+              <!-- Step 5 -->
+              <button type="button" id="step-btn-att-5" onclick="switchAttendanceLockStep(5)" class="att-lock-step-btn text-left p-3 rounded-xl border border-transparent hover:bg-slate-50 transition cursor-pointer flex items-start space-x-2.5 group">
+                <div class="w-6 h-6 rounded-full bg-slate-200 text-slate-700 flex items-center justify-center text-xs font-bold shrink-0 mt-0.5 group-hover:bg-indigo-100 group-hover:text-[#2E3191]">5</div>
+                <div class="min-w-0">
+                  <div class="font-bold text-xs text-slate-800 truncate">5. Hoàn tất & Chốt khóa</div>
+                  <div class="text-[10px] text-slate-500 truncate">Đóng băng & Chuyển lương</div>
+                </div>
+              </button>
+            </nav>
+          </div>
+
+          <!-- ================= BƯỚC 1 PANE: RÀ SOÁT CA & LỊCH LÀM VIỆC ================= -->
+          <div id="pane-att-step-1" class="space-y-3.5 hidden">
+            <div class="bg-white rounded-2xl border border-slate-200 shadow-xs p-4 sm:p-5">
+              <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-slate-100">
+                <div>
+                  <h3 class="font-bold text-sm text-slate-900">Bước 1: Kiểm tra & Chỉnh sửa Lịch làm việc / Ca làm việc</h3>
+                  <p class="text-xs text-slate-500 mt-0.5">Dữ liệu phân ca từ phân hệ Lịch làm việc (M07) được kết nối và đồng bộ tự động vào chu kỳ tính công. Đảm bảo toàn bộ nhân sự đều có ca trước khi tính công.</p>
+                </div>
+                <div class="flex items-center space-x-2 shrink-0">
+                  <button type="button" onclick="syncShiftsFromScheduleModule()" class="px-3.5 py-1.5 bg-white border border-slate-300 hover:bg-slate-50 text-slate-700 text-xs font-semibold rounded-xl shadow-2xs transition flex items-center space-x-1.5 cursor-pointer">
+                    <span>🔄</span>
+                    <span>Đồng bộ lại từ M07</span>
+                  </button>
+                  <button type="button" onclick="switchAttendanceLockStep(2)" class="px-4 py-1.5 pap-primary text-white text-xs font-bold rounded-xl shadow-xs transition hover:bg-[#242775] cursor-pointer">
+                    <span>Tiếp tục: Bước 2 →</span>
+                  </button>
+                </div>
+              </div>
+
+              <!-- Toolbar tìm kiếm & lọc phân ca -->
+              <div class="pt-3 flex flex-wrap items-center justify-between gap-2.5">
+                <div class="flex flex-wrap items-center gap-2 text-xs">
+                  <input type="text" id="lock-step1-search" oninput="renderLockStep1Table()" placeholder="Tìm mã NV, họ tên..." class="px-3 py-1.5 border border-slate-300 rounded-xl text-xs w-52 bg-white">
+                  <select id="lock-step1-dept-filter" onchange="renderLockStep1Table()" class="px-3 py-1.5 border border-slate-300 rounded-xl text-xs bg-white text-slate-700">
+                    <option value="ALL">Tất cả phòng ban</option>
+                    <option value="PHÒNG KHAI THÁC CẢNG">Phòng Khai thác Cảng</option>
+                    <option value="PHÒNG KỸ THUẬT CÔNG NGHỆ">Phòng Kỹ thuật Công nghệ</option>
+                    <option value="PHÒNG LOGISTICS & DỊCH VỤ">Phòng Logistics & Dịch vụ</option>
+                    <option value="PHÒNG TÀI CHÍNH KẾ TOÁN">Phòng Tài chính Kế toán</option>
+                    <option value="PHÒNG HÀNH CHÍNH NHÂN SỰ">Phòng Hành chính Nhân sự</option>
+                  </select>
+                </div>
+                <div class="text-xs text-slate-500 font-medium">
+                  Hiển thị: <strong class="text-slate-800" id="lock-step1-count-badge">245 nhân viên</strong>
+                </div>
+              </div>
+
+              <!-- Bảng Phân ca Nhân sự trong chu kỳ -->
+              <div class="overflow-x-auto mt-3 border border-slate-200 rounded-xl">
+                <table class="w-full text-left text-xs border-collapse">
+                  <thead class="bg-slate-100 text-slate-700 font-semibold uppercase text-[10px] tracking-wider border-b border-slate-200">
+                    <tr>
+                      <th class="py-2.5 px-3 text-center w-12">STT</th>
+                      <th class="py-2.5 px-3 w-24">Mã NV</th>
+                      <th class="py-2.5 px-3 min-w-[160px]">Họ và tên</th>
+                      <th class="py-2.5 px-3 min-w-[160px]">Phòng ban</th>
+                      <th class="py-2.5 px-3 min-w-[130px]">Mẫu ca làm việc</th>
+                      <th class="py-2.5 px-3 text-center w-28">Tổng ca trong kỳ</th>
+                      <th class="py-2.5 px-3 text-center w-24">Ca nghỉ (OFF)</th>
+                      <th class="py-2.5 px-3 text-center w-28">Trạng thái ca</th>
+                      <th class="py-2.5 px-3 text-center w-28">Thao tác</th>
+                    </tr>
+                  </thead>
+                  <tbody id="lock-step1-tbody" class="divide-y divide-slate-200 bg-white">
+                    <!-- Rendered dynamically -->
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+
+          <!-- ================= BƯỚC 2 PANE: CHỈNH SỬA THỜI GIAN CHẤM CÔNG (VÀO/RA) ================= -->
+          <div id="pane-att-step-2" class="space-y-3.5 hidden">
+            <div class="bg-white rounded-2xl border border-slate-200 shadow-xs p-4 sm:p-5">
+              <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-slate-100">
+                <div>
+                  <h3 class="font-bold text-sm text-slate-900">Bước 2: Chỉnh sửa thời gian chấm công (Dữ liệu vào/ra thực tế)</h3>
+                  <p class="text-xs text-slate-500 mt-0.5">Kiểm tra các bản ghi thiếu Check-in hoặc Check-out. HR có thể bổ sung trực tiếp thời gian quẹt thẻ trước khi hệ thống chạy công thức tính công.</p>
+                </div>
+                <div class="flex items-center space-x-2 shrink-0">
+                  <button type="button" onclick="switchAttendanceLockStep(1)" class="px-3.5 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-semibold rounded-xl transition cursor-pointer">
+                    <span>← Quay lại Bước 1</span>
+                  </button>
+                  <button type="button" onclick="switchAttendanceLockStep(3)" class="px-4 py-1.5 pap-primary text-white text-xs font-bold rounded-xl shadow-xs transition hover:bg-[#242775] cursor-pointer">
+                    <span>Tiếp tục: Bước 3 →</span>
+                  </button>
+                </div>
+              </div>
+
+              <!-- Cảnh báo thiếu giờ vào ra -->
+              <div class="p-3.5 bg-amber-50/80 rounded-xl border border-amber-200 mt-3 flex items-start space-x-3 text-amber-900">
+                <span class="text-xl shrink-0 mt-0.5">⚠️</span>
+                <div class="text-xs space-y-0.5">
+                  <div class="font-bold">Hệ thống phát hiện 8 trường hợp thiếu giờ quẹt thẻ trong chu kỳ Tháng 09/2026:</div>
+                  <p class="text-amber-800">Các trường hợp này nếu không được bổ sung giờ hoặc duyệt đề xuất giải trình công sẽ bị tính là thiếu giờ làm việc hoặc vắng không lương.</p>
+                </div>
+              </div>
+
+              <!-- Bảng 8 trường hợp thiếu giờ -->
+              <div class="overflow-x-auto mt-3 border border-slate-200 rounded-xl">
+                <table class="w-full text-left text-xs border-collapse">
+                  <thead class="bg-slate-100 text-slate-700 font-semibold uppercase text-[10px] tracking-wider border-b border-slate-200">
+                    <tr>
+                      <th class="py-2.5 px-3 text-center w-12">STT</th>
+                      <th class="py-2.5 px-3 w-24">Mã NV</th>
+                      <th class="py-2.5 px-3 min-w-[150px]">Họ và tên</th>
+                      <th class="py-2.5 px-3 min-w-[150px]">Phòng ban</th>
+                      <th class="py-2.5 px-3 text-center w-24">Ngày</th>
+                      <th class="py-2.5 px-3 min-w-[130px]">Ca làm việc</th>
+                      <th class="py-2.5 px-3 text-center w-24">Check-in</th>
+                      <th class="py-2.5 px-3 text-center w-24">Check-out</th>
+                      <th class="py-2.5 px-3 min-w-[140px]">Tình trạng</th>
+                      <th class="py-2.5 px-3 text-center w-32">Thao tác</th>
+                    </tr>
+                  </thead>
+                  <tbody id="lock-step2-tbody" class="divide-y divide-slate-200 bg-white">
+                    <!-- Rendered dynamically -->
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+
+          <!-- ================= BƯỚC 3 PANE: ÁP DỤNG CÔNG THỨC TÍNH CÔNG ================= -->
+          <div id="pane-att-step-3" class="space-y-3.5 hidden">
+            <div class="bg-white rounded-2xl border border-slate-200 shadow-xs p-4 sm:p-5">
+              <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-slate-100">
+                <div>
+                  <h3 class="font-bold text-sm text-slate-900">Bước 3: Áp dụng công thức tính công toàn chu kỳ</h3>
+                  <p class="text-xs text-slate-500 mt-0.5">Hệ thống tự động tính toán tổng số ngày công, đi muộn, về sớm, giờ làm thêm (OT 150%, 200%, 300%) và trừ phép năm dựa trên công thức tính công chuẩn của Cảng Phước An.</p>
+                </div>
+                <div class="flex items-center space-x-2 shrink-0">
+                  <button type="button" onclick="switchAttendanceLockStep(2)" class="px-3.5 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-semibold rounded-xl transition cursor-pointer">
+                    <span>← Quay lại Bước 2</span>
+                  </button>
+                  <button type="button" onclick="switchAttendanceLockStep(4)" class="px-4 py-1.5 pap-primary text-white text-xs font-bold rounded-xl shadow-xs transition hover:bg-[#242775] cursor-pointer">
+                    <span>Tiếp tục: Bước 4 →</span>
+                  </button>
+                </div>
+              </div>
+
+              <!-- 4 Thẻ công thức chuẩn áp dụng -->
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-3 mt-4">
+                <div class="p-4 rounded-xl border border-indigo-100 bg-indigo-50/50 space-y-1.5 text-xs">
+                  <div class="font-bold text-[#2E3191] flex items-center space-x-2">
+                    <span>🧮</span>
+                    <span>1. Công thức tính ngày công thực tế</span>
+                  </div>
+                  <p class="text-slate-600 text-[11px] leading-relaxed">
+                    Công = Làm đủ ca chuẩn (≥ 8h) được tính <strong>1.0 công</strong>; Làm nửa ca (≥ 4h) tính <strong>0.5 công</strong>; Dưới 4h tính <strong>0 công</strong>. Ca đêm phụ cấp 30% lương theo BLLĐ.
+                  </p>
+                </div>
+
+                <div class="p-4 rounded-xl border border-amber-100 bg-amber-50/50 space-y-1.5 text-xs">
+                  <div class="font-bold text-amber-800 flex items-center space-x-2">
+                    <span>⏱️</span>
+                    <span>2. Quy tắc đi muộn / về sớm (Grace Period)</span>
+                  </div>
+                  <p class="text-slate-600 text-[11px] leading-relaxed">
+                    Ân hạn <strong>15 phút</strong> đầu ca (Grace period). Đến sau 15 phút tính đi trễ; Về trước giờ hết ca tính về sớm. Tổng thời gian trễ được tổng hợp lũy kế để trừ thưởng chuyên cần.
+                  </p>
+                </div>
+
+                <div class="p-4 rounded-xl border border-emerald-100 bg-emerald-50/50 space-y-1.5 text-xs">
+                  <div class="font-bold text-emerald-800 flex items-center space-x-2">
+                    <span>🌙</span>
+                    <span>3. Làm thêm giờ (Overtime - OT)</span>
+                  </div>
+                  <p class="text-slate-600 text-[11px] leading-relaxed">
+                    Ngày làm việc thông thường: <strong>150%</strong>; Ngày nghỉ hàng tuần (OFF): <strong>200%</strong>; Ngày nghỉ Lễ/Tết: <strong>300%</strong>. Giờ OT phải được phê duyệt trước tại phân hệ Phê duyệt M14.
+                  </p>
+                </div>
+
+                <div class="p-4 rounded-xl border border-purple-100 bg-purple-50/50 space-y-1.5 text-xs">
+                  <div class="font-bold text-purple-800 flex items-center space-x-2">
+                    <span>🏖️</span>
+                    <span>4. Đồng bộ ngày nghỉ phép hưởng lương (M09)</span>
+                  </div>
+                  <p class="text-slate-600 text-[11px] leading-relaxed">
+                    Nghỉ phép năm (AL) và nghỉ lễ (HL): Hưởng <strong>100% lương</strong>; Nghỉ ốm/thai sản (SL): Theo chế độ BHXH; Nghỉ không lương (UP): Trừ công theo số ngày thực tế.
+                  </p>
+                </div>
+              </div>
+
+              <!-- Nút Action Tính toán lại công thức -->
+              <div class="mt-4 p-4 rounded-xl border border-slate-200 bg-slate-50 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                <div>
+                  <div class="font-bold text-xs text-slate-800">Thực thi tính toán công thức công:</div>
+                  <div class="text-[11px] text-slate-500">Áp dụng công thức và cập nhật kết quả cho toàn bộ 245 nhân viên thuộc chu kỳ Tháng 09/2026.</div>
+                </div>
+                <button type="button" onclick="executeCalculateAttendanceFormula()" class="px-5 py-2.5 pap-primary text-white text-xs font-bold rounded-xl shadow-xs transition hover:bg-[#242775] cursor-pointer flex items-center space-x-2 shrink-0">
+                  <span>⚡</span>
+                  <span>Áp dụng công thức tính công</span>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- ================= BƯỚC 4 PANE: CHỈNH SỬA SỐ CÔNG & GỬI NHÂN VIÊN ĐỐI SOÁT ================= -->
+          <div id="pane-att-step-4" class="space-y-3.5">
+            <div class="bg-white rounded-2xl border border-slate-200 shadow-xs p-4 sm:p-5">
+              <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-slate-100">
+                <div>
+                  <h3 class="font-bold text-sm text-slate-900">Bước 4: Chỉnh sửa số công & Gửi bảng công cho nhân viên kiểm tra</h3>
+                  <p class="text-xs text-slate-500 mt-0.5">HR kiểm tra bảng công tổng hợp, có thể nhấp vào số công để chỉnh sửa ngoại lệ, và gửi bảng công để toàn thể nhân viên tự đối soát trước khi khóa.</p>
+                </div>
+                <div class="flex items-center space-x-2 shrink-0">
+                  <button type="button" onclick="openSendReviewConfirmModal()" class="px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold rounded-xl shadow-xs transition cursor-pointer flex items-center space-x-1.5">
+                    <span>📤</span>
+                    <span>Gửi bảng công cho nhân viên kiểm tra (245 NV)</span>
+                  </button>
+                  <button type="button" onclick="switchAttendanceLockStep(5)" class="px-4 py-2 pap-primary text-white text-xs font-bold rounded-xl shadow-xs transition hover:bg-[#242775] cursor-pointer">
+                    <span>Tiếp tục: Bước 5 (Chốt công) →</span>
+                  </button>
+                </div>
+              </div>
+
+              <!-- Thanh Trạng thái gửi đối soát & Toolbar -->
+              <div class="mt-3.5 p-3 rounded-xl bg-blue-50/70 border border-blue-200 flex flex-wrap items-center justify-between gap-2.5 text-xs text-blue-900">
                 <div class="flex items-center space-x-2">
-                  <h3 class="font-bold text-sm">KỲ CÔNG THÁNG 09/2026 ĐANG MỞ (Chưa khóa bảng công)</h3>
-                  <span class="px-2 py-0.5 rounded-full bg-amber-200 text-amber-800 text-[10px] font-bold">Chu kỳ: 01/09/2026 - 30/09/2026</span>
+                  <span>📢</span>
+                  <span>Đã phát hành thông báo đối soát bảng công Tháng 09/2026: <strong>Thời hạn phản hồi đến 29/09/2026 17:00</strong>.</span>
                 </div>
-                <p class="text-xs text-amber-800 mt-0.5">Dữ liệu công đang được quản lý mở: Nhân viên có thể nộp đề xuất bổ sung công; Quản lý và HR có thể chỉnh sửa/phê duyệt trước khi chuyển sang phân hệ Tính lương (M10).</p>
+                <span class="px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800 text-[10px] font-bold">238/245 NV đã xác nhận</span>
               </div>
-            </div>
 
-            <div class="flex items-center space-x-2">
-              <button onclick="runAttendanceValidationCheck()" class="px-3.5 py-2 bg-white text-slate-800 border border-slate-300 hover:bg-slate-50 rounded-lg text-xs font-semibold shadow-2xs transition cursor-pointer flex items-center space-x-1.5">
-                <span>🔍 Kiểm tra cảnh báo lỗi</span>
-              </button>
-              <button onclick="openAttLockModal()" class="px-4 py-2 bg-rose-600 hover:bg-rose-700 text-white rounded-lg text-xs font-bold shadow-xs transition cursor-pointer flex items-center space-x-1.5">
-                <span>🔒 Chốt & Khóa bảng công</span>
-              </button>
+              <!-- Filter & Search Toolbar -->
+              <div class="pt-3 flex flex-wrap items-center justify-between gap-2.5">
+                <div class="flex flex-wrap items-center gap-2 text-xs">
+                  <input type="text" id="lock-step4-search" oninput="renderLockStep4Table()" placeholder="Tìm theo mã NV, họ tên..." class="px-3 py-1.5 border border-slate-300 rounded-xl text-xs w-56 bg-white">
+                  <select id="lock-step4-dept-filter" onchange="renderLockStep4Table()" class="px-3 py-1.5 border border-slate-300 rounded-xl text-xs bg-white text-slate-700">
+                    <option value="ALL">Tất cả phòng ban</option>
+                    <option value="PHÒNG KHAI THÁC CẢNG">Phòng Khai thác Cảng</option>
+                    <option value="PHÒNG KỸ THUẬT CÔNG NGHỆ">Phòng Kỹ thuật Công nghệ</option>
+                    <option value="PHÒNG LOGISTICS & DỊCH VỤ">Phòng Logistics & Dịch vụ</option>
+                    <option value="PHÒNG TÀI CHÍNH KẾ TOÁN">Phòng Tài chính Kế toán</option>
+                    <option value="PHÒNG HÀNH CHÍNH NHÂN SỰ">Phòng Hành chính Nhân sự</option>
+                  </select>
+                </div>
+                <div class="text-[11px] text-slate-500 italic">
+                  * Nhấp chuột trực tiếp vào số công hoặc nút [✏️ Sửa công] để điều chỉnh ngoại lệ.
+                </div>
+              </div>
+
+              <!-- Bảng Ma trận Tổng hợp Công Kỳ của Nhân viên -->
+              <div class="overflow-x-auto mt-3 border border-slate-200 rounded-xl">
+                <table class="w-full text-left text-xs border-collapse">
+                  <thead class="bg-slate-100 text-slate-700 font-semibold uppercase text-[10px] tracking-wider border-b border-slate-200">
+                    <tr>
+                      <th class="py-2.5 px-3 text-center w-12">STT</th>
+                      <th class="py-2.5 px-3 w-24">Mã NV</th>
+                      <th class="py-2.5 px-3 min-w-[150px]">Họ và tên</th>
+                      <th class="py-2.5 px-3 min-w-[150px]">Phòng ban</th>
+                      <th class="py-2.5 px-3 text-center w-24">Công chuẩn</th>
+                      <th class="py-2.5 px-3 text-center w-28 bg-blue-50/60 text-[#2E3191]">Công thực tế ✏️</th>
+                      <th class="py-2.5 px-3 text-center w-24">Phép AL</th>
+                      <th class="py-2.5 px-3 text-center w-24">Đi trễ</th>
+                      <th class="py-2.5 px-3 text-center w-24">Về sớm</th>
+                      <th class="py-2.5 px-3 text-center w-24">Giờ OT</th>
+                      <th class="py-2.5 px-3 text-center w-28 font-bold text-emerald-700">Công tính lương</th>
+                      <th class="py-2.5 px-3 min-w-[180px]">Ghi chú điều chỉnh</th>
+                      <th class="py-2.5 px-3 text-center w-24">Thao tác</th>
+                    </tr>
+                  </thead>
+                  <tbody id="lock-step4-tbody" class="divide-y divide-slate-200 bg-white">
+                    <!-- Rendered dynamically -->
+                  </tbody>
+                </table>
+              </div>
             </div>
           </div>
 
-          <!-- Bảng Kiểm tra điều kiện chốt công (Validation Pre-check Checklist) -->
-          <div class="bg-white rounded-xl border border-slate-200 shadow-xs p-4 space-y-3">
-            <div class="flex items-center justify-between border-b border-slate-100 pb-2.5">
+          <!-- ================= BƯỚC 5 PANE: HOÀN TẤT & CHỐT KHÓA KỲ CÔNG ================= -->
+          <div id="pane-att-step-5" class="space-y-3.5 hidden">
+            <!-- Banner Trạng thái Khóa Kỳ công -->
+            <div id="att-lock-status-banner" class="p-4 rounded-xl border border-amber-200 bg-amber-50/80 shadow-2xs flex flex-wrap items-center justify-between gap-3 text-amber-900">
+              <div class="flex items-center space-x-3">
+                <div class="w-10 h-10 rounded-xl bg-amber-100 text-amber-700 flex items-center justify-center font-bold text-xl shrink-0">
+                  🔓
+                </div>
+                <div>
+                  <div class="flex items-center space-x-2">
+                    <h3 class="font-bold text-sm">KỲ CÔNG THÁNG 09/2026 ĐANG MỞ (Chưa khóa bảng công)</h3>
+                    <span class="px-2 py-0.5 rounded-full bg-amber-200 text-amber-800 text-[10px] font-bold">Chu kỳ: 01/09/2026 - 30/09/2026</span>
+                  </div>
+                  <p class="text-xs text-amber-800 mt-0.5">Dữ liệu công đang được quản lý mở: Nhân viên có thể nộp đề xuất bổ sung công; Quản lý và HR có thể chỉnh sửa/phê duyệt trước khi chuyển sang phân hệ Tính lương (M10).</p>
+                </div>
+              </div>
+
               <div class="flex items-center space-x-2">
-                <span class="font-bold text-sm text-slate-900">📋 TIÊU CHÍ KIỂM TRA ĐIỀU KIỆN CHỐT BẢNG CÔNG (VALIDATION PRE-CHECK)</span>
-                <span class="text-[11px] bg-slate-100 text-slate-600 px-2 py-0.5 rounded-full font-semibold">Tự động đối soát</span>
-              </div>
-              <span class="text-xs text-slate-500 font-medium">Cập nhật lúc: 28/09/2026 15:45</span>
-            </div>
-
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-3 text-xs">
-              <!-- Item 1: Thiếu In/Out -->
-              <div class="p-3 rounded-lg border border-amber-200 bg-amber-50/50 flex items-start space-x-3">
-                <span class="text-lg text-amber-600 shrink-0">⚠️</span>
-                <div class="space-y-1">
-                  <div class="font-bold text-slate-900">Bản ghi thiếu chấm công chưa làm giải trình: <span class="text-amber-700 font-bold">8 trường hợp</span></div>
-                  <p class="text-slate-600 text-[11px]">Còn 8 lượt nhân sự thiếu Check-in hoặc Check-out chưa được gửi đề xuất bổ sung công.</p>
-                  <button onclick="switchAttendanceTab('daily')" class="text-[#2E3191] font-semibold hover:underline text-[11px] cursor-pointer">Tra cứu danh sách tại Bảng công ngày →</button>
-                </div>
-              </div>
-
-              <!-- Item 2: Đề xuất chờ duyệt -->
-              <div class="p-3 rounded-lg border border-amber-200 bg-amber-50/50 flex items-start space-x-3">
-                <span class="text-lg text-amber-600 shrink-0">⚠️</span>
-                <div class="space-y-1">
-                  <div class="font-bold text-slate-900">Đề xuất bổ sung công chưa được phê duyệt: <span class="text-amber-700 font-bold">5 đơn chờ xử lý</span></div>
-                  <p class="text-slate-600 text-[11px]">Gồm 3 đơn chờ Quản lý duyệt và 2 đơn chờ HR đối soát hoàn tất.</p>
-                  <button onclick="switchAttendanceTab('requests')" class="text-[#2E3191] font-semibold hover:underline text-[11px] cursor-pointer">Xử lý ngay tại tab Đề xuất bổ sung công →</button>
-                </div>
-              </div>
-
-              <!-- Item 3: Lịch làm việc hợp lệ -->
-              <div class="p-3 rounded-lg border border-emerald-200 bg-emerald-50/50 flex items-start space-x-3">
-                <span class="text-lg text-emerald-600 shrink-0">✅</span>
-                <div class="space-y-1">
-                  <div class="font-bold text-slate-900">Phân ca & Lịch làm việc kỳ T09: <span class="text-emerald-700 font-bold">Đầy đủ 100%</span></div>
-                  <p class="text-slate-600 text-[11px]">Toàn bộ 245 nhân viên đều có lịch ca làm việc hợp lệ (Hành chính hoặc Ca kíp).</p>
-                </div>
-              </div>
-
-              <!-- Item 4: Đơn nghỉ phép M09 -->
-              <div class="p-3 rounded-lg border border-emerald-200 bg-emerald-50/50 flex items-start space-x-3">
-                <span class="text-lg text-emerald-600 shrink-0">✅</span>
-                <div class="space-y-1">
-                  <div class="font-bold text-slate-900">Đơn nghỉ phép trong kỳ: <span class="text-emerald-700 font-bold">Đã đồng bộ đầy đủ</span></div>
-                  <p class="text-slate-600 text-[11px]">Toàn bộ các ngày nghỉ phép được phê duyệt trên M09 đã tự động ánh xạ vào Bảng công.</p>
-                </div>
+                <button onclick="runAttendanceValidationCheck()" class="px-3.5 py-2 bg-white text-slate-800 border border-slate-300 hover:bg-slate-50 rounded-lg text-xs font-semibold shadow-2xs transition cursor-pointer flex items-center space-x-1.5">
+                  <span>🔍 Kiểm tra cảnh báo lỗi</span>
+                </button>
+                <button onclick="openAttLockModal()" class="px-4 py-2 bg-rose-600 hover:bg-rose-700 text-white rounded-lg text-xs font-bold shadow-xs transition cursor-pointer flex items-center space-x-1.5">
+                  <span>🔒 Chốt & Khóa bảng công</span>
+                </button>
               </div>
             </div>
-          </div>
 
-          <!-- Lịch sử phiên bản bảng công & Audit Log -->
-          <div class="bg-white rounded-xl border border-slate-200 shadow-xs overflow-hidden">
-            <div class="p-3.5 border-b border-slate-200 bg-slate-50/70 flex items-center justify-between">
-              <span class="font-bold text-xs text-slate-800 uppercase">Nhật ký phiên bản Bảng công (Audit Trail & Versioning)</span>
-              <span class="text-xs text-slate-500">Lưu vết mọi lần chốt, mở khóa và tính lại công</span>
+            <!-- Bảng Kiểm tra điều kiện chốt công (Validation Pre-check Checklist) -->
+            <div class="bg-white rounded-xl border border-slate-200 shadow-xs p-4 space-y-3">
+              <div class="flex items-center justify-between border-b border-slate-100 pb-2.5">
+                <div class="flex items-center space-x-2">
+                  <span class="font-bold text-sm text-slate-900">📋 TIÊU CHÍ KIỂM TRA ĐIỀU KIỆN CHỐT BẢNG CÔNG (VALIDATION PRE-CHECK)</span>
+                  <span class="text-[11px] bg-slate-100 text-slate-600 px-2 py-0.5 rounded-full font-semibold">Tự động đối soát</span>
+                </div>
+                <span class="text-xs text-slate-500 font-medium">Cập nhật lúc: 28/09/2026 15:45</span>
+              </div>
+
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-3 text-xs">
+                <!-- Item 1: Thiếu In/Out -->
+                <div class="p-3 rounded-lg border border-amber-200 bg-amber-50/50 flex items-start space-x-3">
+                  <span class="text-lg text-amber-600 shrink-0">⚠️</span>
+                  <div class="space-y-1">
+                    <div class="font-bold text-slate-900">Bản ghi thiếu chấm công chưa làm giải trình: <span class="text-amber-700 font-bold">8 trường hợp</span></div>
+                    <p class="text-slate-600 text-[11px]">Còn 8 lượt nhân sự thiếu Check-in hoặc Check-out chưa được gửi đề xuất bổ sung công.</p>
+                    <button onclick="switchAttendanceLockStep(2)" class="text-[#2E3191] font-semibold hover:underline text-[11px] cursor-pointer">Bổ sung giờ tại Bước 2 →</button>
+                  </div>
+                </div>
+
+                <!-- Item 2: Đề xuất chờ duyệt -->
+                <div class="p-3 rounded-lg border border-amber-200 bg-amber-50/50 flex items-start space-x-3">
+                  <span class="text-lg text-amber-600 shrink-0">⚠️</span>
+                  <div class="space-y-1">
+                    <div class="font-bold text-slate-900">Đề xuất bổ sung công chưa được phê duyệt: <span class="text-amber-700 font-bold">5 đơn chờ xử lý</span></div>
+                    <p class="text-slate-600 text-[11px]">Gồm 3 đơn chờ Quản lý duyệt và 2 đơn chờ HR đối soát hoàn tất.</p>
+                    <button onclick="switchAttendanceTab('requests')" class="text-[#2E3191] font-semibold hover:underline text-[11px] cursor-pointer">Xử lý ngay tại tab Đề xuất bổ sung công →</button>
+                  </div>
+                </div>
+
+                <!-- Item 3: Lịch làm việc hợp lệ -->
+                <div class="p-3 rounded-lg border border-emerald-200 bg-emerald-50/50 flex items-start space-x-3">
+                  <span class="text-lg text-emerald-600 shrink-0">✅</span>
+                  <div class="space-y-1">
+                    <div class="font-bold text-slate-900">Phân ca & Lịch làm việc kỳ T09: <span class="text-emerald-700 font-bold">Đầy đủ 100%</span></div>
+                    <p class="text-slate-600 text-[11px]">Toàn bộ 245 nhân viên đều có lịch ca làm việc hợp lệ (Hành chính hoặc Ca kíp).</p>
+                  </div>
+                </div>
+
+                <!-- Item 4: Đơn nghỉ phép M09 -->
+                <div class="p-3 rounded-lg border border-emerald-200 bg-emerald-50/50 flex items-start space-x-3">
+                  <span class="text-lg text-emerald-600 shrink-0">✅</span>
+                  <div class="space-y-1">
+                    <div class="font-bold text-slate-900">Đơn nghỉ phép trong kỳ: <span class="text-emerald-700 font-bold">Đã đồng bộ đầy đủ</span></div>
+                    <p class="text-slate-600 text-[11px]">Toàn bộ các ngày nghỉ phép được phê duyệt trên M09 đã tự động ánh xạ vào Bảng công.</p>
+                  </div>
+                </div>
+              </div>
             </div>
 
-            <div class="overflow-x-auto pap-table-frame">
-              <table id="attendance-period-history-table" class="w-full text-left text-xs border-collapse pap-data-table pap-data-table--history">
-                <thead class="pap-data-table__head">
-                  <tr class="bg-slate-50 text-slate-600 border-b border-slate-200 font-semibold text-[11px] uppercase">
-                    <th class="py-2.5 px-3 w-20">Phiên bản</th>
-                    <th class="py-2.5 px-3 min-w-[130px]">Thời gian thực hiện</th>
-                    <th class="py-2.5 px-3 min-w-[160px]">Người thực hiện</th>
-                    <th class="py-2.5 px-3 min-w-[120px] text-center">Hành động</th>
-                    <th class="py-2.5 px-3 min-w-[100px] text-center">Tổng công</th>
-                    <th class="py-2.5 px-3 min-w-[240px]">Ghi chú / Căn cứ</th>
-                  </tr>
-                </thead>
-                <tbody class="divide-y divide-slate-100 bg-white">
-                  <tr class="hover:bg-slate-50/80 transition">
-                    <td class="py-2.5 px-3 font-bold font-mono text-[#2E3191]">v1.2</td>
-                    <td class="py-2.5 px-3 text-slate-600 font-mono">28/09/2026 15:30</td>
-                    <td class="py-2.5 px-3 font-medium text-slate-900">Nguyễn Thị Mai (HR Admin)</td>
-                    <td class="py-2.5 px-3 text-center"><span class="px-2 py-0.5 rounded-full bg-blue-50 text-[#2E3191] text-[10px] font-bold">Tính lại công</span></td>
-                    <td class="py-2.5 px-3 text-center font-bold text-slate-800">5,842.5 c</td>
-                    <td class="py-2.5 px-3 text-slate-600">Đồng bộ lại sau khi duyệt 24 đề xuất giải trình công đợt 2.</td>
-                  </tr>
-                  <tr class="hover:bg-slate-50/80 transition">
-                    <td class="py-2.5 px-3 font-bold font-mono text-[#2E3191]">v1.1</td>
-                    <td class="py-2.5 px-3 text-slate-600 font-mono">25/09/2026 17:00</td>
-                    <td class="py-2.5 px-3 font-medium text-slate-900">Trần Văn Hùng (HR C&B)</td>
-                    <td class="py-2.5 px-3 text-center"><span class="px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-700 text-[10px] font-bold">Cập nhật phép</span></td>
-                    <td class="py-2.5 px-3 text-center font-bold text-slate-800">5,820.0 c</td>
-                    <td class="py-2.5 px-3 text-slate-600">Ánh xạ 7 ngày nghỉ phép năm đã duyệt từ phân hệ M09.</td>
-                  </tr>
-                  <tr class="hover:bg-slate-50/80 transition">
-                    <td class="py-2.5 px-3 font-bold font-mono text-[#2E3191]">v1.0</td>
-                    <td class="py-2.5 px-3 text-slate-600 font-mono">20/09/2026 09:00</td>
-                    <td class="py-2.5 px-3 font-medium text-slate-900">Hệ thống (Auto System)</td>
-                    <td class="py-2.5 px-3 text-center"><span class="px-2 py-0.5 rounded-full bg-slate-100 text-slate-700 text-[10px] font-bold">Khởi tạo kỳ</span></td>
-                    <td class="py-2.5 px-3 text-center font-bold text-slate-800">5,780.0 c</td>
-                    <td class="py-2.5 px-3 text-slate-600">Khởi tạo Bảng công tự động đầu tiên cho Tháng 09/2026.</td>
-                  </tr>
-                </tbody>
-              </table>
+            <!-- Lịch sử phiên bản bảng công & Audit Log -->
+            <div class="bg-white rounded-xl border border-slate-200 shadow-xs overflow-hidden">
+              <div class="p-3.5 border-b border-slate-200 bg-slate-50/70 flex items-center justify-between">
+                <span class="font-bold text-xs text-slate-800 uppercase">Nhật ký phiên bản Bảng công (Audit Trail & Versioning)</span>
+                <span class="text-xs text-slate-500">Lưu vết mọi lần chốt, mở khóa và tính lại công</span>
+              </div>
+
+              <div class="overflow-x-auto pap-table-frame">
+                <table id="attendance-period-history-table" class="w-full text-left text-xs border-collapse pap-data-table pap-data-table--history">
+                  <thead class="pap-data-table__head">
+                    <tr class="bg-slate-50 text-slate-600 border-b border-slate-200 font-semibold text-[11px] uppercase">
+                      <th class="py-2.5 px-3 w-20">Phiên bản</th>
+                      <th class="py-2.5 px-3 min-w-[130px]">Thời gian thực hiện</th>
+                      <th class="py-2.5 px-3 min-w-[160px]">Người thực hiện</th>
+                      <th class="py-2.5 px-3 min-w-[120px] text-center">Hành động</th>
+                      <th class="py-2.5 px-3 min-w-[100px] text-center">Tổng công</th>
+                      <th class="py-2.5 px-3 min-w-[240px]">Ghi chú / Căn cứ</th>
+                    </tr>
+                  </thead>
+                  <tbody id="attendance-period-history-tbody" class="divide-y divide-slate-100 bg-white">
+                    <tr class="hover:bg-slate-50/80 transition">
+                      <td class="py-2.5 px-3 font-bold font-mono text-[#2E3191]">v1.2</td>
+                      <td class="py-2.5 px-3 text-slate-600 font-mono">28/09/2026 15:30</td>
+                      <td class="py-2.5 px-3 font-medium text-slate-900">Nguyễn Thị Mai (HR Admin)</td>
+                      <td class="py-2.5 px-3 text-center"><span class="px-2 py-0.5 rounded-full bg-blue-50 text-[#2E3191] text-[10px] font-bold">Tính lại công</span></td>
+                      <td class="py-2.5 px-3 text-center font-bold text-slate-800">5,348.5 c</td>
+                      <td class="py-2.5 px-3 text-slate-600">Đồng bộ lại sau khi duyệt 24 đề xuất giải trình công đợt 2.</td>
+                    </tr>
+                    <tr class="hover:bg-slate-50/80 transition">
+                      <td class="py-2.5 px-3 font-bold font-mono text-[#2E3191]">v1.1</td>
+                      <td class="py-2.5 px-3 text-slate-600 font-mono">25/09/2026 17:00</td>
+                      <td class="py-2.5 px-3 font-medium text-slate-900">Trần Văn Hùng (HR C&B)</td>
+                      <td class="py-2.5 px-3 text-center"><span class="px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-700 text-[10px] font-bold">Cập nhật phép</span></td>
+                      <td class="py-2.5 px-3 text-center font-bold text-slate-800">5,320.0 c</td>
+                      <td class="py-2.5 px-3 text-slate-600">Ánh xạ 7 ngày nghỉ phép năm đã duyệt từ phân hệ M09.</td>
+                    </tr>
+                    <tr class="hover:bg-slate-50/80 transition">
+                      <td class="py-2.5 px-3 font-bold font-mono text-[#2E3191]">v1.0</td>
+                      <td class="py-2.5 px-3 text-slate-600 font-mono">20/09/2026 09:00</td>
+                      <td class="py-2.5 px-3 font-medium text-slate-900">Hệ thống (Auto System)</td>
+                      <td class="py-2.5 px-3 text-center"><span class="px-2 py-0.5 rounded-full bg-slate-100 text-slate-700 text-[10px] font-bold">Khởi tạo kỳ</span></td>
+                      <td class="py-2.5 px-3 text-center font-bold text-slate-800">5,280.0 c</td>
+                      <td class="py-2.5 px-3 text-slate-600">Khởi tạo Bảng công tự động đầu tiên cho Tháng 09/2026.</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
             </div>
           </div>
         </div>
@@ -35692,14 +36096,6 @@
       }
     ];
 
-    // 3. Trạng thái Chốt bảng công kỳ
-    let attendancePeriodLockState = {
-      period: '09/2026',
-      isLocked: false,
-      lockedAt: null,
-      lockedBy: null
-    };
-
     // =========================================================================
     // NAVIGATION & TAB CONTROLLER CHO QUẢN LÝ CHẤM CÔNG
     // =========================================================================
@@ -36349,88 +36745,611 @@
     // TAB 5: CHỐT BẢNG CÔNG KỲ & VALIDATION
     // =========================================================================
 
-    function renderAttendanceLockStatus() {
-      const banner = document.getElementById('att-lock-status-banner');
-      const badge = document.getElementById('att-lock-header-badge');
-      const badgeText = document.getElementById('att-lock-header-badge-text');
+    
+    // =========================================================================
+    // DỮ LIỆU & QUY TRÌNH CHỐT BẢNG CÔNG CUỐI CHU KỲ (CHUẨN DOANH NGHIỆP PAP)
+    // =========================================================================
 
-      if (!banner) return;
-
-      if (attendancePeriodLockState.isLocked) {
-        banner.className = "p-4 rounded-xl border border-indigo-200 bg-indigo-50/90 shadow-2xs flex flex-wrap items-center justify-between gap-3 text-indigo-950";
-        banner.innerHTML = `
-          <div class="flex items-center space-x-3">
-            <div class="w-10 h-10 rounded-xl bg-[#2E3191] text-white flex items-center justify-center font-bold text-xl shrink-0">
-              🔒
-            </div>
-            <div>
-              <div class="flex items-center space-x-2">
-                <h3 class="font-bold text-sm uppercase">KỲ CÔNG THÁNG 09/2026 ĐÃ ĐƯỢC CHỐT & KHÓA DỮ LIỆU</h3>
-                <span class="px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800 text-[10px] font-bold">Trạng thái: LOCKED</span>
-              </div>
-              <p class="text-xs text-indigo-900 mt-0.5">Khóa lúc ${attendancePeriodLockState.lockedAt || '17:00 28/09/2026'} bởi ${attendancePeriodLockState.lockedBy || 'Nguyễn Thị Mai (HR Admin)'}. Bảng công ở chế độ CHỈ ĐỌC để phục vụ tính lương (M10).</p>
-            </div>
-          </div>
-          <div class="flex items-center space-x-2">
-            <button onclick="showToast('Xuất Bảng công chốt Tháng 09/2026 (.xlsx)')" class="px-3.5 py-2 pap-primary text-white rounded-lg text-xs font-semibold shadow-xs cursor-pointer">📥 Tải Bảng công tính lương (.xlsx)</button>
-            <button onclick="openAttUnlockModal()" class="px-3.5 py-2 bg-white text-rose-700 border border-rose-300 hover:bg-rose-50 rounded-lg text-xs font-semibold shadow-2xs cursor-pointer transition">Mở khóa kỳ (Admin)</button>
-          </div>
-        `;
-        if (badge) badge.className = "px-2.5 py-0.5 rounded-full text-xs font-semibold bg-indigo-50 text-[#2E3191] border border-indigo-200 flex items-center space-x-1";
-        if (badgeText) badgeText.innerText = "Kỳ T09/2026: ĐÃ CHỐT";
-      } else {
-        if (badge) badge.className = "px-2.5 py-0.5 rounded-full text-xs font-semibold bg-emerald-50 text-emerald-700 border border-emerald-200 flex items-center space-x-1";
-        if (badgeText) badgeText.innerText = "Kỳ T09/2026: Đang mở";
+    let attendancePeriodsData = [
+      {
+        id: '2026-09',
+        name: 'Kỳ Tháng 09/2026',
+        startDate: '2026-09-01',
+        endDate: '2026-09-30',
+        standardDays: 22,
+        isLocked: false,
+        lockedAt: null,
+        lockedBy: null,
+        sentForReview: true,
+        sentAt: '28/09/2026 16:00',
+        currentStep: 4,
+        formulaApplied: true,
+        totalEmployees: 245,
+        totalActualDays: 5348.5,
+        totalOtHours: 482.0,
+        leaveDays: 142.0,
+        missingPunchCount: 8,
+        pendingRequestsCount: 5
+      },
+      {
+        id: '2026-08',
+        name: 'Kỳ Tháng 08/2026',
+        startDate: '2026-08-01',
+        endDate: '2026-08-31',
+        standardDays: 22,
+        isLocked: true,
+        lockedAt: '31/08/2026 18:00',
+        lockedBy: 'Nguyễn Thị Mai (HR Admin)',
+        sentForReview: true,
+        sentAt: '30/08/2026 10:00',
+        currentStep: 5,
+        formulaApplied: true,
+        totalEmployees: 245,
+        totalActualDays: 5360.0,
+        totalOtHours: 512.5,
+        leaveDays: 138.0,
+        missingPunchCount: 0,
+        pendingRequestsCount: 0
+      },
+      {
+        id: '2026-07',
+        name: 'Kỳ Tháng 07/2026',
+        startDate: '2026-07-01',
+        endDate: '2026-07-31',
+        standardDays: 23,
+        isLocked: true,
+        lockedAt: '31/07/2026 17:30',
+        lockedBy: 'Nguyễn Thị Mai (HR Admin)',
+        sentForReview: true,
+        sentAt: '30/07/2026 15:00',
+        currentStep: 5,
+        formulaApplied: true,
+        totalEmployees: 242,
+        totalActualDays: 5520.0,
+        totalOtHours: 460.0,
+        leaveDays: 150.0,
+        missingPunchCount: 0,
+        pendingRequestsCount: 0
       }
+    ];
+
+    let currentAttendancePeriodId = '2026-09';
+    let currentAttendanceLockStep = 4; // 1 to 5
+
+    let attendanceMissingPunches = [
+      { id: 'MP001', pap: 'PAP0005', name: 'Hoàng Văn Em', dept: 'Phòng Khai thác Cảng', date: '25/09/2026', shift: 'C1 (06:00 - 14:00)', inTime: '05:55', outTime: '--:--', type: 'Thiếu giờ ra', reason: 'Vội về giao ca quên quẹt thẻ' },
+      { id: 'MP002', pap: 'PAP0007', name: 'Đỗ Văn Giang', dept: 'Phòng Kỹ thuật Công nghệ', date: '26/09/2026', shift: 'HC (08:00 - 17:00)', inTime: '--:--', outTime: '17:05', type: 'Thiếu giờ vào', reason: 'Đi hỗ trợ cẩu bờ khẩn cấp' },
+      { id: 'MP003', pap: 'PAP0008', name: 'Bùi Thị Hà', dept: 'Phòng Khai thác Cảng', date: '24/09/2026', shift: 'C2 (14:00 - 22:00)', inTime: '13:58', outTime: '--:--', type: 'Thiếu giờ ra', reason: 'Quên chấm công lúc 22h' },
+      { id: 'MP004', pap: 'PAP0009', name: 'Vũ Văn Hùng', dept: 'Phòng Logistics & Dịch vụ', date: '27/09/2026', shift: 'HC (08:00 - 17:00)', inTime: '--:--', outTime: '--:--', type: 'Quên cả vào & ra', reason: 'Đi kiểm hóa ngoài hiện trường cả ngày' },
+      { id: 'MP005', pap: 'PAP0010', name: 'Ngô Thị Lan', dept: 'Phòng Khai thác Cảng', date: '22/09/2026', shift: 'C3 (22:00 - 06:00)', inTime: '21:50', outTime: '--:--', type: 'Thiếu giờ ra', reason: 'Thiếu check-out sáng 23/09' },
+      { id: 'MP006', pap: 'PAP0003', name: 'Lê Văn Cường', dept: 'Phòng Khai thác Cảng', date: '21/09/2026', shift: 'HC (08:00 - 17:00)', inTime: '08:02', outTime: '--:--', type: 'Thiếu giờ ra', reason: 'Họp đột xuất bàn giao ca' },
+      { id: 'MP007', pap: 'PAP0004', name: 'Phạm Thị Dung', dept: 'Phòng Tài chính Kế toán', date: '23/09/2026', shift: 'HC (08:00 - 17:00)', inTime: '--:--', outTime: '17:15', type: 'Thiếu giờ vào', reason: 'Gặp đối tác ngân hàng đầu giờ' },
+      { id: 'MP008', pap: 'PAP0011', name: 'Đinh Văn Minh', dept: 'Phòng Logistics & Dịch vụ', date: '26/09/2026', shift: 'HC (08:00 - 17:00)', inTime: '07:55', outTime: '--:--', type: 'Thiếu giờ ra', reason: 'Quên quẹt thẻ ra về' }
+    ];
+
+    let attendancePeriodSummaryData = [
+      { pap: 'PAP0001', name: 'Nguyễn Văn A', title: 'Tổng Giám đốc', dept: 'Ban Giám đốc', standardDays: 22, actualDays: 22.0, leaveDays: 0, lateCount: 0, earlyCount: 0, otHours: 0.0, paidDays: 22.0, note: 'Miễn chấm công (Lãnh đạo)' },
+      { pap: 'PAP0002', name: 'Trần Thị B', title: 'Kế toán trưởng', dept: 'Phòng Tài chính Kế toán', standardDays: 22, actualDays: 21.0, leaveDays: 1.0, lateCount: 0, earlyCount: 0, otHours: 4.0, paidDays: 22.0, note: 'Nghỉ 1 ngày phép năm 15/09' },
+      { pap: 'PAP0003', name: 'Lê Văn Cường', title: 'Trưởng ca Khai thác', dept: 'Phòng Khai thác Cảng', standardDays: 22, actualDays: 22.0, leaveDays: 0, lateCount: 1, earlyCount: 0, otHours: 16.0, paidDays: 22.0, note: 'Làm thêm 2 ca trực tàu' },
+      { pap: 'PAP0004', name: 'Phạm Thị Dung', title: 'Chuyên viên Kế toán', dept: 'Phòng Tài chính Kế toán', standardDays: 22, actualDays: 22.0, leaveDays: 0, lateCount: 1, earlyCount: 0, otHours: 2.5, paidDays: 22.0, note: '' },
+      { pap: 'PAP0005', name: 'Hoàng Văn Em', title: 'Công nhân Cẩu bờ', dept: 'Phòng Khai thác Cảng', standardDays: 22, actualDays: 21.5, leaveDays: 0.5, lateCount: 0, earlyCount: 0, otHours: 24.0, paidDays: 22.0, note: 'Bổ sung giờ ra 25/09' },
+      { pap: 'PAP0006', name: 'Vũ Thị Phương', title: 'Chuyên viên Nhân sự', dept: 'Phòng Hành chính Nhân sự', standardDays: 22, actualDays: 22.0, leaveDays: 0, lateCount: 0, earlyCount: 0, otHours: 0.0, paidDays: 22.0, note: '' },
+      { pap: 'PAP0007', name: 'Đỗ Văn Giang', title: 'Kỹ sư Cơ giới', dept: 'Phòng Kỹ thuật Công nghệ', standardDays: 22, actualDays: 22.0, leaveDays: 0, lateCount: 0, earlyCount: 0, otHours: 12.0, paidDays: 22.0, note: 'Trực kỹ thuật cẩu đêm' },
+      { pap: 'PAP0008', name: 'Bùi Thị Hà', title: 'Điều độ viên Cảng', dept: 'Phòng Khai thác Cảng', standardDays: 22, actualDays: 20.0, leaveDays: 2.0, lateCount: 1, earlyCount: 0, otHours: 8.0, paidDays: 22.0, note: 'Phép năm 2 ngày 10-11/09' },
+      { pap: 'PAP0009', name: 'Vũ Văn Hùng', title: 'Chuyên viên Giao nhận', dept: 'Phòng Logistics & Dịch vụ', standardDays: 22, actualDays: 22.0, leaveDays: 0, lateCount: 0, earlyCount: 0, otHours: 10.0, paidDays: 22.0, note: 'Kiểm hóa ngoài hiện trường' },
+      { pap: 'PAP0010', name: 'Ngô Thị Lan', title: 'Nhân viên Cổng Port', dept: 'Phòng Khai thác Cảng', standardDays: 22, actualDays: 21.0, leaveDays: 1.0, lateCount: 0, earlyCount: 0, otHours: 6.0, paidDays: 22.0, note: '' }
+    ];
+
+    // Helper: Lấy thông tin chu kỳ hiện tại
+    function getCurrentAttendancePeriod() {
+      return attendancePeriodsData.find(p => p.id === currentAttendancePeriodId) || attendancePeriodsData[0];
     }
 
-    function runAttendanceValidationCheck() {
-      showToast('Đang quét kiểm tra điều kiện chốt công toàn công ty...');
-      setTimeout(() => {
-        showToast('⚠ Cảnh báo: Còn 8 trường hợp thiếu giờ vào/ra và 5 đề xuất chưa duyệt!');
-      }, 400);
+    // Đổi chu kỳ
+    function changeAttendancePeriod(periodId) {
+      currentAttendancePeriodId = periodId;
+      const period = getCurrentAttendancePeriod();
+      currentAttendanceLockStep = period.isLocked ? 5 : (period.currentStep || 4);
+      renderAttendanceLockStatus();
+      showToast(`Đã chuyển sang ${period.name}`);
     }
 
-    function openAttLockModal() {
-      const modal = document.getElementById('modal-att-lock-confirm');
-      if (modal) modal.classList.remove('hidden');
-    }
-
-    function closeAttLockModal() {
-      const modal = document.getElementById('modal-att-lock-confirm');
-      if (modal) modal.classList.add('hidden');
-    }
-
-    function confirmLockAttendancePeriod() {
-      attendancePeriodLockState.isLocked = true;
-      attendancePeriodLockState.lockedAt = new Date().toLocaleDateString('vi-VN') + ' ' + new Date().toLocaleTimeString().slice(0, 5);
-      attendancePeriodLockState.lockedBy = 'Nguyễn Thị Mai (HR Admin)';
-      closeAttLockModal();
-      showToast('🔒 ĐÃ CHỐT & KHÓA BẢNG CÔNG KỲ THÁNG 09/2026 THÀNH CÔNG!');
+    // Chuyển bước trong Stepper
+    function switchAttendanceLockStep(stepNum) {
+      currentAttendanceLockStep = stepNum;
       renderAttendanceLockStatus();
     }
 
-    function openAttUnlockModal() {
-      const modal = document.getElementById('modal-att-unlock-confirm');
+    // Render chính phân hệ Chốt bảng công
+    function renderAttendanceLockStatus() {
+      const period = getCurrentAttendancePeriod();
+
+      // Đồng bộ biến legacy
+      attendancePeriodLockState.period = period.name.replace('Kỳ Tháng ', '');
+      attendancePeriodLockState.isLocked = period.isLocked;
+      attendancePeriodLockState.lockedAt = period.lockedAt;
+      attendancePeriodLockState.lockedBy = period.lockedBy;
+
+      // Cập nhật Header
+      const badge = document.getElementById('att-period-lock-badge');
+      const badgeText = document.getElementById('att-period-lock-badge-text');
+      const daterangeText = document.getElementById('att-period-daterange-text');
+      const standardDaysText = document.getElementById('att-period-standard-days-text');
+      const topBtnText = document.getElementById('btn-top-lock-period-text');
+      const topBtnIcon = document.getElementById('btn-top-lock-period-icon');
+      const topBtn = document.getElementById('btn-top-lock-period');
+
+      if (badge && badgeText) {
+        if (period.isLocked) {
+          badge.className = "px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-indigo-100 text-indigo-900 border border-indigo-200 flex items-center space-x-1";
+          badgeText.innerText = "ĐÃ CHỐT & KHÓA (LOCKED)";
+        } else {
+          badge.className = "px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-amber-100 text-amber-800 border border-amber-200 flex items-center space-x-1";
+          badgeText.innerText = "Đang mở (Chưa khóa)";
+        }
+      }
+
+      const d1Parts = period.startDate.split('-');
+      const d2Parts = period.endDate.split('-');
+      if (daterangeText) daterangeText.innerText = `${d1Parts[2]}/${d1Parts[1]}/${d1Parts[0]} - ${d2Parts[2]}/${d2Parts[1]}/${d2Parts[0]}`;
+      if (standardDaysText) standardDaysText.innerText = `${period.standardDays} ngày`;
+
+      if (topBtnText && topBtnIcon && topBtn) {
+        if (period.isLocked) {
+          topBtn.className = "px-3.5 py-2 bg-white text-rose-700 hover:bg-rose-50 border border-rose-300 text-xs font-bold rounded-xl shadow-2xs transition cursor-pointer flex items-center space-x-1.5";
+          topBtnIcon.innerText = "🔓";
+          topBtnText.innerText = "Mở khóa kỳ (Admin)";
+        } else {
+          topBtn.className = "px-3.5 py-2 pap-primary text-white text-xs font-bold rounded-xl shadow-xs transition hover:bg-[#242775] cursor-pointer flex items-center space-x-1.5";
+          topBtnIcon.innerText = "🔒";
+          topBtnText.innerText = "Chốt bảng công";
+        }
+      }
+
+      // Cập nhật KPIs
+      const elEmp = document.getElementById('kpi-lock-employees');
+      const elAct = document.getElementById('kpi-lock-actual-work');
+      const elOt = document.getElementById('kpi-lock-ot-hours');
+      const elLeave = document.getElementById('kpi-lock-leave-days');
+      const elMiss = document.getElementById('kpi-lock-missing-punches');
+      const elReq = document.getElementById('kpi-lock-pending-requests');
+
+      if (elEmp) elEmp.innerText = period.totalEmployees;
+      if (elAct) elAct.innerText = formatNumCompact(period.totalActualDays);
+      if (elOt) elOt.innerText = formatNumCompact(period.totalOtHours) + ' h';
+      if (elLeave) elLeave.innerText = formatNumCompact(period.leaveDays || 142);
+      if (elMiss) elMiss.innerText = period.isLocked ? '0 lượt' : `${attendanceMissingPunches.length} lượt`;
+      if (elReq) elReq.innerText = period.isLocked ? '0 đơn' : `${period.pendingRequestsCount} đơn`;
+
+      // Cập nhật nhãn bước đang chọn
+      const stepLabels = {
+        1: 'Bước 1: Lịch & Ca làm việc (Rà soát M07)',
+        2: 'Bước 2: Giờ chấm công vào/ra (Bổ sung thiếu giờ)',
+        3: 'Bước 3: Áp dụng công thức tính công',
+        4: 'Bước 4: Chỉnh sửa số công & Gửi đối soát',
+        5: 'Bước 5: Hoàn tất & Chốt khóa bảng công'
+      };
+      const activeStepLabel = document.getElementById('att-lock-active-step-label');
+      if (activeStepLabel) activeStepLabel.innerText = stepLabels[currentAttendanceLockStep] || '';
+
+      // Cập nhật Stepper Buttons UI
+      for (let s = 1; s <= 5; s++) {
+        const btn = document.getElementById('step-btn-att-' + s);
+        const pane = document.getElementById('pane-att-step-' + s);
+        if (pane) pane.classList.toggle('hidden', s !== currentAttendanceLockStep);
+
+        if (btn) {
+          const circle = btn.querySelector('.w-6');
+          const title = btn.querySelector('.font-bold');
+          const sub = btn.querySelector('.text-\[10px\]');
+
+          if (s === currentAttendanceLockStep) {
+            btn.className = "att-lock-step-btn text-left p-3 rounded-xl border border-indigo-200 bg-indigo-50/80 transition cursor-pointer flex items-start space-x-2.5 shadow-2xs";
+            if (circle) circle.className = "w-6 h-6 rounded-full bg-[#2E3191] text-white flex items-center justify-center text-xs font-bold shrink-0 mt-0.5 shadow-xs";
+            if (title) title.className = "font-bold text-xs text-[#2E3191] truncate";
+            if (sub) sub.className = "text-[10px] text-indigo-700 font-medium truncate";
+          } else if (s < currentAttendanceLockStep || period.isLocked) {
+            btn.className = "att-lock-step-btn text-left p-3 rounded-xl border border-emerald-100 bg-emerald-50/40 hover:bg-emerald-50/70 transition cursor-pointer flex items-start space-x-2.5";
+            if (circle) circle.className = "w-6 h-6 rounded-full bg-emerald-100 text-emerald-800 flex items-center justify-center text-xs font-bold shrink-0 mt-0.5";
+            if (title) title.className = "font-bold text-xs text-slate-800 truncate";
+            if (sub) sub.className = "text-[10px] text-emerald-700 font-medium truncate";
+          } else {
+            btn.className = "att-lock-step-btn text-left p-3 rounded-xl border border-transparent hover:bg-slate-50 transition cursor-pointer flex items-start space-x-2.5 group";
+            if (circle) circle.className = "w-6 h-6 rounded-full bg-slate-200 text-slate-700 flex items-center justify-center text-xs font-bold shrink-0 mt-0.5 group-hover:bg-indigo-100 group-hover:text-[#2E3191]";
+            if (title) title.className = "font-bold text-xs text-slate-800 truncate";
+            if (sub) sub.className = "text-[10px] text-slate-500 truncate";
+          }
+        }
+      }
+
+      // Render Step Panes
+      if (currentAttendanceLockStep === 1) renderLockStep1Table();
+      else if (currentAttendanceLockStep === 2) renderLockStep2Table();
+      else if (currentAttendanceLockStep === 4) renderLockStep4Table();
+      else if (currentAttendanceLockStep === 5) renderLockStep5BannerAndHistory();
+    }
+
+    // 1. RENDER BƯỚC 1: CA & LỊCH LÀM VIỆC
+    function renderLockStep1Table() {
+      const tbody = document.getElementById('lock-step1-tbody');
+      if (!tbody) return;
+      const search = (document.getElementById('lock-step1-search')?.value || '').toLowerCase().trim();
+      const deptFilter = document.getElementById('lock-step1-dept-filter')?.value || 'ALL';
+
+      let filtered = employeesData.filter(e => {
+        const mSearch = !search || e.pap.toLowerCase().includes(search) || e.name.toLowerCase().includes(search);
+        const mDept = deptFilter === 'ALL' || e.dept.toUpperCase() === deptFilter.toUpperCase();
+        return mSearch && mDept;
+      });
+
+      const countBadge = document.getElementById('lock-step1-count-badge');
+      if (countBadge) countBadge.innerText = `${filtered.length} nhân viên`;
+
+      tbody.innerHTML = filtered.map((emp, idx) => {
+        const isFlexible = emp.scheduleMode === 'FLEXIBLE';
+        const isExempt = emp.isExemptFromAttendance;
+        const modeLabel = isExempt ? 'Miễn chấm công' : (isFlexible ? 'Xếp ca linh hoạt' : 'Hành chính cố định');
+        const badgeCls = isExempt ? 'bg-purple-100 text-purple-800' : (isFlexible ? 'bg-blue-100 text-[#2E3191]' : 'bg-slate-100 text-slate-800');
+
+        return `
+          <tr class="hover:bg-slate-50/80 transition">
+            <td class="py-2.5 px-3 text-center text-slate-500">${idx + 1}</td>
+            <td class="py-2.5 px-3 font-mono font-bold text-[#2E3191]">${emp.pap}</td>
+            <td class="py-2.5 px-3 font-semibold text-slate-900">${emp.name}</td>
+            <td class="py-2.5 px-3 text-slate-600">${emp.dept}</td>
+            <td class="py-2.5 px-3">
+              <span class="px-2 py-0.5 rounded text-[10px] font-bold ${badgeCls}">${modeLabel}</span>
+            </td>
+            <td class="py-2.5 px-3 text-center font-bold text-slate-800">22 ca</td>
+            <td class="py-2.5 px-3 text-center text-slate-500 font-medium">8 ngày</td>
+            <td class="py-2.5 px-3 text-center">
+              <span class="px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800 text-[10px] font-bold">✓ Đã xếp ca</span>
+            </td>
+            <td class="py-2.5 px-3 text-center">
+              <button type="button" onclick="openShiftAssignmentModal('${emp.pap}')" class="px-2.5 py-1 text-slate-700 hover:text-[#2E3191] font-semibold text-[11px] rounded hover:bg-indigo-50 border border-slate-200">Đổi ca</button>
+            </td>
+          </tr>
+        `;
+      }).join('');
+    }
+
+    // 2. RENDER BƯỚC 2: CHỈNH SỬA THỜI GIAN CHẤM CÔNG (VÀO/RA)
+    function renderLockStep2Table() {
+      const tbody = document.getElementById('lock-step2-tbody');
+      if (!tbody) return;
+
+      if (attendanceMissingPunches.length === 0) {
+        tbody.innerHTML = `
+          <tr>
+            <td colspan="10" class="py-8 text-center text-slate-500">
+              <div class="text-2xl mb-1">🎉</div>
+              <div class="font-bold text-slate-800 text-xs">Toàn bộ nhân sự đều có đầy đủ dữ liệu giờ vào và giờ ra!</div>
+              <div class="text-[11px] text-slate-500 mt-0.5">Không còn bản ghi nào thiếu giờ cần xử lý.</div>
+            </td>
+          </tr>
+        `;
+        return;
+      }
+
+      tbody.innerHTML = attendanceMissingPunches.map((item, idx) => {
+        return `
+          <tr class="hover:bg-slate-50/80 transition">
+            <td class="py-2.5 px-3 text-center text-slate-500">${idx + 1}</td>
+            <td class="py-2.5 px-3 font-mono font-bold text-[#2E3191]">${item.pap}</td>
+            <td class="py-2.5 px-3 font-semibold text-slate-900">${item.name}</td>
+            <td class="py-2.5 px-3 text-slate-600">${item.dept}</td>
+            <td class="py-2.5 px-3 text-center font-mono text-slate-700">${item.date}</td>
+            <td class="py-2.5 px-3 text-slate-700 font-medium">${item.shift}</td>
+            <td class="py-2.5 px-3 text-center font-mono ${item.inTime === '--:--' ? 'text-rose-600 font-bold bg-rose-50/60 rounded' : 'text-slate-800'}">${item.inTime}</td>
+            <td class="py-2.5 px-3 text-center font-mono ${item.outTime === '--:--' ? 'text-rose-600 font-bold bg-rose-50/60 rounded' : 'text-slate-800'}">${item.outTime}</td>
+            <td class="py-2.5 px-3">
+              <span class="px-2 py-0.5 rounded-full bg-rose-100 text-rose-800 text-[10px] font-bold">${item.type}</span>
+            </td>
+            <td class="py-2.5 px-3 text-center">
+              <button type="button" onclick="openQuickFixPunchModal('${item.id}')" class="px-2.5 py-1 bg-indigo-50 hover:bg-indigo-100 text-[#2E3191] font-bold rounded-lg text-xs border border-indigo-200 shadow-2xs transition cursor-pointer flex items-center justify-center space-x-1 mx-auto">
+                <span>⏱️</span>
+                <span>Bổ sung giờ</span>
+              </button>
+            </td>
+          </tr>
+        `;
+      }).join('');
+    }
+
+    // Modal Bổ sung giờ (Bước 2)
+    function openQuickFixPunchModal(punchId) {
+      const item = attendanceMissingPunches.find(p => p.id === punchId);
+      if (!item) return;
+
+      document.getElementById('fix-punch-id').value = item.id;
+      document.getElementById('fix-punch-emp-name').innerText = item.name;
+      document.getElementById('fix-punch-emp-code').innerText = item.pap;
+      document.getElementById('fix-punch-date').innerText = item.date;
+      document.getElementById('fix-punch-shift').innerText = item.shift;
+      document.getElementById('fix-punch-in-time').value = item.inTime === '--:--' ? '08:00' : item.inTime;
+      document.getElementById('fix-punch-out-time').value = item.outTime === '--:--' ? '17:00' : item.outTime;
+      document.getElementById('fix-punch-reason').value = item.reason || '';
+
+      const modal = document.getElementById('modal-att-quick-fix-punch');
       if (modal) modal.classList.remove('hidden');
     }
 
-    function closeAttUnlockModal() {
-      const modal = document.getElementById('modal-att-unlock-confirm');
+    function closeQuickFixPunchModal() {
+      const modal = document.getElementById('modal-att-quick-fix-punch');
       if (modal) modal.classList.add('hidden');
     }
 
+    function saveQuickFixPunch(e) {
+      if (e) e.preventDefault();
+      const id = document.getElementById('fix-punch-id').value;
+      const inTime = document.getElementById('fix-punch-in-time').value;
+      const outTime = document.getElementById('fix-punch-out-time').value;
+      const reason = document.getElementById('fix-punch-reason').value;
+
+      const idx = attendanceMissingPunches.findIndex(p => p.id === id);
+      if (idx !== -1) {
+        const item = attendanceMissingPunches[idx];
+        attendanceMissingPunches.splice(idx, 1);
+        showToast(`✓ Đã bổ sung giờ thành công cho ${item.name} (${inTime} - ${outTime})`);
+      }
+
+      closeQuickFixPunchModal();
+      renderAttendanceLockStatus();
+    }
+
+    // 3. RENDER BƯỚC 3: ÁP DỤNG CÔNG THỨC CÔNG
+    function executeCalculateAttendanceFormula() {
+      showToast('⚡ Đang áp dụng công thức tính công toàn chu kỳ...');
+      setTimeout(() => {
+        const period = getCurrentAttendancePeriod();
+        period.formulaApplied = true;
+        period.totalActualDays = 5348.5;
+        period.totalOtHours = 482.0;
+        showToast('✓ Đã áp dụng công thức thành công cho 245 nhân sự trong kỳ!');
+        renderAttendanceLockStatus();
+      }, 500);
+    }
+
+    // 4. RENDER BƯỚC 4: SỬA SỐ CÔNG & GỬI NHÂN VIÊN ĐỐI SOÁT
+    function renderLockStep4Table() {
+      const tbody = document.getElementById('lock-step4-tbody');
+      if (!tbody) return;
+
+      const search = (document.getElementById('lock-step4-search')?.value || '').toLowerCase().trim();
+      const deptFilter = document.getElementById('lock-step4-dept-filter')?.value || 'ALL';
+
+      let filtered = attendancePeriodSummaryData.filter(e => {
+        const mSearch = !search || e.pap.toLowerCase().includes(search) || e.name.toLowerCase().includes(search);
+        const mDept = deptFilter === 'ALL' || e.dept.toUpperCase() === deptFilter.toUpperCase();
+        return mSearch && mDept;
+      });
+
+      tbody.innerHTML = filtered.map((emp, idx) => {
+        return `
+          <tr class="hover:bg-slate-50/80 transition">
+            <td class="py-2.5 px-3 text-center text-slate-500">${idx + 1}</td>
+            <td class="py-2.5 px-3 font-mono font-bold text-[#2E3191]">${emp.pap}</td>
+            <td class="py-2.5 px-3 font-semibold text-slate-900">${emp.name}</td>
+            <td class="py-2.5 px-3 text-slate-600">${emp.dept}</td>
+            <td class="py-2.5 px-3 text-center font-bold text-slate-700">${emp.standardDays}</td>
+            <td class="py-2.5 px-3 text-center bg-blue-50/60 cursor-pointer group" onclick="openEditSummaryWorkModal('${emp.pap}')" title="Nhấp vào để chỉnh sửa số công">
+              <span class="font-bold text-[#2E3191] group-hover:underline">${emp.actualDays.toFixed(2)}</span>
+              <span class="text-[10px] text-slate-400 opacity-0 group-hover:opacity-100 ml-1">✏️</span>
+            </td>
+            <td class="py-2.5 px-3 text-center text-emerald-700 font-semibold">${emp.leaveDays > 0 ? emp.leaveDays.toFixed(1) : '-'}</td>
+            <td class="py-2.5 px-3 text-center ${emp.lateCount > 0 ? 'text-amber-700 font-bold' : 'text-slate-400'}">${emp.lateCount || '-'}</td>
+            <td class="py-2.5 px-3 text-center ${emp.earlyCount > 0 ? 'text-amber-700 font-bold' : 'text-slate-400'}">${emp.earlyCount || '-'}</td>
+            <td class="py-2.5 px-3 text-center ${emp.otHours > 0 ? 'text-amber-700 font-bold' : 'text-slate-400'}">${emp.otHours > 0 ? emp.otHours.toFixed(1) + 'h' : '-'}</td>
+            <td class="py-2.5 px-3 text-center font-bold text-emerald-800 bg-emerald-50/40">${emp.paidDays.toFixed(2)}</td>
+            <td class="py-2.5 px-3 text-slate-600 text-[11px] truncate max-w-[200px]" title="${emp.note}">${emp.note || '-'}</td>
+            <td class="py-2.5 px-3 text-center">
+              <button type="button" onclick="openEditSummaryWorkModal('${emp.pap}')" class="px-2.5 py-1 bg-white hover:bg-slate-100 text-slate-700 font-semibold rounded text-xs border border-slate-300 shadow-2xs">Sửa</button>
+            </td>
+          </tr>
+        `;
+      }).join('');
+    }
+
+    // Modal Sửa công (Bước 4)
+    function openEditSummaryWorkModal(pap) {
+      const emp = attendancePeriodSummaryData.find(e => e.pap === pap);
+      if (!emp) return;
+
+      document.getElementById('edit-work-pap').value = emp.pap;
+      document.getElementById('edit-work-name').innerText = emp.name;
+      document.getElementById('edit-work-code').innerText = emp.pap;
+      document.getElementById('edit-work-dept').innerText = emp.dept;
+      document.getElementById('edit-work-orig-days').innerText = emp.actualDays.toFixed(2) + ' ngày';
+      document.getElementById('edit-work-new-days').value = emp.actualDays;
+      document.getElementById('edit-work-reason').value = emp.note || '';
+
+      const modal = document.getElementById('modal-att-edit-summary-work');
+      if (modal) modal.classList.remove('hidden');
+    }
+
+    function closeEditSummaryWorkModal() {
+      const modal = document.getElementById('modal-att-edit-summary-work');
+      if (modal) modal.classList.add('hidden');
+    }
+
+    function saveEditSummaryWork(e) {
+      if (e) e.preventDefault();
+      const pap = document.getElementById('edit-work-pap').value;
+      const newDays = parseFloat(document.getElementById('edit-work-new-days').value);
+      const reason = document.getElementById('edit-work-reason').value;
+
+      const emp = attendancePeriodSummaryData.find(e => e.pap === pap);
+      if (emp) {
+        emp.actualDays = newDays;
+        emp.paidDays = newDays + emp.leaveDays;
+        emp.note = reason;
+        showToast(`✓ Đã cập nhật công cho ${emp.name}: ${newDays.toFixed(2)} công`);
+      }
+
+      closeEditSummaryWorkModal();
+      renderLockStep4Table();
+    }
+
+    // Modal Gửi đối soát (Bước 4)
+    function openSendReviewConfirmModal() {
+      const modal = document.getElementById('modal-att-send-review-confirm');
+      if (modal) modal.classList.remove('hidden');
+    }
+
+    function closeSendReviewConfirmModal() {
+      const modal = document.getElementById('modal-att-send-review-confirm');
+      if (modal) modal.classList.add('hidden');
+    }
+
+    function confirmSendAttendanceReview() {
+      closeSendReviewConfirmModal();
+      const period = getCurrentAttendancePeriod();
+      period.sentForReview = true;
+      period.sentAt = new Date().toLocaleDateString('vi-VN') + ' ' + new Date().toLocaleTimeString().slice(0, 5);
+      showToast('📤 Đã gửi bảng công đối soát đến 245 nhân viên thành công qua Email & App!');
+      renderAttendanceLockStatus();
+    }
+
+    // 5. RENDER BƯỚC 5: HOÀN TẤT & CHỐT KHÓA KỲ CÔNG
+    function renderLockStep5BannerAndHistory() {
+      const period = getCurrentAttendancePeriod();
+      const banner = document.getElementById('att-lock-status-banner');
+
+      if (banner) {
+        if (period.isLocked) {
+          banner.className = "p-4 rounded-xl border border-indigo-200 bg-indigo-50/90 shadow-2xs flex flex-wrap items-center justify-between gap-3 text-indigo-950";
+          banner.innerHTML = `
+            <div class="flex items-center space-x-3">
+              <div class="w-10 h-10 rounded-xl bg-[#2E3191] text-white flex items-center justify-center font-bold text-xl shrink-0">
+                🔒
+              </div>
+              <div>
+                <div class="flex items-center space-x-2">
+                  <h3 class="font-bold text-sm uppercase">${period.name.toUpperCase()} ĐÃ ĐƯỢC CHỐT & KHÓA DỮ LIỆU</h3>
+                  <span class="px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800 text-[10px] font-bold">Trạng thái: LOCKED</span>
+                </div>
+                <p class="text-xs text-indigo-900 mt-0.5">Khóa lúc ${period.lockedAt || '17:00 28/09/2026'} bởi ${period.lockedBy || 'Nguyễn Thị Mai (HR Admin)'}. Bảng công ở chế độ CHỈ ĐỌC để phục vụ tính lương (M10).</p>
+              </div>
+            </div>
+            <div class="flex items-center space-x-2">
+              <button onclick="exportAttendanceSummaryExcel()" class="px-3.5 py-2 pap-primary text-white rounded-lg text-xs font-semibold shadow-xs cursor-pointer">📥 Tải Bảng công tính lương (.xlsx)</button>
+              <button onclick="openAttUnlockModal()" class="px-3.5 py-2 bg-white text-rose-700 border border-rose-300 hover:bg-rose-50 rounded-lg text-xs font-semibold shadow-2xs cursor-pointer transition">Mở khóa kỳ (Admin)</button>
+            </div>
+          `;
+        } else {
+          banner.className = "p-4 rounded-xl border border-amber-200 bg-amber-50/80 shadow-2xs flex flex-wrap items-center justify-between gap-3 text-amber-900";
+          banner.innerHTML = `
+            <div class="flex items-center space-x-3">
+              <div class="w-10 h-10 rounded-xl bg-amber-100 text-amber-700 flex items-center justify-center font-bold text-xl shrink-0">
+                🔓
+              </div>
+              <div>
+                <div class="flex items-center space-x-2">
+                  <h3 class="font-bold text-sm uppercase">${period.name.toUpperCase()} ĐANG MỞ (Chưa khóa bảng công)</h3>
+                  <span class="px-2 py-0.5 rounded-full bg-amber-200 text-amber-800 text-[10px] font-bold">Chu kỳ: ${period.startDate} - ${period.endDate}</span>
+                </div>
+                <p class="text-xs text-amber-800 mt-0.5">Dữ liệu công đang được quản lý mở: Nhân viên có thể nộp đề xuất bổ sung công; Quản lý và HR có thể chỉnh sửa/phê duyệt trước khi chuyển sang phân hệ Tính lương (M10).</p>
+              </div>
+            </div>
+            <div class="flex items-center space-x-2">
+              <button onclick="runAttendanceValidationCheck()" class="px-3.5 py-2 bg-white text-slate-800 border border-slate-300 hover:bg-slate-50 rounded-lg text-xs font-semibold shadow-2xs transition cursor-pointer flex items-center space-x-1.5">
+                <span>🔍 Kiểm tra cảnh báo lỗi</span>
+              </button>
+              <button onclick="openAttLockModal()" class="px-4 py-2 bg-rose-600 hover:bg-rose-700 text-white rounded-lg text-xs font-bold shadow-xs transition cursor-pointer flex items-center space-x-1.5">
+                <span>🔒 Chốt & Khóa bảng công</span>
+              </button>
+            </div>
+          `;
+        }
+      }
+    }
+
+    // Top action click
+    function handlePeriodLockActionClick() {
+      const period = getCurrentAttendancePeriod();
+      if (period.isLocked) {
+        openAttUnlockModal();
+      } else {
+        openAttLockModal();
+      }
+    }
+
+    // Đồng bộ ca từ M07
+    function syncShiftsFromScheduleModule() {
+      showToast('Đang kết nối và đồng bộ dữ liệu phân ca từ phân hệ M07...');
+      setTimeout(() => {
+        showToast('✓ Đã đồng bộ thành công phân ca cho toàn bộ 245 nhân sự trong kỳ!');
+      }, 400);
+    }
+
+    // Xuất Excel
+    function exportAttendanceSummaryExcel() {
+      const period = getCurrentAttendancePeriod();
+      showToast(`📥 Đang tải xuống Bảng công tổng hợp ${period.name} (.xlsx)...`);
+    }
+
+    // Xác nhận Khóa kỳ công
+    function confirmLockAttendancePeriod() {
+      const period = getCurrentAttendancePeriod();
+      period.isLocked = true;
+      period.lockedAt = new Date().toLocaleDateString('vi-VN') + ' ' + new Date().toLocaleTimeString().slice(0, 5);
+      period.lockedBy = 'Nguyễn Thị Mai (HR Admin)';
+      period.currentStep = 5;
+      currentAttendanceLockStep = 5;
+
+      // Thêm dòng lịch sử audit
+      const tbody = document.getElementById('attendance-period-history-tbody');
+      if (tbody) {
+        const tr = document.createElement('tr');
+        tr.className = "hover:bg-slate-50/80 transition";
+        tr.innerHTML = `
+          <td class="py-2.5 px-3 font-bold font-mono text-[#2E3191]">v1.3</td>
+          <td class="py-2.5 px-3 text-slate-600 font-mono">${period.lockedAt}</td>
+          <td class="py-2.5 px-3 font-medium text-slate-900">${period.lockedBy}</td>
+          <td class="py-2.5 px-3 text-center"><span class="px-2 py-0.5 rounded-full bg-rose-100 text-rose-800 text-[10px] font-bold">Chốt & Khóa kỳ</span></td>
+          <td class="py-2.5 px-3 text-center font-bold text-slate-800">${formatNumCompact(period.totalActualDays)} c</td>
+          <td class="py-2.5 px-3 text-slate-600">Hoàn tất quy trình 5 bước chốt bảng công kỳ ${period.name}. Khóa dữ liệu phục vụ chuyển lương M10.</td>
+        `;
+        tbody.insertBefore(tr, tbody.firstChild);
+      }
+
+      closeAttLockModal();
+      showToast(`🔒 ĐÃ CHỐT & KHÓA BẢNG CÔNG ${period.name.toUpperCase()} THÀNH CÔNG!`);
+      renderAttendanceLockStatus();
+    }
+
+    // Mở khóa kỳ công
     function confirmUnlockAttendancePeriod() {
       const reason = document.getElementById('att-unlock-reason')?.value;
       if (!reason || reason.trim() === '') {
         alert('Vui lòng nhập lý do mở khóa bảng công kỳ!');
         return;
       }
-      attendancePeriodLockState.isLocked = false;
+
+      const period = getCurrentAttendancePeriod();
+      period.isLocked = false;
+      const unlockedAt = new Date().toLocaleDateString('vi-VN') + ' ' + new Date().toLocaleTimeString().slice(0, 5);
+
+      const tbody = document.getElementById('attendance-period-history-tbody');
+      if (tbody) {
+        const tr = document.createElement('tr');
+        tr.className = "hover:bg-slate-50/80 transition";
+        tr.innerHTML = `
+          <td class="py-2.5 px-3 font-bold font-mono text-amber-700">v1.4</td>
+          <td class="py-2.5 px-3 text-slate-600 font-mono">${unlockedAt}</td>
+          <td class="py-2.5 px-3 font-medium text-slate-900">Nguyễn Thị Mai (HR Admin)</td>
+          <td class="py-2.5 px-3 text-center"><span class="px-2 py-0.5 rounded-full bg-amber-100 text-amber-800 text-[10px] font-bold">Mở khóa kỳ</span></td>
+          <td class="py-2.5 px-3 text-center font-bold text-slate-800">${formatNumCompact(period.totalActualDays)} c</td>
+          <td class="py-2.5 px-3 text-slate-600">Mở khóa: ${reason}</td>
+        `;
+        tbody.insertBefore(tr, tbody.firstChild);
+      }
+
       closeAttUnlockModal();
-      showToast('🔓 Đã mở khóa kỳ công Tháng 09/2026 thành công.');
+      showToast(`🔓 Đã mở khóa ${period.name} thành công. Dữ liệu có thể được điều chỉnh.`);
       renderAttendanceLockStatus();
     }
+
 
     function openAttSelfieModal(name, time, loc, dist, dev, isValid) {
       const modal = document.getElementById('modal-att-selfie');
@@ -36461,6 +37380,27 @@
     window.renderAttendanceDailyTimesheet = renderAttendanceDailyTimesheet;
     window.renderAttendanceRequests = renderAttendanceRequests;
     window.renderAttendanceLockStatus = renderAttendanceLockStatus;
+
+    window.changeAttendancePeriod = changeAttendancePeriod;
+    window.switchAttendanceLockStep = switchAttendanceLockStep;
+    window.renderLockStep1Table = renderLockStep1Table;
+    window.renderLockStep2Table = renderLockStep2Table;
+    window.renderLockStep4Table = renderLockStep4Table;
+    window.renderLockStep5BannerAndHistory = renderLockStep5BannerAndHistory;
+    window.openQuickFixPunchModal = openQuickFixPunchModal;
+    window.closeQuickFixPunchModal = closeQuickFixPunchModal;
+    window.saveQuickFixPunch = saveQuickFixPunch;
+    window.executeCalculateAttendanceFormula = executeCalculateAttendanceFormula;
+    window.openEditSummaryWorkModal = openEditSummaryWorkModal;
+    window.closeEditSummaryWorkModal = closeEditSummaryWorkModal;
+    window.saveEditSummaryWork = saveEditSummaryWork;
+    window.openSendReviewConfirmModal = openSendReviewConfirmModal;
+    window.closeSendReviewConfirmModal = closeSendReviewConfirmModal;
+    window.confirmSendAttendanceReview = confirmSendAttendanceReview;
+    window.handlePeriodLockActionClick = handlePeriodLockActionClick;
+    window.syncShiftsFromScheduleModule = syncShiftsFromScheduleModule;
+    window.exportAttendanceSummaryExcel = exportAttendanceSummaryExcel;
+
     window.openAttSelfieModal = openAttSelfieModal;
     window.closeAttSelfieModal = closeAttSelfieModal;
     window.openAttRequestDetail = openAttRequestDetail;
@@ -37214,6 +38154,132 @@
   </div>
 
   <!-- ================= MODAL: XÁC NHẬN CHỐT BẢNG CÔNG KỲ ================= -->
+  
+  <!-- ================= MODAL 1: BỔ SUNG GIỜ CHẤM CÔNG NHANH (BƯỚC 2 CHỐT CÔNG) ================= -->
+  <div id="modal-att-quick-fix-punch" class="fixed inset-0 bg-slate-900/60 backdrop-blur-xs z-[80] flex items-center justify-center p-4 hidden" onclick="if (event.target === this) closeQuickFixPunchModal()">
+    <div class="bg-white rounded-2xl max-w-lg w-full shadow-2xl border border-slate-200 overflow-hidden">
+      <div class="pap-primary text-white p-4 flex items-center justify-between">
+        <h3 class="text-sm font-bold flex items-center space-x-2">
+          <span>⏱️</span>
+          <span>BỔ SUNG THỜI GIAN CHẤM CÔNG VÀO / RA</span>
+        </h3>
+        <button type="button" onclick="closeQuickFixPunchModal()" class="text-white/80 hover:text-white text-xl leading-none">&times;</button>
+      </div>
+      <form onsubmit="saveQuickFixPunch(event)" class="p-5 space-y-3.5 text-xs">
+        <input type="hidden" id="fix-punch-id" value="">
+        <div class="p-3 bg-slate-50 rounded-xl border border-slate-200 grid grid-cols-2 gap-2 text-slate-700">
+          <div>Nhân viên: <strong id="fix-punch-emp-name" class="text-slate-900">Hoàng Văn Em</strong></div>
+          <div>Mã PAP: <strong id="fix-punch-emp-code" class="text-slate-900 font-mono">PAP0005</strong></div>
+          <div>Ngày làm việc: <strong id="fix-punch-date" class="text-slate-900">25/09/2026</strong></div>
+          <div>Ca phân công: <strong id="fix-punch-shift" class="text-slate-900">C1 (06:00 - 14:00)</strong></div>
+        </div>
+
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="block font-semibold text-slate-700 mb-1">Giờ vào (Check-in) <span class="text-rose-500">*</span></label>
+            <input type="text" id="fix-punch-in-time" required pattern="^([01][0-9]|2[0-3]):[0-5][0-9]$" placeholder="HH:mm (VD: 05:55)" class="w-full px-3 py-2 border border-slate-300 rounded-lg text-xs font-mono font-bold text-slate-800 bg-white">
+          </div>
+          <div>
+            <label class="block font-semibold text-slate-700 mb-1">Giờ ra (Check-out) <span class="text-rose-500">*</span></label>
+            <input type="text" id="fix-punch-out-time" required pattern="^([01][0-9]|2[0-3]):[0-5][0-9]$" placeholder="HH:mm (VD: 14:05)" class="w-full px-3 py-2 border border-slate-300 rounded-lg text-xs font-mono font-bold text-slate-800 bg-white">
+          </div>
+        </div>
+
+        <div>
+          <label class="block font-semibold text-slate-700 mb-1">Lý do bổ sung / Giải trình <span class="text-rose-500">*</span></label>
+          <input type="text" id="fix-punch-reason" required placeholder="Nhập lý do (VD: Vội giao ca chưa kịp quẹt thẻ ra, đã đối soát bảo vệ)..." class="w-full px-3 py-2 border border-slate-300 rounded-lg text-xs bg-white">
+        </div>
+
+        <div>
+          <label class="block font-semibold text-slate-700 mb-1">Người xác nhận / Duyệt bổ sung</label>
+          <input type="text" id="fix-punch-approver" value="Đỗ Văn Bình (Trưởng phòng Khai thác Cảng)" class="w-full px-3 py-2 border border-slate-300 rounded-lg text-xs bg-slate-50 text-slate-700" readonly>
+        </div>
+
+        <div class="pt-3 flex items-center justify-end space-x-2 border-t border-slate-200">
+          <button type="button" onclick="closeQuickFixPunchModal()" class="px-4 py-2 border border-slate-300 rounded-lg text-slate-700 hover:bg-slate-50 transition cursor-pointer font-medium">Hủy bỏ</button>
+          <button type="submit" class="px-5 py-2 pap-primary text-white font-bold rounded-lg shadow-xs hover:bg-[#242775] transition cursor-pointer">Lưu & Bổ sung giờ</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ================= MODAL 2: CHỈNH SỬA SỐ CÔNG NHÂN VIÊN (BƯỚC 4 CHỐT CÔNG) ================= -->
+  <div id="modal-att-edit-summary-work" class="fixed inset-0 bg-slate-900/60 backdrop-blur-xs z-[80] flex items-center justify-center p-4 hidden" onclick="if (event.target === this) closeEditSummaryWorkModal()">
+    <div class="bg-white rounded-2xl max-w-md w-full shadow-2xl border border-slate-200 overflow-hidden">
+      <div class="pap-primary text-white p-4 flex items-center justify-between">
+        <h3 class="text-sm font-bold flex items-center space-x-2">
+          <span>✏️</span>
+          <span>ĐIỀU CHỈNH SỐ CÔNG TÍNH LƯƠNG NHÂN VIÊN</span>
+        </h3>
+        <button type="button" onclick="closeEditSummaryWorkModal()" class="text-white/80 hover:text-white text-xl leading-none">&times;</button>
+      </div>
+      <form onsubmit="saveEditSummaryWork(event)" class="p-5 space-y-3.5 text-xs">
+        <input type="hidden" id="edit-work-pap" value="">
+        <div class="p-3 bg-slate-50 rounded-xl border border-slate-200 space-y-1 text-slate-700">
+          <div>Nhân viên: <strong id="edit-work-name" class="text-slate-900">Nguyễn Văn A</strong></div>
+          <div>Mã NV: <strong id="edit-work-code" class="text-slate-900 font-mono">PAP0001</strong> • Phòng ban: <strong id="edit-work-dept" class="text-slate-900">Ban Giám đốc</strong></div>
+          <div>Công chuẩn chu kỳ: <strong>22 ngày</strong> • Công hệ thống tính: <strong id="edit-work-orig-days" class="text-indigo-700 font-bold">21.5 ngày</strong></div>
+        </div>
+
+        <div>
+          <label class="block font-semibold text-slate-700 mb-1">Số công thực tế điều chỉnh <span class="text-rose-500">*</span></label>
+          <input type="number" step="0.25" min="0" max="31" id="edit-work-new-days" required class="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm font-bold text-[#2E3191] bg-white">
+          <span class="text-[11px] text-slate-500 mt-1 block">Điều chỉnh tối thiểu 0.25 công (nửa ca = 0.5, cả ca = 1.0).</span>
+        </div>
+
+        <div>
+          <label class="block font-semibold text-slate-700 mb-1">Căn cứ / Lý do điều chỉnh công <span class="text-rose-500">*</span></label>
+          <textarea id="edit-work-reason" rows="3" required placeholder="Nhập lý do (VD: Bổ sung 0.5 công trực điều hành đột xuất theo phê duyệt của Ban Giám đốc số QĐ-114)..." class="w-full px-3 py-2 border border-slate-300 rounded-lg text-xs bg-white"></textarea>
+        </div>
+
+        <div class="pt-3 flex items-center justify-end space-x-2 border-t border-slate-200">
+          <button type="button" onclick="closeEditSummaryWorkModal()" class="px-4 py-2 border border-slate-300 rounded-lg text-slate-700 hover:bg-slate-50 transition cursor-pointer font-medium">Hủy bỏ</button>
+          <button type="submit" class="px-5 py-2 pap-primary text-white font-bold rounded-lg shadow-xs hover:bg-[#242775] transition cursor-pointer">Lưu điều chỉnh công</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ================= MODAL 3: GỬI BẢNG CÔNG CHO NHÂN VIÊN KIỂM TRA (BƯỚC 4) ================= -->
+  <div id="modal-att-send-review-confirm" class="fixed inset-0 bg-slate-900/60 backdrop-blur-xs z-[80] flex items-center justify-center p-4 hidden" onclick="if (event.target === this) closeSendReviewConfirmModal()">
+    <div class="bg-white rounded-2xl max-w-lg w-full shadow-2xl border border-slate-200 overflow-hidden">
+      <div class="bg-emerald-600 text-white p-4 flex items-center justify-between">
+        <h3 class="text-sm font-bold flex items-center space-x-2">
+          <span>📤</span>
+          <span>GỬI BẢNG CÔNG ĐỐI SOÁT CHO NHÂN VIÊN</span>
+        </h3>
+        <button type="button" onclick="closeSendReviewConfirmModal()" class="text-white/80 hover:text-white text-xl leading-none">&times;</button>
+      </div>
+      <div class="p-5 space-y-3.5 text-xs text-slate-700">
+        <p class="leading-relaxed">
+          Hệ thống sẽ gửi thông báo và bảng công chi tiết Tháng 09/2026 đến toàn bộ <strong>245 nhân sự</strong> thông qua <strong>Email nội bộ</strong> và <strong>Ứng dụng di động PAPONE</strong>.
+        </p>
+
+        <div class="p-3.5 bg-emerald-50 rounded-xl border border-emerald-200 space-y-2 text-emerald-950">
+          <div class="font-bold flex items-center space-x-1.5">
+            <span>🔔</span>
+            <span>Quy chế đối soát công cuối chu kỳ:</span>
+          </div>
+          <ul class="list-disc pl-5 space-y-1 text-[11px] text-emerald-900">
+            <li>Nhân viên có <strong>24 - 48 giờ</strong> để kiểm tra dữ liệu ngày công, giờ OT, lượt đi muộn và phản hồi.</li>
+            <li>Nếu có sai sót, nhân viên nộp đơn giải trình trước thời hạn chốt kỳ.</li>
+            <li>Sau thời hạn trên, HR Admin sẽ tiến hành <strong>Khóa bảng công</strong> để chuyển sang phân hệ Tính lương M10.</li>
+          </ul>
+        </div>
+
+        <div>
+          <label class="block font-semibold text-slate-700 mb-1">Thời hạn phản hồi đối soát của nhân viên:</label>
+          <input type="text" id="send-review-deadline" value="29/09/2026 17:00 (Trong vòng 24 giờ)" class="w-full px-3 py-2 border border-slate-300 rounded-lg text-xs bg-slate-50 font-semibold text-slate-800" readonly>
+        </div>
+
+        <div class="pt-3 flex items-center justify-end space-x-2 border-t border-slate-200">
+          <button type="button" onclick="closeSendReviewConfirmModal()" class="px-4 py-2 border border-slate-300 rounded-lg text-slate-700 hover:bg-slate-50 transition cursor-pointer font-medium">Hủy bỏ</button>
+          <button type="button" onclick="confirmSendAttendanceReview()" class="px-5 py-2 bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-lg shadow-xs transition cursor-pointer">Xác nhận Gửi đối soát (245 NV)</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <div id="modal-att-lock-confirm" class="fixed inset-0 bg-slate-900/60 backdrop-blur-xs z-[80] flex items-center justify-center p-4 hidden" onclick="if (event.target === this) closeAttLockModal()">
     <div class="bg-white rounded-2xl max-w-md w-full shadow-2xl border border-slate-200 overflow-hidden">
       <div class="p-5 text-center space-y-3">
