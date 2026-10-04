@@ -31621,7 +31621,10 @@ nual-leave-content-policies" class="space-y-3 hidden">
       const noticeText = document.getElementById('req-type-notice-text');
       if (noticeText && lt) {
         let desc = lt.deductQuota ? 'Trừ vào quỹ ngày phép năm của nhân viên.' : 'Không trừ vào quỹ ngày phép năm.';
-        desc += ' Chế độ hưởng: ' + (lt.paidType || (lt.paidRate + '% Lương')) + '.';
+        desc += ' Chế độ: ' + (lt.paidType || (lt.paidRate + '% Lương')) + '.';
+        if (lt.paidSource === 'BHXH' || (lt.paidType && lt.paidType.includes('BHXH'))) {
+          desc += ' (Cơ quan BHXH giải ngân trực tiếp vào TK nhân viên, Lương Cty: 0đ).';
+        }
         if (lt.requireAttachment) desc += ' Bắt buộc đính kèm minh chứng.';
         noticeText.innerText = desc;
       }
@@ -31894,6 +31897,9 @@ nual-leave-content-policies" class="space-y-3 hidden">
         // =========================================================================
     // DANH MỤC LOẠI NGHỈ PHÉP CHUẨN PHÁP LUẬT VIỆT NAM (BLLĐ 2019 & LUẬT BHXH)
     // =========================================================================
+        // =========================================================================
+    // DANH MỤC LOẠI NGHỈ PHÉP CHUẨN PHÁP LUẬT VIỆT NAM (BLLĐ 2019 & LUẬT BHXH)
+    // =========================================================================
     const leaveTypesData = [
       {
         code: 'AL',
@@ -31901,7 +31907,8 @@ nual-leave-content-policies" class="space-y-3 hidden">
         shortName: 'Phép năm',
         symbol: 'P',
         paidRate: 100,
-        paidType: '100% Lương',
+        paidSource: 'COMPANY',
+        paidType: 'Công ty trả 100% lương',
         deductQuota: true, // DUY NHẤT LOẠI NÀY TRỪ QUỸ PHÉP NĂM
         requireAttachment: false,
         maxDaysYear: 12,
@@ -31922,7 +31929,8 @@ nual-leave-content-policies" class="space-y-3 hidden">
         shortName: 'Việc riêng có lương',
         symbol: 'VR',
         paidRate: 100,
-        paidType: '100% Lương',
+        paidSource: 'COMPANY',
+        paidType: 'Công ty trả 100% lương',
         deductQuota: false, // KHÔNG TRỪ PHÉP NĂM
         requireAttachment: true,
         maxDaysYear: 3,
@@ -31935,7 +31943,7 @@ nual-leave-content-policies" class="space-y-3 hidden">
         badgeCls: 'bg-emerald-50 text-emerald-700 border-emerald-200',
         lawArticle: 'Khoản 1 Điều 115 Bộ luật Lao động 2019',
         status: 'ACTIVE',
-        description: 'Hưởng nguyên 100% lương: Kết hôn (3 ngày), con kết hôn (1 ngày), cha mẹ/vợ chồng/con chết (3 ngày). Không trừ vào quỹ phép năm.'
+        description: 'Công ty trả 100% lương: Kết hôn (3 ngày), con kết hôn (1 ngày), cha mẹ/vợ chồng/con chết (3 ngày). Không trừ vào quỹ phép năm.'
       },
       {
         code: 'UL',
@@ -31943,7 +31951,8 @@ nual-leave-content-policies" class="space-y-3 hidden">
         shortName: 'Không hưởng lương',
         symbol: 'KL',
         paidRate: 0,
-        paidType: '0% Lương',
+        paidSource: 'UNPAID',
+        paidType: 'Không hưởng lương (0%)',
         deductQuota: false, // KHÔNG TRỪ PHÉP NĂM
         requireAttachment: false,
         maxDaysYear: 30,
@@ -31964,7 +31973,8 @@ nual-leave-content-policies" class="space-y-3 hidden">
         shortName: 'Ốm đau (BHXH)',
         symbol: 'Ô',
         paidRate: 75,
-        paidType: '75% Lương (BHXH)',
+        paidSource: 'BHXH',
+        paidType: 'Hưởng chế độ BHXH (75%)',
         deductQuota: false, // KHÔNG TRỪ PHÉP NĂM
         requireAttachment: true,
         maxDaysYear: 30,
@@ -31974,10 +31984,10 @@ nual-leave-content-policies" class="space-y-3 hidden">
         limitWeekVal: null,
         minDaysPerTime: 1,
         maxDays: '30 - 60 ngày/năm (Bệnh dài ngày 180 ngày)',
-        badgeCls: 'bg-blue-50 text-blue-700 border-blue-200',
+        badgeCls: 'bg-purple-50 text-purple-700 border-purple-200',
         lawArticle: 'Điều 25, 26, 28 Luật BHXH 2014',
         status: 'ACTIVE',
-        description: 'Nghỉ ốm đau có giấy xác nhận y tế C65-HD/giấy ra viện. Cơ quan BHXH chi trả trợ cấp 75% mức tiền lương đóng BHXH. Không trừ phép năm.'
+        description: 'Nghỉ ốm đau có chỉ định y tế C65-HD. Cơ quan BHXH chi trả trợ cấp 75% mức tiền lương đóng BHXH (Lương công ty: 0đ). Không trừ phép năm.'
       },
       {
         code: 'SCL',
@@ -31985,7 +31995,8 @@ nual-leave-content-policies" class="space-y-3 hidden">
         shortName: 'Con ốm (BHXH)',
         symbol: 'CÔ',
         paidRate: 75,
-        paidType: '75% Lương (BHXH)',
+        paidSource: 'BHXH',
+        paidType: 'Hưởng chế độ BHXH (75%)',
         deductQuota: false, // KHÔNG TRỪ PHÉP NĂM
         requireAttachment: true,
         maxDaysYear: 20,
@@ -31995,10 +32006,10 @@ nual-leave-content-policies" class="space-y-3 hidden">
         limitWeekVal: null,
         minDaysPerTime: 1,
         maxDays: 'Con < 3 tuổi: 20 ngày; Con 3-7 tuổi: 15 ngày',
-        badgeCls: 'bg-blue-50 text-blue-700 border-blue-200',
+        badgeCls: 'bg-purple-50 text-purple-700 border-purple-200',
         lawArticle: 'Điều 27, 28 Luật BHXH 2014',
         status: 'ACTIVE',
-        description: 'Nghỉ chăm sóc khi con dưới 7 tuổi bị ốm đau. Cơ quan BHXH chi trả trợ cấp 75% mức tiền lương đóng BHXH. Không trừ phép năm.'
+        description: 'Nghỉ chăm sóc khi con dưới 7 tuổi bị ốm đau. Cơ quan BHXH chi trả trợ cấp 75% mức tiền lương đóng BHXH (Lương công ty: 0đ). Không trừ phép năm.'
       },
       {
         code: 'ML',
@@ -32006,7 +32017,8 @@ nual-leave-content-policies" class="space-y-3 hidden">
         shortName: 'Thai sản - Nữ (BHXH)',
         symbol: 'TS',
         paidRate: 100,
-        paidType: '100% Lương (BHXH)',
+        paidSource: 'BHXH',
+        paidType: 'Hưởng chế độ BHXH (100%)',
         deductQuota: false, // KHÔNG TRỪ PHÉP NĂM (VẪN ĐƯỢC TÍCH LŨY PHÉP)
         requireAttachment: true,
         maxDaysYear: 180,
@@ -32019,7 +32031,7 @@ nual-leave-content-policies" class="space-y-3 hidden">
         badgeCls: 'bg-purple-50 text-purple-700 border-purple-200',
         lawArticle: 'Điều 34, 39 Luật BHXH & Điều 139 BLLĐ',
         status: 'ACTIVE',
-        description: 'BHXH chi trả 100% bình quân tiền lương đóng BHXH 6 tháng liền kề + trợ cấp một lần. Thời gian nghỉ vẫn được tích lũy phép năm theo NĐ 145.'
+        description: 'Cơ quan BHXH chi trả trợ cấp 100% bình quân tiền lương đóng BHXH 6 tháng liền kề + trợ cấp một lần (Lương công ty: 0đ). Thời gian nghỉ vẫn tích lũy phép năm theo NĐ 145.'
       },
       {
         code: 'PL-M',
@@ -32027,7 +32039,8 @@ nual-leave-content-policies" class="space-y-3 hidden">
         shortName: 'Thai sản - Nam (BHXH)',
         symbol: 'TN',
         paidRate: 100,
-        paidType: '100% Lương (BHXH)',
+        paidSource: 'BHXH',
+        paidType: 'Hưởng chế độ BHXH (100%)',
         deductQuota: false, // KHÔNG TRỪ PHÉP NĂM
         requireAttachment: true,
         maxDaysYear: 14,
@@ -32040,7 +32053,7 @@ nual-leave-content-policies" class="space-y-3 hidden">
         badgeCls: 'bg-purple-50 text-purple-700 border-purple-200',
         lawArticle: 'Khoản 2 Điều 34 Luật BHXH 2014',
         status: 'ACTIVE',
-        description: 'Lao động nam có vợ sinh con: Sinh thường 5 ngày, mổ/dưới 32 tuần 7 ngày, sinh đôi 10-14 ngày. Cơ quan BHXH chi trả 100% lương. Không trừ phép.'
+        description: 'Lao động nam có vợ sinh con: Sinh thường 5 ngày, mổ/dưới 32 tuần 7 ngày, sinh đôi 10-14 ngày. Cơ quan BHXH chi trả 100% lương (Lương Cty: 0đ). Không trừ phép.'
       },
       {
         code: 'PC',
@@ -32048,7 +32061,8 @@ nual-leave-content-policies" class="space-y-3 hidden">
         shortName: 'Khám thai (BHXH)',
         symbol: 'KT',
         paidRate: 100,
-        paidType: '100% Lương (BHXH)',
+        paidSource: 'BHXH',
+        paidType: 'Hưởng chế độ BHXH (100%)',
         deductQuota: false, // KHÔNG TRỪ PHÉP NĂM
         requireAttachment: true,
         maxDaysYear: 5,
@@ -32061,7 +32075,7 @@ nual-leave-content-policies" class="space-y-3 hidden">
         badgeCls: 'bg-purple-50 text-purple-700 border-purple-200',
         lawArticle: 'Điều 32 Luật BHXH 2014',
         status: 'ACTIVE',
-        description: 'Lao động nữ được nghỉ khám thai 5 lần trong thai kỳ, mỗi lần 01 ngày (bệnh lý hoặc xa được 02 ngày). BHXH chi trả 100%. Không trừ phép năm.'
+        description: 'Lao động nữ được nghỉ khám thai 5 lần trong thai kỳ, mỗi lần 01 ngày (bệnh lý hoặc xa được 02 ngày). Cơ quan BHXH chi trả 100% (Lương Cty: 0đ). Không trừ phép năm.'
       },
       {
         code: 'WI',
@@ -32069,7 +32083,8 @@ nual-leave-content-policies" class="space-y-3 hidden">
         shortName: 'Tai nạn LĐ - BNN',
         symbol: 'TNLĐ',
         paidRate: 100,
-        paidType: '100% Lương (CTy)',
+        paidSource: 'COMPANY',
+        paidType: 'Công ty trả 100% lương',
         deductQuota: false, // KHÔNG TRỪ PHÉP NĂM
         requireAttachment: true,
         maxDaysYear: null,
@@ -32090,7 +32105,8 @@ nual-leave-content-policies" class="space-y-3 hidden">
         shortName: 'Dưỡng sức sau ốm/TS',
         symbol: 'DS',
         paidRate: 30,
-        paidType: '30% Lương cơ sở (BHXH)',
+        paidSource: 'BHXH',
+        paidType: 'Hưởng chế độ BHXH (30% lương CS)',
         deductQuota: false, // KHÔNG TRỪ PHÉP NĂM
         requireAttachment: true,
         maxDaysYear: 10,
@@ -32100,10 +32116,10 @@ nual-leave-content-policies" class="space-y-3 hidden">
         limitWeekVal: null,
         minDaysPerTime: 1,
         maxDays: '5 - 10 ngày / năm',
-        badgeCls: 'bg-blue-50 text-blue-700 border-blue-200',
+        badgeCls: 'bg-purple-50 text-purple-700 border-purple-200',
         lawArticle: 'Điều 29, 41 Luật BHXH 2014',
         status: 'ACTIVE',
-        description: 'Nghỉ dưỡng sức trong vòng 30 ngày đầu quay lại làm việc nếu sức khỏe chưa phục hồi. BHXH trợ cấp 30% mức lương cơ sở/ngày. Không trừ phép năm.'
+        description: 'Nghỉ dưỡng sức trong vòng 30 ngày đầu quay lại làm việc nếu sức khỏe chưa phục hồi. BHXH trợ cấp 30% mức lương cơ sở/ngày (Lương Cty: 0đ). Không trừ phép năm.'
       },
       {
         code: 'CL',
@@ -32111,7 +32127,8 @@ nual-leave-content-policies" class="space-y-3 hidden">
         shortName: 'Nghỉ bù OT / Lễ',
         symbol: 'NB',
         paidRate: 100,
-        paidType: '100% Lương',
+        paidSource: 'COMPANY',
+        paidType: 'Công ty trả 100% lương',
         deductQuota: false, // KHÔNG TRỪ PHÉP NĂM (TRỪ QUỸ GIỜ OT TÍCH LŨY)
         requireAttachment: false,
         maxDaysYear: null,
@@ -32132,7 +32149,8 @@ nual-leave-content-policies" class="space-y-3 hidden">
         shortName: 'Chế độ Nữ',
         symbol: 'CĐN',
         paidRate: 100,
-        paidType: '100% Lương',
+        paidSource: 'COMPANY',
+        paidType: 'Công ty trả 100% lương',
         deductQuota: false, // KHÔNG TRỪ PHÉP NĂM
         requireAttachment: false,
         maxDaysYear: null,
@@ -32145,7 +32163,7 @@ nual-leave-content-policies" class="space-y-3 hidden">
         badgeCls: 'bg-pink-50 text-pink-700 border-pink-200',
         lawArticle: 'Khoản 4 Điều 137 BLLĐ & NĐ 145/2020',
         status: 'ACTIVE',
-        description: 'Lao động nữ hành kinh nghỉ 30 phút/ngày; nuôi con dưới 12 tháng nghỉ 60 phút/ngày tính vào giờ làm việc, hưởng 100% lương. Không trừ phép năm.'
+        description: 'Lao động nữ hành kinh nghỉ 30 phút/ngày; nuôi con dưới 12 tháng nghỉ 60 phút/ngày tính vào giờ làm việc, Công ty trả 100% lương. Không trừ phép năm.'
       },
       {
         code: 'HL',
@@ -32153,7 +32171,8 @@ nual-leave-content-policies" class="space-y-3 hidden">
         shortName: 'Nghỉ Lễ, Tết',
         symbol: 'L',
         paidRate: 100,
-        paidType: '100% Lương',
+        paidSource: 'COMPANY',
+        paidType: 'Công ty trả 100% lương',
         deductQuota: false, // KHÔNG TRỪ PHÉP NĂM
         requireAttachment: false,
         maxDaysYear: 11,
@@ -32166,7 +32185,7 @@ nual-leave-content-policies" class="space-y-3 hidden">
         badgeCls: 'bg-emerald-50 text-emerald-700 border-emerald-200',
         lawArticle: 'Điều 112 Bộ luật Lao động 2019',
         status: 'ACTIVE',
-        description: 'Nghỉ 11 ngày lễ, tết chính thức trong năm theo quy định của Nhà nước, hưởng nguyên 100% tiền lương. Không trừ vào quỹ phép năm.'
+        description: 'Nghỉ 11 ngày lễ, tết chính thức trong năm theo quy định của Nhà nước, Công ty trả nguyên 100% tiền lương. Không trừ vào quỹ phép năm.'
       }
     ];
 
@@ -32230,9 +32249,8 @@ nual-leave-content-policies" class="space-y-3 hidden">
 
       tbody.innerHTML = filtered.map((lt, idx) => {
         const displayPaid = lt.paidType || (lt.paidRate !== undefined && lt.paidRate !== null ? (lt.paidRate + '% Lương') : '100% Lương');
-        const badgeCls = (lt.paidRate === 0 || (lt.paidType && lt.paidType.includes('0%'))) ? 'bg-slate-100 text-slate-700 border-slate-200'
-                       : (lt.paidType && lt.paidType.includes('BHXH') && lt.paidRate >= 100) ? 'bg-purple-50 text-purple-700 border-purple-200'
-                       : (lt.paidRate && lt.paidRate < 100) ? 'bg-blue-50 text-blue-700 border-blue-200'
+        const badgeCls = (lt.paidSource === 'UNPAID' || lt.paidRate === 0 || (lt.paidType && lt.paidType.includes('0%'))) ? 'bg-slate-100 text-slate-700 border-slate-200'
+                       : (lt.paidSource === 'BHXH' || (lt.paidType && lt.paidType.includes('BHXH'))) ? 'bg-purple-50 text-purple-700 border-purple-200'
                        : 'bg-emerald-50 text-emerald-700 border-emerald-200';
 
         let maxDaysDisplay = lt.maxDays || '—';
@@ -32285,6 +32303,19 @@ nual-leave-content-policies" class="space-y-3 hidden">
       }).join('');
     }
 
+    function onLtPaidSourceChange() {
+      const source = document.getElementById('lt-paid-source')?.value;
+      const rateInput = document.getElementById('lt-paid-rate');
+      if (!rateInput) return;
+      if (source === 'COMPANY') {
+        rateInput.value = '100';
+      } else if (source === 'UNPAID') {
+        rateInput.value = '0';
+      } else if (source === 'BHXH') {
+        if (!rateInput.value || rateInput.value === '0') rateInput.value = '100';
+      }
+    }
+
     function openAddLeaveTypeModal() {
       document.getElementById('modal-leave-type-title').innerText = 'Thêm loại nghỉ phép mới (M09.0)';
       document.getElementById('leave-type-is-edit').value = 'false';
@@ -32292,7 +32323,8 @@ nual-leave-content-policies" class="space-y-3 hidden">
       document.getElementById('lt-code').disabled = false;
       document.getElementById('lt-symbol').value = '';
       document.getElementById('lt-name').value = '';
-      document.getElementById('lt-paid-rate').value = '';
+      if (document.getElementById('lt-paid-source')) document.getElementById('lt-paid-source').value = 'COMPANY';
+      document.getElementById('lt-paid-rate').value = '100';
       document.getElementById('lt-max-days-year').value = '';
       document.getElementById('lt-limit-month-check').checked = false;
       document.getElementById('lt-limit-month-val').value = '';
@@ -32325,6 +32357,10 @@ nual-leave-content-policies" class="space-y-3 hidden">
       
       const rateVal = lt.paidRate !== undefined && lt.paidRate !== null ? lt.paidRate : (lt.paidType ? parseInt(lt.paidType) || 0 : '');
       document.getElementById('lt-paid-rate').value = rateVal;
+      const srcEl = document.getElementById('lt-paid-source');
+      if (srcEl) {
+        srcEl.value = lt.paidSource || (lt.paidRate === 0 ? 'UNPAID' : (lt.paidType && lt.paidType.includes('BHXH')) ? 'BHXH' : 'COMPANY');
+      }
 
       const maxYearVal = lt.maxDaysYear !== undefined && lt.maxDaysYear !== null ? lt.maxDaysYear : (parseInt(lt.maxDays) || '');
       document.getElementById('lt-max-days-year').value = maxYearVal;
@@ -32429,6 +32465,7 @@ nual-leave-content-policies" class="space-y-3 hidden">
         shortName: name,
         symbol,
         paidRate,
+        paidSource,
         paidType,
         maxDaysYear,
         limitMonthCheck,
@@ -36025,18 +36062,26 @@ nual-leave-content-policies" class="space-y-3 hidden">
         </div>
 
         <!-- Tỷ lệ hưởng lương & Số ngày nghỉ tối đa -->
-        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
           <div>
-            <label class="block font-semibold text-slate-700 text-xs mb-1">Tỷ lệ hưởng lương <span class="text-rose-500">*</span></label>
+            <label class="block font-semibold text-slate-700 text-xs mb-1">Hình thức chi trả <span class="text-rose-500">*</span></label>
+            <select id="lt-paid-source" onchange="onLtPaidSourceChange()" class="w-full px-3 py-2 border border-slate-300 rounded-lg text-xs font-semibold bg-white focus:ring-2 focus:ring-[#2E3191]">
+              <option value="COMPANY">🟢 Công ty chi trả lương</option>
+              <option value="BHXH">🟣 Hưởng chế độ BHXH</option>
+              <option value="UNPAID">⚪ Không hưởng lương</option>
+            </select>
+          </div>
+          <div>
+            <label class="block font-semibold text-slate-700 text-xs mb-1">Tỷ lệ hưởng <span class="text-rose-500">*</span></label>
             <div class="relative flex items-center">
-              <input type="number" id="lt-paid-rate" min="0" max="100" step="1" placeholder="VD: 100, 75, 0" required class="w-full pl-3 pr-8 py-2 border border-slate-300 rounded-lg text-xs font-bold text-slate-800 focus:ring-2 focus:ring-[#2E3191]">
+              <input type="number" id="lt-paid-rate" min="0" max="100" step="1" placeholder="100" required class="w-full pl-3 pr-8 py-2 border border-slate-300 rounded-lg text-xs font-bold text-slate-800 focus:ring-2 focus:ring-[#2E3191]">
               <span class="absolute right-3 text-xs text-slate-500 font-bold select-none">%</span>
             </div>
           </div>
           <div>
-            <label class="block font-semibold text-slate-700 text-xs mb-1">Số ngày nghỉ tối đa</label>
+            <label class="block font-semibold text-slate-700 text-xs mb-1">Số ngày tối đa / năm</label>
             <div class="relative flex items-center">
-              <input type="number" id="lt-max-days-year" min="0" step="0.5" placeholder="VD: 10, 12, 14..." class="w-full pl-3 pr-20 py-2 border border-slate-300 rounded-lg text-xs font-bold text-slate-800 focus:ring-2 focus:ring-[#2E3191]">
+              <input type="number" id="lt-max-days-year" min="0" step="0.5" placeholder="VD: 12, 14..." class="w-full pl-3 pr-20 py-2 border border-slate-300 rounded-lg text-xs font-bold text-slate-800 focus:ring-2 focus:ring-[#2E3191]">
               <span class="absolute right-3 text-xs text-slate-500 font-semibold select-none">ngày/năm</span>
             </div>
           </div>
