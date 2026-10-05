@@ -8861,13 +8861,32 @@
             </button>
           </div>
           
+          <!-- Thanh tóm tắt ca đang chọn (Hỗ trợ chọn nhiều ca trong ngày) -->
+          <div id="modal-cell-selected-summary-bar" class="p-3 rounded-xl bg-slate-50 border border-slate-200 flex flex-wrap items-center justify-between gap-2 shadow-2xs">
+            <div class="flex items-center space-x-2">
+              <span class="text-xs font-bold text-slate-700">Ca đang chọn:</span>
+              <div id="modal-cell-selected-tags" class="flex flex-wrap gap-1.5 items-center">
+                <!-- Nạp động qua JavaScript -->
+              </div>
+            </div>
+            <div class="flex items-center space-x-3 text-xs">
+              <span id="modal-cell-selected-total-stats" class="font-bold text-[#2E3191]">0 giờ · 0 công</span>
+              <button type="button" onclick="setCellModalOff()" class="text-rose-600 hover:text-rose-800 font-semibold hover:underline text-[11px] cursor-pointer">
+                🔴 Đặt Nghỉ (OFF)
+              </button>
+            </div>
+          </div>
+
           <div class="font-bold text-slate-800 text-xs uppercase tracking-wider flex items-center justify-between">
             <span>Danh mục ca làm việc có thể chọn:</span>
-            <span class="text-slate-400 font-normal normal-case">Click chọn 1 ca để cập nhật</span>
+            <span class="text-xs text-[#2E3191] font-semibold bg-indigo-50 px-2.5 py-0.5 rounded-full border border-indigo-100 flex items-center space-x-1">
+              <span>✨</span>
+              <span>Có thể chọn 1 hoặc nhiều ca trong ngày</span>
+            </span>
           </div>
 
           <!-- Lưới các thẻ ca đích danh (2 Cột rộng rãi, thoáng mắt) -->
-          <div id="modal-cell-shift-list" class="grid grid-cols-1 sm:grid-cols-2 gap-3 max-h-[340px] overflow-y-auto pr-1">
+          <div id="modal-cell-shift-list" class="grid grid-cols-1 sm:grid-cols-2 gap-2.5 max-h-[340px] overflow-y-auto pr-1">
             <!-- Nạp động qua JavaScript -->
           </div>
         </div>
@@ -19015,13 +19034,13 @@
     // MULTI-SHIFT WEEKLY PATTERN EDITOR FOR FIXED SCHEDULE POLICIES
     // =========================================================================
     const POLICY_AVAILABLE_SHIFTS = [
-      { code: 'HC', label: 'HC (8h)', name: 'Ca Hành chính (08:00 - 17:00)', hours: 8.0 },
-      { code: 'SANG', label: 'Sáng (4h)', name: 'Ca Sáng (08:00 - 12:00)', hours: 4.0 },
-      { code: 'CHIEU', label: 'Chiều (3h)', name: 'Ca Chiều (14:00 - 17:00)', hours: 3.0 },
-      { code: 'S1', label: 'Kíp S1 (12h)', name: 'Ca Ngày S1 (07:00 - 19:00)', hours: 12.0 },
-      { code: 'S2', label: 'Kíp S2 (12h)', name: 'Ca Đêm S2 (19:00 - 07:00)', hours: 12.0 },
-      { code: 'HC-DR', label: 'Xe đưa rước (8h)', name: 'Hành chính Xe đưa rước (07:30 - 17:00)', hours: 8.0 },
-      { code: 'OFF', label: 'Nghỉ (OFF)', name: 'Nghỉ tuần', hours: 0, isOff: true }
+      { code: 'HC', label: 'HC (8h)', name: 'Hành chính VP Tiêu chuẩn', timeDesc: '08:00 - 17:00 (Nghỉ trưa 12:00 - 13:00)', hours: 8.0 },
+      { code: 'SANG', label: 'Sáng (4h)', name: 'Ca Sáng', timeDesc: '08:00 - 12:00 (Buổi sáng)', hours: 4.0 },
+      { code: 'CHIEU', label: 'Chiều (3h)', name: 'Ca Chiều', timeDesc: '14:00 - 17:00 (Buổi chiều)', hours: 3.0 },
+      { code: 'S1', label: 'Kíp S1 (12h)', name: 'Kíp Ngày S1', timeDesc: '07:00 - 19:00 (12 tiếng ca ngày)', hours: 12.0 },
+      { code: 'S2', label: 'Kíp S2 (12h)', name: 'Kíp Đêm S2', timeDesc: '19:00 - 07:00 (12 tiếng ca đêm)', hours: 12.0 },
+      { code: 'HC-DR', label: 'Xe đưa rước (8h)', name: 'Hành chính Tuyến xe đưa rước', timeDesc: '07:30 - 17:00 (Theo giờ xe Cảng)', hours: 8.0 },
+      { code: 'TOI', label: 'Ca Tối (4h)', name: 'Ca Tối tăng cường', timeDesc: '18:00 - 22:00 (Buổi tối)', hours: 4.0 }
     ];
 
     let currentEditorWeeklyPattern = {
@@ -19033,6 +19052,8 @@
       sat: ['OFF'],
       sun: ['OFF']
     };
+
+    let activeOpenPolicyDay = null;
 
     function renderPolicyEditorWeeklyPattern() {
       const container = document.getElementById('policy-editor-days-container');
@@ -19054,6 +19075,8 @@
         let sel = currentEditorWeeklyPattern[d.key] || ['OFF'];
         if (!Array.isArray(sel)) sel = String(sel).split('+');
         const isOff = sel.includes('OFF') || (sel.length === 1 && sel[0] === 'OFF');
+        const isOpen = (activeOpenPolicyDay === d.key);
+        const isDropUp = ['fri', 'sat', 'sun'].includes(d.key);
 
         let dayHours = 0;
         if (!isOff) {
@@ -19065,35 +19088,95 @@
           totalWorkingDays += (dayHours >= 8 ? 1.0 : (dayHours >= 4 ? 0.5 : 1.0));
         }
 
-        const summaryBadge = isOff
-          ? '<span class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-rose-50 text-rose-700 border border-rose-200">🔴 Nghỉ tuần (OFF)</span>'
-          : `<span class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-indigo-50 text-[#2E3191] border border-indigo-200">🟢 ${sel.length} ca: ${sel.join(' + ')} (${dayHours}h)</span>`;
+        // Tags displayed inside the dropdown trigger input
+        let tagsHtml = '';
+        if (isOff) {
+          tagsHtml = `<span class="inline-flex items-center text-xs text-slate-500 italic py-0.5"><span class="w-2 h-2 rounded-full bg-slate-400 mr-1.5"></span>Nghỉ tuần (OFF)</span>`;
+        } else {
+          tagsHtml = sel.map(code => {
+            const shift = POLICY_AVAILABLE_SHIFTS.find(s => s.code === code) || { label: code, hours: 0 };
+            return `
+              <span class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-md text-xs font-bold bg-indigo-50 text-[#2E3191] border border-indigo-200 shadow-2xs">
+                <span>${shift.label}</span>
+                <button type="button" 
+                        onclick="removePolicyDayShift(event, '${d.key}', '${code}')" 
+                        title="Bỏ ca ${code}" 
+                        class="text-slate-400 hover:text-rose-600 hover:bg-rose-50 rounded-full w-3.5 h-3.5 inline-flex items-center justify-center cursor-pointer leading-none">&times;</button>
+              </span>
+            `;
+          }).join('');
+        }
 
-        const chipsHtml = POLICY_AVAILABLE_SHIFTS.map(shift => {
-          const active = isOff ? (shift.code === 'OFF') : sel.includes(shift.code);
-          const activeCls = active
-            ? (shift.isOff
-                ? 'bg-rose-600 text-white font-bold border-rose-600 shadow-2xs'
-                : 'bg-[#2E3191] text-white font-bold border-[#2E3191] shadow-2xs')
-            : 'bg-white text-slate-700 border-slate-300 hover:bg-slate-100 hover:border-slate-400 font-medium';
+        // Options displayed inside the multi-select dropdown pop-up
+        const optionsHtml = POLICY_AVAILABLE_SHIFTS.map(shift => {
+          const isChecked = !isOff && sel.includes(shift.code);
           return `
-            <button type="button" 
-                    onclick="togglePolicyDayShift('${d.key}', '${shift.code}')"
-                    class="px-2 py-1 rounded-md text-[11px] border transition cursor-pointer flex items-center space-x-1 ${activeCls}">
-              ${active ? (shift.isOff ? '✕' : '✓') : ''}
-              <span>${shift.label}</span>
-            </button>
+            <label class="flex items-center justify-between p-2 rounded-lg hover:bg-slate-50 cursor-pointer transition border ${isChecked ? 'bg-indigo-50/70 border-indigo-200' : 'border-transparent'}">
+              <div class="flex items-center space-x-2.5">
+                <input type="checkbox" 
+                       ${isChecked ? 'checked' : ''} 
+                       onchange="togglePolicyDayShift('${d.key}', '${shift.code}')" 
+                       class="w-4 h-4 text-[#2E3191] rounded border-slate-300 focus:ring-[#2E3191] cursor-pointer">
+                <div>
+                  <div class="text-xs font-semibold ${isChecked ? 'text-[#2E3191]' : 'text-slate-800'}">${shift.label} — ${shift.name}</div>
+                  <div class="text-[11px] text-slate-500">${shift.timeDesc}</div>
+                </div>
+              </div>
+              <span class="text-xs font-bold ${isChecked ? 'text-[#2E3191]' : 'text-slate-500'}">${shift.hours}h</span>
+            </label>
           `;
         }).join('');
 
+        const dayCardZ = isOpen ? 'z-30 shadow-sm border-indigo-200' : 'z-0 border-slate-200 hover:border-slate-300';
+
         return `
-          <div class="p-2.5 rounded-xl border border-slate-200 bg-slate-50/80 space-y-1.5 transition hover:border-indigo-200">
-            <div class="flex items-center justify-between">
-              <span class="text-xs font-bold ${d.isWeekend ? 'text-rose-700' : 'text-slate-800'}">${d.label}</span>
-              ${summaryBadge}
+          <div class="p-2.5 rounded-xl border bg-white transition relative ${dayCardZ}" id="policy-day-card-${d.key}">
+            <div class="flex items-center justify-between mb-1.5">
+              <div class="flex items-center space-x-2">
+                <span class="text-xs font-bold ${d.isWeekend ? 'text-rose-700' : 'text-slate-800'}">${d.label}</span>
+                <span class="text-[11px] font-medium text-slate-500">· ${dayHours > 0 ? `${dayHours}h/ngày` : 'Nghỉ tuần'}</span>
+              </div>
+              ${isOff 
+                ? '<span class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-slate-100 text-slate-500 border border-slate-200">Nghỉ tuần</span>'
+                : `<span class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-indigo-50 text-[#2E3191] border border-indigo-200">${sel.length} ca · ${dayHours}h</span>`}
             </div>
-            <div class="flex flex-wrap gap-1.5 pt-0.5">
-              ${chipsHtml}
+
+            <!-- Multi-select Dropdown trigger box -->
+            <div class="relative" id="policy-day-wrap-${d.key}">
+              <div onclick="togglePolicyDayDropdown(event, '${d.key}')" 
+                   class="w-full min-h-[38px] px-2.5 py-1.5 border ${isOpen ? 'border-[#2E3191] ring-2 ring-indigo-100' : 'border-slate-300 hover:border-[#2E3191]'} rounded-lg text-xs bg-white text-left flex items-center justify-between gap-2 transition cursor-pointer">
+                <div class="flex flex-wrap gap-1.5 items-center flex-1">
+                  ${tagsHtml}
+                </div>
+                <div class="text-slate-400 hover:text-slate-600 shrink-0 pl-1">
+                  <svg class="w-4 h-4 transition-transform ${isOpen ? 'rotate-180' : ''}" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                  </svg>
+                </div>
+              </div>
+
+              <!-- Multi-select Dropdown Menu Panel -->
+              <div id="policy-day-menu-${d.key}" 
+                   onclick="event.stopPropagation()"
+                   class="${isOpen ? '' : 'hidden '}absolute left-0 right-0 ${isDropUp ? 'bottom-full mb-1.5' : 'top-full mt-1.5'} bg-white border border-slate-200 rounded-xl shadow-2xl z-50 p-2.5 space-y-1.5">
+                <div class="flex items-center justify-between pb-1.5 border-b border-slate-100 text-[11px] font-semibold text-slate-600">
+                  <span>Chọn 1 hoặc nhiều ca làm việc:</span>
+                  <button type="button" onclick="closeAllPolicyDayDropdowns(event)" class="text-slate-400 hover:text-slate-700 font-bold px-1.5 py-0.5 rounded">✕ Đóng</button>
+                </div>
+
+                <div class="space-y-1 max-h-52 overflow-y-auto pr-0.5">
+                  ${optionsHtml}
+                </div>
+
+                <div class="pt-2 border-t border-slate-100 flex items-center justify-between text-xs">
+                  <button type="button" onclick="setPolicyDayOff(event, '${d.key}')" class="text-rose-600 hover:text-rose-800 font-semibold hover:underline">
+                    🔴 Đặt Nghỉ (OFF)
+                  </button>
+                  <button type="button" onclick="closeAllPolicyDayDropdowns(event)" class="px-3 py-1 rounded-md bg-[#2E3191] text-white font-bold text-xs hover:bg-indigo-800 transition shadow-2xs">
+                    Xong
+                  </button>
+                </div>
+              </div>
             </div>
           </div>
         `;
@@ -19103,6 +19186,35 @@
       const daysEl = document.getElementById('policy-editor-total-days');
       if (hoursEl) hoursEl.textContent = `${totalWeeklyHours.toFixed(1)} giờ/tuần`;
       if (daysEl) daysEl.textContent = `${totalWorkingDays.toFixed(1)} ngày công`;
+    }
+
+    function togglePolicyDayDropdown(event, dayKey) {
+      if (event) event.stopPropagation();
+      activeOpenPolicyDay = (activeOpenPolicyDay === dayKey) ? null : dayKey;
+      renderPolicyEditorWeeklyPattern();
+    }
+
+    function closeAllPolicyDayDropdowns(event) {
+      if (event) event.stopPropagation();
+      activeOpenPolicyDay = null;
+      renderPolicyEditorWeeklyPattern();
+    }
+
+    function removePolicyDayShift(event, dayKey, shiftCode) {
+      if (event) event.stopPropagation();
+      let cur = currentEditorWeeklyPattern[dayKey] || ['OFF'];
+      if (!Array.isArray(cur)) cur = String(cur).split('+');
+      cur = cur.filter(c => c !== shiftCode);
+      if (cur.length === 0) cur = ['OFF'];
+      currentEditorWeeklyPattern[dayKey] = cur;
+      renderPolicyEditorWeeklyPattern();
+    }
+
+    function setPolicyDayOff(event, dayKey) {
+      if (event) event.stopPropagation();
+      currentEditorWeeklyPattern[dayKey] = ['OFF'];
+      activeOpenPolicyDay = null;
+      renderPolicyEditorWeeklyPattern();
     }
 
     function togglePolicyDayShift(dayKey, shiftCode) {
@@ -19129,11 +19241,12 @@
         ['mon', 'tue', 'wed', 'thu', 'fri'].forEach(k => currentEditorWeeklyPattern[k] = ['HC']);
         currentEditorWeeklyPattern.sat = ['OFF'];
         currentEditorWeeklyPattern.sun = ['OFF'];
-      } else if (type === 'SANG_CHIEU') {
+      } else if (type === 'SANG_CHIEU' || type === 'SPLIT') {
         ['mon', 'tue', 'wed', 'thu', 'fri'].forEach(k => currentEditorWeeklyPattern[k] = ['SANG', 'CHIEU']);
         currentEditorWeeklyPattern.sat = ['OFF'];
         currentEditorWeeklyPattern.sun = ['OFF'];
       }
+      activeOpenPolicyDay = null;
       renderPolicyEditorWeeklyPattern();
       showToast('✓ Đã áp dụng mẫu ca nhanh cho Thứ 2 – Thứ 6!');
     }
@@ -19141,9 +19254,20 @@
     function quickCopyMondayToWeekdays() {
       const monShifts = [...(currentEditorWeeklyPattern.mon || ['HC'])];
       ['tue', 'wed', 'thu', 'fri'].forEach(k => currentEditorWeeklyPattern[k] = [...monShifts]);
+      activeOpenPolicyDay = null;
       renderPolicyEditorWeeklyPattern();
       showToast('✓ Đã sao chép ca Thứ 2 sang Thứ 3 – Thứ 6!');
     }
+
+    document.addEventListener('click', function(e) {
+      if (activeOpenPolicyDay) {
+        const wrap = document.getElementById('policy-day-wrap-' + activeOpenPolicyDay);
+        if (!wrap || !wrap.contains(e.target)) {
+          activeOpenPolicyDay = null;
+          renderPolicyEditorWeeklyPattern();
+        }
+      }
+    });
 
     function openAddPolicyModal() {
       editingSchedulePolicyCode = null;
@@ -19156,6 +19280,7 @@
       document.getElementById('add-policy-modal-title').textContent = 'Tạo mẫu lịch làm việc mới';
       document.getElementById('add-policy-submit-label').textContent = 'Tạo mẫu lịch';
       populateSchedulePolicyUnitOptions();
+      activeOpenPolicyDay = null;
       currentEditorWeeklyPattern = {
         mon: ['HC'],
         tue: ['HC'],
@@ -19207,6 +19332,7 @@
       // Load weekly pattern (supporting multi-shift arrays or single strings)
       const pattern = policy.weeklyPattern || {};
       currentEditorWeeklyPattern = {};
+      activeOpenPolicyDay = null;
       ['mon', 'tue', 'wed', 'thu', 'fri', 'sat', 'sun'].forEach(day => {
         const val = pattern[day] || ['OFF'];
         currentEditorWeeklyPattern[day] = Array.isArray(val) ? [...val] : String(val).split('+');
@@ -19221,6 +19347,7 @@
     function closeAddPolicyModal() {
       document.getElementById('modal-add-policy').classList.add('hidden');
       editingSchedulePolicyCode = null;
+      activeOpenPolicyDay = null;
     }
 
     function toggleAddPolicyType() {
@@ -27018,7 +27145,45 @@
 
     // ================= XỬ LÝ CLICK Ô CA: XEM CHI TIẾT & CHỌN CA ĐÍCH DANH =================
     let currentCellEditContext = null;
+    let selectedCellShiftCodes = ['HC'];
     let selectedCellShiftCode = 'HC';
+
+    function getSelectedCellShiftCombinedCode() {
+      if (!selectedCellShiftCodes || selectedCellShiftCodes.length === 0) return 'OFF';
+      if (selectedCellShiftCodes.includes('OFF') || (selectedCellShiftCodes.length === 1 && selectedCellShiftCodes[0] === 'OFF')) return 'OFF';
+      return selectedCellShiftCodes.filter(c => c !== 'OFF').join('+');
+    }
+
+    function toggleCellShiftCode(code) {
+      if (code === 'OFF') {
+        selectedCellShiftCodes = ['OFF'];
+      } else {
+        selectedCellShiftCodes = (selectedCellShiftCodes || []).filter(c => c !== 'OFF');
+        if (selectedCellShiftCodes.includes(code)) {
+          selectedCellShiftCodes = selectedCellShiftCodes.filter(c => c !== code);
+        } else {
+          selectedCellShiftCodes.push(code);
+        }
+        if (selectedCellShiftCodes.length === 0) {
+          selectedCellShiftCodes = ['OFF'];
+        }
+      }
+      selectedCellShiftCode = getSelectedCellShiftCombinedCode();
+      renderCellShiftSelectionCards();
+      updateCellModalApplyButtonText();
+    }
+
+    function removeCellShiftTag(code) {
+      toggleCellShiftCode(code);
+    }
+
+    function setCellModalOff() {
+      toggleCellShiftCode('OFF');
+    }
+
+    function selectCellShiftCode(code) {
+      toggleCellShiftCode(code);
+    }
 
     
     function copyFromPreviousWeekFast() {
@@ -27131,6 +27296,49 @@
       const container = document.getElementById('modal-cell-shift-list');
       if (!container) return;
 
+      const isOff = (!selectedCellShiftCodes || selectedCellShiftCodes.length === 0 || selectedCellShiftCodes.includes('OFF'));
+
+      // 1. Cập nhật thanh tóm tắt các ca đang chọn
+      const tagsContainer = document.getElementById('modal-cell-selected-tags');
+      const statsContainer = document.getElementById('modal-cell-selected-total-stats');
+      if (tagsContainer) {
+        if (isOff) {
+          tagsContainer.innerHTML = `<span class="px-2.5 py-0.5 rounded-full text-xs font-semibold bg-rose-50 text-rose-700 border border-rose-200">🔴 Nghỉ tuần (OFF)</span>`;
+        } else {
+          tagsContainer.innerHTML = selectedCellShiftCodes.map(c => {
+            const tpl = (typeof shiftTemplatesData !== 'undefined') ? shiftTemplatesData.find(t => t.code === c) : null;
+            const shiftName = tpl ? tpl.name : c;
+            return `
+              <span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-md text-xs font-bold bg-indigo-50 text-[#2E3191] border border-indigo-200 shadow-2xs">
+                <span>[${c}] ${shiftName}</span>
+                <button type="button" 
+                        onclick="event.stopPropagation(); removeCellShiftTag('${c}')" 
+                        title="Bỏ ca ${c}" 
+                        class="text-indigo-400 hover:text-rose-600 hover:bg-indigo-100 rounded-full w-3.5 h-3.5 inline-flex items-center justify-center cursor-pointer leading-none">&times;</button>
+              </span>
+            `;
+          }).join('');
+        }
+      }
+
+      if (statsContainer) {
+        if (isOff) {
+          statsContainer.innerText = '0 giờ · 0 công';
+        } else {
+          let totalHours = 0;
+          let totalRate = 0;
+          selectedCellShiftCodes.forEach(c => {
+            const tpl = (typeof shiftTemplatesData !== 'undefined') ? shiftTemplatesData.find(t => t.code === c) : null;
+            if (tpl) {
+              totalHours += (tpl.workHours || 8);
+              totalRate += (tpl.workDayRate || 1.0);
+            }
+          });
+          statsContainer.innerText = `Tổng: ${totalHours.toFixed(1)}h · ${totalRate.toFixed(1)} công`;
+        }
+      }
+
+      // 2. Render danh mục các thẻ ca dạng đa chọn
       let html = '';
       const allowedTemplates = shiftTemplatesData.filter(tpl => {
         if (!currentCellEditContext) return true;
@@ -27142,24 +27350,24 @@
       const listToRender = ((allowedTemplates.length > 0) ? allowedTemplates : shiftTemplatesData).filter(t => t.code !== 'EXEMPT');
 
       listToRender.forEach(tpl => {
-        const isSelected = (tpl.code === selectedCellShiftCode);
-        const activeBorder = isSelected ? 'border-[#2E3191] bg-indigo-50/90 ring-2 ring-[#2E3191] shadow-sm' : 'border-slate-200 bg-white hover:border-slate-300 hover:bg-slate-50';
+        const isSelected = (!isOff && selectedCellShiftCodes.includes(tpl.code));
+        const activeBorder = isSelected ? 'border-[#2E3191] bg-indigo-50/90 ring-2 ring-[#2E3191] shadow-xs' : 'border-slate-200 bg-white hover:border-slate-300 hover:bg-slate-50';
         const checkIcon = isSelected 
           ? '<span class="text-[#2E3191] font-bold text-xs bg-white px-2.5 py-1 rounded-full shadow-2xs border border-indigo-200 shrink-0 flex items-center space-x-1"><span>✓</span><span>Đang chọn</span></span>' 
-          : '<span class="w-5 h-5 rounded-full border-2 border-slate-300 group-hover:border-indigo-400 shrink-0 transition"></span>';
+          : '<span class="w-5 h-5 rounded-md border-2 border-slate-300 group-hover:border-indigo-400 shrink-0 transition flex items-center justify-center"></span>';
 
         html += `
-          <div onclick="selectCellShiftCode('${tpl.code}')"
-               class="p-3 rounded-xl border ${activeBorder} cursor-pointer transition flex items-center justify-between group select-none shadow-2xs hover:shadow-xs">
+          <div onclick="toggleCellShiftCode('${tpl.code}')"
+               class="p-2.5 rounded-xl border ${activeBorder} cursor-pointer transition flex items-center justify-between group select-none shadow-2xs hover:shadow-xs">
             <div class="flex items-center space-x-3 overflow-hidden">
-              <span class="px-2.5 py-1 rounded-lg font-bold text-xs shrink-0 shadow-2xs" style="background-color: ${tpl.colorHex}18; color: ${tpl.colorHex}; border: 1px solid ${tpl.colorHex}40;">
+              <span class="px-2 py-0.5 rounded-lg font-bold text-xs shrink-0 shadow-2xs" style="background-color: ${tpl.colorHex}18; color: ${tpl.colorHex}; border: 1px solid ${tpl.colorHex}40;">
                 [${tpl.code}]
               </span>
               <div class="truncate">
                 <div class="font-bold text-slate-900 text-xs sm:text-sm truncate flex items-center space-x-1.5">
                   <span>${tpl.name}</span>
                 </div>
-                <div class="text-xs text-slate-500 mt-0.5 truncate">
+                <div class="text-[11px] text-slate-500 mt-0.5 truncate">
                   ${tpl.startTime} - ${tpl.endTime} • ${formatNumCompact(tpl.workDayRate)} công
                 </div>
               </div>
@@ -27172,22 +27380,21 @@
       });
 
       // Thêm tùy chọn Nghỉ tuần (OFF)
-      const isOffSelected = (selectedCellShiftCode === 'OFF');
-      const offBorder = isOffSelected ? 'border-slate-500 bg-slate-100 ring-2 ring-slate-400 shadow-sm' : 'border-slate-200 bg-white hover:border-slate-300 hover:bg-slate-50';
-      const offCheck = isOffSelected 
-        ? '<span class="text-slate-800 font-bold text-xs bg-white px-2.5 py-1 rounded-full shadow-2xs border border-slate-300 shrink-0 flex items-center space-x-1"><span>✓</span><span>Đang chọn</span></span>' 
-        : '<span class="w-5 h-5 rounded-full border-2 border-slate-300 group-hover:border-slate-400 shrink-0 transition"></span>';
+      const offBorder = isOff ? 'border-rose-400 bg-rose-50/80 ring-2 ring-rose-300 shadow-xs' : 'border-slate-200 bg-white hover:border-slate-300 hover:bg-slate-50';
+      const offCheck = isOff 
+        ? '<span class="text-rose-700 font-bold text-xs bg-white px-2.5 py-1 rounded-full shadow-2xs border border-rose-200 shrink-0 flex items-center space-x-1"><span>✓</span><span>Đang chọn</span></span>' 
+        : '<span class="w-5 h-5 rounded-md border-2 border-slate-300 group-hover:border-rose-400 shrink-0 transition flex items-center justify-center"></span>';
 
       html += `
-        <div onclick="selectCellShiftCode('OFF')"
-             class="p-3 rounded-xl border ${offBorder} cursor-pointer transition flex items-center justify-between group select-none shadow-2xs hover:shadow-xs">
+        <div onclick="toggleCellShiftCode('OFF')"
+             class="p-2.5 rounded-xl border ${offBorder} cursor-pointer transition flex items-center justify-between group select-none shadow-2xs hover:shadow-xs">
           <div class="flex items-center space-x-3">
-            <span class="px-2.5 py-1 rounded-lg font-bold text-xs shrink-0 bg-slate-200 text-slate-800 border border-slate-300 shadow-2xs">
+            <span class="px-2 py-0.5 rounded-lg font-bold text-xs shrink-0 bg-rose-100 text-rose-800 border border-rose-200 shadow-2xs">
               [OFF]
             </span>
             <div>
               <div class="font-bold text-slate-900 text-xs sm:text-sm">Nghỉ tuần (OFF)</div>
-              <div class="text-xs text-slate-500 mt-0.5">Không tính công làm việc</div>
+              <div class="text-[11px] text-slate-500 mt-0.5">Không tính công làm việc</div>
             </div>
           </div>
           <div class="ml-2 shrink-0 flex items-center">
@@ -27199,20 +27406,27 @@
       container.innerHTML = html;
     }
 
-    function selectCellShiftCode(code) {
-      selectedCellShiftCode = code;
-      renderCellShiftSelectionCards();
-      updateCellModalApplyButtonText();
-    }
-
     function updateCellModalApplyButtonText() {
+      const combinedCode = getSelectedCellShiftCombinedCode();
       const applyBtnText = document.getElementById('modal-cell-btn-apply-text');
       if (applyBtnText) {
-        applyBtnText.innerText = `Áp dụng ca [${selectedCellShiftCode}] ngay`;
+        if (combinedCode === 'OFF') {
+          applyBtnText.innerText = 'Áp dụng [OFF] Nghỉ tuần ngay';
+        } else if (combinedCode.includes('+')) {
+          const count = combinedCode.split('+').length;
+          applyBtnText.innerText = `Áp dụng ${count} ca [${combinedCode}] ngay`;
+        } else {
+          applyBtnText.innerText = `Áp dụng ca [${combinedCode}] ngay`;
+        }
+      }
+      const draftBtn = document.getElementById('modal-cell-btn-save-draft');
+      if (draftBtn) {
+        draftBtn.innerHTML = `<span>💾</span><span>Lưu nháp [${combinedCode}]</span>`;
       }
     }
 
     function applyCellShiftQuick(code) {
+      selectedCellShiftCodes = [code];
       selectedCellShiftCode = code;
       confirmApplyCellShift(null);
     }
@@ -27287,20 +27501,44 @@
           currentBadgeEl.innerHTML = '<span class="px-2.5 py-1 rounded-full text-xs font-bold bg-teal-50 text-teal-800 border border-teal-300 shadow-2xs">🏖️ [P] Nghỉ phép năm</span>';
         } else if (isEmployeeAttendanceExempt(emp, workDate) || shiftCode === 'EXEMPT') {
           currentBadgeEl.innerHTML = '<span class="px-2.5 py-1 rounded-full text-xs font-bold bg-indigo-50 text-indigo-800 border border-indigo-200 shadow-2xs">⭐ [MIỄN] Miễn chấm công</span>';
+        } else if (shiftCode.includes('+')) {
+          const multiDef = getMultiShiftDefinition(shiftCode);
+          currentBadgeEl.innerHTML = `<span class="px-3 py-1 rounded-full text-xs font-bold border shadow-2xs bg-indigo-50 text-[#2E3191] border-indigo-200">[${shiftCode}] ${multiDef.name}</span>`;
         } else if (tpl && tpl.colorHex) {
           currentBadgeEl.innerHTML = `<span class="px-2.5 py-1 rounded-full text-xs font-bold shadow-2xs" style="background-color: ${tpl.colorHex}18; color: ${tpl.colorHex}; border: 1px solid ${tpl.colorHex}50;">[${tpl.code}] ${tpl.name}</span>`;
         } else {
-          currentBadgeEl.innerHTML = `<span class="px-2.5 py-1 rounded-full text-xs font-bold border shadow-2xs ${shiftDef.cls || 'bg-slate-100 text-slate-700'}">[${shiftDef.code}] ${shiftDef.name}</span>`;
+          currentBadgeEl.innerHTML = `<span class="px-2.5 py-1 rounded-full text-xs font-bold border shadow-2xs ${shiftDef.cls || 'bg-slate-100 text-slate-700'}">[${shiftDef.code || shiftCode}] ${shiftDef.name || shiftCode}</span>`;
         }
       }
 
-      // Thông tin chi tiết khung giờ
+      // Thông tin chi tiết khung giờ (Hỗ trợ ca ghép)
       const noShiftYet = ['UNSCHEDULED', 'UNASSIGNED'].includes(shiftCode);
-      document.getElementById('modal-cell-work-hours').innerText = noShiftYet ? 'Chưa có ca' : tpl ? (tpl.startTime !== '—' ? `${tpl.startTime} - ${tpl.endTime}` : 'Linh hoạt') : (shiftCode === 'OFF' ? 'Nghỉ tuần' : '—');
-      document.getElementById('modal-cell-break').innerText = tpl && tpl.breakMinutes > 0
-        ? (tpl.breakStartTime && tpl.breakEndTime ? `${tpl.breakStartTime} - ${tpl.breakEndTime} (${tpl.breakMinutes} phút)` : `${tpl.breakMinutes} phút · Chưa cấu hình khung giờ`)
-        : '—';
-      document.getElementById('modal-cell-rate').innerText = noShiftYet ? 'Chưa xác định' : tpl ? `${formatNumCompact(tpl.workDayRate)} công` : (shiftCode === 'OFF' ? '0 công' : '—');
+      if (shiftCode.includes('+')) {
+        const parts = shiftCode.split('+');
+        const timeStrs = parts.map(p => {
+          const t = (typeof shiftTemplatesData !== 'undefined') ? shiftTemplatesData.find(tplItem => tplItem.code === p) : null;
+          return t ? `[${p}] ${t.startTime}-${t.endTime}` : p;
+        }).join(' & ');
+        document.getElementById('modal-cell-work-hours').innerText = timeStrs;
+
+        let totalRate = 0;
+        let totalHours = 0;
+        parts.forEach(p => {
+          const t = (typeof shiftTemplatesData !== 'undefined') ? shiftTemplatesData.find(tplItem => tplItem.code === p) : null;
+          if (t) {
+            totalRate += (t.workDayRate || 0.5);
+            totalHours += (t.workHours || 4);
+          }
+        });
+        document.getElementById('modal-cell-break').innerText = 'Nghỉ giữa các ca';
+        document.getElementById('modal-cell-rate').innerText = `${totalRate.toFixed(1)} công (${totalHours}h)`;
+      } else {
+        document.getElementById('modal-cell-work-hours').innerText = noShiftYet ? 'Chưa có ca' : tpl ? (tpl.startTime !== '—' ? `${tpl.startTime} - ${tpl.endTime}` : tpl.name) : '08:00 - 17:00';
+        document.getElementById('modal-cell-break').innerText = noShiftYet ? '—' : tpl 
+          ? (tpl.breakStartTime && tpl.breakEndTime ? `${tpl.breakStartTime} - ${tpl.breakEndTime} (${tpl.breakMinutes} phút)` : `${tpl.breakMinutes} phút · Chưa cấu hình khung giờ`)
+          : '—';
+        document.getElementById('modal-cell-rate').innerText = noShiftYet ? 'Chưa xác định' : tpl ? `${formatNumCompact(tpl.workDayRate)} công` : (shiftCode === 'OFF' ? '0 công' : '—');
+      }
       document.getElementById('modal-cell-ci-window').innerText = tpl && tpl.checkinWindow ? tpl.checkinWindow : '—';
       document.getElementById('modal-cell-co-window').innerText = tpl && tpl.checkoutWindow ? tpl.checkoutWindow : '—';
       document.getElementById('modal-cell-branch').innerText = tpl ? (typeof getBranchDisplayName === 'function' ? getBranchDisplayName(tpl.branchCode) : (tpl.branchName || 'Tất cả')) : 'Tất cả';
@@ -27377,8 +27615,15 @@
         }
       }
 
-      // Thiết lập ca đang chọn ban đầu
-      selectedCellShiftCode = shiftCode;
+      // Thiết lập danh sách ca đang chọn ban đầu (Hỗ trợ ca đơn và ca ghép dạng 'SANG+CHIEU')
+      if (!shiftCode || shiftCode === 'OFF' || shiftCode === 'UNSCHEDULED' || shiftCode === 'UNASSIGNED') {
+        selectedCellShiftCodes = (shiftCode === 'OFF') ? ['OFF'] : ['HC'];
+      } else if (shiftCode.includes('+')) {
+        selectedCellShiftCodes = shiftCode.split('+').filter(Boolean);
+      } else {
+        selectedCellShiftCodes = [shiftCode];
+      }
+      selectedCellShiftCode = getSelectedCellShiftCombinedCode();
       renderCellShiftSelectionCards();
       updateCellModalApplyButtonText();
 
@@ -27399,7 +27644,7 @@
 
       const workDate = ctxWorkDate || getScheduleWorkDate(currentScheduleWeekKey, dayIdx);
       const mode = getEmployeeScheduleMode(emp, workDate);
-      const newShiftCode = selectedCellShiftCode || currentCellEditContext.shiftCode;
+      const newShiftCode = getSelectedCellShiftCombinedCode();
 
       if (mode === 'UNASSIGNED') { 
         showToast('⚠️ Hãy gán mẫu lịch cho nhân viên trước.'); 
@@ -29596,7 +29841,17 @@
       }
       if (shiftSelect) {
         const shifts = shiftTemplatesData.filter(item => item.status === 'ACTIVE');
-        shiftSelect.innerHTML = '<option value="">Chọn ca làm việc</option>' + shifts.map(item => `<option value="${item.code}">${item.code} — ${item.name}</option>`).join('') + '<option value="OFF">OFF — Nghỉ tuần</option>';
+        shiftSelect.innerHTML = '<option value="">-- Chọn ca làm việc --</option>' +
+          '<optgroup label="Ca làm việc đơn">' +
+          shifts.map(item => `<option value="${item.code}">[${item.code}] ${item.name} (${item.startTime} - ${item.endTime})</option>`).join('') +
+          '</optgroup>' +
+          '<optgroup label="Ghép nhiều ca trong ngày">' +
+          '<option value="SANG+CHIEU">[SANG+CHIEU] Ca Sáng & Chiều (08:00 - 12:00 & 14:00 - 17:00 • 7h • 1 công)</option>' +
+          '<option value="S1+S2">[S1+S2] Ca Ngày S1 & Ca Đêm S2 (24h • 3 công)</option>' +
+          '</optgroup>' +
+          '<optgroup label="Nghỉ">' +
+          '<option value="OFF">[OFF] Nghỉ tuần</option>' +
+          '</optgroup>';
         shiftSelect.value = '';
       }
       if (unitSelect) {
@@ -29866,7 +30121,17 @@
       const shiftSelect = document.getElementById('bulk-shift-selected-shift');
       if (shiftSelect) {
         const shifts = shiftTemplatesData.filter(item => item.status === 'ACTIVE');
-        shiftSelect.innerHTML = '<option value="">Chọn ca làm việc</option>' + shifts.map(item => `<option value="${item.code}">${item.code} — ${item.name}</option>`).join('') + '<option value="OFF">OFF — Nghỉ tuần</option>';
+        shiftSelect.innerHTML = '<option value="">-- Chọn ca làm việc --</option>' +
+          '<optgroup label="Ca làm việc đơn">' +
+          shifts.map(item => `<option value="${item.code}">[${item.code}] ${item.name} (${item.startTime} - ${item.endTime})</option>`).join('') +
+          '</optgroup>' +
+          '<optgroup label="Ghép nhiều ca trong ngày">' +
+          '<option value="SANG+CHIEU">[SANG+CHIEU] Ca Sáng & Chiều (08:00 - 12:00 & 14:00 - 17:00 • 7h • 1 công)</option>' +
+          '<option value="S1+S2">[S1+S2] Ca Ngày S1 & Ca Đêm S2 (24h • 3 công)</option>' +
+          '</optgroup>' +
+          '<optgroup label="Nghỉ">' +
+          '<option value="OFF">[OFF] Nghỉ tuần</option>' +
+          '</optgroup>';
         shiftSelect.value = '';
       }
       const unitSelect = document.getElementById('bulk-shift-scope-dept');
@@ -38621,7 +38886,7 @@
                   <svg class="w-4 h-4 text-[#2E3191]" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg>
                   <span>2. CẤU HÌNH CA THEO THỨ TRONG TUẦN</span>
                 </h4>
-                <span class="text-[11px] text-slate-500 font-medium">Chọn 1 hoặc nhiều ca/ngày</span>
+                <span class="text-[11px] text-slate-500 font-medium">Dropdown chọn 1 hoặc nhiều ca/ngày</span>
               </div>
 
               <!-- Quick action bar -->
