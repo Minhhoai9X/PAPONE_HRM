@@ -4328,7 +4328,7 @@
                       <span id="prof-sched-badge-type" class="text-[10px] bg-indigo-50 text-[#2E3191] border border-indigo-200 px-2 py-0.5 rounded font-bold">Đang kiểm tra lịch</span>
                       <span class="text-[10px] bg-slate-100 text-slate-800 font-medium px-1.5 py-0.5 rounded">Order 2 • Row 24</span>
                     </h3>
-                    <p class="text-xs text-slate-700 font-medium mt-0.5">Mỗi nhân viên được gán một lịch riêng: Hành chính cố định hoặc Theo ca.</p>
+                    <p class="text-xs text-slate-700 font-medium mt-0.5">Mỗi nhân viên được gán một lịch riêng: Hành chính hoặc Theo ca.</p>
                   </div>
                   <button onclick="openEditWorkScheduleModal(currentSelectedEmpCode)" class="px-3.5 py-1.5 pap-primary text-white rounded-lg text-xs font-semibold pap-primary-hover shadow-xs flex items-center space-x-1.5 transition cursor-pointer self-start sm:self-auto">
                     <span>✏️</span>
@@ -5783,7 +5783,7 @@
               </select>
               <select id="raw-filter-schedule" onchange="renderAttendanceRawLogs()" class="px-2.5 py-1.5 border border-slate-300 rounded-lg text-xs font-medium bg-white focus:outline-none focus:ring-1 focus:ring-[#2E3191]">
                 <option value="ALL">Tất cả lịch làm việc</option>
-                <option value="FIXED">Hành chính cố định</option>
+                <option value="FIXED">Hành chính</option>
                 <option value="SHIFT">Theo ca</option>
               </select>
               <select id="raw-filter-type" onchange="renderAttendanceRawLogs()" class="px-2.5 py-1.5 border border-slate-300 rounded-lg text-xs font-medium bg-white focus:outline-none focus:ring-1 focus:ring-[#2E3191]">
@@ -6489,7 +6489,7 @@
 
             <div class="relative overflow-hidden bg-white p-3 rounded-xl border border-slate-200 shadow-2xs hover:border-indigo-300 transition">
               <div class="flex items-center justify-between">
-                <span class="text-[10.5px] font-bold text-slate-700 uppercase tracking-wide">Hành chính cố định</span>
+                <span class="text-[10.5px] font-bold text-slate-700 uppercase tracking-wide">Hành chính</span>
                 <div class="p-1 bg-indigo-50 text-indigo-600 rounded-md">
                   <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16.5 2.25h-9a2.25 2.25 0 00-2.25 2.25v15a2.25 2.25 0 002.25 2.25h9a2.25 2.25 0 002.25-2.25v-15a2.25 2.25 0 00-2.25-2.25z" /></svg>
                 </div>
@@ -6546,7 +6546,7 @@
 
                 <select id="schedule-filter-mode" onchange="handleScheduleFilter()" class="px-3 py-2 border border-slate-300 rounded-lg text-xs bg-white text-slate-700 focus:ring-2 focus:ring-[#2E3191] cursor-pointer">
                   <option value="ALL">Tất cả lịch làm việc</option>
-                  <option value="FIXED">Hành chính cố định</option>
+                  <option value="FIXED">Hành chính</option>
                   <option value="SHIFT">Theo ca</option>
                   <option value="UNASSIGNED">Chưa gán lịch</option>
                 </select>
@@ -6785,7 +6785,7 @@
             <p class="text-xs text-slate-600 mt-1">Tạo mẫu trước rồi gán cho từng nhân viên trong hồ sơ. Mẫu hành chính tự tạo lịch theo tuần; mẫu Theo ca xác định ca được phép dùng. HR/Quản lý chọn tuần/tháng rồi phân ca trực tiếp trên màn hình Lịch làm việc.</p>
             <div class="grid grid-cols-1 md:grid-cols-2 gap-3 mt-3">
               <div class="p-3 rounded-xl border border-indigo-200 bg-indigo-50/60">
-                <div class="font-bold text-[#2E3191] text-xs">Hành chính cố định</div>
+                <div class="font-bold text-[#2E3191] text-xs">Hành chính</div>
                 <p class="text-[11px] text-slate-700 mt-1">Khai báo ca theo từng thứ trong tuần. Lịch nhân viên tự hiện từ mẫu đang có hiệu lực; không cần lập lịch ca theo tuần.</p>
               </div>
               <div class="p-3 rounded-xl border border-sky-200 bg-sky-50/60">
@@ -6800,7 +6800,7 @@
                 <input id="policy-search" oninput="handlePolicyFilter()" type="search" placeholder="Tìm mã hoặc tên mẫu lịch..." class="px-3 py-2 border border-slate-300 rounded-lg text-xs">
                 <select id="policy-filter-type" onchange="handlePolicyFilter()" class="px-3 py-2 border border-slate-300 rounded-lg text-xs bg-white font-medium">
                   <option value="ALL">Tất cả hình thức</option>
-                  <option value="FIXED">Hành chính cố định</option>
+                  <option value="FIXED">Hành chính</option>
                   <option value="FLEXIBLE">Theo ca</option>
                 </select>
               </div>
@@ -9693,7 +9693,7 @@
           </div>
 
           <p id="bulk-shift-classification-help" class="text-xs text-slate-600 bg-blue-50 border border-blue-100 rounded-lg px-3 py-2.5 leading-relaxed">
-            Hệ thống nhận diện theo <strong>mẫu lịch đã gán cho từng nhân viên</strong>. Bảng này chỉ áp dụng cho người có mẫu <strong>Theo ca</strong> hiệu lực; nhân viên Hành chính cố định không được đưa vào đây.
+            Hệ thống nhận diện theo <strong>mẫu lịch đã gán cho từng nhân viên</strong>. Bảng này chỉ áp dụng cho người có mẫu <strong>Theo ca</strong> hiệu lực; nhân viên Hành chính không được đưa vào đây.
             Chưa gán mẫu: <strong id="bulk-shift-unassigned-count">0</strong> nhân sự.
           </p>
 
@@ -9701,7 +9701,7 @@
           <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
             <div class="p-3.5 rounded-xl border border-indigo-100 bg-indigo-50/40">
               <div>
-                <div class="font-bold text-[#2E3191] text-sm">🏢 Nhân viên Hành chính cố định</div>
+                <div class="font-bold text-[#2E3191] text-sm">🏢 Nhân viên Hành chính</div>
                 <div class="text-xs text-slate-600 mt-1 leading-relaxed"><strong id="bulk-shift-mode-fixed-count">0 nhân sự</strong> tự hiện lịch theo mẫu tuần. Sửa ngoại lệ tại ô ngày trên bảng lịch.</div>
               </div>
             </div>
@@ -9753,7 +9753,7 @@
               <span class="w-6 h-6 rounded-full bg-[#2E3191] text-white flex items-center justify-center text-xs font-bold">3</span>
               <span class="text-sm font-bold uppercase text-[#2E3191]">Ca theo từng ngày trong tuần đang xem</span>
             </h4>
-            <span class="text-xs text-slate-500 font-medium">Chỉ điền ca cho nhóm Theo ca; không thay đổi mẫu Hành chính cố định</span>
+            <span class="text-xs text-slate-500 font-medium">Chỉ điền ca cho nhóm Theo ca; không thay đổi mẫu Hành chính</span>
           </div>
 
           <!-- Các preset cũ được giữ ẩn để bảo toàn hàm khởi tạo nội bộ; HR phân ca từng ngày cụ thể. -->
@@ -9978,7 +9978,7 @@
             <h4 class="font-bold text-slate-800 text-sm">Danh sách nhân viên</h4>
             <div class="flex gap-1" role="group" aria-label="Lọc loại lịch nhân viên">
               <button type="button" onclick="setBulkShiftPickerCategory('ALL')" id="bulk-shift-picker-filter-ALL" class="px-2 py-1 rounded border text-[11px]">Tất cả</button>
-              <button type="button" onclick="setBulkShiftPickerCategory('FIXED')" id="bulk-shift-picker-filter-FIXED" class="px-2 py-1 rounded border text-[11px]">Hành chính cố định</button>
+              <button type="button" onclick="setBulkShiftPickerCategory('FIXED')" id="bulk-shift-picker-filter-FIXED" class="px-2 py-1 rounded border text-[11px]">Hành chính</button>
               <button type="button" onclick="setBulkShiftPickerCategory('SHIFT')" id="bulk-shift-picker-filter-SHIFT" class="px-2 py-1 rounded border text-[11px]">Theo ca</button>
             </div>
           </div>
@@ -12516,7 +12516,7 @@
           <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
             <label class="flex items-start gap-2.5 p-3 rounded-xl border border-indigo-200 bg-indigo-50/50 cursor-pointer hover:bg-indigo-50">
               <input type="radio" name="employee-sched-mode" value="FIXED" onchange="onEmployeeScheduleModeChange()" class="mt-0.5 accent-[#2E3191]">
-              <span><b class="block text-xs text-[#2E3191]">🏢 Hành chính cố định</b><span class="block text-[11px] text-slate-600 mt-1">Theo mẫu tuần; lịch tự hiện, chỉ sửa ngoại lệ khi cần.</span></span>
+              <span><b class="block text-xs text-[#2E3191]">🏢 Hành chính</b><span class="block text-[11px] text-slate-600 mt-1">Theo mẫu tuần; lịch tự hiện, chỉ sửa ngoại lệ khi cần.</span></span>
             </label>
             <label class="flex items-start gap-2.5 p-3 rounded-xl border border-sky-200 bg-sky-50/50 cursor-pointer hover:bg-sky-50">
               <input type="radio" name="employee-sched-mode" value="FLEXIBLE" onchange="onEmployeeScheduleModeChange()" class="mt-0.5 accent-sky-700">
@@ -12940,7 +12940,7 @@
             <label for="holiday-scope-select" class="block text-xs font-bold text-slate-700 mb-1.5">Đối tượng áp dụng <span class="text-rose-500">*</span></label>
             <select id="holiday-scope-select" onchange="onHolidayScopeSelectChange()" class="w-full px-3 py-2.5 border border-slate-300 rounded-lg text-sm bg-white font-semibold">
               <option value="ALL">🏢 Toàn công ty</option>
-              <option value="FIXED">💼 Khối Hành chính cố định</option>
+              <option value="FIXED">💼 Khối Hành chính</option>
               <option value="SHIFT">⚓ Khối Theo ca</option>
             </select>
           </div>
@@ -12978,7 +12978,7 @@
           <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
             <label class="flex items-start gap-2.5 p-3 border border-slate-200 rounded-xl hover:bg-slate-50 cursor-pointer">
               <input id="holiday-scope-fixed" type="checkbox" value="FIXED" checked onchange="onHolidayScopeCheckboxChange()" class="mt-0.5 w-4 h-4 accent-[#2E3191]">
-              <span><span class="block text-xs font-bold text-slate-800">Hành chính cố định</span><span class="block text-[11px] text-slate-500 mt-0.5">Theo mẫu lịch tuần được gán</span></span>
+              <span><span class="block text-xs font-bold text-slate-800">Hành chính</span><span class="block text-[11px] text-slate-500 mt-0.5">Theo mẫu lịch tuần được gán</span></span>
             </label>
             <label class="flex items-start gap-2.5 p-3 border border-slate-200 rounded-xl hover:bg-slate-50 cursor-pointer">
               <input id="holiday-scope-shift" type="checkbox" value="SHIFT" checked onchange="onHolidayScopeCheckboxChange()" class="mt-0.5 w-4 h-4 accent-[#2E3191]">
@@ -12992,7 +12992,7 @@
           <p class="text-[11px] text-slate-500 -mt-1 mb-2">Với lịch cố định, ca làm bù được ánh xạ theo mẫu lịch từng nhân viên; nếu ngày đó đã có ca khác, hệ thống sẽ hỏi xác nhận. Nhóm Theo ca tiếp tục xử lý ca trên Bảng phân ca.</p>
           <div class="grid grid-cols-1 gap-3">
             <section class="rounded-xl border border-indigo-200 bg-indigo-50/40 p-3 space-y-2">
-              <div class="flex items-center gap-2"><span class="w-6 h-6 rounded-full bg-indigo-100 text-[#2E3191] text-xs font-bold flex items-center justify-center">1</span><div class="text-xs font-bold text-[#2E3191]">Hành chính cố định</div></div>
+              <div class="flex items-center gap-2"><span class="w-6 h-6 rounded-full bg-indigo-100 text-[#2E3191] text-xs font-bold flex items-center justify-center">1</span><div class="text-xs font-bold text-[#2E3191]">Hành chính</div></div>
               <p class="text-[11px] text-slate-600">Ngày nghỉ bù chuyển thành OFF trên lịch nhân viên. Ngày làm bù dùng ca được chọn theo đúng mẫu lịch nhân viên (ví dụ HC hoặc HC-DR).</p>
               <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
                 <div><label for="holiday-fixed-rest-date" class="block text-[11px] font-semibold text-slate-700 mb-1">Ngày nghỉ bù</label><input id="holiday-fixed-rest-date" type="date" onchange="updateHolidayAdjustmentPreview()" class="w-full px-2.5 py-2 border border-slate-300 rounded-lg text-xs"></div>
@@ -13675,7 +13675,7 @@
         const officialDateStr = isProbation ? 'Đang thử việc' : (m.officialDate || m.startDate || '01/01/2026');
         const scheduleMode = getEmployeeScheduleMode(m);
         const scheduleModeDisplay = scheduleMode === 'FIXED'
-          ? { label: 'Hành chính cố định', className: 'text-slate-700 font-medium' }
+          ? { label: 'Hành chính', className: 'text-slate-700 font-medium' }
           : scheduleMode === 'SHIFT'
             ? { label: 'Theo ca', className: 'text-slate-700 font-medium' }
             : { label: 'Chưa gán lịch', className: 'inline-flex px-2 py-0.5 rounded text-[10.5px] font-semibold bg-amber-50 text-amber-700 border border-amber-200' };
@@ -18772,7 +18772,7 @@
       const facts = `
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
           <div class="rounded-xl border border-slate-200 p-3"><div class="text-[11px] text-slate-500">Mã mẫu</div><div class="mt-1 font-bold text-slate-900">${escape(policy.code)}</div></div>
-          <div class="rounded-xl border border-slate-200 p-3"><div class="text-[11px] text-slate-500">Hình thức làm việc</div><div class="mt-1 font-bold text-slate-900">${policy.type === 'FIXED' ? 'Hành chính cố định' : 'Theo ca'}</div></div>
+          <div class="rounded-xl border border-slate-200 p-3"><div class="text-[11px] text-slate-500">Hình thức làm việc</div><div class="mt-1 font-bold text-slate-900">${policy.type === 'FIXED' ? 'Hành chính' : 'Theo ca'}</div></div>
           <div class="rounded-xl border border-slate-200 p-3"><div class="text-[11px] text-slate-500">Trạng thái</div><div class="mt-1 font-bold text-slate-900">${status}</div></div>
           <div class="rounded-xl border border-slate-200 p-3"><div class="text-[11px] text-slate-500">Nhân viên đang được gán</div><div class="mt-1 font-bold text-slate-900">${employeeCount} nhân viên</div></div>
           <div class="rounded-xl border border-slate-200 p-3 sm:col-span-2"><div class="text-[11px] text-slate-500">${scopeLabel}</div><div class="mt-1 text-sm text-slate-800">${escape(scopeValue)}</div></div>
@@ -18823,7 +18823,7 @@
         return assignment && assignment.policyCode === policy.code;
       }).length;
       document.getElementById('schedule-policy-detail-title').innerText = policy.name;
-      document.getElementById('schedule-policy-detail-type').innerText = policy.type === 'FIXED' ? 'Hành chính cố định' : 'Theo ca';
+      document.getElementById('schedule-policy-detail-type').innerText = policy.type === 'FIXED' ? 'Hành chính' : 'Theo ca';
       document.getElementById('schedule-policy-detail-content').innerHTML = buildSchedulePolicyDetailMarkup(policy, employeeCount);
       document.getElementById('modal-schedule-policy-detail').classList.remove('hidden');
     }
@@ -18898,7 +18898,7 @@
             </td>
             <td class="py-3 px-3 whitespace-nowrap">
               <span class="inline-flex items-center gap-1.5 whitespace-nowrap text-[12px] font-medium text-slate-700">
-                ${p.type === 'FIXED' ? '🏢 Hành chính cố định' : '⚓ Theo ca'}
+                ${p.type === 'FIXED' ? '🏢 Hành chính' : '⚓ Theo ca'}
               </span>
             </td>
             <td class="py-3 px-3 text-center whitespace-nowrap">${statusBadge}</td>
@@ -19294,7 +19294,7 @@
         code: code,
         name: name,
         type: type,
-        typeName: type === 'FIXED' ? '🏢 Hành chính cố định (theo mẫu tuần)' : '⚓ Theo ca (HR/Quản lý xếp theo kỳ)',
+        typeName: type === 'FIXED' ? '🏢 Hành chính (theo mẫu tuần)' : '⚓ Theo ca (HR/Quản lý xếp theo kỳ)',
         typeBadgeCls: type === 'FIXED' ? 'bg-indigo-50 text-[#2E3191] border-indigo-200' : 'bg-orange-50 text-[#F26522] border-orange-200',
         targetAudience: audience,
         applicableUnits,
@@ -19388,7 +19388,7 @@
         code: 'VP-STANDARD',
         name: 'Hành chính Văn phòng Tiêu chuẩn',
         type: 'FIXED',
-        typeName: '🏢 Hành chính cố định',
+        typeName: '🏢 Hành chính',
         typeBadgeCls: 'bg-indigo-50 text-[#2E3191] border-indigo-200',
         targetAudience: 'Khối Văn phòng, Gián tiếp, Kế toán, PM, TCHC, Pháp chế',
         weeklyPattern: { mon: 'HC', tue: 'HC', wed: 'HC', thu: 'HC', fri: 'HC', sat: 'OFF', sun: 'OFF' },
@@ -19402,7 +19402,7 @@
         code: 'VP-SHUTTLE',
         name: 'Hành chính Tuyến Xe đưa rước Cảng',
         type: 'FIXED',
-        typeName: '🏢 Hành chính cố định',
+        typeName: '🏢 Hành chính',
         typeBadgeCls: 'bg-emerald-50 text-emerald-800 border-emerald-200',
         targetAudience: 'CBCNV di chuyển bằng tuyến xe đưa rước Cảng (Tuyến TP.HCM - Nhơn Trạch)',
         weeklyPattern: { mon: 'HC-DR', tue: 'HC-DR', wed: 'HC-DR', thu: 'HC-DR', fri: 'HC-DR', sat: 'OFF', sun: 'OFF' },
@@ -19416,7 +19416,7 @@
         code: 'VP-SAT-HALF',
         name: 'Hành chính Văn phòng + Thứ Bảy làm nửa ngày',
         type: 'FIXED',
-        typeName: '🏢 Hành chính cố định',
+        typeName: '🏢 Hành chính',
         typeBadgeCls: 'bg-amber-50 text-amber-800 border-amber-200',
         targetAudience: 'Bộ phận Tiếp nhận chứng từ Hải quan, Hiện trường Cảng',
         weeklyPattern: { mon: 'HC', tue: 'HC', wed: 'HC', thu: 'HC', fri: 'HC', sat: 'SANG', sun: 'OFF' },
@@ -19578,7 +19578,7 @@
               <span class="text-lg">📅</span>
               <div>
                 <div class="font-bold text-amber-900 text-xs">Nhân viên chưa được gán lịch làm việc</div>
-                <p class="text-[11px] text-amber-900/80 mt-1 leading-relaxed">Chọn <b>Gán / đổi lịch làm việc</b> để xác định nhân viên làm hành chính cố định hay được xếp ca. Hệ thống không tự suy đoán theo phòng ban hoặc chức vụ.</p>
+                <p class="text-[11px] text-amber-900/80 mt-1 leading-relaxed">Chọn <b>Gán / đổi lịch làm việc</b> để xác định nhân viên làm hành chính hay theo ca. Hệ thống không tự suy đoán theo phòng ban hoặc chức vụ.</p>
               </div>
             </div>`;
         }
@@ -19593,7 +19593,7 @@
       // Cập nhật Badge Header Card
       if (badgeType) {
         badgeType.className = `text-[10px] px-2 py-0.5 rounded font-bold border ${policy.typeBadgeCls}`;
-        badgeType.innerText = policy.type === 'FIXED' ? '🏢 Hành chính cố định' : '⚓ Theo ca';
+        badgeType.innerText = policy.type === 'FIXED' ? '🏢 Hành chính' : '⚓ Theo ca';
       }
 
       if (!container) return;
@@ -19827,7 +19827,7 @@
       const help = document.getElementById('modal-sched-policy-help');
       if (help) {
         help.innerText = mode === 'FIXED'
-          ? 'Chế độ Hành chính cố định: Bắt buộc chọn mẫu tuần hoàn để hệ thống tự động sinh lịch.'
+          ? 'Chế độ Hành chính: Bắt buộc chọn mẫu tuần hoàn để hệ thống tự động sinh lịch.'
           : mode === 'FLEXIBLE'
             ? 'Chế độ Theo ca: Không bắt buộc chọn mẫu lịch. Mặc định là phân ca trực tiếp trên Bảng phân ca.'
             : 'Danh sách chỉ hiển thị mẫu lịch thuộc chế độ đã chọn.';
@@ -19890,7 +19890,7 @@
       const policyCode = select.value;
       if (!policyCode) {
         previewContainer.className = 'p-3.5 rounded-xl border border-slate-200 bg-slate-50 space-y-2';
-        previewContainer.innerHTML = '<div class="text-[11px] text-slate-600">Chọn <b>Hành chính cố định</b> nếu nhân viên làm giờ văn phòng; chọn <b>Theo ca</b> nếu quản lý sẽ phân ca theo lịch.</div>';
+        previewContainer.innerHTML = '<div class="text-[11px] text-slate-600">Chọn <b>Hành chính</b> nếu nhân viên làm giờ văn phòng; chọn <b>Theo ca</b> nếu quản lý sẽ phân ca theo lịch.</div>';
         return;
       }
       const policy = getWorkSchedulePolicy(policyCode);
@@ -19967,7 +19967,7 @@
         return;
       }
       if (mode === 'FIXED' && (!policy || policy.type !== 'FIXED')) {
-        showToast('⚠️ Khối hành chính cố định bắt buộc phải chọn mẫu lịch tuần.');
+        showToast('⚠️ Khối hành chính bắt buộc phải chọn mẫu lịch tuần.');
         return;
       }
       if (!policy) {
@@ -24500,7 +24500,7 @@
           emp.pap,
           emp.name,
           emp.dept,
-          mode === 'FIXED' ? 'Hành chính cố định' : (mode === 'SHIFT' ? 'Theo ca' : 'Miễn chấm công'),
+          mode === 'FIXED' ? 'Hành chính' : (mode === 'SHIFT' ? 'Theo ca' : 'Miễn chấm công'),
           ...shifts
         ]);
       });
@@ -25351,7 +25351,7 @@
       const defaultType = document.getElementById('holiday-kind')?.value === 'COMPANY' ? 'COMPANY_PAID' : 'PUBLIC';
       const options = Object.entries(HOLIDAY_DATE_TYPE_LABELS)
         .map(([value, label]) => `<option value="${value}">${label}</option>`).join('');
-      const modeOptions = '<option value="BOTH">Cả hai nhóm lịch</option><option value="FIXED">Hành chính cố định</option><option value="SHIFT">Theo ca</option>';
+      const modeOptions = '<option value="BOTH">Cả hai nhóm lịch</option><option value="FIXED">Hành chính</option><option value="SHIFT">Theo ca</option>';
       const dateKeys = getHolidayDateKeys(start, end);
       rows.innerHTML = `<div class="hidden sm:grid sm:grid-cols-[110px_minmax(180px,1.5fr)_minmax(170px,1.2fr)_100px] gap-2 px-3 text-[10px] font-bold uppercase text-slate-500"><span>Ngày</span><span>Phân loại ngày</span><span>Lịch áp dụng</span><span>Tỷ lệ hưởng</span></div>` + dateKeys.map(date => {
         return `<div class="grid grid-cols-1 sm:grid-cols-[110px_minmax(180px,1.5fr)_minmax(170px,1.2fr)_100px] gap-2 items-center rounded-lg bg-slate-50 px-3 py-2">
@@ -25774,7 +25774,7 @@
       if (Object.keys(dateTypes).length) lines.push(`<div>• Phân loại theo ngày: ${escapeHolidayHtml(formatHolidayDayTypeSummary(dateTypes))}</div>`);
       const fixedMappings = getHolidayFixedMakeupShiftMappings();
       const fixedMappingSummary = Object.entries(fixedMappings).map(([policyCode, shiftCode]) => `${policyCode}: ${shiftCode}`).join(', ');
-      lines.push(`<div>• Hành chính cố định: ${fixedRest || fixedMakeup ? `nghỉ ${fixedRest || '—'} / làm ${fixedMakeup || '—'}${fixedMappingSummary ? ` · ca theo mẫu (${escapeHolidayHtml(fixedMappingSummary)})` : ''}` : 'chưa khai báo điều chỉnh.'}</div>`);
+      lines.push(`<div>• Hành chính: ${fixedRest || fixedMakeup ? `nghỉ ${fixedRest || '—'} / làm ${fixedMakeup || '—'}${fixedMappingSummary ? ` · ca theo mẫu (${escapeHolidayHtml(fixedMappingSummary)})` : ''}` : 'chưa khai báo điều chỉnh.'}</div>`);
       lines.push(`<div>• Theo ca: ${flexRest || flexMakeup ? `nghỉ ${flexRest || '—'} / làm ${flexMakeup || '—'}` : 'chưa khai báo điều chỉnh.'} Ca đã xếp không tự bị xóa.</div>`);
       preview.innerHTML = `<div class="font-bold mb-1">Xem trước thiết lập của HR</div>${lines.join('')}<div class="mt-1 font-semibold">Ngày nghỉ sẽ chuyển thành OFF; ngày làm bù áp dụng ca theo mẫu lịch. Nếu đang có ca, hệ thống sẽ hỏi xác nhận trước khi thay thế.</div>`;
     }
@@ -25806,7 +25806,7 @@
     function formatHolidayAdjustmentSummary(adjustments) {
       if (!adjustments) return 'Không có điều chỉnh';
       const parts = [];
-      [['Hành chính cố định', adjustments.fixed], ['Theo ca', adjustments.flexible]].forEach(([label, item]) => {
+      [['Hành chính', adjustments.fixed], ['Theo ca', adjustments.flexible]].forEach(([label, item]) => {
         if (item && item.restDate && item.makeupDate) {
           const shift = item.makeupShifts ? ` · ${Object.entries(item.makeupShifts).map(([policy, code]) => `${policy}:${code}`).join(', ')}` : (item.makeupShift ? ` · ${item.makeupShift}` : '');
           parts.push(`${label}: nghỉ ${formatHolidayDate(item.restDate)} / làm ${formatHolidayDate(item.makeupDate)}${shift}`);
@@ -25864,7 +25864,7 @@
       if (scopeModes.includes('FIXED') && scopeModes.includes('SHIFT')) {
         scopeLabel = 'Toàn công ty';
       } else if (scopeModes.includes('FIXED')) {
-        scopeLabel = 'Hành chính cố định';
+        scopeLabel = 'Hành chính';
       } else if (scopeModes.includes('SHIFT')) {
         scopeLabel = 'Theo ca';
       }
@@ -25908,7 +25908,7 @@
         const fixedHasAdjustment = adjustments.fixed.restDate || adjustments.fixed.makeupDate;
         const flexibleHasAdjustment = adjustments.flexible.restDate || adjustments.flexible.makeupDate;
         if (fixedHasAdjustment && !scopeModes.includes('FIXED')) {
-          showToast('⚠️ Điều chỉnh Hành chính cố định chưa được chọn trong nhóm áp dụng ngày nghỉ thêm.');
+          showToast('⚠️ Điều chỉnh Hành chính chưa được chọn trong nhóm áp dụng ngày nghỉ thêm.');
           return;
         }
         if (flexibleHasAdjustment && !scopeModes.includes('SHIFT')) {
@@ -26393,7 +26393,7 @@
     }
 
     function summarizeScheduleModes(modes) {
-      const labels = { FIXED: 'Hành chính cố định', SHIFT: 'Theo ca', UNASSIGNED: 'Chưa gán lịch' };
+      const labels = { FIXED: 'Hành chính', SHIFT: 'Theo ca', UNASSIGNED: 'Chưa gán lịch' };
       const uniqueModes = [...new Set(modes.length ? modes : ['UNASSIGNED'])];
       if (uniqueModes.length > 1) {
         return { 
@@ -29579,7 +29579,7 @@
         const isEligible = state.mode === 'SHIFT' && !isEmployeeAttendanceExempt(emp, workDate) && !(keepLeave && state.code === 'P');
         const checked = bulkShiftSelectedEmpIds.has(emp.pap);
         const currentShift = state.code === 'UNSCHEDULED' ? 'Chưa xếp ca' : state.code === 'UNASSIGNED' ? 'Chưa gán lịch' : state.code === 'EXEMPT' ? 'Miễn chấm công' : state.code === 'P' ? 'Nghỉ phép đã duyệt' : state.code;
-        const modeLabel = state.mode === 'FIXED' ? 'Hành chính cố định' : state.mode === 'SHIFT' ? 'Theo ca' : 'Chưa gán lịch';
+        const modeLabel = state.mode === 'FIXED' ? 'Hành chính' : state.mode === 'SHIFT' ? 'Theo ca' : 'Chưa gán lịch';
         const shiftPreview = selectedShift ? `→ ${selectedShift}` : 'Chọn ca để xem';
         return `<label class="flex items-center gap-3 px-3 py-2.5 hover:bg-slate-50 ${!isEligible ? 'bg-slate-50/60' : 'cursor-pointer'}">
           <input type="checkbox" ${checked ? 'checked' : ''} ${isEligible ? '' : 'disabled'} onchange="toggleBulkShiftEmployee('${escape(emp.pap)}', this.checked)" class="rounded text-[#2E3191]">
@@ -29963,7 +29963,7 @@
         const shiftWarning = mode === 'SHIFT' && shift && !allowedShift ? `Ca ${shift} không nằm trong mẫu lịch ở ít nhất một ngày` : '';
         return `<label class="flex items-center gap-3 px-3.5 py-2.5 ${eligible ? 'cursor-pointer hover:bg-slate-50' : 'bg-slate-50/70'}">
           <input type="checkbox" ${checked ? 'checked' : ''} ${eligible ? '' : 'disabled'} onchange="toggleBulkShiftPickerEmployee('${escape(emp.pap)}', this.checked)" class="rounded border-slate-300 text-blue-700">
-          <span class="min-w-0 flex-1"><span class="block text-sm ${checked ? 'font-bold text-blue-700' : 'text-slate-800'}">${escape(emp.pap)} - ${escape(emp.name)}</span><span class="block text-[11px] text-slate-500">${escape(emp.position || emp.title || emp.dept || '')} · ${mode === 'SHIFT' ? 'Theo ca' : mode === 'FIXED' ? 'Hành chính cố định' : mode === 'MIXED' ? 'Thay đổi chế độ trong khoảng ngày' : 'Chưa gán lịch'}</span>${conflictText ? `<span class="block text-[11px] ${conflictTextClass}">${conflicts.length || leaveDates.length ? '⚠ ' : ''}${escape(conflictText)}</span>` : ''}${shiftWarning ? `<span class="block text-[11px] text-rose-600">${escape(shiftWarning)}</span>` : ''}</span>
+          <span class="min-w-0 flex-1"><span class="block text-sm ${checked ? 'font-bold text-blue-700' : 'text-slate-800'}">${escape(emp.pap)} - ${escape(emp.name)}</span><span class="block text-[11px] text-slate-500">${escape(emp.position || emp.title || emp.dept || '')} · ${mode === 'SHIFT' ? 'Theo ca' : mode === 'FIXED' ? 'Hành chính' : mode === 'MIXED' ? 'Thay đổi chế độ trong khoảng ngày' : 'Chưa gán lịch'}</span>${conflictText ? `<span class="block text-[11px] ${conflictTextClass}">${conflicts.length || leaveDates.length ? '⚠ ' : ''}${escape(conflictText)}</span>` : ''}${shiftWarning ? `<span class="block text-[11px] text-rose-600">${escape(shiftWarning)}</span>` : ''}</span>
           ${checked ? '<span class="text-blue-700 font-bold">✓</span>' : ''}
         </label>`;
       }).join('') || '<div class="p-8 text-center text-sm text-slate-500">Không tìm thấy nhân viên phù hợp.</div>';
@@ -36003,7 +36003,7 @@
       const emp = (typeof employeesData !== 'undefined') ? employeesData.find(e => e.pap === log.pap) : null;
       if (!emp) return 'Theo ca';
       const mode = (typeof getEmployeeScheduleMode === 'function') ? getEmployeeScheduleMode(emp, log.date) : 'SHIFT';
-      return mode === 'FIXED' ? 'Hành chính cố định' : 'Theo ca';
+      return mode === 'FIXED' ? 'Hành chính' : 'Theo ca';
     }
 
     function renderAttendanceRawLogs() {
@@ -36025,7 +36025,7 @@
         if (deptVal !== 'ALL' && item.dept !== deptVal) return false;
         if (scheduleVal !== 'ALL') {
           const itemSched = getRawLogScheduleType(item);
-          if (scheduleVal === 'FIXED' && itemSched !== 'Hành chính cố định') return false;
+          if (scheduleVal === 'FIXED' && itemSched !== 'Hành chính') return false;
           if (scheduleVal === 'SHIFT' && itemSched !== 'Theo ca') return false;
         }
         if (typeVal !== 'ALL' && item.type !== typeVal) return false;
@@ -36076,8 +36076,8 @@
         const dateParts = String(log.date || '').split('-');
         const displayDate = dateParts.length === 3 ? `${dateParts[2]}/${dateParts[1]}/${dateParts[0]}` : (log.date || '—');
         const schedType = getRawLogScheduleType(log);
-        const schedBadge = schedType === 'Hành chính cố định'
-          ? '<span class="inline-flex px-2 py-0.5 rounded-full text-[10.5px] font-semibold bg-indigo-50 text-[#2E3191] border border-indigo-200">Hành chính cố định</span>'
+        const schedBadge = schedType === 'Hành chính'
+          ? '<span class="inline-flex px-2 py-0.5 rounded-full text-[10.5px] font-semibold bg-indigo-50 text-[#2E3191] border border-indigo-200">Hành chính</span>'
           : '<span class="inline-flex px-2 py-0.5 rounded-full text-[10.5px] font-semibold bg-sky-50 text-sky-800 border border-sky-200">Theo ca</span>';
         const typeBadge = log.type === 'IN' 
           ? '<span class="px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200 font-bold text-[10px]">CHECK-IN</span>'
@@ -38446,7 +38446,7 @@
                 <div>
                   <label class="block font-semibold text-slate-700 mb-1.5">Chế độ lịch làm việc <span class="text-rose-500">*</span></label>
                   <select id="add-policy-type" class="w-full px-3 py-2.5 border border-slate-300 rounded-lg bg-indigo-50 font-bold text-[#2E3191] focus:ring-2 focus:ring-[#2E3191] shadow-inner" onchange="toggleAddPolicyType()">
-                    <option value="FIXED">🏢 Hành chính cố định — theo mẫu tuần</option>
+                    <option value="FIXED">🏢 Hành chính — theo mẫu tuần</option>
                     <option value="FLEXIBLE">⚓ Theo ca — HR/Quản lý xếp theo kỳ</option>
                   </select>
                 </div>
