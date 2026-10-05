@@ -172,6 +172,19 @@
     }
 
     /* Ghim cố định cột Hành động / Thao tác (Sticky Right) */
+    #schedule-matrix-table,
+    #schedule-policies-table,
+    #schedule-assignments-table,
+    #shift-templates-table,
+    #table-holidays {
+      border-collapse: separate !important;
+      border-spacing: 0 !important;
+    }
+    #schedule-matrix-table th.sticky-action,
+    #schedule-policies-table th.sticky-action,
+    #schedule-assignments-table th.sticky-action,
+    #shift-templates-table th.sticky-action,
+    #table-holidays th.sticky-action,
     th.sticky-action,
     th.sticky-right {
       position: sticky !important;
@@ -179,16 +192,26 @@
       top: 0 !important;
       z-index: 30 !important;
       background-color: #2E3191 !important;
-      box-shadow: -6px 0 10px -4px rgba(0, 0, 0, 0.25);
+      box-shadow: -6px 0 10px -4px rgba(0, 0, 0, 0.25) !important;
     }
+    #schedule-matrix-table td.sticky-action,
+    #schedule-policies-table td.sticky-action,
+    #schedule-assignments-table td.sticky-action,
+    #shift-templates-table td.sticky-action,
+    #table-holidays td.sticky-action,
     td.sticky-action,
     td.sticky-right {
       position: sticky !important;
       right: 0 !important;
       z-index: 10 !important;
-      background-color: #ffffff;
-      box-shadow: -6px 0 10px -4px rgba(0, 0, 0, 0.08);
+      background-color: #ffffff !important;
+      box-shadow: -6px 0 10px -4px rgba(0, 0, 0, 0.08) !important;
     }
+    #schedule-matrix-table tr:hover td.sticky-action,
+    #schedule-policies-table tr:hover td.sticky-action,
+    #schedule-assignments-table tr:hover td.sticky-action,
+    #shift-templates-table tr:hover td.sticky-action,
+    #table-holidays tr:hover td.sticky-action,
     tr:hover td.sticky-action,
     tr:hover td.sticky-right {
       background-color: #f6f8fc !important;
@@ -6756,6 +6779,9 @@
 
                     <!-- 13. Tổng số ca -->
                     <th id="schedule-total-header" class="py-3 px-2.5 text-center min-w-[85px]">Tổng số ca</th>
+
+                    <!-- 14. Thao tác / Hành động (Ghim cố định sticky right) -->
+                    <th id="schedule-matrix-action-header" class="py-3 px-3 text-center w-28 shrink-0 sticky right-0 top-0 bg-[#2E3191] z-30 shadow-[-6px_0_10px_-4px_rgba(0,0,0,0.25)] sticky-action font-semibold text-xs select-none">Hành động</th>
                   </tr>
                 </thead>
                 <tbody id="schedule-table-body" class="divide-y divide-slate-100 font-normal">
@@ -6847,7 +6873,7 @@
               </div>
             </div>
             <div class="overflow-x-auto pap-table-frame">
-              <table id="schedule-policies-table" class="w-full text-left text-xs min-w-[1100px] pap-data-table">
+              <table id="schedule-policies-table" class="w-full text-left text-xs min-w-[1250px] pap-data-table">
                 <thead class="bg-[#2E3191] text-white select-none border-b border-[#2E3191] shadow-xs sticky top-0 z-20 pap-data-table__head">
                   <tr class="text-xs font-bold divide-x divide-white/10">
                     <th class="py-2.5 px-3 text-center w-12 sticky top-0 left-0 bg-[#2E3191] z-30 shrink-0 select-none">STT</th>
@@ -6976,7 +7002,7 @@
           <!-- Bảng Danh sách Phân ca làm việc -->
           <div class="bg-white rounded-2xl border border-slate-200 shadow-xs overflow-hidden">
             <div class="overflow-x-auto pap-table-frame">
-              <table id="schedule-assignments-table" class="w-full text-left text-xs border-collapse pap-data-table">
+              <table id="schedule-assignments-table" class="w-full text-left text-xs min-w-[1350px] pap-data-table">
                 <thead class="bg-[#2E3191] text-white select-none border-b border-[#2E3191] shadow-xs sticky top-0 z-20 pap-data-table__head">
                   <tr class="text-xs font-bold divide-x divide-white/10">
                     <th class="py-2.5 px-3 text-center w-12 sticky top-0 left-0 bg-[#2E3191] z-30 shrink-0">STT</th>
@@ -7137,7 +7163,7 @@
           <!-- Bảng 10 Cột Danh Mục Ca Mẫu (ĐỒNG BỘ MÀU PAP PRIMARY #2E3191 HEADER) -->
           <div class="bg-white rounded-xl border border-slate-200 shadow-xs overflow-hidden">
             <div class="overflow-x-auto pap-table-frame">
-              <table id="shift-templates-table" class="w-full text-left border-collapse text-xs pap-data-table">
+              <table id="shift-templates-table" class="w-full text-left text-xs min-w-[1450px] pap-data-table">
                 <thead class="bg-[#2E3191] text-white select-none border-b border-[#2E3191] shadow-xs sticky top-0 z-20 pap-data-table__head">
                   <tr class="text-xs font-bold divide-x divide-white/10">
                     <th class="py-2.5 px-3 text-center w-12 sticky top-0 left-0 bg-[#2E3191] z-30 shrink-0">STT</th>
@@ -7286,7 +7312,7 @@
           <!-- Bảng Danh Sách Ngày Lễ & Hoán Chuyển (ĐỒNG BỘ MÀU PAP PRIMARY #2E3191 HEADER) -->
           <div class="bg-white rounded-xl border border-slate-200 shadow-xs overflow-hidden">
             <div class="overflow-x-auto pap-table-frame">
-              <table id="table-holidays" class="w-full text-left border-collapse text-xs pap-data-table">
+              <table id="table-holidays" class="w-full text-left text-xs min-w-[1300px] pap-data-table">
                 <thead class="bg-[#2E3191] text-white select-none border-b border-[#2E3191] shadow-xs sticky top-0 z-20 pap-data-table__head">
                   <tr class="text-xs font-bold divide-x divide-white/10">
                     <th class="py-2.5 px-3 text-center w-12 sticky top-0 left-0 bg-[#2E3191] z-30 shrink-0">STT</th>
@@ -19113,9 +19139,9 @@
             <td class="py-3 px-3 text-center whitespace-nowrap">
               <span class="font-bold text-[#2E3191] bg-indigo-50 border border-indigo-200 px-2.5 py-0.5 rounded-full text-xs">${count}</span>
             </td>
-            <td class="py-3 px-3 text-center whitespace-nowrap sticky right-0 bg-white group-hover:bg-slate-50 shadow-[-6px_0_10px_-4px_rgba(0,0,0,0.08)] sticky-action z-10">
+            <td class="py-3 px-3 text-center w-28 shrink-0 whitespace-nowrap sticky right-0 bg-white group-hover:bg-slate-50 shadow-[-6px_0_10px_-4px_rgba(0,0,0,0.08)] sticky-action z-10">
               <div class="flex items-center justify-center space-x-1.5">
-                <button type="button" onclick="openEditPolicyModal('${p.code}')"" title="Cập nhật mẫu lịch" aria-label="Cập nhật mẫu lịch ${p.code}" class="p-1.5 text-slate-600 hover:text-[#2E3191] hover:bg-indigo-50 rounded-lg transition cursor-pointer">
+                <button type="button" onclick="openEditPolicyModal('${p.code}')" title="Cập nhật mẫu lịch" aria-label="Cập nhật mẫu lịch ${p.code}" class="p-1.5 text-slate-600 hover:text-[#2E3191] hover:bg-indigo-50 rounded-lg transition cursor-pointer">
                   <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M16.862 4.487l1.687-1.687a1.875 1.875 0 112.652 2.652L10.582 16.071a4.5 4.5 0 01-1.897 1.13L6 18l.799-2.685a4.5 4.5 0 011.13-1.897l8.933-8.931z"/><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 7.125L16.875 4.5M18 14.25v4.125A2.625 2.625 0 0115.375 21H5.625A2.625 2.625 0 013 18.375V8.625A2.625 2.625 0 015.625 6H9.75"/></svg>
                 </button>
                 <button type="button" onclick="openSchedulePolicyDetail('${p.code}')" title="Xem chi tiết mẫu lịch" aria-label="Xem chi tiết mẫu lịch ${p.code}" class="p-1.5 text-slate-600 hover:text-[#2E3191] hover:bg-slate-100 rounded-lg transition cursor-pointer">
@@ -26314,7 +26340,7 @@
               <div class="font-medium text-slate-700 text-[11px]">${escapeHolidayHtml(h.updatedBy || 'AdminSystem')}</div>
               <div class="text-[10px] text-slate-400">${escapeHolidayHtml(h.updatedAt || '10/03/2026 15:45')}</div>
             </td>
-            <td class="py-3 px-2 text-center sticky right-0 bg-white group-hover:bg-slate-50 shadow-[-6px_0_10px_-4px_rgba(0,0,0,0.08)] sticky-action z-10">
+            <td class="py-3 px-2 text-center w-24 shrink-0 sticky right-0 bg-white group-hover:bg-slate-50 shadow-[-6px_0_10px_-4px_rgba(0,0,0,0.08)] sticky-action z-10">
               <div class="flex items-center justify-center space-x-1">
                 <button type="button" onclick="openHolidayDetailModal(${Number(h.id) || 0})" class="p-1.5 text-slate-600 hover:text-[#2E3191] hover:bg-indigo-50 rounded-lg transition cursor-pointer" title="Xem chi tiết ngày nghỉ lễ">
                   <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M2.036 12.322a1.012 1.012 0 010-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178z" /><path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" /></svg>
@@ -26711,7 +26737,7 @@
       if (filteredEmps.length === 0) {
         tbody.innerHTML = `
           <tr>
-            <td colspan="13" class="py-8 text-center text-slate-400">
+            <td colspan="14" class="py-8 text-center text-slate-400">
               <div class="text-3xl mb-1">🔍</div>
               <div>Không tìm thấy nhân viên phù hợp với bộ lọc lịch làm việc</div>
             </td>
@@ -26864,6 +26890,17 @@
             ${dayCellsHtml}
             <td class="py-2.5 px-2.5 text-center border-l border-slate-200 font-bold text-slate-800">
               ${renderScheduleShiftSummary(shiftSummary)}
+            </td>
+            <!-- Cột Hành động ghim cố định sticky right -->
+            <td class="py-3 px-2 text-center w-28 shrink-0 sticky right-0 bg-white group-hover:bg-indigo-50/40 shadow-[-6px_0_10px_-4px_rgba(0,0,0,0.08)] sticky-action z-10 whitespace-nowrap border-b border-slate-200 border-l border-slate-200">
+              <div class="flex items-center justify-center space-x-1">
+                <button type="button" onclick="openShiftSwapModalForEmp('${emp.pap}')" class="p-1.5 text-slate-500 hover:text-[#2E3191] hover:bg-indigo-50 rounded-lg transition cursor-pointer" title="Đổi / Phân ca cho ${emp.name}">
+                  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0115.75 21H5.25A2.25 2.25 0 013 18.75V8.25A2.25 2.25 0 015.25 6H10"/></svg>
+                </button>
+                <button type="button" onclick="openEmployeeProfile('${emp.pap}')" class="p-1.5 text-slate-500 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition cursor-pointer" title="Xem hồ sơ / Lịch làm việc">
+                  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M2.036 12.322a1.012 1.012 0 010-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178z"/><path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+                </button>
+              </div>
             </td>
           </tr>
         `;
@@ -28428,7 +28465,7 @@
               <div class="font-medium text-slate-700 text-[11px]">${item.updatedBy || 'AdminSystem'}</div>
               <div class="text-[10px] text-slate-400">${item.updatedAt || '15/04/2026 14:30'}</div>
             </td>
-            <td class="py-2.5 px-2 text-center sticky right-0 bg-white group-hover:bg-slate-50 shadow-[-6px_0_10px_-4px_rgba(0,0,0,0.08)] sticky-action z-10">
+            <td class="py-2.5 px-2 text-center w-24 shrink-0 sticky right-0 bg-white group-hover:bg-slate-50 shadow-[-6px_0_10px_-4px_rgba(0,0,0,0.08)] sticky-action z-10">
               <button type="button" onclick="openShiftTemplateModal('${item.code}')" class="p-1.5 text-slate-600 hover:text-[#2E3191] hover:bg-slate-100 rounded-lg transition cursor-pointer" title="Cập nhật ca làm việc">
                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0115.75 21H5.25A2.25 2.25 0 013 18.75V8.25A2.25 2.25 0 015.25 6H10"/></svg>
               </button>
@@ -38404,7 +38441,7 @@
               }
             });
             currentLeft += (th.offsetWidth || 100);
-          } else if (colSet.pinned === false && !th.classList.contains('left-0')) {
+          } else if (colSet.pinned === false && !th.classList.contains('left-0') && !th.classList.contains('right-0') && !th.classList.contains('sticky-action') && !th.classList.contains('sticky-right')) {
             th.style.position = '';
             th.style.left = '';
             th.style.zIndex = '';
