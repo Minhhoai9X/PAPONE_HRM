@@ -5644,14 +5644,27 @@
                       </div>
                     </th>
 
-                    <!-- Ngày hiệu lực -->
+                    <!-- Ngày hiệu lực (Từ ngày) -->
                     <th class="py-2.5 px-3 min-w-[140px] text-center">
                       <div class="inline-flex items-center justify-center">
                         <span class="pap-column-drag inline-flex items-center text-white/40 hover:text-white/80 cursor-grab mr-1.5 shrink-0 select-none" title="Kéo đổi vị trí cột">
                           <svg class="w-2.5 h-3.5" viewBox="0 0 8 14" fill="currentColor"><circle cx="2" cy="2" r="1.1"/><circle cx="6" cy="2" r="1.1"/><circle cx="2" cy="7" r="1.1"/><circle cx="6" cy="7" r="1.1"/><circle cx="2" cy="12" r="1.1"/><circle cx="6" cy="12" r="1.1"/></svg>
                         </span>
-                        <span>Ngày hiệu lực</span>
+                        <span>Từ ngày (Hiệu lực)</span>
                         <span onclick="sortAttendanceExemptions('effectiveFrom')" class="inline-flex flex-col items-center justify-center cursor-pointer text-white/70 hover:text-white transition-colors ml-1 select-none p-0.5 group/sort shrink-0" title="Sắp xếp theo ngày hiệu lực">
+                          <svg class="w-2.5 h-3" viewBox="0 0 10 12" fill="currentColor"><path d="M5 1L9 5H1L5 1Z" class="group-hover/sort:text-white"/><path d="M1 7H9L5 11L1 7Z" class="group-hover/sort:text-white"/></svg>
+                        </span>
+                      </div>
+                    </th>
+
+                    <!-- Ngày đến (Đến ngày) -->
+                    <th class="py-2.5 px-3 min-w-[140px] text-center">
+                      <div class="inline-flex items-center justify-center">
+                        <span class="pap-column-drag inline-flex items-center text-white/40 hover:text-white/80 cursor-grab mr-1.5 shrink-0 select-none" title="Kéo đổi vị trí cột">
+                          <svg class="w-2.5 h-3.5" viewBox="0 0 8 14" fill="currentColor"><circle cx="2" cy="2" r="1.1"/><circle cx="6" cy="2" r="1.1"/><circle cx="2" cy="7" r="1.1"/><circle cx="6" cy="7" r="1.1"/><circle cx="2" cy="12" r="1.1"/><circle cx="6" cy="12" r="1.1"/></svg>
+                        </span>
+                        <span>Đến ngày</span>
+                        <span onclick="sortAttendanceExemptions('effectiveTo')" class="inline-flex flex-col items-center justify-center cursor-pointer text-white/70 hover:text-white transition-colors ml-1 select-none p-0.5 group/sort shrink-0" title="Sắp xếp theo ngày đến">
                           <svg class="w-2.5 h-3" viewBox="0 0 10 12" fill="currentColor"><path d="M5 1L9 5H1L5 1Z" class="group-hover/sort:text-white"/><path d="M1 7H9L5 11L1 7Z" class="group-hover/sort:text-white"/></svg>
                         </span>
                       </div>
@@ -11930,9 +11943,10 @@
         <button type="button" onclick="closeAttendanceExemptionModal()" class="text-slate-300 hover:text-white text-lg leading-none">&times;</button>
       </div>
       <div class="p-4 flex-1 overflow-y-auto">
-        <div class="grid grid-cols-2 gap-3 mb-3">
-          <label class="text-xs font-semibold text-slate-700">Ngày áp dụng <input id="attendance-exempt-effective-date" type="date" required class="mt-1 w-full px-3 py-2 border border-slate-300 rounded-lg"></label>
-          <label class="text-xs font-semibold text-slate-700">Trạng thái <select id="attendance-exempt-record-status" class="mt-1 w-full px-3 py-2 border border-slate-300 rounded-lg"><option value="ACTIVE">Đang áp dụng</option><option value="INACTIVE">Ngừng áp dụng</option></select></label>
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 mb-3">
+          <label class="text-xs font-semibold text-slate-700">Từ ngày (Áp dụng) <span class="text-rose-500">*</span> <input id="attendance-exempt-effective-date" type="date" required class="mt-1 w-full px-3 py-2 border border-slate-300 rounded-lg text-xs focus:ring-2 focus:ring-[#2E3191] focus:outline-none"></label>
+          <label class="text-xs font-semibold text-slate-700">Đến ngày (Tùy chọn) <input id="attendance-exempt-effective-to" type="date" placeholder="Để trống nếu vô thời hạn" class="mt-1 w-full px-3 py-2 border border-slate-300 rounded-lg text-xs focus:ring-2 focus:ring-[#2E3191] focus:outline-none"></label>
+          <label class="text-xs font-semibold text-slate-700">Trạng thái <select id="attendance-exempt-record-status" class="mt-1 w-full px-3 py-2 border border-slate-300 rounded-lg text-xs focus:ring-2 focus:ring-[#2E3191] focus:outline-none"><option value="ACTIVE">Đang áp dụng</option><option value="INACTIVE">Ngừng áp dụng</option></select></label>
         </div>
         <label class="block text-xs font-semibold text-slate-700 mb-3">Mô tả / Lý do <textarea id="attendance-exempt-description" rows="2" placeholder="Nhập mô tả hoặc lý do miễn chấm công (tùy chọn)..." class="mt-1 w-full px-3 py-2 border border-slate-300 rounded-lg text-xs resize-none focus:ring-2 focus:ring-[#2E3191] focus:outline-none"></textarea></label>
         <section id="attendance-exempt-scope-selection" class="border border-slate-200 rounded-xl p-3">
@@ -14126,6 +14140,7 @@
         employeeCode: 'PAP0001',
         description: 'Thành viên Ban Lãnh đạo cấp cao (Hội đồng Quản trị)',
         effectiveFrom: '2025-01-01',
+        effectiveTo: null,
         status: 'ACTIVE',
         source: 'SYSTEM',
         createdBy: 'AdminSystem',
@@ -14138,6 +14153,7 @@
         employeeCode: 'PAP0002',
         description: 'Tổng Giám đốc điều hành Cảng Phước An',
         effectiveFrom: '2025-01-01',
+        effectiveTo: null,
         status: 'ACTIVE',
         source: 'SYSTEM',
         createdBy: 'AdminSystem',
@@ -14150,6 +14166,7 @@
         employeeCode: 'PAP0009',
         description: 'Phó Tổng Giám đốc phụ trách Vận hành & Cảng',
         effectiveFrom: '2025-03-01',
+        effectiveTo: '2027-12-31',
         status: 'ACTIVE',
         source: 'SYSTEM',
         createdBy: 'AdminSystem',
@@ -14162,6 +14179,7 @@
         employeeCode: 'PAP0108',
         description: 'Cố vấn Chiến lược Cấp cao kiêm nhiệm',
         effectiveFrom: '2025-06-01',
+        effectiveTo: '2026-12-31',
         status: 'ACTIVE',
         source: 'SYSTEM',
         createdBy: 'AdminSystem',
@@ -14695,22 +14713,32 @@
 
       // Miễn chấm công chỉ xem tại hồ sơ; nguồn trạng thái nằm trong danh sách tập trung.
       const profileExemptionRecord = getAttendanceExemptionRecord(emp.pap);
+      const todayStr = getLocalAttendanceDate();
       const exemption = getEmployeeAttendanceExemption(emp.pap);
-      const exemptionScheduled = profileExemptionRecord?.status === 'ACTIVE' && profileExemptionRecord.effectiveFrom && profileExemptionRecord.effectiveFrom > getLocalAttendanceDate();
+      const exemptionScheduled = profileExemptionRecord?.status === 'ACTIVE' && profileExemptionRecord.effectiveFrom && profileExemptionRecord.effectiveFrom > todayStr;
+      const exemptionExpired = profileExemptionRecord?.status === 'ACTIVE' && profileExemptionRecord.effectiveTo && profileExemptionRecord.effectiveTo < todayStr;
       const profileExemptTag = document.getElementById('prof-card-exempt-tag');
       const profileExemptEffective = document.getElementById('prof-card-exempt-effective');
       if (profileExemptTag) {
-        profileExemptTag.textContent = exemption ? 'Đang miễn chấm công' : exemptionScheduled ? 'Sắp áp dụng' : profileExemptionRecord?.status === 'INACTIVE' ? 'Ngừng áp dụng' : 'Không miễn chấm công';
-        profileExemptTag.className = `px-2 py-1 rounded-full text-[10px] font-bold ${exemption || exemptionScheduled ? 'bg-emerald-50 text-emerald-700' : 'bg-slate-100 text-slate-600'}`;
+        profileExemptTag.textContent = exemptionExpired ? 'Đã hết hạn miễn' : exemption ? 'Đang miễn chấm công' : exemptionScheduled ? 'Sắp áp dụng' : profileExemptionRecord?.status === 'INACTIVE' ? 'Ngừng áp dụng' : 'Không miễn chấm công';
+        profileExemptTag.className = `px-2 py-1 rounded-full text-[10px] font-bold ${exemptionExpired ? 'bg-amber-50 text-amber-700 border border-amber-200' : (exemption || exemptionScheduled) ? 'bg-emerald-50 text-emerald-700' : 'bg-slate-100 text-slate-600'}`;
       }
-      if (profileExemptEffective) profileExemptEffective.textContent = profileExemptionRecord
-        ? `Ngày hiệu lực: ${formatAttendanceEffectiveDate(profileExemptionRecord.effectiveFrom)} · ${exemptionScheduled ? 'Chưa đến ngày áp dụng' : profileExemptionRecord.status === 'ACTIVE' ? 'Chỉ xem tại hồ sơ' : 'Bản ghi đã ngừng'} `
-        : 'Không có bản ghi miễn chấm công. Chỉ xem tại hồ sơ.';
+      if (profileExemptEffective) {
+        if (profileExemptionRecord) {
+          const dateRange = `Hiệu lực: ${formatAttendanceEffectiveDate(profileExemptionRecord.effectiveFrom)} ~ ${profileExemptionRecord.effectiveTo ? formatAttendanceEffectiveDate(profileExemptionRecord.effectiveTo) : 'Vô thời hạn'}`;
+          profileExemptEffective.textContent = `${dateRange} · ${exemptionExpired ? 'Bản ghi đã hết hạn' : exemptionScheduled ? 'Chưa đến ngày áp dụng' : profileExemptionRecord.status === 'ACTIVE' ? 'Chỉ xem tại hồ sơ' : 'Bản ghi đã ngừng'}`;
+        } else {
+          profileExemptEffective.textContent = 'Không có bản ghi miễn chấm công. Chỉ xem tại hồ sơ.';
+        }
+      }
       const exemptTag = document.getElementById('prof-work-exempt-tag');
       if (exemptTag) {
-        if (exemption || exemptionScheduled) {
+        if (exemptionExpired) {
+          exemptTag.className = 'px-2.5 py-1 rounded-full text-[10px] font-bold bg-amber-100 text-amber-800 border border-amber-300';
+          exemptTag.innerText = `Đã hết hạn miễn (${profileExemptionRecord.effectiveTo ? formatAttendanceEffectiveDate(profileExemptionRecord.effectiveTo) : ''}) - Bắt buộc chấm công`;
+        } else if (exemption || exemptionScheduled) {
           exemptTag.className = 'px-2.5 py-1 rounded-full text-[10px] font-bold bg-emerald-100 text-emerald-800 border border-emerald-300';
-          exemptTag.innerText = exemption ? '✓ Đang áp dụng (Miễn chấm công)' : 'Sắp áp dụng miễn chấm công';
+          exemptTag.innerText = exemption ? `✓ Đang áp dụng (Miễn chấm công${profileExemptionRecord?.effectiveTo ? ' đến ' + formatAttendanceEffectiveDate(profileExemptionRecord.effectiveTo) : ''})` : 'Sắp áp dụng miễn chấm công';
         } else if (profileExemptionRecord?.status === 'INACTIVE') {
           exemptTag.className = 'px-2.5 py-1 rounded-full text-[10px] font-bold bg-slate-200 text-slate-700';
           exemptTag.innerText = 'Đã ngừng miễn chấm công';
@@ -16616,14 +16644,15 @@
 
     function getAttendanceExemptionRecord(employeeCode) {
       return (attendanceExemptionsData || []).filter(record => record.employeeCode === employeeCode)
-        .sort((a, b) => String(b.effectiveFrom || '').localeCompare(String(a.effectiveFrom || '')) || Number(b.createdAt || 0) - Number(a.createdAt || 0))[0] || null;
+        .sort((a, b) => String(b.effectiveFrom || '').localeCompare(String(a.effectiveFrom || '')) || String(b.effectiveTo || '').localeCompare(String(a.effectiveTo || '')) || Number(b.createdAt || 0) - Number(a.createdAt || 0))[0] || null;
     }
 
     function getEmployeeAttendanceExemption(employeeCode, workDate) {
       const targetDate = workDate || getLocalAttendanceDate();
       const records = (attendanceExemptionsData || []).filter(record =>
         record.employeeCode === employeeCode && record.status === 'ACTIVE' &&
-        (!record.effectiveFrom || record.effectiveFrom <= targetDate)
+        (!record.effectiveFrom || record.effectiveFrom <= targetDate) &&
+        (!record.effectiveTo || targetDate <= record.effectiveTo)
       );
       return records.sort((a, b) => String(b.effectiveFrom || '').localeCompare(String(a.effectiveFrom || '')) || Number(b.createdAt || 0) - Number(a.createdAt || 0))[0] || null;
     }
@@ -16643,7 +16672,7 @@
       });
     }
 
-    function setEmployeeAttendanceExemption(employeeCode, isExempt, effectiveFrom, status, applicableOrgUnits = [], description = '') {
+    function setEmployeeAttendanceExemption(employeeCode, isExempt, effectiveFrom, status, applicableOrgUnits = [], description = '', effectiveTo = null) {
       const employee = employeesData.find(item => item.pap === employeeCode);
       if (!employee) return false;
       const record = getAttendanceExemptionRecord(employeeCode);
@@ -16656,6 +16685,7 @@
       }
       if (current) {
         current.effectiveFrom = effectiveFrom || current.effectiveFrom || null;
+        current.effectiveTo = effectiveTo !== undefined ? (effectiveTo || null) : (current.effectiveTo || null);
         current.status = status || 'ACTIVE';
         current.source = current.source || 'HR';
         current.applicableOrgUnits = [...applicableOrgUnits];
@@ -16663,6 +16693,7 @@
         current.updatedAt = Date.now();
       } else if (record && status === 'INACTIVE') {
         record.effectiveFrom = effectiveFrom || record.effectiveFrom || null;
+        record.effectiveTo = effectiveTo !== undefined ? (effectiveTo || null) : (record.effectiveTo || null);
         record.status = 'INACTIVE';
         record.updatedAt = Date.now();
       } else {
@@ -16670,6 +16701,7 @@
           id: `EX-${employeeCode}-${Date.now()}`,
           employeeCode,
           effectiveFrom: effectiveFrom || null,
+          effectiveTo: effectiveTo || null,
           status: status || 'ACTIVE',
           source: 'HR',
           applicableOrgUnits: [...applicableOrgUnits],
@@ -16827,6 +16859,7 @@
           else if (col === 'dept') { valA = a.dept || ''; valB = b.dept || ''; }
           else if (col === 'position') { valA = a.position || ''; valB = b.position || ''; }
           else if (col === 'effectiveFrom') { valA = recA?.effectiveFrom || ''; valB = recB?.effectiveFrom || ''; }
+          else if (col === 'effectiveTo') { valA = recA?.effectiveTo || '9999-12-31'; valB = recB?.effectiveTo || '9999-12-31'; }
           else if (col === 'createdAt') { valA = recA?.createdAt || 0; valB = recB?.createdAt || 0; }
           else if (col === 'updatedAt') { valA = recA?.updatedAt || 0; valB = recB?.updatedAt || 0; }
           if (typeof valA === 'number' && typeof valB === 'number') return (valA - valB) * dir;
@@ -16838,18 +16871,21 @@
       const countEl = document.getElementById('attendance-exempt-count');
       if (countEl) countEl.textContent = `${filtered.length} nhân viên`;
       if (!filtered.length) {
-        tbody.innerHTML = '<tr><td colspan="11" class="py-8 px-3 text-center text-slate-500">Không có nhân viên miễn chấm công phù hợp.</td></tr>';
+        tbody.innerHTML = '<tr><td colspan="12" class="py-8 px-3 text-center text-slate-500">Không có nhân viên miễn chấm công phù hợp.</td></tr>';
         renderAttendanceExemptionSummary();
         return;
       }
       tbody.innerHTML = page.rows.map((employee, index) => {
         const rec = getAttendanceExemptionRecord(employee.pap);
+        const todayStr = getLocalAttendanceDate();
         const isActive = rec?.status === 'ACTIVE';
-        const isScheduled = isActive && rec?.effectiveFrom && rec.effectiveFrom > getLocalAttendanceDate();
-        const statusLabel = isActive ? (isScheduled ? 'Chưa đến ngày hiệu lực' : 'Đang áp dụng') : 'Ngừng áp dụng';
-        const statusCls = isActive ? 'bg-emerald-50 text-emerald-700' : 'bg-slate-100 text-slate-600';
+        const isScheduled = isActive && rec?.effectiveFrom && rec.effectiveFrom > todayStr;
+        const isExpired = isActive && rec?.effectiveTo && rec.effectiveTo < todayStr;
+        const statusLabel = isExpired ? 'Đã hết hạn' : isActive ? (isScheduled ? 'Chưa đến ngày hiệu lực' : 'Đang áp dụng') : 'Ngừng áp dụng';
+        const statusCls = isExpired ? 'bg-amber-50 text-amber-700 border border-amber-200' : isActive ? 'bg-emerald-50 text-emerald-700' : 'bg-slate-100 text-slate-600';
         const createdAtStr = rec?.createdAt ? (() => { const d = new Date(rec.createdAt); return `${String(d.getDate()).padStart(2,'0')}/${String(d.getMonth()+1).padStart(2,'0')}/${d.getFullYear()}<div class="text-[10px] text-slate-400">${String(d.getHours()).padStart(2,'0')}:${String(d.getMinutes()).padStart(2,'0')}</div>`; })() : '<span class="text-slate-400">—</span>';
         const updatedAtStr = rec?.updatedAt ? (() => { const d = new Date(rec.updatedAt); return `${String(d.getDate()).padStart(2,'0')}/${String(d.getMonth()+1).padStart(2,'0')}/${d.getFullYear()}<div class="text-[10px] text-slate-400">${String(d.getHours()).padStart(2,'0')}:${String(d.getMinutes()).padStart(2,'0')}</div>`; })() : '<span class="text-slate-400">—</span>';
+        const effectiveToStr = rec?.effectiveTo ? `<span class="font-medium text-slate-800">${formatAttendanceEffectiveDate(rec.effectiveTo)}</span>` : '<span class="text-slate-400 font-medium italic">Vô thời hạn</span>';
         return `<tr class="hover:bg-slate-50/80 group">
           <td class="py-3 px-3 text-center text-slate-400 sticky left-0 bg-white group-hover:bg-slate-50 z-10">${page.offset + index + 1}</td>
           <td class="py-3 px-3 font-mono font-bold text-[#2E3191]">${escapeHtml(employee.pap || '—')}</td>
@@ -16857,7 +16893,8 @@
           <td class="py-3 px-3 text-slate-700">${escapeHtml(employee.dept || '—')}</td>
           <td class="py-3 px-3 text-slate-700">${escapeHtml(employee.position || '—')}</td>
           <td class="py-3 px-3 text-slate-600 text-[11px]">${rec?.description ? escapeHtml(rec.description) : '<span class="text-slate-400">—</span>'}</td>
-          <td class="py-3 px-3 text-center">${rec?.effectiveFrom ? formatAttendanceEffectiveDate(rec.effectiveFrom) : '<span class="text-slate-400">Chưa ghi nhận</span>'}</td>
+          <td class="py-3 px-3 text-center font-medium">${rec?.effectiveFrom ? formatAttendanceEffectiveDate(rec.effectiveFrom) : '<span class="text-slate-400">Chưa ghi nhận</span>'}</td>
+          <td class="py-3 px-3 text-center">${effectiveToStr}</td>
           <td class="py-3 px-3 text-center"><span class="px-2 py-1 rounded-full ${statusCls} text-[10px] font-bold">${statusLabel}</span></td>
           <td class="py-3 px-3 text-center text-[11px]">${createdAtStr}</td>
           <td class="py-3 px-3 text-center text-[11px]">${updatedAtStr}</td>
@@ -17026,6 +17063,8 @@
       document.getElementById('attendance-exempt-modal-title').textContent = 'Thêm nhân viên miễn chấm công';
       document.getElementById('attendance-exempt-save-button').textContent = 'Thêm vào danh sách';
       document.getElementById('attendance-exempt-effective-date').value = getLocalAttendanceDate();
+      const effToInput = document.getElementById('attendance-exempt-effective-to');
+      if (effToInput) effToInput.value = '';
       document.getElementById('attendance-exempt-record-status').value = 'ACTIVE';
       document.getElementById('attendance-exempt-unit-search').value = '';
       document.getElementById('attendance-exempt-candidate-error').classList.add('hidden');
@@ -17044,6 +17083,8 @@
       document.getElementById('attendance-exempt-modal-title').textContent = `Cập nhật miễn chấm công - ${employee.name}`;
       document.getElementById('attendance-exempt-save-button').textContent = 'Cập nhật';
       document.getElementById('attendance-exempt-effective-date').value = record.effectiveFrom || '';
+      const effToInput = document.getElementById('attendance-exempt-effective-to');
+      if (effToInput) effToInput.value = record.effectiveTo || '';
       document.getElementById('attendance-exempt-record-status').value = record.status;
       const descEl = document.getElementById('attendance-exempt-description');
       if (descEl) descEl.value = record.description || '';
@@ -17060,20 +17101,28 @@
       attendanceExemptionScopeUnitIds = new Set();
       const descEl = document.getElementById('attendance-exempt-description');
       if (descEl) descEl.value = '';
+      const effToInput = document.getElementById('attendance-exempt-effective-to');
+      if (effToInput) effToInput.value = '';
     }
 
 
     function saveAttendanceExemptionSelection() {
       const effectiveFrom = document.getElementById('attendance-exempt-effective-date').value;
+      const effectiveTo = document.getElementById('attendance-exempt-effective-to')?.value.trim() || null;
       const status = document.getElementById('attendance-exempt-record-status').value;
+      const error = document.getElementById('attendance-exempt-candidate-error');
+
       if (!effectiveFrom && !attendanceExemptionEditCode) {
-        const error = document.getElementById('attendance-exempt-candidate-error');
-        error.textContent = 'Vui lòng chọn ngày áp dụng.';
+        error.textContent = 'Vui lòng chọn ngày bắt đầu áp dụng.';
+        error.classList.remove('hidden');
+        return;
+      }
+      if (effectiveFrom && effectiveTo && effectiveTo < effectiveFrom) {
+        error.textContent = 'Đến ngày không được nhỏ hơn Từ ngày hiệu lực.';
         error.classList.remove('hidden');
         return;
       }
       if (!attendanceExemptionSelection.size) {
-        const error = document.getElementById('attendance-exempt-candidate-error');
         error.textContent = 'Chọn ít nhất một nhân viên để thêm vào danh sách.';
         error.classList.remove('hidden');
         return;
@@ -17082,14 +17131,14 @@
       const editingCode = attendanceExemptionEditCode;
       const description = document.getElementById('attendance-exempt-description')?.value.trim() || '';
       if (editingCode) {
-        setEmployeeAttendanceExemption(editingCode, status === 'ACTIVE', effectiveFrom, status, [], description);
+        setEmployeeAttendanceExemption(editingCode, status === 'ACTIVE', effectiveFrom, status, [], description, effectiveTo);
       } else {
-        attendanceExemptionSelection.forEach(employeeCode => setEmployeeAttendanceExemption(employeeCode, true, effectiveFrom, status, [...attendanceExemptionScopeUnitIds], description));
+        attendanceExemptionSelection.forEach(employeeCode => setEmployeeAttendanceExemption(employeeCode, true, effectiveFrom, status, [...attendanceExemptionScopeUnitIds], description, effectiveTo));
       }
 
       closeAttendanceExemptionModal();
       renderAttendanceExemptionList();
-      showToast(editingCode ? 'Đã cập nhật bản ghi miễn chấm công.' : `Đã thêm ${addedCount} nhân viên vào danh sách miễn chấm công.`);
+      showToast(editingCode ? 'Đã cập nhật bản ghi miễn chấm công (bao gồm thời hạn đến ngày).' : `Đã thêm ${addedCount} nhân viên vào danh sách miễn chấm công.`);
     }
 
     function removeAttendanceExemption(employeeCode) {
