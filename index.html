@@ -6781,28 +6781,21 @@
         <!-- ================= PANEL: CHÍNH SÁCH LỊCH LÀM VIỆC (WORK SCHEDULE POLICIES) ================= -->
         <div id="schedule-panel-policies" class="space-y-3 hidden">
           <div class="bg-white p-4 rounded-2xl border border-slate-200 shadow-xs">
-            <h3 class="text-sm font-bold text-slate-900">Mẫu lịch làm việc</h3>
-            <p class="text-xs text-slate-600 mt-1">Tạo mẫu trước rồi gán cho từng nhân viên trong hồ sơ. Mẫu hành chính tự tạo lịch theo tuần; mẫu Theo ca xác định ca được phép dùng. HR/Quản lý chọn tuần/tháng rồi phân ca trực tiếp trên màn hình Lịch làm việc.</p>
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-3 mt-3">
-              <div class="p-3 rounded-xl border border-indigo-200 bg-indigo-50/60">
-                <div class="font-bold text-[#2E3191] text-xs">Hành chính</div>
-                <p class="text-[11px] text-slate-700 mt-1">Khai báo ca theo từng thứ trong tuần. Lịch nhân viên tự hiện từ mẫu đang có hiệu lực; không cần lập lịch ca theo tuần.</p>
-              </div>
-              <div class="p-3 rounded-xl border border-sky-200 bg-sky-50/60">
-                <div class="font-bold text-sky-900 text-xs">Theo ca</div>
-                <p class="text-[11px] text-slate-700 mt-1">Chọn mẫu để xác định các ca được phép dùng. Quản lý xếp lịch theo từng kỳ; ngày chưa xếp không tự xem là ngày nghỉ.</p>
+            <div class="flex flex-wrap items-center justify-between gap-2">
+              <div>
+                <h3 class="text-sm font-bold text-slate-900 flex items-center space-x-2">
+                  <span>Mẫu lịch làm việc cố định (Hành chính)</span>
+                  <span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-indigo-50 text-[#2E3191] border border-indigo-200">Cố định theo tuần</span>
+                </h3>
+                <p class="text-xs text-slate-600 mt-1">Thiết lập khuôn mẫu lịch cố định lặp theo tuần cho nhân sự làm việc hành chính/cố định. Mỗi ngày có thể chọn <strong>một hoặc nhiều ca làm việc</strong> (ví dụ: Ca Sáng + Ca Chiều), hoặc đánh dấu Nghỉ (OFF). Nhân viên thuộc nhóm <strong>Theo ca</strong> được phân ca trực tiếp trên Bảng phân ca và không dùng mẫu lặp tuần.</p>
               </div>
             </div>
           </div>
           <div class="bg-white p-4 rounded-2xl border border-slate-200 shadow-xs space-y-3">
             <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-2">
-              <div class="flex flex-wrap gap-2">
-                <input id="policy-search" oninput="handlePolicyFilter()" type="search" placeholder="Tìm mã hoặc tên mẫu lịch..." class="px-3 py-2 border border-slate-300 rounded-lg text-xs">
-                <select id="policy-filter-type" onchange="handlePolicyFilter()" class="px-3 py-2 border border-slate-300 rounded-lg text-xs bg-white font-medium">
-                  <option value="ALL">Tất cả hình thức</option>
-                  <option value="FIXED">Hành chính</option>
-                  <option value="FLEXIBLE">Theo ca</option>
-                </select>
+              <div class="flex flex-wrap gap-2 items-center">
+                <input id="policy-search" oninput="handlePolicyFilter()" type="search" placeholder="Tìm mã hoặc tên mẫu lịch cố định..." class="px-3 py-2 border border-slate-300 rounded-lg text-xs w-64">
+                <span class="text-xs text-slate-500 font-medium">Hiển thị các mẫu lịch cố định theo tuần</span>
               </div>
               <div class="flex items-center space-x-2">
                 <button type="button" onclick="openColumnPicker(this, 'schedule-policies-table')" class="bg-[#2E3191] text-white font-semibold text-xs rounded-xl px-3.5 py-1.5 shadow-xs hover:bg-[#242775] transition-all inline-flex items-center gap-1.5 cursor-pointer" title="Ẩn / Hiện và Ghim cột">
@@ -12869,8 +12862,7 @@
                   <option value="VP-STANDARD">🏢 [VP-STANDARD] Hành chính VP Tiêu chuẩn</option>
                   <option value="VP-SHUTTLE">🏢 [VP-SHUTTLE] Hành chính Xe đưa rước</option>
                   <option value="VP-SAT-HALF">🏢 [VP-SAT-HALF] Hành chính + T7 Nửa ngày</option>
-                  <option value="PROD-ROTATING-3-4">⚓ [PROD-ROTATING-3-4] Kíp Sản xuất (3 ca 4 kíp)</option>
-                  <option value="PROD-PILOT-MARINE">⚓ [PROD-PILOT-MARINE] Đội Hoa tiêu & Hàng hải</option>
+                  <option value="VP-SPLIT">🏢 [VP-SPLIT] Hành chính 2 ca/ngày (Ca Sáng & Ca Chiều)</option>
                 </select>
               </div>
 
@@ -18785,9 +18777,17 @@
           ['Thứ Sáu', 'fri'], ['Thứ Bảy', 'sat'], ['Chủ Nhật', 'sun']
         ];
         const pattern = weekdays.map(([day, key]) => {
-          const code = policy.weeklyPattern?.[key] || '—';
-          const shiftName = code === '—' ? 'Chưa cấu hình' : (getShiftTemplateByCode(code)?.name || code);
-          return `<div class="flex items-start justify-between gap-3 border-b border-slate-100 py-2 last:border-0"><span class="font-semibold text-slate-700">${day}</span><span class="text-right text-slate-800"><strong>${escape(code)}</strong><span class="block text-xs text-slate-500">${escape(shiftName)}</span></span></div>`;
+          const val = policy.weeklyPattern?.[key] || 'OFF';
+          const shifts = Array.isArray(val) ? val : String(val).split('+');
+          const isOff = shifts.includes('OFF') || (shifts.length === 1 && shifts[0] === 'OFF');
+          if (isOff) {
+            return `<div class="flex items-start justify-between gap-3 border-b border-slate-100 py-2 last:border-0"><span class="font-semibold text-slate-700">${day}</span><span class="text-right text-slate-500 font-medium">Nghỉ tuần (OFF)</span></div>`;
+          }
+          const shiftBadges = shifts.map(c => {
+            const shiftObj = getShiftTemplateByCode(c);
+            return `<span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-bold bg-indigo-50 text-[#2E3191] border border-indigo-200 mr-1.5">${c}</span><span class="text-xs text-slate-700">${shiftObj?.name || c}</span>`;
+          }).join('<div class="mt-1"></div>');
+          return `<div class="flex items-start justify-between gap-3 border-b border-slate-100 py-2.5 last:border-0"><span class="font-semibold text-slate-800">${day}</span><div class="text-right">${shiftBadges}</div></div>`;
         }).join('');
         return `${facts}
           <section class="mt-4 rounded-xl border border-indigo-100 bg-indigo-50/40 p-4">
@@ -18837,17 +18837,15 @@
       if (!tbody) return;
 
       const searchInput = document.getElementById('policy-search');
-      const filterType = document.getElementById('policy-filter-type');
       const keyword = searchInput ? searchInput.value.trim().toLowerCase() : '';
-      const type = filterType ? filterType.value : 'ALL';
 
       let list = workSchedulePoliciesData.filter(p => {
-        const targetText = p.type === 'FIXED' && Array.isArray(p.applicableUnits) && p.applicableUnits.length
+        if (p.type !== 'FIXED') return false;
+        const targetText = Array.isArray(p.applicableUnits) && p.applicableUnits.length
           ? p.applicableUnits.join(', ')
           : (p.targetAudience || '');
         const matchKey = p.code.toLowerCase().includes(keyword) || p.name.toLowerCase().includes(keyword) || targetText.toLowerCase().includes(keyword);
-        const matchType = (type === 'ALL') || (p.type === type);
-        return matchKey && matchType;
+        return matchKey;
       });
 
       // Đếm số lượng nhân sự theo từng chính sách
@@ -18866,25 +18864,23 @@
         const statusBadge = isActive
           ? '<span class="inline-block whitespace-nowrap px-2.5 py-0.5 rounded-full text-[10px] font-semibold bg-emerald-50 text-emerald-700 border border-emerald-200">Đang hoạt động</span>'
           : '<span class="inline-block whitespace-nowrap px-2.5 py-0.5 rounded-full text-[10px] font-semibold bg-slate-100 text-slate-600 border border-slate-200">Ngừng hoạt động</span>';
-        let cycleHtml = '';
-        if (p.type === 'FIXED') {
-          const weekdayRows = [
-            ['T2', p.weeklyPattern.mon], ['T3', p.weeklyPattern.tue], ['T4', p.weeklyPattern.wed],
-            ['T5', p.weeklyPattern.thu], ['T6', p.weeklyPattern.fri], ['T7', p.weeklyPattern.sat], ['CN', p.weeklyPattern.sun]
-          ];
-          cycleHtml = `
-            <div class="flex items-center space-x-1">
-              ${weekdayRows.map(([day, shift]) => `<span class="px-1 py-0.5 rounded text-[9px] font-bold ${shift === 'OFF' ? 'bg-slate-100 text-slate-600' : 'bg-blue-50 text-[#2E3191] border border-blue-100'}">${day} ${shift || '—'}</span>`).join('')}
-            </div>
-          `;
-        } else {
-          cycleHtml = `
-            <div>
-              <span class="font-bold text-slate-800 text-[11px]">Không có mẫu tuần · cần xếp ca theo từng kỳ</span>
-              <div class="text-[10px] text-slate-700 font-medium mt-0.5">${p.allowedShifts.map(s => `[${s}]`).join(' ')}</div>
-            </div>
-          `;
-        }
+        const weekdayRows = [
+          ['T2', p.weeklyPattern?.mon], ['T3', p.weeklyPattern?.tue], ['T4', p.weeklyPattern?.wed],
+          ['T5', p.weeklyPattern?.thu], ['T6', p.weeklyPattern?.fri], ['T7', p.weeklyPattern?.sat], ['CN', p.weeklyPattern?.sun]
+        ];
+        const cycleHtml = `
+          <div class="flex items-center space-x-1 flex-wrap gap-y-1">
+            ${weekdayRows.map(([day, shiftVal]) => {
+              const shifts = Array.isArray(shiftVal) ? shiftVal : String(shiftVal || 'OFF').split('+');
+              const isOff = shifts.includes('OFF') || (shifts.length === 1 && shifts[0] === 'OFF');
+              if (isOff) {
+                return `<span class="px-1.5 py-0.5 rounded text-[10px] font-medium bg-slate-100 text-slate-400" title="${day}: Nghỉ">${day}: OFF</span>`;
+              }
+              const label = shifts.join('+');
+              return `<span class="px-1.5 py-0.5 rounded text-[10px] font-bold bg-indigo-50 text-[#2E3191] border border-indigo-200" title="${day}: ${label}">${day}: ${label}</span>`;
+            }).join('')}
+          </div>
+        `;
 
         return `
           <tr class="hover:bg-slate-50/80 transition border-b border-slate-100 group">
@@ -18950,7 +18946,12 @@
 
     function openBulkAssignPolicyModal(prefPolicyCode) {
       const select = document.getElementById('bulk-assign-policy-code');
-      if (select && prefPolicyCode) select.value = prefPolicyCode;
+      if (select) {
+        select.innerHTML = workSchedulePoliciesData.filter(p => p.type === 'FIXED').map(p =>
+          `<option value="${p.code}">🏢 [${p.code}] ${p.name}</option>`
+        ).join('');
+        if (prefPolicyCode) select.value = prefPolicyCode;
+      }
       document.getElementById('modal-bulk-assign-policy').classList.remove('hidden');
     }
 
@@ -19010,6 +19011,140 @@
     let schedulePolicyPickerPageSize = 20;
     let schedulePolicyPickerSearch = '';
 
+    // =========================================================================
+    // MULTI-SHIFT WEEKLY PATTERN EDITOR FOR FIXED SCHEDULE POLICIES
+    // =========================================================================
+    const POLICY_AVAILABLE_SHIFTS = [
+      { code: 'HC', label: 'HC (8h)', name: 'Ca Hành chính (08:00 - 17:00)', hours: 8.0 },
+      { code: 'SANG', label: 'Sáng (4h)', name: 'Ca Sáng (08:00 - 12:00)', hours: 4.0 },
+      { code: 'CHIEU', label: 'Chiều (3h)', name: 'Ca Chiều (14:00 - 17:00)', hours: 3.0 },
+      { code: 'S1', label: 'Kíp S1 (12h)', name: 'Ca Ngày S1 (07:00 - 19:00)', hours: 12.0 },
+      { code: 'S2', label: 'Kíp S2 (12h)', name: 'Ca Đêm S2 (19:00 - 07:00)', hours: 12.0 },
+      { code: 'HC-DR', label: 'Xe đưa rước (8h)', name: 'Hành chính Xe đưa rước (07:30 - 17:00)', hours: 8.0 },
+      { code: 'OFF', label: 'Nghỉ (OFF)', name: 'Nghỉ tuần', hours: 0, isOff: true }
+    ];
+
+    let currentEditorWeeklyPattern = {
+      mon: ['HC'],
+      tue: ['HC'],
+      wed: ['HC'],
+      thu: ['HC'],
+      fri: ['HC'],
+      sat: ['OFF'],
+      sun: ['OFF']
+    };
+
+    function renderPolicyEditorWeeklyPattern() {
+      const container = document.getElementById('policy-editor-days-container');
+      if (!container) return;
+      const days = [
+        { key: 'mon', label: 'Thứ Hai (T2)' },
+        { key: 'tue', label: 'Thứ Ba (T3)' },
+        { key: 'wed', label: 'Thứ Tư (T4)' },
+        { key: 'thu', label: 'Thứ Năm (T5)' },
+        { key: 'fri', label: 'Thứ Sáu (T6)' },
+        { key: 'sat', label: 'Thứ Bảy (T7)', isWeekend: true },
+        { key: 'sun', label: 'Chủ Nhật (CN)', isWeekend: true }
+      ];
+
+      let totalWeeklyHours = 0;
+      let totalWorkingDays = 0;
+
+      container.innerHTML = days.map(d => {
+        let sel = currentEditorWeeklyPattern[d.key] || ['OFF'];
+        if (!Array.isArray(sel)) sel = String(sel).split('+');
+        const isOff = sel.includes('OFF') || (sel.length === 1 && sel[0] === 'OFF');
+
+        let dayHours = 0;
+        if (!isOff) {
+          sel.forEach(code => {
+            const shift = POLICY_AVAILABLE_SHIFTS.find(s => s.code === code);
+            if (shift) dayHours += (shift.hours || 0);
+          });
+          totalWeeklyHours += dayHours;
+          totalWorkingDays += (dayHours >= 8 ? 1.0 : (dayHours >= 4 ? 0.5 : 1.0));
+        }
+
+        const summaryBadge = isOff
+          ? '<span class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-rose-50 text-rose-700 border border-rose-200">🔴 Nghỉ tuần (OFF)</span>'
+          : `<span class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-indigo-50 text-[#2E3191] border border-indigo-200">🟢 ${sel.length} ca: ${sel.join(' + ')} (${dayHours}h)</span>`;
+
+        const chipsHtml = POLICY_AVAILABLE_SHIFTS.map(shift => {
+          const active = isOff ? (shift.code === 'OFF') : sel.includes(shift.code);
+          const activeCls = active
+            ? (shift.isOff
+                ? 'bg-rose-600 text-white font-bold border-rose-600 shadow-2xs'
+                : 'bg-[#2E3191] text-white font-bold border-[#2E3191] shadow-2xs')
+            : 'bg-white text-slate-700 border-slate-300 hover:bg-slate-100 hover:border-slate-400 font-medium';
+          return `
+            <button type="button" 
+                    onclick="togglePolicyDayShift('${d.key}', '${shift.code}')"
+                    class="px-2 py-1 rounded-md text-[11px] border transition cursor-pointer flex items-center space-x-1 ${activeCls}">
+              ${active ? (shift.isOff ? '✕' : '✓') : ''}
+              <span>${shift.label}</span>
+            </button>
+          `;
+        }).join('');
+
+        return `
+          <div class="p-2.5 rounded-xl border border-slate-200 bg-slate-50/80 space-y-1.5 transition hover:border-indigo-200">
+            <div class="flex items-center justify-between">
+              <span class="text-xs font-bold ${d.isWeekend ? 'text-rose-700' : 'text-slate-800'}">${d.label}</span>
+              ${summaryBadge}
+            </div>
+            <div class="flex flex-wrap gap-1.5 pt-0.5">
+              ${chipsHtml}
+            </div>
+          </div>
+        `;
+      }).join('');
+
+      const hoursEl = document.getElementById('policy-editor-total-hours');
+      const daysEl = document.getElementById('policy-editor-total-days');
+      if (hoursEl) hoursEl.textContent = `${totalWeeklyHours.toFixed(1)} giờ/tuần`;
+      if (daysEl) daysEl.textContent = `${totalWorkingDays.toFixed(1)} ngày công`;
+    }
+
+    function togglePolicyDayShift(dayKey, shiftCode) {
+      let cur = currentEditorWeeklyPattern[dayKey] || ['OFF'];
+      if (!Array.isArray(cur)) cur = String(cur).split('+');
+
+      if (shiftCode === 'OFF') {
+        currentEditorWeeklyPattern[dayKey] = ['OFF'];
+      } else {
+        cur = cur.filter(c => c !== 'OFF');
+        if (cur.includes(shiftCode)) {
+          cur = cur.filter(c => c !== shiftCode);
+        } else {
+          cur.push(shiftCode);
+        }
+        if (cur.length === 0) cur = ['OFF'];
+        currentEditorWeeklyPattern[dayKey] = cur;
+      }
+      renderPolicyEditorWeeklyPattern();
+    }
+
+    function quickApplyPolicyWeekdays(type) {
+      if (type === 'HC') {
+        ['mon', 'tue', 'wed', 'thu', 'fri'].forEach(k => currentEditorWeeklyPattern[k] = ['HC']);
+        currentEditorWeeklyPattern.sat = ['OFF'];
+        currentEditorWeeklyPattern.sun = ['OFF'];
+      } else if (type === 'SANG_CHIEU') {
+        ['mon', 'tue', 'wed', 'thu', 'fri'].forEach(k => currentEditorWeeklyPattern[k] = ['SANG', 'CHIEU']);
+        currentEditorWeeklyPattern.sat = ['OFF'];
+        currentEditorWeeklyPattern.sun = ['OFF'];
+      }
+      renderPolicyEditorWeeklyPattern();
+      showToast('✓ Đã áp dụng mẫu ca nhanh cho Thứ 2 – Thứ 6!');
+    }
+
+    function quickCopyMondayToWeekdays() {
+      const monShifts = [...(currentEditorWeeklyPattern.mon || ['HC'])];
+      ['tue', 'wed', 'thu', 'fri'].forEach(k => currentEditorWeeklyPattern[k] = [...monShifts]);
+      renderPolicyEditorWeeklyPattern();
+      showToast('✓ Đã sao chép ca Thứ 2 sang Thứ 3 – Thứ 6!');
+    }
+
     function openAddPolicyModal() {
       editingSchedulePolicyCode = null;
       schedulePolicySelectedEmployeeCodes = new Set();
@@ -19021,8 +19156,17 @@
       document.getElementById('add-policy-modal-title').textContent = 'Tạo mẫu lịch làm việc mới';
       document.getElementById('add-policy-submit-label').textContent = 'Tạo mẫu lịch';
       populateSchedulePolicyUnitOptions();
+      currentEditorWeeklyPattern = {
+        mon: ['HC'],
+        tue: ['HC'],
+        wed: ['HC'],
+        thu: ['HC'],
+        fri: ['HC'],
+        sat: ['OFF'],
+        sun: ['OFF']
+      };
+      renderPolicyEditorWeeklyPattern();
       document.getElementById('modal-add-policy').classList.remove('hidden');
-      toggleAddPolicyType();
     }
 
     function openEditPolicyModal(policyCode) {
@@ -19033,10 +19177,8 @@
       document.getElementById('add-policy-code').value = policy.code;
       document.getElementById('add-policy-code').disabled = true;
       document.getElementById('add-policy-name').value = policy.name || '';
-      document.getElementById('add-policy-type').value = policy.type;
       document.getElementById('add-policy-status').value = policy.isActive === false ? 'INACTIVE' : 'ACTIVE';
       document.getElementById('add-policy-description').value = policy.description || '';
-      document.getElementById('add-policy-audience').value = policy.targetAudience || '';
       const unitSelect = document.getElementById('add-policy-units');
       let savedUnit = policy.applicableOrgUnitId || '';
       let legacyUnits = [];
@@ -19061,12 +19203,18 @@
       }));
       schedulePolicyPickerTempEmployeeCodes = new Set(schedulePolicySelectedEmployeeCodes);
       renderSchedulePolicyEmployeeSummary();
+
+      // Load weekly pattern (supporting multi-shift arrays or single strings)
       const pattern = policy.weeklyPattern || {};
-      [['mon','ap-mon'],['tue','ap-tue'],['wed','ap-wed'],['thu','ap-thu'],['fri','ap-fri'],['sat','ap-sat'],['sun','ap-sun']]
-        .forEach(([day, id]) => { const select = document.getElementById(id); if (select && pattern[day]) select.value = pattern[day]; });
+      currentEditorWeeklyPattern = {};
+      ['mon', 'tue', 'wed', 'thu', 'fri', 'sat', 'sun'].forEach(day => {
+        const val = pattern[day] || ['OFF'];
+        currentEditorWeeklyPattern[day] = Array.isArray(val) ? [...val] : String(val).split('+');
+      });
+      renderPolicyEditorWeeklyPattern();
+
       document.getElementById('add-policy-modal-title').textContent = 'Cập nhật mẫu lịch làm việc';
       document.getElementById('add-policy-submit-label').textContent = 'Cập nhật mẫu lịch';
-      toggleAddPolicyType();
       document.getElementById('modal-add-policy').classList.remove('hidden');
     }
 
@@ -19076,35 +19224,7 @@
     }
 
     function toggleAddPolicyType() {
-      const type = document.getElementById('add-policy-type').value;
-      const fixedPanel = document.getElementById('add-policy-fixed-pattern');
-      const flexMsg = document.getElementById('add-policy-flexible-msg');
-      const fixedScope = document.getElementById('add-policy-fixed-scope');
-      const flexibleAudience = document.getElementById('add-policy-flexible-audience');
-      const unitSelect = document.getElementById('add-policy-units');
-      if (type === 'FIXED') {
-        fixedPanel.classList.remove('hidden');
-        flexMsg.classList.add('hidden');
-        flexMsg.classList.remove('block', 'flex');
-        fixedScope.classList.remove('hidden');
-        flexibleAudience.classList.add('hidden');
-        unitSelect.required = true;
-      } else {
-        fixedPanel.classList.add('hidden');
-        flexMsg.classList.remove('hidden');
-        flexMsg.classList.add('flex');
-        fixedScope.classList.add('hidden');
-        flexibleAudience.classList.remove('hidden');
-        unitSelect.required = false;
-      }
-      document.querySelectorAll('[id^="ap-"]').forEach(select => {
-        Array.from(select.options).forEach(option => {
-          const rotatingShift = option.value === 'S1' || option.value === 'S2';
-          option.disabled = type === 'FIXED' && rotatingShift;
-          option.hidden = type === 'FIXED' && rotatingShift;
-          if (type === 'FIXED' && rotatingShift && option.selected) select.value = 'HC';
-        });
-      });
+      // Kept for backward compatibility
     }
 
     function normalizeSchedulePolicyUnitText(value) {
@@ -19273,29 +19393,52 @@
 
     function handleSaveAddPolicy(e) {
       e.preventDefault();
-      const code = document.getElementById('add-policy-code').value.toUpperCase();
-      const name = document.getElementById('add-policy-name').value;
-      const type = document.getElementById('add-policy-type').value;
-      const selectedUnitId = type === 'FIXED' ? (document.getElementById('add-policy-units').value || 'ALL') : '';
+      const code = document.getElementById('add-policy-code').value.toUpperCase().trim();
+      const name = document.getElementById('add-policy-name').value.trim();
+      const type = 'FIXED';
+      const selectedUnitId = document.getElementById('add-policy-units').value || 'ALL';
       const selectedUnit = orgUnitsHierarchyData.find(unit => unit.id === selectedUnitId);
-      const applicableUnits = type === 'FIXED' ? [selectedUnit ? selectedUnit.name : 'Toàn công ty'] : [];
-      const applicableEmployeeCodes = type === 'FIXED' ? [...schedulePolicySelectedEmployeeCodes] : [];
-      if (type === 'FIXED' && !applicableEmployeeCodes.length) {
+      const applicableUnits = [selectedUnit ? selectedUnit.name : 'Toàn công ty'];
+      const applicableEmployeeCodes = [...schedulePolicySelectedEmployeeCodes];
+      if (!applicableEmployeeCodes.length) {
         showToast('⚠️ Vui lòng chọn ít nhất một nhân viên áp dụng trong phạm vi đơn vị.');
         return;
       }
-      const audience = type === 'FIXED'
-        ? `${applicableUnits[0]} · ${applicableEmployeeCodes.length} nhân viên được chọn`
-        : document.getElementById('add-policy-audience').value;
+      const audience = `${applicableUnits[0]} · ${applicableEmployeeCodes.length} nhân viên được chọn`;
       const description = document.getElementById('add-policy-description').value.trim();
       const isActive = document.getElementById('add-policy-status').value === 'ACTIVE';
+
+      // Build weekly pattern from multi-shift editor
+      const weeklyPattern = {
+        mon: currentEditorWeeklyPattern.mon || ['OFF'],
+        tue: currentEditorWeeklyPattern.tue || ['OFF'],
+        wed: currentEditorWeeklyPattern.wed || ['OFF'],
+        thu: currentEditorWeeklyPattern.thu || ['OFF'],
+        fri: currentEditorWeeklyPattern.fri || ['OFF'],
+        sat: currentEditorWeeklyPattern.sat || ['OFF'],
+        sun: currentEditorWeeklyPattern.sun || ['OFF']
+      };
+
+      let weeklyHours = 0;
+      let weeklyDays = 0;
+      Object.values(weeklyPattern).forEach(arr => {
+        if (Array.isArray(arr) && !arr.includes('OFF')) {
+          let dayH = 0;
+          arr.forEach(c => {
+            const s = POLICY_AVAILABLE_SHIFTS.find(x => x.code === c);
+            if (s) dayH += (s.hours || 0);
+          });
+          weeklyHours += dayH;
+          weeklyDays += (dayH >= 8 ? 1.0 : (dayH >= 4 ? 0.5 : 1.0));
+        }
+      });
       
       const newPolicy = {
         code: code,
         name: name,
-        type: type,
-        typeName: type === 'FIXED' ? '🏢 Hành chính (theo mẫu tuần)' : '⚓ Theo ca (HR/Quản lý xếp theo kỳ)',
-        typeBadgeCls: type === 'FIXED' ? 'bg-indigo-50 text-[#2E3191] border-indigo-200' : 'bg-orange-50 text-[#F26522] border-orange-200',
+        type: 'FIXED',
+        typeName: '🏢 Hành chính',
+        typeBadgeCls: 'bg-indigo-50 text-[#2E3191] border-indigo-200',
         targetAudience: audience,
         applicableUnits,
         applicableOrgUnitId: selectedUnitId,
@@ -19303,30 +19446,13 @@
         applicableEmployeeCodes,
         excludedEmployeeCodes: [],
         isActive,
-        weeklyHours: 40.0,
-        weeklyDays: 5.0,
+        weeklyPattern,
+        weeklyHours: Math.round(weeklyHours * 10) / 10,
+        weeklyDays: Math.round(weeklyDays * 10) / 10,
         transport: 'Tự túc phương tiện',
-        rosterNote: type === 'FIXED' ? 'Tự hiện lịch theo mẫu tuần, không cần xếp lại mỗi tuần' : 'HR/Quản lý cần lập lịch ca cho nhân viên theo từng kỳ',
+        rosterNote: 'Tự hiện lịch theo mẫu tuần, không cần xếp lại mỗi tuần',
         description
       };
-
-      if (type === 'FIXED') {
-        newPolicy.weeklyPattern = {
-          mon: document.getElementById('ap-mon').value,
-          tue: document.getElementById('ap-tue').value,
-          wed: document.getElementById('ap-wed').value,
-          thu: document.getElementById('ap-thu').value,
-          fri: document.getElementById('ap-fri').value,
-          sat: document.getElementById('ap-sat').value,
-          sun: document.getElementById('ap-sun').value,
-        };
-      } else {
-        newPolicy.cycle = 'Luân phiên tự định nghĩa';
-        newPolicy.allowedShifts = ['S1', 'S2', 'HC'];
-        newPolicy.defaultShift = 'S1';
-        newPolicy.maxHoursPerWeek = 48.0;
-        newPolicy.restRule = 'Nghỉ luân phiên';
-      }
 
       const isEditing = typeof editingSchedulePolicyCode !== 'undefined' && Boolean(editingSchedulePolicyCode);
       if (isEditing) {
@@ -19335,31 +19461,33 @@
         const currentPolicy = workSchedulePoliciesData[policyIndex];
         const assignedCount = employeesData.filter(employee => {
           const assignment = getEffectiveScheduleAssignment(employee);
-          return assignment && assignment.policyCode === editingSchedulePolicyCode;
+          return assignment && assignment.policyCode === currentPolicy.code;
         }).length;
-        const scheduleChanged = currentPolicy.type !== newPolicy.type ||
-          JSON.stringify(currentPolicy.weeklyPattern || {}) !== JSON.stringify(newPolicy.weeklyPattern || {}) ||
-          JSON.stringify(currentPolicy.allowedShifts || []) !== JSON.stringify(newPolicy.allowedShifts || []);
-        if (assignedCount > 0 && scheduleChanged && !window.confirm(`Mẫu lịch đang được ${assignedCount} nhân sự sử dụng. Cập nhật cấu hình sẽ áp dụng cho các nhân sự này. Bạn có muốn tiếp tục?`)) return;
-        const updatedPolicy = { ...currentPolicy, ...newPolicy };
-        if (type === 'FLEXIBLE') delete updatedPolicy.weeklyPattern;
-        if (type === 'FIXED') delete updatedPolicy.allowedShifts;
-        workSchedulePoliciesData[policyIndex] = updatedPolicy;
+        const hasCoreChange = JSON.stringify(currentPolicy.weeklyPattern || {}) !== JSON.stringify(newPolicy.weeklyPattern || {});
+
+        if (assignedCount > 0 && hasCoreChange) {
+          const confirmUpdate = confirm(`Mẫu lịch [${currentPolicy.name}] đang được gán cho ${assignedCount} nhân viên.\n\nCập nhật cấu hình ca sẽ tự động đồng bộ sang lịch của các nhân sự này từ ngày hôm nay.\n\nBạn có chắc chắn muốn cập nhật?`);
+          if (!confirmUpdate) return;
+        }
+        workSchedulePoliciesData[policyIndex] = { ...currentPolicy, ...newPolicy };
+        showToast(`✅ Đã cập nhật thành công mẫu lịch: ${name}`);
       } else {
-        if (workSchedulePoliciesData.some(policy => policy.code.toLowerCase() === code.toLowerCase())) {
-          showToast('⚠️ Mã mẫu lịch đã tồn tại.');
+        const existed = workSchedulePoliciesData.some(p => p.code.toLowerCase() === code.toLowerCase());
+        if (existed) {
+          showToast('⚠️ Mã mẫu lịch đã tồn tại! Vui lòng chọn mã khác.');
           return;
         }
         workSchedulePoliciesData.push(newPolicy);
+        showToast(`✅ Đã tạo mới thành công mẫu lịch: ${name}`);
       }
-      
+
       // Update Dropdown in Bulk Assign Modal!
       const select = document.getElementById('bulk-assign-policy-code');
       if (select && select.options) {
         let option = Array.from(select.options).find(item => item.value === code);
         if (isActive) {
           if (!option) { option = document.createElement('option'); option.value = code; select.appendChild(option); }
-          option.innerText = `${type === 'FIXED' ? '🏢' : '⚓'} [${code}] ${name}`;
+          option.innerText = `🏢 [${code}] ${name}`;
         } else if (option) {
           option.remove();
         }
@@ -19368,7 +19496,6 @@
       closeAddPolicyModal();
       renderSchedulePoliciesTable();
       if (typeof renderWorkSchedule === 'function') renderWorkSchedule();
-      showToast(isEditing ? `✅ Đã cập nhật Mẫu lịch: ${name}` : `✅ Đã tạo thành công Mẫu lịch: ${name}`);
       
       const kpiTotal = document.getElementById('kpi-policy-total');
       if (kpiTotal) kpiTotal.innerText = workSchedulePoliciesData.length;
@@ -19381,9 +19508,9 @@
     
     // =========================================================================
     // DANH MỤC CHÍNH SÁCH LỊCH LÀM VIỆC CHUẨN (STANDARD WORK SCHEDULE POLICIES)
-    // Cấp doanh nghiệp Cảng Phước An - Thống nhất giữa Ca (Shift) & Lịch (Schedule)
+    // Cấp doanh nghiệp Cảng Phước An - Chỉ quản lý mẫu lịch cố định (Hành chính)
     // =========================================================================
-    const workSchedulePoliciesData = [
+    let workSchedulePoliciesData = [
       {
         code: 'VP-STANDARD',
         name: 'Hành chính Văn phòng Tiêu chuẩn',
@@ -19391,7 +19518,7 @@
         typeName: '🏢 Hành chính',
         typeBadgeCls: 'bg-indigo-50 text-[#2E3191] border-indigo-200',
         targetAudience: 'Khối Văn phòng, Gián tiếp, Kế toán, PM, TCHC, Pháp chế',
-        weeklyPattern: { mon: 'HC', tue: 'HC', wed: 'HC', thu: 'HC', fri: 'HC', sat: 'OFF', sun: 'OFF' },
+        weeklyPattern: { mon: ['HC'], tue: ['HC'], wed: ['HC'], thu: ['HC'], fri: ['HC'], sat: ['OFF'], sun: ['OFF'] },
         weeklyHours: 40.0,
         weeklyDays: 5.0,
         transport: 'Tự túc phương tiện',
@@ -19405,7 +19532,7 @@
         typeName: '🏢 Hành chính',
         typeBadgeCls: 'bg-emerald-50 text-emerald-800 border-emerald-200',
         targetAudience: 'CBCNV di chuyển bằng tuyến xe đưa rước Cảng (Tuyến TP.HCM - Nhơn Trạch)',
-        weeklyPattern: { mon: 'HC-DR', tue: 'HC-DR', wed: 'HC-DR', thu: 'HC-DR', fri: 'HC-DR', sat: 'OFF', sun: 'OFF' },
+        weeklyPattern: { mon: ['HC-DR'], tue: ['HC-DR'], wed: ['HC-DR'], thu: ['HC-DR'], fri: ['HC-DR'], sat: ['OFF'], sun: ['OFF'] },
         weeklyHours: 40.0,
         weeklyDays: 5.0,
         transport: 'Xe đưa rước Cảng (Tuyến 01 & 02)',
@@ -19419,7 +19546,7 @@
         typeName: '🏢 Hành chính',
         typeBadgeCls: 'bg-amber-50 text-amber-800 border-amber-200',
         targetAudience: 'Bộ phận Tiếp nhận chứng từ Hải quan, Hiện trường Cảng',
-        weeklyPattern: { mon: 'HC', tue: 'HC', wed: 'HC', thu: 'HC', fri: 'HC', sat: 'SANG', sun: 'OFF' },
+        weeklyPattern: { mon: ['HC'], tue: ['HC'], wed: ['HC'], thu: ['HC'], fri: ['HC'], sat: ['SANG'], sun: ['OFF'] },
         weeklyHours: 44.0,
         weeklyDays: 5.5,
         transport: 'Tự túc phương tiện',
@@ -19427,49 +19554,18 @@
         description: 'T2-T6 làm việc cả ngày (08:00 - 17:00), sáng Thứ Bảy ca sáng (08:00 - 12:00), chiều T7 & Chủ Nhật nghỉ tuần.'
       },
       {
-        code: 'FLEX-FREE',
-        name: 'Xếp ca tự do (Không dùng mẫu lịch cố định)',
-        type: 'FLEXIBLE',
-        typeName: '⚓ Theo ca',
-        typeBadgeCls: 'bg-sky-50 text-sky-800 border-sky-200',
-        targetAudience: 'Toàn bộ nhân sự khối vận hành ca kíp, bến bãi, kỹ thuật Cảng',
-        cycle: 'Linh hoạt theo kế hoạch khai thác cảng và điều động thực tế',
-        allowedShifts: ['S1', 'S2', 'HC', 'GAY-01', 'OFF'],
-        defaultShift: 'S1',
-        maxHoursPerWeek: 48.0,
-        restRule: 'Phân ca thực tế trên Bảng phân ca (đảm bảo ≥ 24h nghỉ liên tục/tuần theo Điều 111 BLLĐ)',
-        rosterNote: 'Quản lý lập lịch trực tiếp tại tab Phân ca làm việc',
-        description: 'Không áp dụng mẫu lặp lại cố định. Nhân viên được phân ca theo ca tuần/tháng hoặc kế hoạch đón tàu.'
-      },
-      {
-        code: 'PROD-ROTATING-3-4',
-        name: 'Theo ca: Kíp Sản xuất Cầu bến (Kíp Ngày S1 / Đêm S2)',
-        type: 'FLEXIBLE',
-        typeName: '⚓ Theo ca',
-        typeBadgeCls: 'bg-orange-50 text-[#F26522] border-orange-200',
-        targetAudience: 'Công nhân xếp dỡ Cầu bến, Bãi Container, Lái cẩu STS/RTG, Xe nâng',
-        cycle: 'Kíp 12h luân phiên 24/7 (S1: 07-19h, S2: 19-07h)',
-        allowedShifts: ['S1', 'S2', 'HC'],
-        defaultShift: 'S1',
-        maxHoursPerWeek: 48.0,
-        restRule: 'Nghỉ luân phiên theo kíp (đảm bảo tối thiểu 24h nghỉ liên tục/tuần theo Điều 111 BLLĐ)',
-        rosterNote: 'HR/Quản lý lập lịch ca theo từng kỳ dựa trên kế hoạch khai thác',
-        description: 'Ca làm việc kíp 12h linh hoạt theo kế hoạch đón tàu cập cảng thực tế.'
-      },
-      {
-        code: 'PROD-PILOT-MARINE',
-        name: 'Theo ca: Đội Hoa tiêu & Hàng hải Cảng',
-        type: 'FLEXIBLE',
-        typeName: '⚓ Theo ca',
-        typeBadgeCls: 'bg-sky-50 text-sky-800 border-sky-200',
-        targetAudience: 'Hoa tiêu hàng hải, Thuyền viên tàu lai dắt, Trực luồng hàng hải Phước An',
-        cycle: 'Trực ca linh động theo lệnh điều động hoa tiêu và thủy triều',
-        allowedShifts: ['S1', 'S2', 'HC', 'GAY-01'],
-        defaultShift: 'S1',
-        maxHoursPerWeek: 48.0,
-        restRule: 'Nghỉ luân phiên theo lệnh điều động hoa tiêu',
-        rosterNote: 'HR/Quản lý lập lịch ca theo từng kỳ trên màn hình Lịch làm việc',
-        description: 'Trực dẫn tàu luân phiên theo thời điểm thủy triều và lệnh điều động đón tàu biển.'
+        code: 'VP-SPLIT',
+        name: 'Hành chính 2 ca/ngày (Ca Sáng & Ca Chiều)',
+        type: 'FIXED',
+        typeName: '🏢 Hành chính',
+        typeBadgeCls: 'bg-indigo-50 text-[#2E3191] border-indigo-200',
+        targetAudience: 'Bộ phận Lễ tân, Dịch vụ hỗ trợ Khách hàng và Tiếp nhận hồ sơ',
+        weeklyPattern: { mon: ['SANG', 'CHIEU'], tue: ['SANG', 'CHIEU'], wed: ['SANG', 'CHIEU'], thu: ['SANG', 'CHIEU'], fri: ['SANG', 'CHIEU'], sat: ['OFF'], sun: ['OFF'] },
+        weeklyHours: 35.0,
+        weeklyDays: 5.0,
+        transport: 'Tự túc phương tiện',
+        rosterNote: 'Tự hiện 2 ca/ngày (Sáng 4h & Chiều 3h) theo mẫu tuần',
+        description: 'Mỗi ngày làm 2 ca: Ca Sáng (08:00 - 12:00) và Ca Chiều (14:00 - 17:00). Thứ Bảy và Chủ Nhật nghỉ tuần.'
       }
     ];
 
@@ -19502,9 +19598,33 @@
 
     function getEmployeeScheduleMode(emp, workDate) {
       const assignment = getEffectiveScheduleAssignment(emp, workDate);
-      const policy = assignment ? workSchedulePoliciesData.find(p => p.code === assignment.policyCode) : null;
-      if (!policy) return 'UNASSIGNED';
+      if (!assignment) return 'UNASSIGNED';
+      if (assignment.policyCode === 'SHIFT' || assignment.policyCode === 'FLEX-FREE' || assignment.shiftGroup) return 'SHIFT';
+      const policy = workSchedulePoliciesData.find(p => p.code === assignment.policyCode);
+      if (!policy) return 'SHIFT';
       return policy.type === 'FIXED' ? 'FIXED' : 'SHIFT';
+    }
+
+    function getMultiShiftDefinition(shiftCode) {
+      if (!shiftCode) return shiftDefinitions['UNSCHEDULED'] || { label: '—', name: 'Chưa xếp ca', color: 'bg-slate-100 text-slate-400' };
+      if (shiftDefinitions[shiftCode]) return shiftDefinitions[shiftCode];
+      if (shiftCode.includes('+')) {
+        const parts = shiftCode.split('+');
+        const partDefs = parts.map(p => shiftDefinitions[p] || { label: p, name: p, hours: 0 });
+        const combinedLabels = partDefs.map(d => d.label).join('+');
+        const combinedNames = partDefs.map(d => d.name).join(' & ');
+        const totalHours = partDefs.reduce((acc, d) => acc + (d.hours || 0), 0);
+        return {
+          code: shiftCode,
+          label: combinedLabels,
+          name: `${combinedNames} (${totalHours}h)`,
+          hours: totalHours,
+          color: 'bg-indigo-50 text-[#2E3191] border-indigo-300 font-bold',
+          cls: 'bg-indigo-50 text-[#2E3191] border-indigo-300 font-bold',
+          colorHex: '#2E3191'
+        };
+      }
+      return shiftDefinitions['HC'] || { label: shiftCode, name: shiftCode, color: 'bg-blue-50 text-[#2E3191]' };
     }
 
     function getScheduledShiftForDay(emp, workDate) {
@@ -19513,7 +19633,12 @@
       if (!policy) return 'UNASSIGNED';
       if (policy.type !== 'FIXED') return 'UNSCHEDULED';
       const dayKeys = ['sun', 'mon', 'tue', 'wed', 'thu', 'fri', 'sat'];
-      return policy.weeklyPattern[dayKeys[new Date(workDate + 'T00:00:00').getDay()]] || 'UNSCHEDULED';
+      const dayVal = policy.weeklyPattern ? policy.weeklyPattern[dayKeys[new Date(workDate + 'T00:00:00').getDay()]] : null;
+      if (!dayVal) return 'UNSCHEDULED';
+      if (Array.isArray(dayVal)) {
+        return dayVal.length > 1 ? dayVal.join('+') : (dayVal[0] || 'UNSCHEDULED');
+      }
+      return dayVal;
     }
 
     function isShiftAllowedForEmployee(emp, shiftCode, workDate) {
@@ -26533,7 +26658,7 @@
         let dayCellsHtml = '';
 
         empSched.shifts.forEach((shiftCode, dayIdx) => {
-          const shiftDef = shiftDefinitions[shiftCode] || shiftDefinitions['HC'];
+          const shiftDef = shiftDefinitions[shiftCode] || getMultiShiftDefinition(shiftCode);
 
           const weekDatesMap = (typeof weekDatesDefinitions !== 'undefined' && weekDatesDefinitions[currentScheduleWeekKey])
             ? weekDatesDefinitions[currentScheduleWeekKey].dates
@@ -38416,45 +38541,48 @@
 
   <!-- ================= MODAL: THÊM CHÍNH SÁCH LỊCH MỚI ================= -->
   <div id="modal-add-policy" class="fixed inset-0 bg-slate-900/50 backdrop-blur-xs z-[60] flex items-center justify-center p-4 hidden">
-    <div class="bg-white rounded-2xl max-w-4xl w-full shadow-2xl border border-slate-200 overflow-hidden transform transition-all flex flex-col max-h-[90vh]">
+    <div class="bg-white rounded-2xl max-w-5xl w-full shadow-2xl border border-slate-200 overflow-hidden transform transition-all flex flex-col max-h-[92vh]">
       
       <!-- Modal Header -->
       <div class="pap-primary text-white p-4 flex items-center justify-between shrink-0">
-        <h3 class="text-sm font-bold flex items-center space-x-2">
-          <svg class="w-5 h-5 text-white shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" /></svg>
-          <span id="add-policy-modal-title" class="text-base tracking-wide uppercase">Tạo mẫu lịch làm việc mới</span>
-        </h3>
+        <div>
+          <h3 class="text-sm font-bold flex items-center space-x-2">
+            <svg class="w-5 h-5 text-white shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" /></svg>
+            <span id="add-policy-modal-title" class="text-base tracking-wide uppercase">Tạo mẫu lịch làm việc mới</span>
+          </h3>
+          <p class="text-xs text-indigo-100 mt-0.5">Thiết lập mẫu lịch cố định (Hành chính) lặp theo tuần. Cho phép chọn nhiều ca trong ngày.</p>
+        </div>
         <button type="button" onclick="closeAddPolicyModal()" class="text-slate-300 hover:text-white text-xl leading-none cursor-pointer p-1">&times;</button>
       </div>
 
       <form onsubmit="handleSaveAddPolicy(event)" class="flex flex-col overflow-hidden text-sm">
-        <div class="flex flex-1 overflow-hidden min-h-[420px]">
+        <div class="flex flex-1 overflow-hidden min-h-[460px]">
           
           <!-- LEFT COLUMN: General Info -->
-          <div class="flex-1 p-6 border-r border-slate-200 bg-slate-50 overflow-y-auto">
+          <div class="w-1/2 p-6 border-r border-slate-200 bg-slate-50 overflow-y-auto">
             <h4 class="font-bold text-slate-800 border-b border-slate-200 pb-2 mb-4 flex items-center space-x-2">
               <svg class="w-4 h-4 text-[#2E3191]" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
-              <span>1. THÔNG TIN ĐỊNH DANH</span>
+              <span>1. THÔNG TIN ĐỊNH DANH & PHẠM VI</span>
             </h4>
             
             <div class="space-y-4">
               <div class="grid grid-cols-2 gap-4">
                 <div>
                   <label class="block font-semibold text-slate-700 mb-1.5">Mã mẫu lịch <span class="text-rose-500">*</span></label>
-                  <input type="text" id="add-policy-code" required placeholder="VD: VP-CUSTOM" class="w-full px-3 py-2.5 border border-slate-300 rounded-lg uppercase font-bold focus:ring-2 focus:ring-[#2E3191] bg-white shadow-inner">
+                  <input type="text" id="add-policy-code" required placeholder="VD: HC-VP-01" class="w-full px-3 py-2.5 border border-slate-300 rounded-lg uppercase font-bold focus:ring-2 focus:ring-[#2E3191] bg-white shadow-inner">
                 </div>
                 <div>
-                  <label class="block font-semibold text-slate-700 mb-1.5">Chế độ lịch làm việc <span class="text-rose-500">*</span></label>
-                  <select id="add-policy-type" class="w-full px-3 py-2.5 border border-slate-300 rounded-lg bg-indigo-50 font-bold text-[#2E3191] focus:ring-2 focus:ring-[#2E3191] shadow-inner" onchange="toggleAddPolicyType()">
-                    <option value="FIXED">🏢 Hành chính — theo mẫu tuần</option>
-                    <option value="FLEXIBLE">⚓ Theo ca — HR/Quản lý xếp theo kỳ</option>
-                  </select>
+                  <label class="block font-semibold text-slate-700 mb-1.5">Chế độ lịch làm việc</label>
+                  <input type="hidden" id="add-policy-type" value="FIXED">
+                  <div class="px-3 py-2.5 bg-indigo-50 border border-indigo-200 rounded-lg font-bold text-[#2E3191] text-xs flex items-center space-x-2">
+                    <span>🏢 Hành chính (Cố định tuần)</span>
+                  </div>
                 </div>
               </div>
 
               <div>
                 <label class="block font-semibold text-slate-700 mb-1.5">Tên mẫu lịch <span class="text-rose-500">*</span></label>
-                <input type="text" id="add-policy-name" required placeholder="VD: Khối Hành chính mới..." class="w-full px-3 py-2.5 border border-slate-300 rounded-lg focus:ring-2 focus:ring-[#2E3191] bg-white shadow-inner">
+                <input type="text" id="add-policy-name" required placeholder="VD: Khối Hành chính Văn phòng tiêu chuẩn..." class="w-full px-3 py-2.5 border border-slate-300 rounded-lg focus:ring-2 focus:ring-[#2E3191] bg-white shadow-inner font-semibold">
               </div>
 
               <div id="add-policy-fixed-scope">
@@ -38466,83 +38594,67 @@
                 </div>
                 <div class="mt-2 flex items-center justify-between gap-2 text-xs text-slate-600"><span>Nhân viên thuộc phạm vi: <strong id="add-policy-employees-eligible" class="text-slate-800">0</strong></span><span id="add-policy-employees-count" class="font-semibold text-[#2E3191]">0 đã chọn</span></div>
                 <div id="add-policy-employees-summary" class="mt-2 min-h-12 rounded-lg border border-slate-200 bg-slate-50 px-3 py-2 text-xs text-slate-600">Chưa chọn nhân viên</div>
-                <div class="mt-1 text-[11px] text-slate-500">Chọn đơn vị để lọc nhân viên theo nhánh cấp cha–con, sau đó chọn tất cả hoặc từng nhân viên như phần Phân ca theo ca.</div>
-              </div>
-
-              <div id="add-policy-flexible-audience" class="hidden">
-                <label class="block font-semibold text-slate-700 mb-1.5">Đối tượng áp dụng</label>
-                <input type="text" id="add-policy-audience" placeholder="VD: Nhóm nhân viên vận hành..." class="w-full px-3 py-2.5 border border-slate-300 rounded-lg bg-white shadow-inner">
+                <div class="mt-1 text-[11px] text-slate-500">Nhân sự được gán mẫu này sẽ tự động sinh lịch tuần hoàn theo khuôn mẫu ca đã cấu hình.</div>
               </div>
 
               <div class="grid grid-cols-2 gap-3">
                 <div>
                   <label for="add-policy-status" class="block font-semibold text-slate-700 mb-1.5">Trạng thái <span class="text-rose-500">*</span></label>
-                  <select id="add-policy-status" required class="w-full px-3 py-2.5 border border-slate-300 rounded-lg bg-white shadow-inner">
+                  <select id="add-policy-status" required class="w-full px-3 py-2.5 border border-slate-300 rounded-lg bg-white shadow-inner font-semibold">
                     <option value="ACTIVE" selected>Đang hoạt động</option>
                     <option value="INACTIVE">Ngừng hoạt động</option>
                   </select>
                 </div>
                 <div class="col-span-2">
-                  <label for="add-policy-description" class="block font-semibold text-slate-700 mb-1.5">Mô tả</label>
-                  <textarea id="add-policy-description" rows="2" placeholder="Mô tả ngắn về mẫu lịch..." class="w-full px-3 py-2.5 border border-slate-300 rounded-lg bg-white shadow-inner resize-y"></textarea>
+                  <label for="add-policy-description" class="block font-semibold text-slate-700 mb-1.5">Mô tả / Ghi chú</label>
+                  <textarea id="add-policy-description" rows="2" placeholder="VD: Lịch làm việc 5 ngày/tuần, sáng thứ 7 làm nửa ngày..." class="w-full px-3 py-2 border border-slate-300 rounded-lg bg-white shadow-inner resize-y text-xs"></textarea>
                 </div>
               </div>
             </div>
           </div>
 
-          <!-- RIGHT COLUMN: Weekly Pattern -->
-          <div class="w-[380px] shrink-0 p-6 bg-white overflow-y-auto">
-            <h4 class="font-bold text-slate-800 border-b border-slate-200 pb-2 mb-4 flex items-center space-x-2">
-              <svg class="w-4 h-4 text-[#2E3191]" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg>
-              <span>2. CẤU HÌNH THEO CHẾ ĐỘ</span>
-            </h4>
-            
-            <div id="add-policy-fixed-pattern" class="animate-fade-in block">
-              <div class="p-4 bg-slate-50 border border-slate-200 rounded-xl shadow-xs">
-                <label class="block font-bold text-slate-800 text-[11px] uppercase tracking-wider mb-3 flex items-center justify-between">
-                  <span>Mẫu hành chính lặp theo tuần</span>
-                  <span class="px-2 py-0.5 bg-indigo-100 text-[#2E3191] rounded-full text-[9px]">Lặp vô hạn</span>
-                </label>
-                
-                <div class="space-y-2">
-                  <div class="flex items-center justify-between p-1.5 hover:bg-slate-100 rounded transition">
-                    <span class="w-12 text-xs font-semibold text-slate-700">Thứ 2</span>
-                    <select id="ap-mon" class="w-44 border border-slate-300 rounded-md text-xs py-1.5 focus:ring-[#2E3191]"><option value="HC">Hành chính (8h)</option><option value="SANG">Ca Sáng (4h)</option><option value="CHIEU">Ca Chiều (3h)</option><option value="S1">Kíp Ngày S1 (12h)</option><option value="S2">Kíp Đêm S2 (12h)</option><option value="OFF">OFF (Nghỉ)</option></select>
-                  </div>
-                  <div class="flex items-center justify-between p-1.5 hover:bg-slate-100 rounded transition">
-                    <span class="w-12 text-xs font-semibold text-slate-700">Thứ 3</span>
-                    <select id="ap-tue" class="w-44 border border-slate-300 rounded-md text-xs py-1.5 focus:ring-[#2E3191]"><option value="HC">Hành chính (8h)</option><option value="SANG">Ca Sáng (4h)</option><option value="CHIEU">Ca Chiều (3h)</option><option value="S1">Kíp Ngày S1 (12h)</option><option value="S2">Kíp Đêm S2 (12h)</option><option value="OFF">OFF (Nghỉ)</option></select>
-                  </div>
-                  <div class="flex items-center justify-between p-1.5 hover:bg-slate-100 rounded transition">
-                    <span class="w-12 text-xs font-semibold text-slate-700">Thứ 4</span>
-                    <select id="ap-wed" class="w-44 border border-slate-300 rounded-md text-xs py-1.5 focus:ring-[#2E3191]"><option value="HC">Hành chính (8h)</option><option value="SANG">Ca Sáng (4h)</option><option value="CHIEU">Ca Chiều (3h)</option><option value="S1">Kíp Ngày S1 (12h)</option><option value="S2">Kíp Đêm S2 (12h)</option><option value="OFF">OFF (Nghỉ)</option></select>
-                  </div>
-                  <div class="flex items-center justify-between p-1.5 hover:bg-slate-100 rounded transition">
-                    <span class="w-12 text-xs font-semibold text-slate-700">Thứ 5</span>
-                    <select id="ap-thu" class="w-44 border border-slate-300 rounded-md text-xs py-1.5 focus:ring-[#2E3191]"><option value="HC">Hành chính (8h)</option><option value="SANG">Ca Sáng (4h)</option><option value="CHIEU">Ca Chiều (3h)</option><option value="S1">Kíp Ngày S1 (12h)</option><option value="S2">Kíp Đêm S2 (12h)</option><option value="OFF">OFF (Nghỉ)</option></select>
-                  </div>
-                  <div class="flex items-center justify-between p-1.5 hover:bg-slate-100 rounded transition">
-                    <span class="w-12 text-xs font-semibold text-slate-700">Thứ 6</span>
-                    <select id="ap-fri" class="w-44 border border-slate-300 rounded-md text-xs py-1.5 focus:ring-[#2E3191]"><option value="HC">Hành chính (8h)</option><option value="SANG">Ca Sáng (4h)</option><option value="CHIEU">Ca Chiều (3h)</option><option value="S1">Kíp Ngày S1 (12h)</option><option value="S2">Kíp Đêm S2 (12h)</option><option value="OFF">OFF (Nghỉ)</option></select>
-                  </div>
-                  <div class="flex items-center justify-between p-1.5 hover:bg-slate-100 rounded transition bg-orange-50/50">
-                    <span class="w-12 text-xs font-semibold text-orange-700">Thứ 7</span>
-                    <select id="ap-sat" class="w-44 border border-slate-300 rounded-md text-xs py-1.5 focus:ring-[#2E3191]"><option value="HC">Hành chính (8h)</option><option value="SANG">Ca Sáng (4h)</option><option value="CHIEU">Ca Chiều (3h)</option><option value="S1">Kíp Ngày S1 (12h)</option><option value="S2">Kíp Đêm S2 (12h)</option><option value="OFF" selected>OFF (Nghỉ)</option></select>
-                  </div>
-                  <div class="flex items-center justify-between p-1.5 hover:bg-slate-100 rounded transition bg-rose-50/50">
-                    <span class="w-12 text-xs font-semibold text-rose-700">Chủ nhật</span>
-                    <select id="ap-sun" class="w-44 border border-slate-300 rounded-md text-xs py-1.5 focus:ring-[#2E3191]"><option value="HC">Hành chính (8h)</option><option value="SANG">Ca Sáng (4h)</option><option value="CHIEU">Ca Chiều (3h)</option><option value="S1">Kíp Ngày S1 (12h)</option><option value="S2">Kíp Đêm S2 (12h)</option><option value="OFF" selected>OFF (Nghỉ)</option></select>
-                  </div>
+          <!-- RIGHT COLUMN: Multi-shift Weekly Pattern Configuration -->
+          <div class="w-1/2 p-6 bg-white overflow-y-auto flex flex-col justify-between">
+            <div>
+              <div class="flex items-center justify-between border-b border-slate-200 pb-2 mb-3">
+                <h4 class="font-bold text-slate-800 flex items-center space-x-2">
+                  <svg class="w-4 h-4 text-[#2E3191]" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg>
+                  <span>2. CẤU HÌNH CA THEO THỨ TRONG TUẦN</span>
+                </h4>
+                <span class="text-[11px] text-slate-500 font-medium">Chọn 1 hoặc nhiều ca/ngày</span>
+              </div>
+
+              <!-- Quick action bar -->
+              <div class="bg-indigo-50/60 border border-indigo-100 rounded-xl p-2.5 mb-3 flex flex-wrap items-center justify-between gap-1.5">
+                <span class="text-[11px] font-bold text-indigo-900">Thiết lập nhanh:</span>
+                <div class="flex flex-wrap gap-1">
+                  <button type="button" onclick="quickApplyPolicyWeekdays('HC')" class="px-2 py-1 rounded bg-white hover:bg-indigo-600 hover:text-white border border-indigo-200 text-[#2E3191] font-semibold text-[10.5px] transition cursor-pointer shadow-2xs">
+                    T2–T6: HC (8h)
+                  </button>
+                  <button type="button" onclick="quickApplyPolicyWeekdays('SANG_CHIEU')" class="px-2 py-1 rounded bg-white hover:bg-indigo-600 hover:text-white border border-indigo-200 text-[#2E3191] font-semibold text-[10.5px] transition cursor-pointer shadow-2xs" title="Mỗi ngày làm 2 ca: Ca Sáng + Ca Chiều">
+                    T2–T6: Sáng + Chiều
+                  </button>
+                  <button type="button" onclick="quickCopyMondayToWeekdays()" class="px-2 py-1 rounded bg-white hover:bg-indigo-600 hover:text-white border border-indigo-200 text-[#2E3191] font-semibold text-[10.5px] transition cursor-pointer shadow-2xs">
+                    Chép T2 ➔ T6
+                  </button>
                 </div>
+              </div>
+
+              <!-- Interactive Days List (Multi-shift selection chips) -->
+              <div id="policy-editor-days-container" class="space-y-2">
+                <!-- Dynamically populated by renderPolicyEditorWeeklyPattern() -->
               </div>
             </div>
 
-            <!-- Dynamic UI when Flexible is selected -->
-            <div id="add-policy-flexible-msg" class="hidden animate-fade-in">
-              <div class="p-4 bg-emerald-50 border border-emerald-200 rounded-xl shadow-xs text-center flex flex-col items-center justify-center h-full min-h-[250px]">
-                <svg class="w-12 h-12 text-emerald-400 mb-3" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 002-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" /></svg>
-                <div class="font-bold text-emerald-900 mb-1">Không khai báo mẫu tuần</div>
-              <div class="text-xs text-emerald-700 px-2">Mẫu này xác định nhân viên được xếp ca và nhóm ca có thể dùng. Quản lý lập lịch thực tế theo ngày tại màn hình “Lịch làm việc”. Chưa xếp ca không đồng nghĩa với nghỉ.</div>
+            <!-- Footer stats for policy -->
+            <div class="mt-4 pt-3 border-t border-slate-200 flex items-center justify-between text-xs bg-slate-50 p-3 rounded-xl border">
+              <div>
+                <span class="text-slate-500">Tổng thời lượng:</span>
+                <strong id="policy-editor-total-hours" class="ml-1 text-[#2E3191] font-bold">40.0 giờ/tuần</strong>
+              </div>
+              <div>
+                <span class="text-slate-500">Số công chuẩn:</span>
+                <strong id="policy-editor-total-days" class="ml-1 text-slate-800 font-bold">5.0 ngày công</strong>
               </div>
             </div>
 
