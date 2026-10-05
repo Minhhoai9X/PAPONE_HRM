@@ -6529,6 +6529,7 @@
                     <span class="px-1.5 py-0.5 rounded bg-purple-100 text-purple-800 font-bold text-[10px]">P: Phép năm (1.0)</span>
                     <span class="px-1.5 py-0.5 rounded bg-slate-200 text-slate-700 font-bold text-[10px]">OFF: Nghỉ tuần</span>
                     <span class="px-1.5 py-0.5 rounded bg-indigo-100 text-indigo-900 font-bold text-[10px]">⭐: Miễn công</span>
+                    <span class="px-1.5 py-0.5 rounded bg-pink-100 text-pink-800 font-bold text-[10px]">TS: Thai sản</span>
                     <span class="px-1.5 py-0.5 rounded bg-amber-100 text-amber-800 font-bold text-[10px]">OT: Làm thêm giờ</span>
                   </div>
                   <span class="text-slate-500 text-[11px]">Hiển thị toàn bộ 30 ngày trong kỳ</span>
@@ -37225,9 +37226,9 @@
         currentStep: 4,
         formulaApplied: true,
         totalEmployees: 13,
-        totalActualDays: 279.0,
+        totalActualDays: 255.0,
         totalOtHours: 108.0,
-        leaveDays: 5.5,
+        leaveDays: 6.0,
         missingPunchCount: 8,
         pendingRequestsCount: 5
       },
@@ -37316,7 +37317,11 @@
 
           if (isExempt) {
             actualDays = stdDays;
-            note = 'Miễn chấm công (Lãnh đạo HĐQT)';
+            leaveDays = 0;
+            otHours = 0;
+            lateCount = 0;
+            earlyCount = 0;
+            note = 'Miễn chấm công (Lãnh đạo HĐQT / C-Level)';
           } else if (emp.pap === 'PAP0009') {
             actualDays = stdDays - 1.0;
             leaveDays = 1.0;
@@ -37326,12 +37331,12 @@
             actualDays = stdDays;
             lateCount = 1;
             otHours = 6.0;
-            note = pId === '2026-09' ? 'Họp go-live phần mềm TOS cảng' : '';
+            note = pId === '2026-09' ? 'Họp go-live phần mềm TOS cảng (trễ 15p)' : '';
           } else if (emp.pap === 'PAP0034') {
             actualDays = stdDays - 0.5;
             leaveDays = 0.5;
             otHours = 18.0;
-            note = 'Dẫn luồng hoa tiêu ca đêm';
+            note = 'Dẫn luồng hoa tiêu ca đêm (OT 18h)';
           } else if (emp.pap === 'PAP0089') {
             actualDays = stdDays;
             otHours = 12.0;
@@ -37340,34 +37345,37 @@
             actualDays = stdDays;
             lateCount = 1;
             otHours = 24.0;
-            note = 'Làm thêm ca trực cẩu STS giải phóng tàu';
+            note = 'Làm thêm ca trực cẩu STS giải phóng tàu (OT 24h)';
           } else if (emp.pap === 'PAP0245') {
             actualDays = stdDays - 2.0;
             leaveDays = 2.0;
             otHours = 2.0;
-            note = 'Nghỉ phép năm đã phê duyệt M09';
+            note = 'Nghỉ phép năm 2 ngày đã phê duyệt M09';
           } else if (emp.pap === 'PAP0299') {
             actualDays = stdDays - 0.5;
             leaveDays = 0.5;
             otHours = 16.0;
-            note = pId === '2026-09' ? 'Bổ sung giờ ra ngày 25/09' : 'Ca cẩu RTG';
+            note = pId === '2026-09' ? 'Bổ sung giờ ra ngày 25/09 (Ca cẩu RTG)' : 'Ca cẩu RTG';
           } else if (emp.pap === 'PAP0312') {
-            actualDays = stdDays;
+            actualDays = stdDays - 1.0;
+            leaveDays = 1.0;
             lateCount = 1;
             otHours = 8.0;
-            note = 'Bảo trì hạ tầng CNTT định kỳ';
+            note = 'Bảo trì hạ tầng CNTT định kỳ & 1 ngày phép';
           } else if (emp.pap === 'PAP0411') {
             actualDays = stdDays - 1.0;
             leaveDays = 1.0;
             otHours = 14.0;
-            note = 'Trực hoa tiêu luồng Soài Rạp';
+            note = 'Trực hoa tiêu luồng Soài Rạp (OT 14h)';
           } else if (emp.pap === 'PAP0520') {
-            actualDays = stdDays;
-            note = '';
+            actualDays = 0;
+            leaveDays = 0;
+            note = 'Chế độ thai sản (BHXH chi trả, không tính công)';
           } else if (emp.pap === 'PAP0611') {
-            actualDays = stdDays;
+            actualDays = stdDays - 3.0;
+            leaveDays = 0;
             otHours = 4.0;
-            note = 'Hỗ trợ giao diện màn hình điều độ';
+            note = 'Nghỉ việc từ 25/09 (Đã thanh lý bàn giao việc)';
           }
 
           const paidDays = actualDays + leaveDays;
@@ -37402,7 +37410,13 @@
             let symbol = 'X';
             let label = '1.0';
 
-            if (isExempt) {
+            if (emp.pap === 'PAP0520') {
+              symbol = 'TS';
+              label = '0';
+            } else if (emp.pap === 'PAP0611' && d >= 25) {
+              symbol = '—';
+              label = '0';
+            } else if (isExempt) {
               symbol = isWeekend ? 'OFF' : '⭐';
               label = isWeekend ? '0' : '1.0';
             } else if (isWeekend) {
@@ -37864,6 +37878,7 @@
             else if (dayRec.symbol === 'P') badgeClass = 'text-purple-700 font-bold bg-purple-50 rounded';
             else if (dayRec.symbol === 'OFF') badgeClass = 'text-slate-400';
             else if (dayRec.symbol === '⭐') badgeClass = 'text-indigo-700 font-bold';
+            else if (dayRec.symbol === 'TS') badgeClass = 'text-pink-700 font-bold bg-pink-50 rounded';
             else if (dayRec.symbol.includes('OT')) badgeClass = 'text-amber-700 font-bold bg-amber-50 rounded';
 
             tds += `<td class="py-2 px-1 text-center text-[10px] ${dayRec.isWeekend ? 'bg-slate-50/60' : ''} ${badgeClass}" title="Ngày ${dayRec.day}: ${dayRec.symbol}">${dayRec.symbol}</td>`;
