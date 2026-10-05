@@ -8810,6 +8810,8 @@
               <span class="text-xs uppercase font-bold text-slate-600 tracking-wider">Ca đang phân công:</span>
               <div id="modal-cell-current-badge"></div>
             </div>
+            <!-- Container chi tiết từng ca khi có 2 ca trong ngày -->
+            <div id="modal-cell-detail-cards-container" class="hidden"></div>
             
             <!-- 2-Cột thông số chi tiết -->
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
@@ -19645,7 +19647,7 @@
         typeName: '🏢 Hành chính',
         typeBadgeCls: 'bg-indigo-50 text-[#2E3191] border-indigo-200',
         targetAudience: 'Khối Văn phòng, Gián tiếp, Kế toán, PM, TCHC, Pháp chế',
-        weeklyPattern: { mon: ['HC'], tue: ['HC'], wed: ['HC'], thu: ['HC'], fri: ['HC'], sat: ['OFF'], sun: ['OFF'] },
+        weeklyPattern: { mon: ['SANG', 'CHIEU'], tue: ['HC'], wed: ['HC'], thu: ['HC'], fri: ['HC'], sat: ['OFF'], sun: ['OFF'] },
         weeklyHours: 40.0,
         weeklyDays: 5.0,
         transport: 'Tự túc phương tiện',
@@ -19752,6 +19754,122 @@
         };
       }
       return shiftDefinitions['HC'] || { label: shiftCode, name: shiftCode, color: 'bg-blue-50 text-[#2E3191]' };
+    }
+
+    // Helper: Lấy thông tin cấu hình chi tiết của 1 ca theo mã ca
+    function getShiftDetailsByCode(code) {
+      if (!code || code === 'OFF' || code === 'EXEMPT' || code === 'P') return null;
+      const tpl = (typeof shiftTemplatesData !== 'undefined') ? shiftTemplatesData.find(item => item.code === code) : null;
+      if (tpl) {
+        const sName = code === 'SANG' ? 'Ca Sáng' : (code === 'CHIEU' ? 'Ca Chiều' : (code === 'S1' ? 'Ca Ngày (S1)' : (code === 'S2' ? 'Ca Đêm (S2)' : (code === 'HC' ? 'Ca Hành chính' : tpl.name))));
+        return {
+          code: tpl.code,
+          name: tpl.name,
+          shortName: sName,
+          startTime: tpl.startTime || '08:00',
+          endTime: tpl.endTime || '17:00',
+          hours: `${tpl.startTime || '08:00'} - ${tpl.endTime || '17:00'}`,
+          workHours: tpl.code === 'HC' ? 8 : (tpl.code === 'SANG' ? 4 : (tpl.code === 'CHIEU' ? 3 : (tpl.code === 'S1' || tpl.code === 'S2' ? 12 : 8))),
+          rate: tpl.workDayRate || 1.0,
+          colorHex: tpl.colorHex || '#2E3191',
+          cls: tpl.colorCls || 'bg-blue-50 text-[#2E3191] border-blue-200',
+          ciWindow: tpl.checkinWindow || `${tpl.startTime || '08:00'} - 15p`,
+          coWindow: tpl.checkoutWindow || `${tpl.endTime || '17:00'} - 15p`
+        };
+      }
+      const def = (typeof shiftDefinitions !== 'undefined') ? shiftDefinitions[code] : null;
+      if (def) {
+        let sTime = '08:00', eTime = '17:00', wHours = def.hours || 8, sName = def.label;
+        if (code === 'SANG') { sTime = '08:00'; eTime = '12:00'; wHours = 4; sName = 'Ca Sáng'; }
+        else if (code === 'CHIEU') { sTime = '14:00'; eTime = '17:00'; wHours = 3; sName = 'Ca Chiều'; }
+        else if (code === 'S1' || code === 'CA1') { sTime = '07:00'; eTime = '19:00'; wHours = 12; sName = 'Ca Ngày (S1)'; }
+        else if (code === 'S2' || code === 'CA3' || code === 'DEM') { sTime = '19:00'; eTime = '07:00'; wHours = 12; sName = 'Ca Đêm (S2)'; }
+        else if (code === 'HC') { sTime = '08:00'; eTime = '17:00'; wHours = 8; sName = 'Ca Hành chính'; }
+        return {
+          code: code,
+          name: def.name || code,
+          shortName: sName,
+          startTime: sTime,
+          endTime: eTime,
+          hours: `${sTime} - ${eTime}`,
+          workHours: wHours,
+          rate: wHours >= 8 ? 1.0 : (wHours >= 12 ? 1.5 : 0.5),
+          colorHex: def.colorHex || '#2E3191',
+          cls: def.cls || 'bg-slate-100 text-slate-700',
+          ciWindow: `${sTime} - 15p`,
+          coWindow: `${eTime} - 15p`
+        };
+      }
+      return {
+        code: code,
+        name: code,
+        shortName: code,
+        startTime: '08:00',
+        endTime: '17:00',
+        hours: '08:00 - 17:00',
+        workHours: 8,
+        rate: 1.0,
+        colorHex: '#64748B',
+        cls: 'bg-slate-100 text-slate-600',
+        ciWindow: '—',
+        coWindow: '—'
+      };
+    }
+
+    // Helper: Lấy thời gian chấm công thực tế của 1 ca trong ngày (Nếu có, nếu không thì --:--)
+    function getActualShiftPunchTimes(empPap, workDate, shiftCode, subShiftIdx = 0) {
+      if (!shiftCode || shiftCode === 'OFF' || shiftCode === 'MIEN' || shiftCode === 'EXEMPT' || shiftCode === 'P' || shiftCode === 'UNSCHEDULED' || shiftCode === 'UNASSIGNED') {
+        return { inTime: '—', outTime: '—', hasPunch: false, punchText: '—', status: shiftCode };
+      }
+
+      // Tra cứu từ bộ nhớ tùy chỉnh nếu có
+      const customKey = `${empPap}_${workDate}_${shiftCode}_${subShiftIdx}`;
+      if (window.customActualPunchesStore && window.customActualPunchesStore[customKey]) {
+        return window.customActualPunchesStore[customKey];
+      }
+
+      // Giả lập dữ liệu chấm công thực tế thực tế & logic:
+      // Các ngày trong tuần hiện tại: Thứ Hai (07/09) và Thứ Ba (08/09) có dữ liệu quẹt công; từ Thứ Tư (09/09) trở đi hiển thị --:--
+      const isPastOrToday = (workDate <= '2026-09-08');
+
+      if (subShiftIdx === 0) {
+        // Ca 1 trong ngày
+        if (!isPastOrToday) {
+          return { inTime: '--:--', outTime: '--:--', hasPunch: false, punchText: '--:--', status: 'NOT_YET' };
+        }
+        if (empPap === 'PAP0007') {
+          return { inTime: '08:24', outTime: '17:12', hasPunch: true, punchText: '08:24 - 17:12', status: 'LATE' };
+        }
+        if (empPap === 'PAP0008') {
+          return { inTime: '07:50', outTime: '--:--', hasPunch: true, punchText: '07:50 - --:--', status: 'MISSING_OUT' };
+        }
+        if (shiftCode === 'SANG') {
+          return { inTime: '07:54', outTime: '12:05', hasPunch: true, punchText: '07:54 - 12:05', status: 'VALID' };
+        }
+        if (shiftCode === 'S1' || shiftCode === 'CA1') {
+          return { inTime: '06:52', outTime: '19:06', hasPunch: true, punchText: '06:52 - 19:06', status: 'VALID' };
+        }
+        if (shiftCode === 'S2' || shiftCode === 'CA3' || shiftCode === 'DEM') {
+          return { inTime: '18:55', outTime: '07:08', hasPunch: true, punchText: '18:55 - 07:08', status: 'VALID' };
+        }
+        return { inTime: '07:48', outTime: '17:05', hasPunch: true, punchText: '07:48 - 17:05', status: 'VALID' };
+      } else {
+        // Ca 2 trong ngày (subShiftIdx === 1)
+        if (!isPastOrToday) {
+          return { inTime: '--:--', outTime: '--:--', hasPunch: false, punchText: '--:--', status: 'NOT_YET' };
+        }
+        if (empPap === 'PAP0245') {
+          if (shiftCode === 'CHIEU') {
+            return { inTime: '13:58', outTime: '17:04', hasPunch: true, punchText: '13:58 - 17:04', status: 'VALID' };
+          }
+          return { inTime: '13:55', outTime: '18:02', hasPunch: true, punchText: '13:55 - 18:02', status: 'VALID' };
+        }
+        if (empPap === 'PAP0520') {
+          return { inTime: '13:52', outTime: '--:--', hasPunch: true, punchText: '13:52 - --:--', status: 'IN_PROGRESS' };
+        }
+        // Trường hợp chưa có chấm công cho ca 2: thể hiện --:--
+        return { inTime: '--:--', outTime: '--:--', hasPunch: false, punchText: '--:--', status: 'NO_PUNCH' };
+      }
     }
 
     function getScheduledShiftForDay(emp, workDate) {
@@ -26825,41 +26943,106 @@
             `;
           } else if (shiftCode === 'P') {
             dayCellsHtml += `
-              <td class="py-2 px-1.5 text-center border-l border-slate-200 ${weekendBg}">
+              <td class="py-2 px-1 text-center border-l border-slate-200 ${weekendBg}">
                 <button onclick="handleScheduleCellClick('${emp.pap}', ${dayIdx})" 
                         id="cell-btn-${emp.pap}-${dayIdx}"
                         title="Nghỉ phép năm đã duyệt (M09)" 
-                        class="px-2 py-1.5 rounded-lg text-xs font-bold border bg-teal-50 text-teal-800 border-teal-300 hover:bg-teal-100 transition cursor-pointer w-full text-center shadow-2xs flex items-center justify-center space-x-1 min-h-[30px]">
-                  <span>🏖️</span>
-                  <span>[P] Phép</span>
+                        class="px-1.5 py-1.5 rounded-lg text-xs font-bold border bg-teal-50 text-teal-800 border-teal-300 hover:bg-teal-100 transition cursor-pointer w-full text-center shadow-2xs flex flex-col items-center justify-center min-h-[46px]">
+                  <span class="text-[10px] font-bold">🏖️ [P] Phép</span>
+                  <span class="text-[8px] text-teal-600 font-medium mt-0.5">Đã phê duyệt</span>
+                </button>
+              </td>
+            `;
+          } else if (isEmployeeAttendanceExempt(emp, workDate) || shiftCode === 'EXEMPT') {
+            dayCellsHtml += `
+              <td class="py-2 px-1 text-center border-l border-slate-200 ${weekendBg}">
+                <button onclick="handleScheduleCellClick('${emp.pap}', ${dayIdx})" 
+                        id="cell-btn-${emp.pap}-${dayIdx}"
+                        title="Ban Lãnh đạo TGĐ - Miễn chấm công" 
+                        class="px-1.5 py-1.5 rounded-lg text-xs font-bold border bg-indigo-50 text-[#2E3191] border-indigo-200 transition cursor-pointer w-full text-center shadow-2xs min-h-[46px] flex flex-col items-center justify-center">
+                  <span class="text-[10px] font-bold">⭐ MIỄN</span>
+                  <span class="text-[8px] text-indigo-400 font-medium mt-0.5">Không cần quét</span>
+                </button>
+              </td>
+            `;
+          } else if (shiftCode === 'OFF') {
+            dayCellsHtml += `
+              <td class="py-2 px-1 text-center border-l border-slate-200 ${weekendBg}">
+                <button onclick="handleScheduleCellClick('${emp.pap}', ${dayIdx})" 
+                        id="cell-btn-${emp.pap}-${dayIdx}"
+                        title="Nghỉ tuần luân phiên (OFF)" 
+                        class="px-1.5 py-1.5 rounded-lg text-xs font-medium border bg-slate-100 text-slate-500 border-slate-200 transition cursor-pointer w-full text-center shadow-2xs min-h-[46px] flex flex-col items-center justify-center">
+                  <span class="text-[10px] font-bold text-slate-600">OFF</span>
+                  <span class="text-[8px] text-slate-400 font-normal mt-0.5">Nghỉ tuần</span>
+                </button>
+              </td>
+            `;
+          } else if (shiftCode.includes('+')) {
+            // ================= TRƯỜNG HỢP: NGÀY CÓ 2 CA (HOẶC NHIỀU CA) =================
+            // Thể hiện 2 ca rõ ràng, hiện giờ từng ca và thời gian chấm công thực tế nếu có, không có thì --:--
+            const subShiftCodes = shiftCode.split('+');
+            const subCardsHtml = subShiftCodes.map((sCode, sIdx) => {
+              const sInfo = getShiftDetailsByCode(sCode);
+              const sPunch = getActualShiftPunchTimes(emp.pap, workDate, sCode, sIdx);
+              const cardBg = sIdx === 0 
+                ? 'bg-amber-50/90 border-amber-300/80 text-amber-950' 
+                : 'bg-sky-50/90 border-sky-300/80 text-sky-950';
+              const dotCls = sIdx === 0 ? 'bg-amber-500' : 'bg-sky-500';
+              const hoursCls = sIdx === 0 ? 'text-amber-800' : 'text-sky-800';
+
+              return `
+                <div class="px-1.5 py-1 rounded-md ${cardBg} border shadow-2xs transition hover:brightness-95">
+                  <div class="flex items-center justify-between gap-1 leading-none">
+                    <span class="inline-flex items-center gap-1 font-bold text-[9px] truncate">
+                      <span class="w-1.5 h-1.5 rounded-full ${dotCls} shrink-0"></span>
+                      <span class="truncate">Ca ${sIdx + 1}: ${sInfo ? sInfo.shortName : sCode}</span>
+                    </span>
+                    <span class="font-mono text-[8px] ${hoursCls} font-semibold shrink-0 ml-1">${sInfo ? sInfo.hours : ''}</span>
+                  </div>
+                  <div class="flex items-center justify-between text-[7.5px] font-mono mt-0.5 pt-0.5 border-t border-black/5 text-slate-500">
+                    <span class="text-[7.5px] font-sans text-slate-400">TT:</span>
+                    <span class="${sPunch.hasPunch ? 'text-emerald-700 font-bold' : 'text-slate-400 font-semibold'}">${sPunch.punchText}</span>
+                  </div>
+                </div>
+              `;
+            }).join('');
+
+            dayCellsHtml += `
+              <td class="py-1.5 px-1 text-center border-l border-slate-200 ${weekendBg}">
+                <button onclick="handleScheduleCellClick('${emp.pap}', ${dayIdx})" 
+                        id="cell-btn-${emp.pap}-${dayIdx}"
+                        title="Ngày ${subShiftCodes.length} ca: Click xem chi tiết & đối soát chấm công thực tế" 
+                        class="w-full p-1 rounded-lg border border-indigo-200 bg-indigo-50/20 hover:bg-indigo-50/60 hover:border-[#2E3191] transition cursor-pointer text-left flex flex-col gap-1 min-h-[64px] shadow-2xs">
+                  ${subCardsHtml}
                 </button>
               </td>
             `;
           } else {
+            // ================= TRƯỜNG HỢP: 1 CA LÀM VIỆC TIÊU CHUẨN =================
+            // Thể hiện tên ca, khung giờ làm việc và thời gian chấm công thực tế (nếu có, không có thì --:--)
+            const scInfo = getShiftDetailsByCode(shiftCode);
+            const scPunch = getActualShiftPunchTimes(emp.pap, workDate, shiftCode, 0);
             const cellTooltip = isPub ? `${shiftDef.name} (Đã xuất bản - Click xem chi tiết)` : `${shiftDef.name} (Bản nháp - Click chọn ca đích danh)`;
-            const editRingCls = (!isPub && !isEmployeeAttendanceExempt(emp, workDate)) ? 'hover:ring-2 hover:ring-[#2E3191] hover:scale-105' : '';
+            const editRingCls = (!isPub && !isEmployeeAttendanceExempt(emp, workDate)) ? 'hover:ring-2 hover:ring-[#2E3191]' : '';
             const isHolidayDuty = holidayInfo && getEmployeeScheduleMode(emp, workDate) === 'SHIFT' && !['OFF', 'EXEMPT', 'P', 'UNSCHEDULED', 'UNASSIGNED'].includes(shiftCode);
-            const holidayBadge = isHolidayDuty ? `<span class="absolute -top-2 -left-1 px-1 py-0.2 bg-amber-600 text-white font-black text-[8.5px] rounded-full shadow-2xs">⚠ Lễ · Giữ ca</span>` : '';
-            const scheduleMode = getEmployeeScheduleMode(emp, workDate);
-            const hasAssignedWork = !['OFF', 'EXEMPT', 'P', 'UNSCHEDULED', 'UNASSIGNED'].includes(shiftCode);
-            const adjustmentLabel = !scheduleAdjustment ? '' : (scheduleAdjustment.kind === 'COMPENSATORY_REST'
-              ? (hasAssignedWork ? (scheduleMode === 'SHIFT' ? '⚠ Xử lý ca' : '⚠ Nghỉ bù*') : 'Nghỉ bù')
-              : (scheduleMode === 'SHIFT' ? '＋ Xếp ca' : `＋ Làm bù · ${scheduleAdjustment.adjustment.makeupShift}`));
-            const adjustmentBadge = scheduleAdjustment ? `<span title="${adjustmentLabel}" class="absolute -top-2 -right-1 px-1 py-0.2 ${scheduleAdjustment.kind === 'COMPENSATORY_REST' ? 'bg-sky-700' : 'bg-indigo-700'} text-white font-black text-[8.5px] rounded-full shadow-2xs">${adjustmentLabel}</span>` : '';
-            const holidayTooltip = scheduleAdjustment
-            ? `${shiftDef.name} - ${adjustmentLabel} theo thiết lập hoán đổi của HR cho ${scheduleAdjustment.holidayName}; ca được xác định theo mẫu lịch nhân viên.`
-              : (isHolidayDuty ? `${shiftDef.name} - Ca đã xếp trùng ngày lễ; hệ thống giữ nguyên ca. HR rà soát và chủ động điều chỉnh nếu cần.` : cellTooltip);
+            const holidayBadge = isHolidayDuty ? `<span class="absolute -top-2 -left-1 px-1 py-0.2 bg-amber-600 text-white font-black text-[8px] rounded-full shadow-2xs">⚠ Lễ · Giữ ca</span>` : '';
 
             dayCellsHtml += `
-              <td class="py-2 px-1.5 text-center border-l border-slate-200 ${weekendBg}">
+              <td class="py-1.5 px-1 text-center border-l border-slate-200 ${weekendBg}">
                 <div class="relative group">
                   ${holidayBadge}
-                  ${adjustmentBadge}
                   <button onclick="handleScheduleCellClick('${emp.pap}', ${dayIdx})" 
                           id="cell-btn-${emp.pap}-${dayIdx}"
-                          title="${holidayTooltip}" 
-                          class="px-2 py-1.5 rounded-lg text-xs font-bold border ${shiftDef.colorHex ? '' : (shiftDef.cls || 'bg-slate-100 text-slate-700 border-slate-300')} ${editRingCls} hover:opacity-90 transition cursor-pointer w-full text-center shadow-2xs min-h-[30px] ${isHolidayDuty ? 'ring-2 ring-rose-500/60' : ''}" ${shiftDef.colorHex ? `style="background-color: ${shiftDef.colorHex}18; color: ${shiftDef.colorHex}; border: 1px solid ${shiftDef.colorHex}50;"` : ''}>
-                    ${shiftDef.label}
+                          title="${cellTooltip}" 
+                          class="px-1.5 py-1 rounded-lg text-xs font-bold border ${shiftDef.colorHex ? '' : (shiftDef.cls || 'bg-slate-100 text-slate-700 border-slate-300')} ${editRingCls} hover:opacity-90 transition cursor-pointer w-full text-center shadow-2xs min-h-[46px] flex flex-col justify-center" ${shiftDef.colorHex ? `style="background-color: ${shiftDef.colorHex}14; color: ${shiftDef.colorHex}; border: 1px solid ${shiftDef.colorHex}40;"` : ''}>
+                    <div class="flex items-center justify-between leading-none w-full">
+                      <span class="font-bold text-[9.5px]">${shiftDef.label}</span>
+                      <span class="font-mono text-[8px] opacity-80 font-semibold">${scInfo ? scInfo.hours : ''}</span>
+                    </div>
+                    <div class="flex items-center justify-between text-[7.5px] font-mono mt-1 pt-0.5 border-t border-current/15 w-full">
+                      <span class="text-[7.5px] font-sans opacity-60">TT:</span>
+                      <span class="${scPunch.hasPunch ? 'font-bold text-emerald-700' : 'opacity-60 font-medium'}">${scPunch.punchText}</span>
+                    </div>
                   </button>
                 </div>
               </td>
@@ -27511,37 +27694,98 @@
         }
       }
 
-      // Thông tin chi tiết khung giờ (Hỗ trợ ca ghép)
+      // ================= CẬP NHẬT KHUNG 1: CHI TIẾT CA & CHẤM CÔNG THỰC TẾ =================
       const noShiftYet = ['UNSCHEDULED', 'UNASSIGNED'].includes(shiftCode);
+      const viewDetailsContainer = document.getElementById('modal-cell-detail-cards-container');
+      
       if (shiftCode.includes('+')) {
+        // TRƯỜNG HỢP 2 CA TRỞ LÊN: Render 2 card rõ ràng
         const parts = shiftCode.split('+');
-        const timeStrs = parts.map(p => {
-          const t = (typeof shiftTemplatesData !== 'undefined') ? shiftTemplatesData.find(tplItem => tplItem.code === p) : null;
-          return t ? `[${p}] ${t.startTime}-${t.endTime}` : p;
-        }).join(' & ');
-        document.getElementById('modal-cell-work-hours').innerText = timeStrs;
-
         let totalRate = 0;
         let totalHours = 0;
-        parts.forEach(p => {
-          const t = (typeof shiftTemplatesData !== 'undefined') ? shiftTemplatesData.find(tplItem => tplItem.code === p) : null;
-          if (t) {
-            totalRate += (t.workDayRate || 0.5);
-            totalHours += (t.workHours || 4);
+
+        const cardsHtml = parts.map((pCode, pIdx) => {
+          const pInfo = getShiftDetailsByCode(pCode);
+          const pPunch = getActualShiftPunchTimes(emp.pap, workDate, pCode, pIdx);
+          if (pInfo) {
+            totalRate += (pInfo.rate || 0.5);
+            totalHours += (pInfo.workHours || 4);
           }
-        });
+          const badgeBg = pIdx === 0 ? 'bg-amber-50 text-amber-800 border-amber-300' : 'bg-sky-50 text-sky-800 border-sky-300';
+          const punchBadge = pPunch.hasPunch 
+            ? '<span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-50 text-emerald-700 border border-emerald-200">🟢 Đã có dữ liệu chấm công</span>'
+            : '<span class="px-2 py-0.5 rounded-full text-[10px] font-semibold bg-slate-100 text-slate-500 border border-slate-200">⚪ Chưa chấm công (--:--)</span>';
+
+          return `
+            <div class="p-3.5 rounded-xl border border-slate-200 bg-slate-50/70 space-y-2.5 shadow-2xs">
+              <div class="flex items-center justify-between border-b border-slate-200 pb-2">
+                <div class="flex items-center space-x-2">
+                  <span class="px-2.5 py-0.5 rounded-md text-xs font-bold border ${badgeBg}">Ca ${pIdx + 1}: [${pCode}] ${pInfo ? pInfo.shortName : pCode}</span>
+                  <span class="font-mono text-xs font-semibold text-slate-700">${pInfo ? pInfo.hours : ''}</span>
+                </div>
+                ${punchBadge}
+              </div>
+              <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 text-xs">
+                <div class="bg-white p-2 rounded-lg border border-slate-200">
+                  <span class="text-slate-400 text-[10px] block">Giờ quy chuẩn:</span>
+                  <strong class="text-slate-800 font-mono">${pInfo ? pInfo.hours : '—'}</strong>
+                </div>
+                <div class="bg-white p-2 rounded-lg border border-slate-200">
+                  <span class="text-slate-400 text-[10px] block">Quy đổi công:</span>
+                  <strong class="text-emerald-700">${pInfo ? pInfo.rate : 0.5} công (${pInfo ? pInfo.workHours : 4}h)</strong>
+                </div>
+                <div class="bg-white p-2 rounded-lg border border-slate-200">
+                  <span class="text-slate-400 text-[10px] block">Vào thực tế:</span>
+                  <strong class="font-mono ${pPunch.inTime !== '--:--' && pPunch.inTime !== '—' ? 'text-emerald-700' : 'text-slate-400'}">${pPunch.inTime}</strong>
+                </div>
+                <div class="bg-white p-2 rounded-lg border border-slate-200">
+                  <span class="text-slate-400 text-[10px] block">Ra thực tế:</span>
+                  <strong class="font-mono ${pPunch.outTime !== '--:--' && pPunch.outTime !== '—' ? 'text-emerald-700' : 'text-slate-400'}">${pPunch.outTime}</strong>
+                </div>
+              </div>
+            </div>
+          `;
+        }).join('');
+
+        if (viewDetailsContainer) {
+          viewDetailsContainer.innerHTML = `
+            <div class="space-y-2.5">
+              <div class="flex items-center justify-between text-xs text-slate-600 bg-indigo-50/50 p-2.5 rounded-lg border border-indigo-100">
+                <span>⚡ Ngày làm việc có <strong>${parts.length} ca riêng biệt</strong>:</span>
+                <span class="font-bold text-[#2E3191]">Tổng cộng: ${totalHours}h • ${totalRate.toFixed(1)} công chuẩn</span>
+              </div>
+              ${cardsHtml}
+            </div>
+          `;
+          viewDetailsContainer.classList.remove('hidden');
+        }
+
+        // Đồng bộ dữ liệu hiển thị phụ
+        document.getElementById('modal-cell-work-hours').innerText = parts.map(p => {
+          const t = getShiftDetailsByCode(p);
+          return t ? `[${p}] ${t.hours}` : p;
+        }).join(' & ');
         document.getElementById('modal-cell-break').innerText = 'Nghỉ giữa các ca';
         document.getElementById('modal-cell-rate').innerText = `${totalRate.toFixed(1)} công (${totalHours}h)`;
+        document.getElementById('modal-cell-ci-window').innerText = 'Theo từng ca chi tiết phía trên';
+        document.getElementById('modal-cell-co-window').innerText = 'Theo từng ca chi tiết phía trên';
+        document.getElementById('modal-cell-branch').innerText = 'Toàn Cảng';
       } else {
+        // TRƯỜNG HỢP 1 CA:
+        const scPunch = getActualShiftPunchTimes(emp.pap, workDate, shiftCode, 0);
+        if (viewDetailsContainer) {
+          viewDetailsContainer.classList.add('hidden');
+          viewDetailsContainer.innerHTML = '';
+        }
         document.getElementById('modal-cell-work-hours').innerText = noShiftYet ? 'Chưa có ca' : tpl ? (tpl.startTime !== '—' ? `${tpl.startTime} - ${tpl.endTime}` : tpl.name) : '08:00 - 17:00';
         document.getElementById('modal-cell-break').innerText = noShiftYet ? '—' : tpl 
           ? (tpl.breakStartTime && tpl.breakEndTime ? `${tpl.breakStartTime} - ${tpl.breakEndTime} (${tpl.breakMinutes} phút)` : `${tpl.breakMinutes} phút · Chưa cấu hình khung giờ`)
           : '—';
         document.getElementById('modal-cell-rate').innerText = noShiftYet ? 'Chưa xác định' : tpl ? `${formatNumCompact(tpl.workDayRate)} công` : (shiftCode === 'OFF' ? '0 công' : '—');
+        document.getElementById('modal-cell-ci-window').innerHTML = `Vào: ${tpl && tpl.checkinWindow ? tpl.checkinWindow : '—'} <span class="ml-2 font-mono text-emerald-700 font-bold">(TT: ${scPunch.inTime})</span>`;
+        document.getElementById('modal-cell-co-window').innerHTML = `Ra: ${tpl && tpl.checkoutWindow ? tpl.checkoutWindow : '—'} <span class="ml-2 font-mono text-emerald-700 font-bold">(TT: ${scPunch.outTime})</span>`;
+        document.getElementById('modal-cell-branch').innerText = tpl ? (typeof getBranchDisplayName === 'function' ? getBranchDisplayName(tpl.branchCode) : (tpl.branchName || 'Tất cả')) : 'Tất cả';
       }
-      document.getElementById('modal-cell-ci-window').innerText = tpl && tpl.checkinWindow ? tpl.checkinWindow : '—';
-      document.getElementById('modal-cell-co-window').innerText = tpl && tpl.checkoutWindow ? tpl.checkoutWindow : '—';
-      document.getElementById('modal-cell-branch').innerText = tpl ? (typeof getBranchDisplayName === 'function' ? getBranchDisplayName(tpl.branchCode) : (tpl.branchName || 'Tất cả')) : 'Tất cả';
 
       // 1. Trường hợp nhân viên có bản ghi miễn chấm công hiệu lực
       if (isEmployeeAttendanceExempt(emp, workDate) || shiftCode === 'EXEMPT') {
@@ -36569,17 +36813,14 @@
 
         totalCount++;
 
-        // Determine shift from defaultWeekSchedule or employee schedule
+        // Determine shift from scheduleWeekStore, fixedScheduleExceptions or defaultWeekSchedule
         let shiftCode = 'HC';
         if (isEmployeeAttendanceExempt(emp, dateVal)) {
           shiftCode = 'MIEN';
         } else {
-          const empSchedule = defaultWeekSchedule.find(s => s.pap === emp.pap);
-          if (empSchedule && empSchedule.shifts && empSchedule.shifts[scheduleDayIdx]) {
-            shiftCode = empSchedule.shifts[scheduleDayIdx];
-          } else if (emp.dept.includes('KHAI THÁC') || emp.dept.includes('KỸ THUẬT')) {
-            shiftCode = idx % 3 === 0 ? 'S1' : (idx % 3 === 1 ? 'S2' : 'HC');
-          }
+          const currentList = (typeof scheduleWeekStore !== 'undefined' && scheduleWeekStore[currentScheduleWeekKey]) || defaultWeekSchedule;
+          const roster = currentList.find(s => s.pap === emp.pap);
+          shiftCode = resolveEmployeeDayShift(emp, dateVal, roster && roster.shifts[scheduleDayIdx], fixedScheduleExceptions[`${emp.pap}_${dateVal}`]);
         }
 
         if (shiftVal !== 'ALL' && shiftCode !== shiftVal) return null;
@@ -36644,16 +36885,60 @@
 
         if (statusVal !== 'ALL' && statusCategory !== statusVal) return null;
 
-        const shiftBadgeCls = shiftCode === 'HC' ? 'bg-blue-50 text-[#2E3191] border-blue-200' 
-          : shiftCode === 'S1' ? 'bg-emerald-50 text-emerald-800 border-emerald-200'
-          : shiftCode === 'S2' ? 'bg-purple-50 text-purple-700 border-purple-200'
-          : shiftCode === 'MIEN' ? 'bg-indigo-50 text-[#2E3191] border-indigo-200 font-bold'
-          : 'bg-slate-100 text-slate-600 border-slate-200';
+        let shiftBadgeContent = '';
+        let shiftTimeContent = '';
+        let actualInContent = actualIn;
+        let actualOutContent = actualOut;
 
-        const shiftTime = shiftCode === 'HC' ? '08:00 - 17:00'
-          : shiftCode === 'S1' ? '07:00 - 19:00'
-          : shiftCode === 'S2' ? '19:00 - 07:00'
-          : '—';
+        if (shiftCode.includes('+')) {
+          // Ngày có 2 ca trong Bảng công ngày
+          const subParts = shiftCode.split('+');
+          shiftBadgeContent = `
+            <div class="flex flex-col gap-1 items-center">
+              ${subParts.map((sp, spIdx) => {
+                const spInfo = getShiftDetailsByCode(sp);
+                const bg = spIdx === 0 ? 'bg-amber-50 text-amber-800 border-amber-300' : 'bg-sky-50 text-sky-800 border-sky-300';
+                return `<span class="px-1.5 py-0.5 rounded text-[9px] font-bold border ${bg}">Ca ${spIdx + 1}: ${spInfo ? spInfo.shortName : sp}</span>`;
+              }).join('')}
+            </div>
+          `;
+          shiftTimeContent = `
+            <div class="flex flex-col gap-1 font-mono text-[10px] text-slate-600">
+              ${subParts.map(sp => {
+                const spInfo = getShiftDetailsByCode(sp);
+                return `<span>${spInfo ? spInfo.hours : '—'}</span>`;
+              }).join('')}
+            </div>
+          `;
+          const p1 = getActualShiftPunchTimes(emp.pap, dateVal, subParts[0], 0);
+          const p2 = getActualShiftPunchTimes(emp.pap, dateVal, subParts[1], 1);
+          actualInContent = `
+            <div class="flex flex-col gap-1 font-mono text-[10px]">
+              <span class="${p1.inTime !== '--:--' ? 'text-emerald-700 font-bold' : 'text-slate-400'}">${p1.inTime}</span>
+              <span class="${p2.inTime !== '--:--' ? 'text-emerald-700 font-bold' : 'text-slate-400'}">${p2.inTime}</span>
+            </div>
+          `;
+          actualOutContent = `
+            <div class="flex flex-col gap-1 font-mono text-[10px]">
+              <span class="${p1.outTime !== '--:--' ? 'text-emerald-700 font-bold' : 'text-slate-400'}">${p1.outTime}</span>
+              <span class="${p2.outTime !== '--:--' ? 'text-emerald-700 font-bold' : 'text-slate-400'}">${p2.outTime}</span>
+            </div>
+          `;
+        } else {
+          const shiftBadgeCls = shiftCode === 'HC' ? 'bg-blue-50 text-[#2E3191] border-blue-200' 
+            : shiftCode === 'S1' ? 'bg-emerald-50 text-emerald-800 border-emerald-200'
+            : shiftCode === 'S2' ? 'bg-purple-50 text-purple-700 border-purple-200'
+            : shiftCode === 'MIEN' ? 'bg-indigo-50 text-[#2E3191] border-indigo-200 font-bold'
+            : 'bg-slate-100 text-slate-600 border-slate-200';
+
+          const shiftTime = shiftCode === 'HC' ? '08:00 - 17:00'
+            : shiftCode === 'S1' ? '07:00 - 19:00'
+            : shiftCode === 'S2' ? '19:00 - 07:00'
+            : '—';
+
+          shiftBadgeContent = `<span class="px-2 py-0.5 rounded text-[10px] font-bold border ${shiftBadgeCls}">${shiftCode}</span>`;
+          shiftTimeContent = shiftTime;
+        }
 
         const actionBtn = statusCategory === 'MISSING' || statusCategory === 'LATE_EARLY'
           ? `<button onclick="openAttNewRequestModal('${emp.pap}', '${dateVal}')" class="px-2 py-1 rounded bg-amber-50 hover:bg-amber-100 text-amber-800 border border-amber-200 text-[10px] font-bold transition cursor-pointer">Tạo giải trình</button>`
@@ -36671,11 +36956,11 @@
             </td>
             <td class="py-2.5 px-3 text-slate-600">${emp.dept}</td>
             <td class="py-2.5 px-2.5 text-center">
-              <span class="px-2 py-0.5 rounded text-[10px] font-bold border ${shiftBadgeCls}">${shiftCode}</span>
+              ${shiftBadgeContent}
             </td>
-            <td class="py-2.5 px-2.5 text-center font-mono text-[11px] text-slate-500">${shiftTime}</td>
-            <td class="py-2.5 px-2.5 text-center font-mono font-medium text-slate-800 bg-blue-50/30">${actualIn}</td>
-            <td class="py-2.5 px-2.5 text-center font-mono font-medium text-slate-800 bg-blue-50/30">${actualOut}</td>
+            <td class="py-2.5 px-2.5 text-center font-mono text-[11px] text-slate-500">${shiftTimeContent}</td>
+            <td class="py-2.5 px-2.5 text-center font-mono font-medium text-slate-800 bg-blue-50/30">${actualInContent}</td>
+            <td class="py-2.5 px-2.5 text-center font-mono font-medium text-slate-800 bg-blue-50/30">${actualOutContent}</td>
             <td class="py-2.5 px-2 text-center font-bold ${lateMin > 0 ? 'text-amber-700' : 'text-slate-400'}">${lateMin > 0 ? lateMin : '—'}</td>
             <td class="py-2.5 px-2 text-center font-bold ${earlyMin > 0 ? 'text-amber-700' : 'text-slate-400'}">${earlyMin > 0 ? earlyMin : '—'}</td>
             <td class="py-2.5 px-2 text-center font-semibold text-slate-700">${stdWork.toFixed(1)}</td>
