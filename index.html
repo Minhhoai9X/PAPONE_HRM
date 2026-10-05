@@ -5769,12 +5769,14 @@
               <input type="date" id="raw-filter-date-to" value="2026-09-28" onchange="renderAttendanceRawLogs()" class="px-2.5 py-1.5 border border-slate-300 rounded-lg text-xs font-medium bg-white focus:outline-none focus:ring-1 focus:ring-[#2E3191]" />
               <select id="raw-filter-dept" onchange="renderAttendanceRawLogs()" class="px-2.5 py-1.5 border border-slate-300 rounded-lg text-xs font-medium bg-white focus:outline-none focus:ring-1 focus:ring-[#2E3191]">
                 <option value="ALL">Tất cả phòng ban</option>
-                <option value="CÔNG TY CP CẢNG PHƯỚC AN">Ban Lãnh đạo</option>
-                <option value="PHÒNG KHAI THÁC CẢNG">Phòng Khai thác Cảng</option>
-                <option value="PHÒNG KỸ THUẬT CÔNG NGHỆ">Phòng Kỹ thuật Công nghệ</option>
-                <option value="PHÒNG LOGISTICS & DỊCH VỤ">Phòng Logistics & Dịch vụ</option>
-                <option value="PHÒNG TÀI CHÍNH KẾ TOÁN">Phòng Tài chính Kế toán</option>
-                <option value="PHÒNG HÀNH CHÍNH NHÂN SỰ">Phòng Hành chính Nhân sự</option>
+                <option value="Ban Giám đốc">Ban Giám đốc</option>
+                <option value="Phòng Phát triển Phần mềm">Phòng Phát triển Phần mềm</option>
+                <option value="Phòng Vận hành Cầu bến">Phòng Vận hành Cầu bến</option>
+                <option value="Phòng Kỹ thuật & Bảo trì Thiết bị">Phòng Kỹ thuật & Bảo trì Thiết bị</option>
+                <option value="Phòng Khai thác Cảng">Phòng Khai thác Cảng</option>
+                <option value="Phòng Logistics & Dịch vụ">Phòng Logistics & Dịch vụ</option>
+                <option value="Phòng Tài chính - Kế toán">Phòng Tài chính - Kế toán</option>
+                <option value="Phòng Hành chính - Nhân sự">Phòng Hành chính - Nhân sự</option>
               </select>
               <select id="raw-filter-type" onchange="renderAttendanceRawLogs()" class="px-2.5 py-1.5 border border-slate-300 rounded-lg text-xs font-medium bg-white focus:outline-none focus:ring-1 focus:ring-[#2E3191]">
                 <option value="ALL">Tất cả loại quét</option>
@@ -5795,6 +5797,7 @@
             <div class="ml-auto flex items-center space-x-2">
               <button type="button" onclick="openColumnPicker(this, 'attendance-raw-logs-table')" class="px-3 py-1.5 bg-[#2E3191] hover:bg-[#242775] text-white rounded-lg text-xs font-semibold transition cursor-pointer" title="Ẩn / Hiện và Ghim cột">Cột</button>
               <button type="button" onclick="downloadTableExcel('attendance-raw-logs-table', 'Nhat_ky_cham_cong_GPS')" class="px-3 py-1.5 bg-[#2E3191] hover:bg-[#242775] text-white rounded-lg text-xs font-semibold transition cursor-pointer" title="Tải xuống Excel">Xuất Excel</button>
+              <button type="button" onclick="openAddAttendanceRawLogModal()" class="px-3.5 py-1.5 pap-primary text-white rounded-lg text-xs font-semibold pap-primary-hover shadow-xs transition cursor-pointer flex items-center space-x-1.5" title="Thêm lượt quét chấm công thủ công">+ <span>Thêm bản ghi</span></button>
             </div>
           </div>
 
@@ -5815,6 +5818,7 @@
                     <th data-column-key="device" class="py-2.5 px-3 min-w-[150px]">Thiết bị Mobile <span class="pap-column-controls"><span class="pap-column-drag" draggable="true" ondragstart="startAttendanceRawColumnDrag(event, 'device')" ondragover="event.preventDefault()" ondrop="dropAttendanceRawColumn(event, 'device')" aria-label="Kéo đổi vị trí cột"><svg class="w-2.5 h-3.5" viewBox="0 0 8 14" fill="currentColor"><circle cx="2" cy="2" r="1.1"/><circle cx="6" cy="2" r="1.1"/><circle cx="2" cy="7" r="1.1"/><circle cx="6" cy="7" r="1.1"/><circle cx="2" cy="12" r="1.1"/><circle cx="6" cy="12" r="1.1"/></svg></span><button type="button" class="pap-column-control" onclick="sortAttendanceRawLogs('dev')" aria-label="Sắp xếp theo thiết bị" title="Sắp xếp"><svg class="w-2.5 h-3" viewBox="0 0 10 12" fill="currentColor"><path d="M5 1L9 5H1L5 1Z"/><path d="M1 7H9L5 11L1 7Z"/></svg></button></span></th>
                     <th data-column-key="selfie" class="py-2.5 px-3 min-w-[90px] text-center">Ảnh Selfie <span class="pap-column-drag" draggable="true" ondragstart="startAttendanceRawColumnDrag(event, 'selfie')" ondragover="event.preventDefault()" ondrop="dropAttendanceRawColumn(event, 'selfie')" aria-label="Kéo đổi vị trí cột"><svg class="w-2.5 h-3.5" viewBox="0 0 8 14" fill="currentColor"><circle cx="2" cy="2" r="1.1"/><circle cx="6" cy="2" r="1.1"/><circle cx="2" cy="7" r="1.1"/><circle cx="6" cy="7" r="1.1"/><circle cx="2" cy="12" r="1.1"/><circle cx="6" cy="12" r="1.1"/></svg></span></th>
                     <th data-column-key="status" class="py-2.5 px-3 min-w-[140px] text-center whitespace-nowrap">Trạng thái <span class="pap-column-controls"><span class="pap-column-drag" draggable="true" ondragstart="startAttendanceRawColumnDrag(event, 'status')" ondragover="event.preventDefault()" ondrop="dropAttendanceRawColumn(event, 'status')" aria-label="Kéo đổi vị trí cột"><svg class="w-2.5 h-3.5" viewBox="0 0 8 14" fill="currentColor"><circle cx="2" cy="2" r="1.1"/><circle cx="6" cy="2" r="1.1"/><circle cx="2" cy="7" r="1.1"/><circle cx="6" cy="7" r="1.1"/><circle cx="2" cy="12" r="1.1"/><circle cx="6" cy="12" r="1.1"/></svg></span><button type="button" class="pap-column-control" onclick="sortAttendanceRawLogs('isValid')" aria-label="Sắp xếp theo trạng thái" title="Sắp xếp"><svg class="w-2.5 h-3" viewBox="0 0 10 12" fill="currentColor"><path d="M5 1L9 5H1L5 1Z"/><path d="M1 7H9L5 11L1 7Z"/></svg></button><button type="button" class="pap-column-control" onclick="focusAttendanceRawFilter('raw-filter-status')" aria-label="Lọc theo trạng thái" title="Mở bộ lọc"><svg class="w-3.5 h-3.5" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="1.5,2 14.5,2 9.5,8 9.5,14 6.5,14 6.5,8"/></svg></button></span></th>
+                    <th data-column-key="actions" class="py-2.5 px-3 text-center w-28 shrink-0 sticky right-0 top-0 bg-[#2E3191] z-30 shadow-[-6px_0_10px_-4px_rgba(0,0,0,0.25)] sticky-action font-semibold text-xs select-none">Thao tác</th>
                   </tr>
                 </thead>
                 <tbody id="raw-attendance-tbody" class="divide-y divide-slate-100 bg-white">
@@ -36227,7 +36231,7 @@
     // =========================================================================
 
     // 1. Dữ liệu Nhật ký chấm công thô (Raw Logs)
-    const attendanceRawLogs = [
+    let attendanceRawLogs = [
       { id: 'LOG-001', pap: 'PAP0001', name: 'Phạm Quốc Tuấn', dept: 'CÔNG TY CP CẢNG PHƯỚC AN', date: '2026-09-28', time: '07:45:12', type: 'IN', loc: 'Trụ sở Điều hành Cảng', dist: '25m / 500m', dev: 'iPhone 15 Pro Max • iOS 18.0', isValid: true, note: 'Check-in đúng giờ' },
       { id: 'LOG-002', pap: 'PAP0002', name: 'Nguyễn Văn Hải', dept: 'PHÒNG KHAI THÁC CẢNG', date: '2026-09-28', time: '07:48:22', type: 'IN', loc: 'Trụ sở Điều hành Cảng', dist: '35m / 500m', dev: 'Samsung Galaxy S24 • Android 14', isValid: true, note: 'Xe đưa rước đến cổng chính' },
       { id: 'LOG-003', pap: 'PAP0003', name: 'Trần Thị Kim Oanh', dept: 'PHÒNG HÀNH CHÍNH NHÂN SỰ', date: '2026-09-28', time: '07:52:05', type: 'IN', loc: 'Trụ sở Điều hành Cảng', dist: '40m / 500m', dev: 'iPhone 13 • iOS 17.6', isValid: true, note: 'Check-in sảnh A' },
@@ -36556,7 +36560,7 @@
       if (summaryEl) summaryEl.textContent = `Hiển thị ${filtered.length} bản ghi`;
 
       if (filtered.length === 0) {
-        tbody.innerHTML = '<tr><td colspan="11" class="py-8 text-center text-slate-400 font-medium">Không tìm thấy bản ghi chấm công nào phù hợp với bộ lọc</td></tr>';
+        tbody.innerHTML = '<tr><td colspan="12" class="py-8 text-center text-slate-400 font-medium">Không tìm thấy bản ghi chấm công nào phù hợp với bộ lọc</td></tr>';
         applyAttendanceRawColumnOrder();
         return;
       }
@@ -36573,7 +36577,7 @@
           : '<span class="px-2 py-0.5 rounded-full bg-rose-50 text-rose-700 border border-rose-200 font-semibold text-[10px]">🔴 Ngoài bán kính</span>';
 
         return `
-          <tr class="hover:bg-slate-50/80 transition">
+          <tr class="hover:bg-slate-50/80 transition group">
             <td data-column-key="index" class="py-2.5 px-3 text-center text-slate-400 font-semibold">${firstIndex + idx + 1}</td>
             <td data-column-key="code" class="py-2.5 px-3 text-center font-mono font-bold text-[#2E3191]">${log.pap}</td>
             <td data-column-key="name" class="py-2.5 px-3 font-medium text-slate-900">${log.name}</td>
@@ -36592,6 +36596,24 @@
               </button>
             </td>
             <td data-column-key="status" class="py-2.5 px-3 text-center whitespace-nowrap">${statusBadge}</td>
+            <td data-column-key="actions" class="py-2 px-3 text-center sticky right-0 bg-white group-hover:bg-slate-50 shadow-[-6px_0_10px_-4px_rgba(0,0,0,0.08)] sticky-action z-10 whitespace-nowrap">
+              <div class="inline-flex items-center space-x-1">
+                <button type="button" onclick="openEditAttendanceRawLogModal('${log.id}')" class="p-1 rounded text-slate-600 hover:text-[#2E3191] hover:bg-slate-100 transition cursor-pointer" title="Chỉnh sửa bản ghi">
+                  <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
+                    <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
+                  </svg>
+                </button>
+                <button type="button" onclick="deleteAttendanceRawLog('${log.id}')" class="p-1 rounded text-slate-600 hover:text-rose-600 hover:bg-rose-50 transition cursor-pointer" title="Xóa bản ghi">
+                  <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="3 6 5 6 21 6"></polyline>
+                    <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+                    <line x1="10" y1="11" x2="10" y2="17"></line>
+                    <line x1="14" y1="11" x2="14" y2="17"></line>
+                  </svg>
+                </button>
+              </div>
+            </td>
           </tr>
         `;
       }).join('');
@@ -36985,6 +37007,196 @@
       closeAttNewRequestModal();
       showToast(`✓ Đã nộp đề xuất bổ sung công ${newId} thành công!`);
       renderAttendanceRequests();
+    }
+
+    // =========================================================================
+    // MODAL & CRUD HANDLERS: NHẬT KÝ CHẤM CÔNG (RAW LOGS)
+    // =========================================================================
+
+    function openAttSelfieModal(name, time, loc, dist, dev, isValid) {
+      const modal = document.getElementById('modal-att-selfie');
+      if (!modal) return;
+      document.getElementById('selfie-modal-name').textContent = name || 'Nhân viên';
+      document.getElementById('selfie-modal-time').textContent = time || '—';
+      document.getElementById('selfie-modal-loc').textContent = loc || '—';
+      document.getElementById('selfie-modal-dist').textContent = dist || '—';
+      document.getElementById('selfie-modal-dev').textContent = dev || 'Thiết bị';
+      const statusEl = document.getElementById('selfie-modal-status');
+      if (statusEl) {
+        statusEl.innerHTML = isValid ? '🟢 Hợp lệ (Trong bán kính)' : '🔴 Ngoài bán kính';
+      }
+      modal.classList.remove('hidden');
+    }
+
+    function closeAttSelfieModal() {
+      const modal = document.getElementById('modal-att-selfie');
+      if (modal) modal.classList.add('hidden');
+    }
+
+    function populateRawModalEmployees(selectedPap = '') {
+      const select = document.getElementById('raw-modal-pap');
+      if (!select) return;
+      select.innerHTML = '<option value="">-- Chọn nhân viên --</option>' + 
+        employeesData.map(e => `<option value="${e.pap}">${e.pap} - ${e.name} (${e.dept})</option>`).join('');
+      if (selectedPap) {
+        select.value = selectedPap;
+      }
+    }
+
+    function onRawModalEmployeeChange(pap) {
+      const deptInput = document.getElementById('raw-modal-dept');
+      if (!deptInput) return;
+      const emp = employeesData.find(e => e.pap === pap);
+      deptInput.value = emp ? emp.dept : '';
+    }
+
+    function onRawModalLocationChange(loc) {
+      const distInput = document.getElementById('raw-modal-dist');
+      if (!distInput) return;
+      if (loc === 'Trụ sở Điều hành Cảng') distInput.value = '25m / 500m';
+      else if (loc === 'Cầu bến Container số 1 & 2') distInput.value = '45m / 350m';
+      else if (loc === 'Bãi bến Container & Kho RTG CFS') distInput.value = '55m / 400m';
+      else if (loc === 'Văn phòng Đại diện TP.HCM') distInput.value = '15m / 200m';
+    }
+
+    function openAddAttendanceRawLogModal() {
+      const modal = document.getElementById('modal-attendance-raw-log');
+      if (!modal) return;
+
+      document.getElementById('modal-attendance-raw-log-title').textContent = 'THÊM BẢN GHI CHẤM CÔNG THỦ CÔNG';
+      document.getElementById('raw-modal-id').value = '';
+
+      populateRawModalEmployees();
+      document.getElementById('raw-modal-dept').value = '';
+
+      const now = new Date();
+      const today = now.toISOString().slice(0, 10);
+      const hours = String(now.getHours()).padStart(2, '0');
+      const mins = String(now.getMinutes()).padStart(2, '0');
+      const secs = String(now.getSeconds()).padStart(2, '0');
+
+      document.getElementById('raw-modal-date').value = today;
+      document.getElementById('raw-modal-time').value = `${hours}:${mins}:${secs}`;
+      document.getElementById('raw-modal-type').value = 'IN';
+      document.getElementById('raw-modal-status').value = 'VALID';
+      document.getElementById('raw-modal-loc').value = 'Trụ sở Điều hành Cảng';
+      document.getElementById('raw-modal-dist').value = '25m / 500m';
+      document.getElementById('raw-modal-dev').value = 'Admin Web Portal (Bổ sung thủ công)';
+      document.getElementById('raw-modal-note').value = 'Bổ sung thủ công từ quản trị viên';
+
+      modal.classList.remove('hidden');
+    }
+
+    function openEditAttendanceRawLogModal(logId) {
+      const log = attendanceRawLogs.find(l => l.id === logId);
+      if (!log) {
+        showToast('Không tìm thấy bản ghi chấm công cần sửa!');
+        return;
+      }
+
+      const modal = document.getElementById('modal-attendance-raw-log');
+      if (!modal) return;
+
+      document.getElementById('modal-attendance-raw-log-title').textContent = `CHỈNH SỬA BẢN GHI CHẤM CÔNG (${log.id})`;
+      document.getElementById('raw-modal-id').value = log.id;
+
+      populateRawModalEmployees(log.pap);
+      document.getElementById('raw-modal-dept').value = log.dept;
+      document.getElementById('raw-modal-date').value = log.date;
+      document.getElementById('raw-modal-time').value = log.time;
+      document.getElementById('raw-modal-type').value = log.type;
+      document.getElementById('raw-modal-status').value = log.isValid ? 'VALID' : 'OUT_OF_BOUNDS';
+      document.getElementById('raw-modal-loc').value = log.loc;
+      document.getElementById('raw-modal-dist').value = log.dist;
+      document.getElementById('raw-modal-dev').value = log.dev;
+      document.getElementById('raw-modal-note').value = log.note || '';
+
+      modal.classList.remove('hidden');
+    }
+
+    function closeAttendanceRawLogModal() {
+      const modal = document.getElementById('modal-attendance-raw-log');
+      if (modal) modal.classList.add('hidden');
+    }
+
+    function saveAttendanceRawLog(e) {
+      if (e) e.preventDefault();
+
+      const logId = document.getElementById('raw-modal-id').value;
+      const pap = document.getElementById('raw-modal-pap').value;
+      if (!pap) {
+        showToast('Vui lòng chọn nhân viên!');
+        return;
+      }
+
+      const emp = employeesData.find(e => e.pap === pap);
+      const name = emp ? emp.name : 'Nhân viên';
+      const dept = emp ? emp.dept : (document.getElementById('raw-modal-dept').value || 'Cảng Phước An');
+      const date = document.getElementById('raw-modal-date').value;
+      let time = document.getElementById('raw-modal-time').value.trim();
+      if (time.length === 5) time += ':00'; // Đảm bảo định dạng HH:mm:ss
+
+      const type = document.getElementById('raw-modal-type').value;
+      const isValid = document.getElementById('raw-modal-status').value === 'VALID';
+      const loc = document.getElementById('raw-modal-loc').value;
+      const dist = document.getElementById('raw-modal-dist').value.trim() || '25m / 500m';
+      const dev = document.getElementById('raw-modal-dev').value.trim() || 'Admin Web Portal';
+      const note = document.getElementById('raw-modal-note').value.trim();
+
+      if (logId) {
+        // Cập nhật bản ghi hiện có
+        const idx = attendanceRawLogs.findIndex(l => l.id === logId);
+        if (idx !== -1) {
+          attendanceRawLogs[idx] = {
+            ...attendanceRawLogs[idx],
+            pap,
+            name,
+            dept,
+            date,
+            time,
+            type,
+            isValid,
+            loc,
+            dist,
+            dev,
+            note
+          };
+          showToast(`✓ Đã cập nhật bản ghi chấm công ${logId} thành công!`);
+        }
+      } else {
+        // Thêm mới bản ghi
+        const newId = 'LOG-' + String(attendanceRawLogs.length + 1).padStart(3, '0') + '-' + Date.now().toString().slice(-4);
+        attendanceRawLogs.unshift({
+          id: newId,
+          pap,
+          name,
+          dept,
+          date,
+          time,
+          type,
+          isValid,
+          loc,
+          dist,
+          dev,
+          note: note || 'Bổ sung thủ công'
+        });
+        showToast(`✓ Đã thêm bản ghi chấm công ${newId} thành công!`);
+      }
+
+      closeAttendanceRawLogModal();
+      renderAttendanceRawLogs();
+    }
+
+    function deleteAttendanceRawLog(logId) {
+      const log = attendanceRawLogs.find(l => l.id === logId);
+      if (!log) return;
+
+      const confirmed = confirm(`Bạn có chắc chắn muốn xóa bản ghi chấm công của [${log.name} (${log.pap})] lúc ${log.time} ngày ${log.date}?`);
+      if (!confirmed) return;
+
+      attendanceRawLogs = attendanceRawLogs.filter(l => l.id !== logId);
+      showToast(`✓ Đã xóa bản ghi chấm công ${logId} thành công!`);
+      renderAttendanceRawLogs();
     }
 
     // =========================================================================
@@ -38681,6 +38893,95 @@
       <div class="p-3 bg-slate-50 border-t border-slate-200 flex justify-end">
         <button onclick="closeAttSelfieModal()" class="px-4 py-1.5 bg-white border border-slate-300 hover:bg-slate-100 rounded-lg text-xs font-semibold text-slate-700">Đóng</button>
       </div>
+    </div>
+  </div>
+
+  <!-- ================= MODAL: THÊM / SỬA BẢN GHI CHẤM CÔNG (RAW LOG) ================= -->
+  <div id="modal-attendance-raw-log" class="fixed inset-0 bg-slate-900/60 backdrop-blur-xs z-[80] flex items-center justify-center p-4 hidden" onclick="if (event.target === this) closeAttendanceRawLogModal()">
+    <div class="bg-white rounded-2xl max-w-lg w-full shadow-2xl border border-slate-200 overflow-hidden">
+      <div class="pap-primary text-white p-4 flex items-center justify-between">
+        <div class="flex items-center space-x-2">
+          <span class="text-lg">🕒</span>
+          <h3 id="modal-attendance-raw-log-title" class="text-sm font-bold">THÊM BẢN GHI CHẤM CÔNG</h3>
+        </div>
+        <button type="button" onclick="closeAttendanceRawLogModal()" class="text-white/80 hover:text-white text-xl leading-none">&times;</button>
+      </div>
+      <form onsubmit="saveAttendanceRawLog(event)" class="p-5 space-y-3.5 text-xs">
+        <input type="hidden" id="raw-modal-id" value="">
+        
+        <!-- Chọn nhân viên -->
+        <div>
+          <label class="block font-semibold text-slate-700 mb-1">Nhân viên <span class="text-rose-500">*</span></label>
+          <select id="raw-modal-pap" required onchange="onRawModalEmployeeChange(this.value)" class="w-full px-3 py-2 border border-slate-300 rounded-lg text-xs bg-white text-slate-800 focus:outline-none focus:ring-1 focus:ring-[#2E3191]">
+            <option value="">-- Chọn nhân viên --</option>
+          </select>
+        </div>
+
+        <!-- Đơn vị phòng ban (Tự động hiển thị theo nhân viên) -->
+        <div>
+          <label class="block font-semibold text-slate-700 mb-1">Phòng ban / Đơn vị</label>
+          <input type="text" id="raw-modal-dept" readonly class="w-full px-3 py-2 border border-slate-200 rounded-lg text-xs bg-slate-50 text-slate-600 font-medium">
+        </div>
+
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="block font-semibold text-slate-700 mb-1">Ngày quét <span class="text-rose-500">*</span></label>
+            <input type="date" id="raw-modal-date" required class="w-full px-3 py-2 border border-slate-300 rounded-lg text-xs bg-white text-slate-800 focus:outline-none focus:ring-1 focus:ring-[#2E3191]">
+          </div>
+          <div>
+            <label class="block font-semibold text-slate-700 mb-1">Thời gian quét (HH:mm:ss) <span class="text-rose-500">*</span></label>
+            <input type="text" id="raw-modal-time" required pattern="^([01][0-9]|2[0-3]):[0-5][0-9](:[0-5][0-9])?$" placeholder="08:00:00" class="w-full px-3 py-2 border border-slate-300 rounded-lg text-xs font-mono font-bold text-slate-800 bg-white focus:outline-none focus:ring-1 focus:ring-[#2E3191]">
+          </div>
+        </div>
+
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="block font-semibold text-slate-700 mb-1">Loại quét <span class="text-rose-500">*</span></label>
+            <select id="raw-modal-type" required class="w-full px-3 py-2 border border-slate-300 rounded-lg text-xs font-semibold bg-white text-slate-800 focus:outline-none focus:ring-1 focus:ring-[#2E3191]">
+              <option value="IN">CHECK-IN (Vào ca)</option>
+              <option value="OUT">CHECK-OUT (Ra ca)</option>
+            </select>
+          </div>
+          <div>
+            <label class="block font-semibold text-slate-700 mb-1">Trạng thái định vị <span class="text-rose-500">*</span></label>
+            <select id="raw-modal-status" required class="w-full px-3 py-2 border border-slate-300 rounded-lg text-xs font-semibold bg-white text-slate-800 focus:outline-none focus:ring-1 focus:ring-[#2E3191]">
+              <option value="VALID">🟢 Hợp lệ (Trong bán kính)</option>
+              <option value="OUT_OF_BOUNDS">🔴 Ngoài bán kính cho phép</option>
+            </select>
+          </div>
+        </div>
+
+        <div>
+          <label class="block font-semibold text-slate-700 mb-1">Địa điểm chấm công <span class="text-rose-500">*</span></label>
+          <select id="raw-modal-loc" required onchange="onRawModalLocationChange(this.value)" class="w-full px-3 py-2 border border-slate-300 rounded-lg text-xs bg-white text-slate-800 focus:outline-none focus:ring-1 focus:ring-[#2E3191]">
+            <option value="Trụ sở Điều hành Cảng">Trụ sở Điều hành Cảng (Radius: 500m)</option>
+            <option value="Cầu bến Container số 1 & 2">Cầu bến Container số 1 & 2 (Radius: 350m)</option>
+            <option value="Bãi bến Container & Kho RTG CFS">Bãi bến Container & Kho RTG CFS (Radius: 400m)</option>
+            <option value="Văn phòng Đại diện TP.HCM">Văn phòng Đại diện TP.HCM (Radius: 200m)</option>
+          </select>
+        </div>
+
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="block font-semibold text-slate-700 mb-1">Khoảng cách & Bán kính</label>
+            <input type="text" id="raw-modal-dist" value="25m / 500m" placeholder="VD: 35m / 500m" class="w-full px-3 py-2 border border-slate-300 rounded-lg text-xs font-mono text-slate-800 bg-white focus:outline-none focus:ring-1 focus:ring-[#2E3191]">
+          </div>
+          <div>
+            <label class="block font-semibold text-slate-700 mb-1">Thiết bị chấm công</label>
+            <input type="text" id="raw-modal-dev" value="Admin Web Portal (Bổ sung thủ công)" placeholder="Thiết bị / Mobile" class="w-full px-3 py-2 border border-slate-300 rounded-lg text-xs text-slate-800 bg-white focus:outline-none focus:ring-1 focus:ring-[#2E3191]">
+          </div>
+        </div>
+
+        <div>
+          <label class="block font-semibold text-slate-700 mb-1">Ghi chú / Lý do điều chỉnh</label>
+          <input type="text" id="raw-modal-note" placeholder="Nhập ghi chú hoặc lý do thêm/sửa bản ghi..." class="w-full px-3 py-2 border border-slate-300 rounded-lg text-xs bg-white text-slate-800 focus:outline-none focus:ring-1 focus:ring-[#2E3191]">
+        </div>
+
+        <div class="pt-3 flex items-center justify-end space-x-2 border-t border-slate-200">
+          <button type="button" onclick="closeAttendanceRawLogModal()" class="px-4 py-2 border border-slate-300 rounded-lg text-slate-700 hover:bg-slate-50 transition cursor-pointer font-medium">Hủy bỏ</button>
+          <button type="submit" class="px-5 py-2 pap-primary text-white font-bold rounded-lg shadow-xs hover:bg-[#242775] transition cursor-pointer">Lưu bản ghi</button>
+        </div>
+      </form>
     </div>
   </div>
 
