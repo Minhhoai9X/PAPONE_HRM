@@ -6189,59 +6189,101 @@
             </div>
           </div>
 
-          <!-- Stepper Wizard 5 Bước: Quy trình Chốt Bảng công Chuẩn Doanh nghiệp -->
-          <div class="bg-white rounded-2xl border border-slate-200 shadow-xs p-3 sm:p-4">
-            <div class="text-xs font-bold text-slate-800 uppercase tracking-wider mb-2.5 px-1 flex items-center justify-between">
-              <span class="flex items-center space-x-2">
-                <span>🔄</span>
-                <span>QUY TRÌNH 5 BƯỚC CHỐT BẢNG CÔNG CUỐI CHU KỲ (CHUẨN DOANH NGHIỆP)</span>
-              </span>
-              <span class="text-[11px] font-semibold text-slate-500">Bước đang chọn: <strong id="att-lock-active-step-label" class="text-[#2E3191]">Bước 4: Chỉnh sửa số công & Gửi đối soát</strong></span>
+          <!-- Stepper Wizard 5 Bước: Quy trình Chốt Bảng công Chuẩn Base Timesheet -->
+          <div class="bg-white rounded-2xl border border-slate-200 shadow-xs p-3.5 sm:p-4.5 mb-2">
+            <div class="flex flex-col md:flex-row md:items-center justify-between gap-3 pb-3 border-b border-slate-100">
+              <div class="flex items-center space-x-3">
+                <div class="w-10 h-10 rounded-xl bg-indigo-50 border border-indigo-200 text-[#2E3191] flex items-center justify-center font-bold text-lg shrink-0 shadow-2xs">
+                  🔄
+                </div>
+                <div>
+                  <div class="flex flex-wrap items-center gap-2">
+                    <h3 class="font-extrabold text-xs sm:text-sm uppercase tracking-wider text-slate-900">QUY TRÌNH 5 BƯỚC CHỐT BẢNG CÔNG (CHUẨN BASE TIMESHEET)</h3>
+                    <span id="att-lock-active-step-badge" class="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-[#2E3191] text-white shadow-2xs">Bước 4 / 5</span>
+                  </div>
+                  <p class="text-[11px] text-slate-500 mt-0.5">Thực hiện tuần tự 5 bước theo luồng tiêu chuẩn: Rà soát phân ca → Bổ sung giờ vào/ra → Áp dụng công thức → Sửa công & Đối soát → Khóa bảng công chuyển lương M10.</p>
+                </div>
+              </div>
+
+              <!-- Thanh tiến độ & Điều hướng bước -->
+              <div class="flex items-center space-x-3 shrink-0">
+                <div class="text-right hidden sm:block">
+                  <div class="text-[10px] font-bold uppercase tracking-wider text-slate-400">Tiến độ quy trình</div>
+                  <div id="att-lock-progress-text" class="text-xs font-bold text-[#2E3191]">Hoàn thành 80% (4/5 bước)</div>
+                </div>
+                <div class="w-28 sm:w-36 h-2.5 bg-slate-100 rounded-full overflow-hidden border border-slate-200 p-0.5 hidden sm:block">
+                  <div id="att-lock-progress-fill" class="h-full rounded-full bg-gradient-to-r from-emerald-500 to-[#2E3191] transition-all duration-300" style="width: 80%;"></div>
+                </div>
+                <div class="flex items-center space-x-1 pl-2 border-l border-slate-200">
+                  <button type="button" onclick="navigateLockStep(-1)" id="btn-prev-lock-step" class="px-2.5 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold rounded-lg transition cursor-pointer flex items-center space-x-1" title="Quay lại bước trước">
+                    <span>←</span><span class="hidden md:inline">Trước</span>
+                  </button>
+                  <button type="button" onclick="navigateLockStep(1)" id="btn-next-lock-step" class="px-2.5 py-1.5 pap-primary text-white text-xs font-bold rounded-lg shadow-xs hover:bg-[#242775] transition cursor-pointer flex items-center space-x-1" title="Tiếp tục bước tiếp theo">
+                    <span class="hidden md:inline">Tiếp</span><span>→</span>
+                  </button>
+                </div>
+              </div>
             </div>
 
-            <nav class="grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-5 gap-2" role="tablist" aria-label="Quy trình chốt bảng công">
+            <!-- Connected 5-Step Chevron Pipeline Bar -->
+            <nav class="mt-3.5 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-2.5 relative" role="tablist" aria-label="Quy trình 5 bước chốt bảng công">
               <!-- Step 1 -->
-              <button type="button" id="step-btn-att-1" onclick="switchAttendanceLockStep(1)" class="att-lock-step-btn text-left p-3 rounded-xl border border-transparent hover:bg-slate-50 transition cursor-pointer flex items-start space-x-2.5 group">
-                <div class="w-6 h-6 rounded-full bg-slate-200 text-slate-700 flex items-center justify-center text-xs font-bold shrink-0 mt-0.5 group-hover:bg-indigo-100 group-hover:text-[#2E3191]">1</div>
-                <div class="min-w-0">
-                  <div class="font-bold text-xs text-slate-800 truncate">1. Lịch & Ca làm việc</div>
-                  <div class="text-[10px] text-slate-500 truncate">Rà soát phân ca M07</div>
+              <button type="button" id="step-btn-att-1" onclick="switchAttendanceLockStep(1)" class="att-lock-step-btn text-left p-3 rounded-xl border border-emerald-200 bg-emerald-50/30 hover:bg-emerald-50/60 transition cursor-pointer flex flex-col justify-between group relative shadow-2xs">
+                <div class="flex items-center justify-between gap-1 w-full mb-1.5">
+                  <div id="step-circle-1" class="w-6 h-6 rounded-full bg-emerald-600 text-white flex items-center justify-center text-xs font-bold shrink-0 shadow-xs">✓</div>
+                  <span id="step-badge-1" class="px-1.5 py-0.5 rounded text-[9px] font-bold bg-emerald-100 text-emerald-800">✓ Đã xong</span>
+                </div>
+                <div>
+                  <div id="step-title-1" class="font-bold text-xs text-slate-800 truncate">1. Lịch & Ca làm việc</div>
+                  <div id="step-sub-1" class="text-[10px] text-emerald-700 font-medium truncate">Rà soát 245 NV (M07)</div>
                 </div>
               </button>
 
               <!-- Step 2 -->
-              <button type="button" id="step-btn-att-2" onclick="switchAttendanceLockStep(2)" class="att-lock-step-btn text-left p-3 rounded-xl border border-transparent hover:bg-slate-50 transition cursor-pointer flex items-start space-x-2.5 group">
-                <div class="w-6 h-6 rounded-full bg-slate-200 text-slate-700 flex items-center justify-center text-xs font-bold shrink-0 mt-0.5 group-hover:bg-indigo-100 group-hover:text-[#2E3191]">2</div>
-                <div class="min-w-0">
-                  <div class="font-bold text-xs text-slate-800 truncate">2. Giờ chấm công vào/ra</div>
-                  <div class="text-[10px] text-slate-500 truncate">Bổ sung 8 lượt thiếu giờ</div>
+              <button type="button" id="step-btn-att-2" onclick="switchAttendanceLockStep(2)" class="att-lock-step-btn text-left p-3 rounded-xl border border-emerald-200 bg-emerald-50/30 hover:bg-emerald-50/60 transition cursor-pointer flex flex-col justify-between group relative shadow-2xs">
+                <div class="flex items-center justify-between gap-1 w-full mb-1.5">
+                  <div id="step-circle-2" class="w-6 h-6 rounded-full bg-emerald-600 text-white flex items-center justify-center text-xs font-bold shrink-0 shadow-xs">✓</div>
+                  <span id="step-badge-2" class="px-1.5 py-0.5 rounded text-[9px] font-bold bg-emerald-100 text-emerald-800">✓ Đã xong</span>
+                </div>
+                <div>
+                  <div id="step-title-2" class="font-bold text-xs text-slate-800 truncate">2. Giờ chấm công vào/ra</div>
+                  <div id="step-sub-2" class="text-[10px] text-emerald-700 font-medium truncate">Bổ sung 8 lượt thiếu giờ</div>
                 </div>
               </button>
 
               <!-- Step 3 -->
-              <button type="button" id="step-btn-att-3" onclick="switchAttendanceLockStep(3)" class="att-lock-step-btn text-left p-3 rounded-xl border border-transparent hover:bg-slate-50 transition cursor-pointer flex items-start space-x-2.5 group">
-                <div class="w-6 h-6 rounded-full bg-slate-200 text-slate-700 flex items-center justify-center text-xs font-bold shrink-0 mt-0.5 group-hover:bg-indigo-100 group-hover:text-[#2E3191]">3</div>
-                <div class="min-w-0">
-                  <div class="font-bold text-xs text-slate-800 truncate">3. Áp dụng công thức công</div>
-                  <div class="text-[10px] text-slate-500 truncate">Tính giờ OT, trễ, phép</div>
+              <button type="button" id="step-btn-att-3" onclick="switchAttendanceLockStep(3)" class="att-lock-step-btn text-left p-3 rounded-xl border border-emerald-200 bg-emerald-50/30 hover:bg-emerald-50/60 transition cursor-pointer flex flex-col justify-between group relative shadow-2xs">
+                <div class="flex items-center justify-between gap-1 w-full mb-1.5">
+                  <div id="step-circle-3" class="w-6 h-6 rounded-full bg-emerald-600 text-white flex items-center justify-center text-xs font-bold shrink-0 shadow-xs">✓</div>
+                  <span id="step-badge-3" class="px-1.5 py-0.5 rounded text-[9px] font-bold bg-emerald-100 text-emerald-800">✓ Đã xong</span>
+                </div>
+                <div>
+                  <div id="step-title-3" class="font-bold text-xs text-slate-800 truncate">3. Áp dụng công thức</div>
+                  <div id="step-sub-3" class="text-[10px] text-emerald-700 font-medium truncate">Công thức chuẩn Cảng PAP</div>
                 </div>
               </button>
 
               <!-- Step 4 -->
-              <button type="button" id="step-btn-att-4" onclick="switchAttendanceLockStep(4)" class="att-lock-step-btn text-left p-3 rounded-xl border border-indigo-200 bg-indigo-50/80 transition cursor-pointer flex items-start space-x-2.5 group">
-                <div class="w-6 h-6 rounded-full bg-[#2E3191] text-white flex items-center justify-center text-xs font-bold shrink-0 mt-0.5">4</div>
-                <div class="min-w-0">
-                  <div class="font-bold text-xs text-[#2E3191] truncate">4. Sửa công & Gửi đối soát</div>
-                  <div class="text-[10px] text-indigo-700 font-medium truncate">Edit công & Gửi 245 NV</div>
+              <button type="button" id="step-btn-att-4" onclick="switchAttendanceLockStep(4)" class="att-lock-step-btn text-left p-3 rounded-xl border-2 border-[#2E3191] bg-gradient-to-b from-indigo-50/90 to-white transition cursor-pointer flex flex-col justify-between group relative shadow-sm ring-2 ring-indigo-100/60">
+                <div class="flex items-center justify-between gap-1 w-full mb-1.5">
+                  <div id="step-circle-4" class="w-6 h-6 rounded-full bg-[#2E3191] text-white flex items-center justify-center text-xs font-extrabold shrink-0 shadow-sm ring-2 ring-indigo-300">4</div>
+                  <span id="step-badge-4" class="px-1.5 py-0.5 rounded text-[9px] font-bold bg-[#2E3191] text-white flex items-center space-x-1 shadow-2xs"><span class="w-1.5 h-1.5 rounded-full bg-white animate-pulse"></span><span>Đang làm</span></span>
+                </div>
+                <div>
+                  <div id="step-title-4" class="font-extrabold text-xs text-[#2E3191] truncate">4. Sửa công & Đối soát</div>
+                  <div id="step-sub-4" class="text-[10px] text-indigo-700 font-semibold truncate">Gửi đối soát 245 NV</div>
                 </div>
               </button>
 
               <!-- Step 5 -->
-              <button type="button" id="step-btn-att-5" onclick="switchAttendanceLockStep(5)" class="att-lock-step-btn text-left p-3 rounded-xl border border-transparent hover:bg-slate-50 transition cursor-pointer flex items-start space-x-2.5 group">
-                <div class="w-6 h-6 rounded-full bg-slate-200 text-slate-700 flex items-center justify-center text-xs font-bold shrink-0 mt-0.5 group-hover:bg-indigo-100 group-hover:text-[#2E3191]">5</div>
-                <div class="min-w-0">
-                  <div class="font-bold text-xs text-slate-800 truncate">5. Hoàn tất & Chốt khóa</div>
-                  <div class="text-[10px] text-slate-500 truncate">Đóng băng & Chuyển lương</div>
+              <button type="button" id="step-btn-att-5" onclick="switchAttendanceLockStep(5)" class="att-lock-step-btn text-left p-3 rounded-xl border border-slate-200 bg-slate-50/40 hover:bg-slate-50 transition cursor-pointer flex flex-col justify-between group relative shadow-2xs">
+                <div class="flex items-center justify-between gap-1 w-full mb-1.5">
+                  <div id="step-circle-5" class="w-6 h-6 rounded-full bg-slate-100 text-slate-500 border border-slate-300 flex items-center justify-center text-xs font-bold shrink-0">5</div>
+                  <span id="step-badge-5" class="px-1.5 py-0.5 rounded text-[9px] font-medium bg-slate-200 text-slate-600">Chờ làm</span>
+                </div>
+                <div>
+                  <div id="step-title-5" class="font-bold text-xs text-slate-600 truncate">5. Hoàn tất & Chốt khóa</div>
+                  <div id="step-sub-5" class="text-[10px] text-slate-400 truncate">Khóa kỳ & Chuyển lương M10</div>
                 </div>
               </button>
             </nav>
@@ -6251,17 +6293,26 @@
           <div id="pane-att-step-1" class="space-y-3.5 hidden">
             <div class="bg-white rounded-2xl border border-slate-200 shadow-xs p-4 sm:p-5">
               <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-slate-100">
-                <div>
-                  <h3 class="font-bold text-sm text-slate-900">Bước 1: Kiểm tra & Chỉnh sửa Lịch làm việc / Ca làm việc</h3>
-                  <p class="text-xs text-slate-500 mt-0.5">Dữ liệu phân ca từ phân hệ Lịch làm việc (M07) được kết nối và đồng bộ tự động vào chu kỳ tính công. Đảm bảo toàn bộ nhân sự đều có ca trước khi tính công.</p>
+                <div class="flex items-start space-x-3">
+                  <div class="w-10 h-10 rounded-xl bg-blue-50 border border-blue-200 text-[#2E3191] flex items-center justify-center font-bold text-sm shrink-0 mt-0.5 shadow-2xs">
+                    B1
+                  </div>
+                  <div>
+                    <div class="flex items-center space-x-2">
+                      <span class="px-2 py-0.5 rounded text-[10px] font-bold bg-blue-100 text-blue-900 uppercase">Bước 1 / 5</span>
+                      <h3 class="font-bold text-sm text-slate-900">Kiểm tra & Chỉnh sửa Lịch làm việc / Ca làm việc</h3>
+                    </div>
+                    <p class="text-xs text-slate-500 mt-0.5">Dữ liệu phân ca từ phân hệ Lịch làm việc (M07) được kết nối và đồng bộ tự động vào chu kỳ tính công. Đảm bảo toàn bộ nhân sự đều có ca trước khi tính công.</p>
+                  </div>
                 </div>
                 <div class="flex items-center space-x-2 shrink-0">
                   <button type="button" onclick="syncShiftsFromScheduleModule()" class="px-3.5 py-1.5 bg-white border border-slate-300 hover:bg-slate-50 text-slate-700 text-xs font-semibold rounded-xl shadow-2xs transition flex items-center space-x-1.5 cursor-pointer">
                     <span>🔄</span>
-                    <span>Đồng bộ lại từ M07</span>
+                    <span>Đồng bộ từ M07</span>
                   </button>
-                  <button type="button" onclick="switchAttendanceLockStep(2)" class="px-4 py-1.5 pap-primary text-white text-xs font-bold rounded-xl shadow-xs transition hover:bg-[#242775] cursor-pointer">
-                    <span>Tiếp tục: Bước 2 →</span>
+                  <button type="button" onclick="switchAttendanceLockStep(2)" class="px-4 py-1.5 pap-primary text-white text-xs font-bold rounded-xl shadow-xs transition hover:bg-[#242775] cursor-pointer flex items-center space-x-1">
+                    <span>Tiếp tục: Bước 2 (Giờ vào/ra)</span>
+                    <span>→</span>
                   </button>
                 </div>
               </div>
@@ -6437,6 +6488,23 @@
                   </tbody>
                 </table>
               </div>
+
+              <!-- Footer Điều hướng chuyển bước chuẩn Base (Bước 1) -->
+              <div class="mt-4 pt-3.5 border-t border-slate-200 flex flex-wrap items-center justify-between gap-2.5">
+                <div class="text-xs text-slate-600 flex items-center space-x-1.5">
+                  <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
+                  <span><strong>Bước 1 / 5:</strong> Toàn bộ 245 nhân sự đã có ca làm việc hợp lệ (Đã đồng bộ từ M07).</span>
+                </div>
+                <div class="flex items-center space-x-2">
+                  <button type="button" onclick="syncShiftsFromScheduleModule()" class="px-3.5 py-2 bg-white border border-slate-300 hover:bg-slate-50 text-slate-700 text-xs font-semibold rounded-xl transition cursor-pointer">
+                    🔄 Đồng bộ lại từ M07
+                  </button>
+                  <button type="button" onclick="switchAttendanceLockStep(2)" class="px-4 py-2 pap-primary text-white text-xs font-bold rounded-xl shadow-xs hover:bg-[#242775] transition cursor-pointer flex items-center space-x-1.5">
+                    <span>Lưu & Tiếp tục: Bước 2 (Giờ vào/ra)</span>
+                    <span>→</span>
+                  </button>
+                </div>
+              </div>
             </div>
           </div>
 
@@ -6444,16 +6512,25 @@
           <div id="pane-att-step-2" class="space-y-3.5 hidden">
             <div class="bg-white rounded-2xl border border-slate-200 shadow-xs p-4 sm:p-5">
               <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-slate-100">
-                <div>
-                  <h3 class="font-bold text-sm text-slate-900">Bước 2: Chỉnh sửa thời gian chấm công (Dữ liệu vào/ra thực tế)</h3>
-                  <p class="text-xs text-slate-500 mt-0.5">Kiểm tra các bản ghi thiếu Check-in hoặc Check-out. HR có thể bổ sung trực tiếp thời gian quẹt thẻ trước khi hệ thống chạy công thức tính công.</p>
+                <div class="flex items-start space-x-3">
+                  <div class="w-10 h-10 rounded-xl bg-amber-50 border border-amber-200 text-amber-700 flex items-center justify-center font-bold text-sm shrink-0 mt-0.5 shadow-2xs">
+                    B2
+                  </div>
+                  <div>
+                    <div class="flex items-center space-x-2">
+                      <span class="px-2 py-0.5 rounded text-[10px] font-bold bg-amber-100 text-amber-900 uppercase">Bước 2 / 5</span>
+                      <h3 class="font-bold text-sm text-slate-900">Chỉnh sửa thời gian chấm công (Dữ liệu vào/ra thực tế)</h3>
+                    </div>
+                    <p class="text-xs text-slate-500 mt-0.5">Kiểm tra các bản ghi thiếu Check-in hoặc Check-out. HR có thể bổ sung trực tiếp thời gian quẹt thẻ trước khi hệ thống chạy công thức tính công.</p>
+                  </div>
                 </div>
                 <div class="flex items-center space-x-2 shrink-0">
                   <button type="button" onclick="switchAttendanceLockStep(1)" class="px-3.5 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-semibold rounded-xl transition cursor-pointer">
                     <span>← Quay lại Bước 1</span>
                   </button>
-                  <button type="button" onclick="switchAttendanceLockStep(3)" class="px-4 py-1.5 pap-primary text-white text-xs font-bold rounded-xl shadow-xs transition hover:bg-[#242775] cursor-pointer">
-                    <span>Tiếp tục: Bước 3 →</span>
+                  <button type="button" onclick="switchAttendanceLockStep(3)" class="px-4 py-1.5 pap-primary text-white text-xs font-bold rounded-xl shadow-xs transition hover:bg-[#242775] cursor-pointer flex items-center space-x-1">
+                    <span>Tiếp tục: Bước 3 (Công thức)</span>
+                    <span>→</span>
                   </button>
                 </div>
               </div>
@@ -6584,6 +6661,20 @@
                   </tbody>
                 </table>
               </div>
+
+              <!-- Footer Điều hướng chuyển bước chuẩn Base (Bước 2) -->
+              <div class="mt-4 pt-3.5 border-t border-slate-200 flex flex-wrap items-center justify-between gap-2.5">
+                <button type="button" onclick="switchAttendanceLockStep(1)" class="px-3.5 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold rounded-xl transition cursor-pointer">
+                  ← Quay lại Bước 1: Lịch & Ca
+                </button>
+                <div class="flex items-center space-x-2">
+                  <span class="text-xs text-slate-500 font-medium">Bước 2 / 5: Rà soát & Bổ sung giờ chấm công</span>
+                  <button type="button" onclick="switchAttendanceLockStep(3)" class="px-4 py-2 pap-primary text-white text-xs font-bold rounded-xl shadow-xs hover:bg-[#242775] transition cursor-pointer flex items-center space-x-1.5">
+                    <span>Lưu & Tiếp tục: Bước 3 (Áp dụng công thức)</span>
+                    <span>→</span>
+                  </button>
+                </div>
+              </div>
             </div>
           </div>
 
@@ -6591,16 +6682,25 @@
           <div id="pane-att-step-3" class="space-y-3.5 hidden">
             <div class="bg-white rounded-2xl border border-slate-200 shadow-xs p-4 sm:p-5">
               <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-slate-100">
-                <div>
-                  <h3 class="font-bold text-sm text-slate-900">Bước 3: Áp dụng công thức tính công toàn chu kỳ</h3>
-                  <p class="text-xs text-slate-500 mt-0.5">Hệ thống tự động tính toán tổng số ngày công (X, S1, S2), nghỉ lễ (L), phép năm (P) và trừ nghỉ không lương dựa trên công thức tính công chuẩn của Cảng Phước An (Giai đoạn này tạm thời không tính OT theo quy chế hiện hành).</p>
+                <div class="flex items-start space-x-3">
+                  <div class="w-10 h-10 rounded-xl bg-purple-50 border border-purple-200 text-purple-700 flex items-center justify-center font-bold text-sm shrink-0 mt-0.5 shadow-2xs">
+                    B3
+                  </div>
+                  <div>
+                    <div class="flex items-center space-x-2">
+                      <span class="px-2 py-0.5 rounded text-[10px] font-bold bg-purple-100 text-purple-900 uppercase">Bước 3 / 5</span>
+                      <h3 class="font-bold text-sm text-slate-900">Áp dụng công thức tính công toàn chu kỳ</h3>
+                    </div>
+                    <p class="text-xs text-slate-500 mt-0.5">Hệ thống tự động tính toán tổng số ngày công (X, S1, S2), nghỉ lễ (L), phép năm (P) dựa trên công thức tính công chuẩn của Cảng Phước An (Giai đoạn này tạm thời không tính OT theo quy chế hiện hành).</p>
+                  </div>
                 </div>
                 <div class="flex items-center space-x-2 shrink-0">
                   <button type="button" onclick="switchAttendanceLockStep(2)" class="px-3.5 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-semibold rounded-xl transition cursor-pointer">
                     <span>← Quay lại Bước 2</span>
                   </button>
-                  <button type="button" onclick="switchAttendanceLockStep(4)" class="px-4 py-1.5 pap-primary text-white text-xs font-bold rounded-xl shadow-xs transition hover:bg-[#242775] cursor-pointer">
-                    <span>Tiếp tục: Bước 4 →</span>
+                  <button type="button" onclick="switchAttendanceLockStep(4)" class="px-4 py-1.5 pap-primary text-white text-xs font-bold rounded-xl shadow-xs transition hover:bg-[#242775] cursor-pointer flex items-center space-x-1">
+                    <span>Tiếp tục: Bước 4 (Sửa công)</span>
+                    <span>→</span>
                   </button>
                 </div>
               </div>
@@ -6659,6 +6759,24 @@
                   <span>Áp dụng công thức tính công</span>
                 </button>
               </div>
+
+              <!-- Footer Điều hướng chuyển bước chuẩn Base (Bước 3) -->
+              <div class="mt-4 pt-3.5 border-t border-slate-200 flex flex-wrap items-center justify-between gap-2.5">
+                <button type="button" onclick="switchAttendanceLockStep(2)" class="px-3.5 py-2 bg-white border border-slate-300 hover:bg-slate-50 text-slate-700 text-xs font-semibold rounded-xl transition cursor-pointer flex items-center space-x-1.5">
+                  <span>←</span>
+                  <span>Quay lại Bước 2: Giờ vào/ra</span>
+                </button>
+                <div class="flex items-center space-x-2">
+                  <button type="button" onclick="executeCalculateAttendanceFormula()" class="px-3.5 py-2 bg-purple-50 border border-purple-200 hover:bg-purple-100 text-purple-800 text-xs font-bold rounded-xl transition cursor-pointer flex items-center space-x-1.5">
+                    <span>⚡</span>
+                    <span>Tính lại công thức</span>
+                  </button>
+                  <button type="button" onclick="switchAttendanceLockStep(4)" class="px-4 py-2 pap-primary text-white text-xs font-bold rounded-xl shadow-xs hover:bg-[#242775] transition cursor-pointer flex items-center space-x-1.5">
+                    <span>Lưu & Tiếp tục: Bước 4 (Sửa công & Đối soát)</span>
+                    <span>→</span>
+                  </button>
+                </div>
+              </div>
             </div>
           </div>
 
@@ -6666,17 +6784,29 @@
           <div id="pane-att-step-4" class="space-y-3.5">
             <div class="bg-white rounded-2xl border border-slate-200 shadow-xs p-4 sm:p-5">
               <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-slate-100">
-                <div>
-                  <h3 class="font-bold text-sm text-slate-900">Bước 4: Chỉnh sửa số công & Gửi bảng công cho nhân viên kiểm tra</h3>
-                  <p class="text-xs text-slate-500 mt-0.5">HR kiểm tra bảng công tổng hợp, có thể nhấp vào số công để chỉnh sửa ngoại lệ, và gửi bảng công để toàn thể nhân viên tự đối soát trước khi khóa.</p>
+                <div class="flex items-start space-x-3">
+                  <div class="w-10 h-10 rounded-xl bg-indigo-50 border border-indigo-200 text-[#2E3191] flex items-center justify-center font-bold text-sm shrink-0 mt-0.5 shadow-2xs">
+                    B4
+                  </div>
+                  <div>
+                    <div class="flex items-center space-x-2">
+                      <span class="px-2 py-0.5 rounded text-[10px] font-bold bg-indigo-100 text-[#2E3191] uppercase">Bước 4 / 5</span>
+                      <h3 class="font-bold text-sm text-slate-900">Chỉnh sửa số công & Gửi bảng công cho nhân viên kiểm tra</h3>
+                    </div>
+                    <p class="text-xs text-slate-500 mt-0.5">HR kiểm tra bảng công tổng hợp, có thể nhấp vào số công để chỉnh sửa ngoại lệ, và gửi bảng công để toàn thể nhân viên tự đối soát trước khi khóa.</p>
+                  </div>
                 </div>
                 <div class="flex items-center space-x-2 shrink-0">
-                  <button type="button" onclick="openSendReviewConfirmModal()" class="px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold rounded-xl shadow-xs transition cursor-pointer flex items-center space-x-1.5">
-                    <span>📤</span>
-                    <span>Gửi bảng công cho nhân viên kiểm tra (245 NV)</span>
+                  <button type="button" onclick="switchAttendanceLockStep(3)" class="px-3.5 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-semibold rounded-xl transition cursor-pointer">
+                    <span>← Quay lại Bước 3</span>
                   </button>
-                  <button type="button" onclick="switchAttendanceLockStep(5)" class="px-4 py-2 pap-primary text-white text-xs font-bold rounded-xl shadow-xs transition hover:bg-[#242775] cursor-pointer">
-                    <span>Tiếp tục: Bước 5 (Chốt công) →</span>
+                  <button type="button" onclick="openSendReviewConfirmModal()" class="px-3.5 py-1.5 bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold rounded-xl shadow-xs transition cursor-pointer flex items-center space-x-1.5">
+                    <span>📤</span>
+                    <span>Gửi đối soát (245 NV)</span>
+                  </button>
+                  <button type="button" onclick="switchAttendanceLockStep(5)" class="px-4 py-1.5 pap-primary text-white text-xs font-bold rounded-xl shadow-xs transition hover:bg-[#242775] cursor-pointer flex items-center space-x-1">
+                    <span>Tiếp tục: Bước 5 (Chốt công)</span>
+                    <span>→</span>
                   </button>
                 </div>
               </div>
@@ -7036,31 +7166,53 @@
                   </table>
                 </div>
               </div>
+
+              <!-- Footer Điều hướng chuyển bước chuẩn Base (Bước 4) -->
+              <div class="mt-4 pt-3.5 border-t border-slate-200 flex flex-wrap items-center justify-between gap-2.5">
+                <button type="button" onclick="switchAttendanceLockStep(3)" class="px-3.5 py-2 bg-white border border-slate-300 hover:bg-slate-50 text-slate-700 text-xs font-semibold rounded-xl transition cursor-pointer flex items-center space-x-1.5">
+                  <span>←</span>
+                  <span>Quay lại Bước 3: Áp dụng công thức</span>
+                </button>
+                <div class="flex items-center space-x-2">
+                  <button type="button" onclick="openSendReviewConfirmModal()" class="px-3.5 py-2 bg-emerald-50 border border-emerald-200 hover:bg-emerald-100 text-emerald-800 text-xs font-bold rounded-xl transition cursor-pointer flex items-center space-x-1.5">
+                    <span>📤</span>
+                    <span>Gửi đối soát 245 NV</span>
+                  </button>
+                  <button type="button" onclick="switchAttendanceLockStep(5)" class="px-4 py-2 pap-primary text-white text-xs font-bold rounded-xl shadow-xs hover:bg-[#242775] transition cursor-pointer flex items-center space-x-1.5">
+                    <span>Chuyển sang Bước 5: Hoàn tất & Chốt khóa</span>
+                    <span>→</span>
+                  </button>
+                </div>
+              </div>
             </div>
           </div>
 
           <!-- ================= BƯỚC 5 PANE: HOÀN TẤT & CHỐT KHÓA KỲ CÔNG ================= -->
           <div id="pane-att-step-5" class="space-y-3.5 hidden">
-            <!-- Banner Trạng thái Khóa Kỳ công -->
+            <!-- Header Step 5 & Banner Trạng thái Khóa Kỳ công chuẩn Base -->
             <div id="att-lock-status-banner" class="p-4 rounded-xl border border-amber-200 bg-amber-50/80 shadow-2xs flex flex-wrap items-center justify-between gap-3 text-amber-900">
-              <div class="flex items-center space-x-3">
-                <div class="w-10 h-10 rounded-xl bg-amber-100 text-amber-700 flex items-center justify-center font-bold text-xl shrink-0">
+              <div class="flex items-start space-x-3">
+                <div class="w-10 h-10 rounded-xl bg-amber-100 text-amber-700 flex items-center justify-center font-bold text-xl shrink-0 mt-0.5 shadow-2xs">
                   🔓
                 </div>
                 <div>
-                  <div class="flex items-center space-x-2">
-                    <h3 class="font-bold text-sm">KỲ CÔNG THÁNG 09/2026 ĐANG MỞ (Chưa khóa bảng công)</h3>
-                    <span class="px-2 py-0.5 rounded-full bg-amber-200 text-amber-800 text-[10px] font-bold">Chu kỳ: 01/09/2026 - 30/09/2026</span>
+                  <div class="flex flex-wrap items-center gap-2">
+                    <span class="px-2 py-0.5 rounded text-[10px] font-bold bg-amber-200 text-amber-900 uppercase">Bước 5 / 5</span>
+                    <h3 class="font-bold text-sm text-amber-950 uppercase">KỲ CÔNG THÁNG 09/2026 ĐANG MỞ (Chưa khóa bảng công)</h3>
+                    <span class="px-2 py-0.5 rounded-full bg-amber-200/80 text-amber-800 text-[10px] font-bold">Chu kỳ: 01/09/2026 - 30/09/2026</span>
                   </div>
-                  <p class="text-xs text-amber-800 mt-0.5">Dữ liệu công đang được quản lý mở: Nhân viên có thể nộp đề xuất bổ sung công; Quản lý và HR có thể chỉnh sửa/phê duyệt trước khi chuyển sang phân hệ Tính lương (M10).</p>
+                  <p class="text-xs text-amber-800 mt-1">Dữ liệu công đang được quản lý mở: Nhân viên có thể nộp đề xuất bổ sung công; Quản lý và HR có thể chỉnh sửa/phê duyệt trước khi chuyển sang phân hệ Tính lương (M10).</p>
                 </div>
               </div>
 
-              <div class="flex items-center space-x-2">
-                <button onclick="runAttendanceValidationCheck()" class="px-3.5 py-2 bg-white text-slate-800 border border-slate-300 hover:bg-slate-50 rounded-lg text-xs font-semibold shadow-2xs transition cursor-pointer flex items-center space-x-1.5">
+              <div class="flex items-center space-x-2 shrink-0">
+                <button type="button" onclick="switchAttendanceLockStep(4)" class="px-3.5 py-2 bg-white/90 hover:bg-white text-slate-700 border border-amber-300 rounded-xl text-xs font-semibold shadow-2xs transition cursor-pointer">
+                  ← Quay lại Bước 4
+                </button>
+                <button type="button" onclick="runAttendanceValidationCheck()" class="px-3.5 py-2 bg-white text-slate-800 border border-slate-300 hover:bg-slate-50 rounded-xl text-xs font-semibold shadow-2xs transition cursor-pointer flex items-center space-x-1.5">
                   <span>🔍 Kiểm tra cảnh báo lỗi</span>
                 </button>
-                <button onclick="openAttLockModal()" class="px-4 py-2 bg-rose-600 hover:bg-rose-700 text-white rounded-lg text-xs font-bold shadow-xs transition cursor-pointer flex items-center space-x-1.5">
+                <button type="button" onclick="openAttLockModal()" class="px-4 py-2 bg-rose-600 hover:bg-rose-700 text-white rounded-xl text-xs font-bold shadow-xs transition cursor-pointer flex items-center space-x-1.5">
                   <span>🔒 Chốt & Khóa bảng công</span>
                 </button>
               </div>
@@ -7428,6 +7580,24 @@
                     </tr>
                   </tbody>
                 </table>
+              </div>
+            </div>
+
+            <!-- Footer Điều hướng chuyển bước chuẩn Base (Bước 5) -->
+            <div class="bg-white rounded-2xl border border-slate-200 shadow-xs p-4 flex flex-wrap items-center justify-between gap-3">
+              <button type="button" onclick="switchAttendanceLockStep(4)" class="px-3.5 py-2 bg-white border border-slate-300 hover:bg-slate-50 text-slate-700 text-xs font-semibold rounded-xl transition cursor-pointer flex items-center space-x-1.5">
+                <span>←</span>
+                <span>Quay lại Bước 4: Sửa công & Đối soát</span>
+              </button>
+              <div class="flex items-center space-x-2">
+                <button type="button" onclick="exportAttendanceSummaryExcel()" class="px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold rounded-xl transition cursor-pointer flex items-center space-x-1.5">
+                  <span>📥</span>
+                  <span>Xuất Excel (.xlsx)</span>
+                </button>
+                <button type="button" id="btn-bottom-lock-period" onclick="openAttLockModal()" class="px-4 py-2 bg-rose-600 hover:bg-rose-700 text-white text-xs font-bold rounded-xl shadow-xs transition cursor-pointer flex items-center space-x-1.5">
+                  <span id="btn-bottom-lock-icon">🔒</span>
+                  <span id="btn-bottom-lock-text">Chốt & Khóa bảng công</span>
+                </button>
               </div>
             </div>
           </div>
@@ -38261,8 +38431,16 @@
 
     // Chuyển bước trong Stepper
     function switchAttendanceLockStep(stepNum) {
-      currentAttendanceLockStep = stepNum;
+      currentAttendanceLockStep = Math.max(1, Math.min(5, stepNum));
       renderAttendanceLockStatus();
+    }
+
+    // Điều hướng bước trước / sau chuẩn Base Pipeline
+    function navigateLockStep(delta) {
+      const targetStep = Math.max(1, Math.min(5, currentAttendanceLockStep + delta));
+      if (targetStep !== currentAttendanceLockStep) {
+        switchAttendanceLockStep(targetStep);
+      }
     }
 
     // Render chính phân hệ Chốt bảng công
@@ -38345,33 +38523,104 @@
       const activeStepLabel = document.getElementById('att-lock-active-step-label');
       if (activeStepLabel) activeStepLabel.innerText = stepLabels[currentAttendanceLockStep] || '';
 
+      // Cập nhật Tiến độ & Điều hướng Stepper chuẩn Base Timesheet
+      const progressBadge = document.getElementById('att-lock-active-step-badge');
+      const progressText = document.getElementById('att-lock-progress-text');
+      const progressFill = document.getElementById('att-lock-progress-fill');
+      const btnPrev = document.getElementById('btn-prev-lock-step');
+      const btnNext = document.getElementById('btn-next-lock-step');
+
+      if (progressBadge) {
+        progressBadge.innerText = `Bước ${currentAttendanceLockStep} / 5`;
+      }
+      if (progressText) {
+        if (period.isLocked) {
+          progressText.innerText = 'Hoàn thành 100% (5/5 bước - Đã khóa)';
+        } else {
+          progressText.innerText = `Hoàn thành ${currentAttendanceLockStep * 20}% (${currentAttendanceLockStep}/5 bước)`;
+        }
+      }
+      if (progressFill) {
+        progressFill.style.width = (period.isLocked ? 100 : (currentAttendanceLockStep * 20)) + '%';
+      }
+      if (btnPrev) {
+        btnPrev.disabled = currentAttendanceLockStep <= 1;
+        btnPrev.classList.toggle('opacity-40', currentAttendanceLockStep <= 1);
+        btnPrev.classList.toggle('cursor-not-allowed', currentAttendanceLockStep <= 1);
+      }
+      if (btnNext) {
+        btnNext.disabled = currentAttendanceLockStep >= 5;
+        btnNext.classList.toggle('opacity-40', currentAttendanceLockStep >= 5);
+        btnNext.classList.toggle('cursor-not-allowed', currentAttendanceLockStep >= 5);
+      }
+
       // Cập nhật Stepper Buttons UI
       for (let s = 1; s <= 5; s++) {
         const btn = document.getElementById('step-btn-att-' + s);
         const pane = document.getElementById('pane-att-step-' + s);
         if (pane) pane.classList.toggle('hidden', s !== currentAttendanceLockStep);
 
-        if (btn) {
-          const circle = btn.querySelector('.w-6');
-          const title = btn.querySelector('.font-bold');
-          const sub = btn.querySelector('.text-\[10px\]');
+        const circle = document.getElementById('step-circle-' + s);
+        const badge = document.getElementById('step-badge-' + s);
+        const title = document.getElementById('step-title-' + s);
+        const sub = document.getElementById('step-sub-' + s);
 
+        if (btn) {
           if (s === currentAttendanceLockStep) {
-            btn.className = "att-lock-step-btn text-left p-3 rounded-xl border border-indigo-200 bg-indigo-50/80 transition cursor-pointer flex items-start space-x-2.5 shadow-2xs";
-            if (circle) circle.className = "w-6 h-6 rounded-full bg-[#2E3191] text-white flex items-center justify-center text-xs font-bold shrink-0 mt-0.5 shadow-xs";
-            if (title) title.className = "font-bold text-xs text-[#2E3191] truncate";
-            if (sub) sub.className = "text-[10px] text-indigo-700 font-medium truncate";
+            btn.className = "att-lock-step-btn text-left p-3 rounded-xl border-2 border-[#2E3191] bg-gradient-to-b from-indigo-50/90 to-white transition cursor-pointer flex flex-col justify-between group relative shadow-sm ring-2 ring-indigo-100/60";
+            if (circle) {
+              circle.className = "w-6 h-6 rounded-full bg-[#2E3191] text-white flex items-center justify-center text-xs font-extrabold shrink-0 shadow-sm ring-2 ring-indigo-300";
+              circle.innerText = s;
+            }
+            if (badge) {
+              badge.className = "px-1.5 py-0.5 rounded text-[9px] font-bold bg-[#2E3191] text-white flex items-center space-x-1 shadow-2xs";
+              badge.innerHTML = '<span class="w-1.5 h-1.5 rounded-full bg-white animate-pulse"></span><span>Đang làm</span>';
+            }
+            if (title) title.className = "font-extrabold text-xs text-[#2E3191] truncate";
+            if (sub) sub.className = "text-[10px] text-indigo-700 font-semibold truncate";
           } else if (s < currentAttendanceLockStep || period.isLocked) {
-            btn.className = "att-lock-step-btn text-left p-3 rounded-xl border border-emerald-100 bg-emerald-50/40 hover:bg-emerald-50/70 transition cursor-pointer flex items-start space-x-2.5";
-            if (circle) circle.className = "w-6 h-6 rounded-full bg-emerald-100 text-emerald-800 flex items-center justify-center text-xs font-bold shrink-0 mt-0.5";
+            btn.className = "att-lock-step-btn text-left p-3 rounded-xl border border-emerald-200 bg-emerald-50/30 hover:bg-emerald-50/60 transition cursor-pointer flex flex-col justify-between group relative shadow-2xs";
+            if (circle) {
+              circle.className = "w-6 h-6 rounded-full bg-emerald-600 text-white flex items-center justify-center text-xs font-bold shrink-0 shadow-xs";
+              circle.innerText = "✓";
+            }
+            if (badge) {
+              badge.className = "px-1.5 py-0.5 rounded text-[9px] font-bold bg-emerald-100 text-emerald-800";
+              badge.innerText = "✓ Đã xong";
+            }
             if (title) title.className = "font-bold text-xs text-slate-800 truncate";
             if (sub) sub.className = "text-[10px] text-emerald-700 font-medium truncate";
           } else {
-            btn.className = "att-lock-step-btn text-left p-3 rounded-xl border border-transparent hover:bg-slate-50 transition cursor-pointer flex items-start space-x-2.5 group";
-            if (circle) circle.className = "w-6 h-6 rounded-full bg-slate-200 text-slate-700 flex items-center justify-center text-xs font-bold shrink-0 mt-0.5 group-hover:bg-indigo-100 group-hover:text-[#2E3191]";
-            if (title) title.className = "font-bold text-xs text-slate-800 truncate";
-            if (sub) sub.className = "text-[10px] text-slate-500 truncate";
+            btn.className = "att-lock-step-btn text-left p-3 rounded-xl border border-slate-200 bg-slate-50/40 hover:bg-slate-50 transition cursor-pointer flex flex-col justify-between group relative shadow-2xs";
+            if (circle) {
+              circle.className = "w-6 h-6 rounded-full bg-slate-100 text-slate-500 border border-slate-300 flex items-center justify-center text-xs font-bold shrink-0";
+              circle.innerText = s;
+            }
+            if (badge) {
+              badge.className = "px-1.5 py-0.5 rounded text-[9px] font-medium bg-slate-200 text-slate-600";
+              badge.innerText = "Chờ làm";
+            }
+            if (title) title.className = "font-bold text-xs text-slate-600 truncate";
+            if (sub) sub.className = "text-[10px] text-slate-400 truncate";
           }
+        }
+      }
+
+      // Cập nhật nút Chốt/Mở khóa ở footer Bước 5
+      const bottomLockBtn = document.getElementById('btn-bottom-lock-period');
+      const bottomLockText = document.getElementById('btn-bottom-lock-period-text');
+      const bottomLockIcon = document.getElementById('btn-bottom-lock-icon');
+      if (bottomLockBtn && bottomLockText) {
+        if (period.isLocked) {
+          bottomLockBtn.className = "px-4 py-2 bg-white text-rose-700 border border-rose-300 hover:bg-rose-50 text-xs font-bold rounded-xl shadow-2xs transition cursor-pointer flex items-center space-x-1.5";
+          if (bottomLockIcon) bottomLockIcon.innerText = "🔓";
+          bottomLockText.innerText = "Mở khóa kỳ (Admin)";
+          bottomLockBtn.setAttribute('onclick', 'openAttUnlockModal()');
+        } else {
+          bottomLockBtn.className = "px-4 py-2 bg-rose-600 hover:bg-rose-700 text-white text-xs font-bold rounded-xl shadow-xs transition cursor-pointer flex items-center space-x-1.5";
+          if (bottomLockIcon) bottomLockIcon.innerText = "🔒";
+          bottomLockText.innerText = `Chốt & Khóa bảng công (${period.name})`;
+          bottomLockBtn.setAttribute('onclick', 'openAttLockModal()');
         }
       }
 
@@ -38729,43 +38978,47 @@
         if (period.isLocked) {
           banner.className = "p-4 rounded-xl border border-indigo-200 bg-indigo-50/90 shadow-2xs flex flex-wrap items-center justify-between gap-3 text-indigo-950";
           banner.innerHTML = `
-            <div class="flex items-center space-x-3">
-              <div class="w-10 h-10 rounded-xl bg-[#2E3191] text-white flex items-center justify-center font-bold text-xl shrink-0">
+            <div class="flex items-start space-x-3">
+              <div class="w-10 h-10 rounded-xl bg-[#2E3191] text-white flex items-center justify-center font-bold text-xl shrink-0 mt-0.5 shadow-2xs">
                 🔒
               </div>
               <div>
-                <div class="flex items-center space-x-2">
-                  <h3 class="font-bold text-sm uppercase">${period.name.toUpperCase()} ĐÃ ĐƯỢC CHỐT & KHÓA DỮ LIỆU</h3>
-                  <span class="px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800 text-[10px] font-bold">Trạng thái: LOCKED</span>
+                <div class="flex flex-wrap items-center gap-2">
+                  <span class="px-2 py-0.5 rounded text-[10px] font-bold bg-indigo-200 text-indigo-900 uppercase">Bước 5 / 5</span>
+                  <h3 class="font-bold text-sm text-indigo-950 uppercase">${period.name.toUpperCase()} ĐÃ ĐƯỢC CHỐT & KHÓA DỮ LIỆU</h3>
+                  <span class="px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800 text-[10px] font-bold">LOCKED - ĐÃ KHÓA</span>
                 </div>
-                <p class="text-xs text-indigo-900 mt-0.5">Khóa lúc ${period.lockedAt || '31/08/2026 18:00'} bởi ${period.lockedBy || 'Nguyễn Thị Mai (HR Admin)'}. Bảng công ở chế độ CHỈ ĐỌC để phục vụ tính lương (M10).</p>
+                <p class="text-xs text-indigo-900 mt-1">Khóa lúc ${period.lockedAt || '31/08/2026 18:00'} bởi ${period.lockedBy || 'Nguyễn Thị Mai (HR Admin)'}. Bảng công ở chế độ CHỈ ĐỌC để phục vụ tính lương (M10).</p>
               </div>
             </div>
-            <div class="flex items-center space-x-2">
-              <button onclick="exportAttendanceSummaryExcel()" class="px-3.5 py-2 pap-primary text-white rounded-lg text-xs font-semibold shadow-xs cursor-pointer">📥 Tải Bảng công tính lương (.xlsx)</button>
-              <button onclick="openAttUnlockModal()" class="px-3.5 py-2 bg-white text-rose-700 border border-rose-300 hover:bg-rose-50 rounded-lg text-xs font-semibold shadow-2xs cursor-pointer transition">Mở khóa kỳ (Admin)</button>
+            <div class="flex items-center space-x-2 shrink-0">
+              <button type="button" onclick="switchAttendanceLockStep(4)" class="px-3.5 py-2 bg-white/90 hover:bg-white text-slate-700 border border-indigo-200 rounded-xl text-xs font-semibold shadow-2xs cursor-pointer transition">← Xem lại Bước 4</button>
+              <button onclick="exportAttendanceSummaryExcel()" class="px-3.5 py-2 pap-primary text-white rounded-xl text-xs font-bold shadow-xs cursor-pointer hover:bg-[#242775] transition">📥 Tải Excel (.xlsx)</button>
+              <button onclick="openAttUnlockModal()" class="px-3.5 py-2 bg-white text-rose-700 border border-rose-300 hover:bg-rose-50 rounded-xl text-xs font-bold shadow-2xs cursor-pointer transition">🔓 Mở khóa kỳ (Admin)</button>
             </div>
           `;
         } else {
           banner.className = "p-4 rounded-xl border border-amber-200 bg-amber-50/80 shadow-2xs flex flex-wrap items-center justify-between gap-3 text-amber-900";
           banner.innerHTML = `
-            <div class="flex items-center space-x-3">
-              <div class="w-10 h-10 rounded-xl bg-amber-100 text-amber-700 flex items-center justify-center font-bold text-xl shrink-0">
+            <div class="flex items-start space-x-3">
+              <div class="w-10 h-10 rounded-xl bg-amber-100 text-amber-700 flex items-center justify-center font-bold text-xl shrink-0 mt-0.5 shadow-2xs">
                 🔓
               </div>
               <div>
-                <div class="flex items-center space-x-2">
-                  <h3 class="font-bold text-sm uppercase">${period.name.toUpperCase()} ĐANG MỞ (Chưa khóa bảng công)</h3>
+                <div class="flex flex-wrap items-center gap-2">
+                  <span class="px-2 py-0.5 rounded text-[10px] font-bold bg-amber-200 text-amber-900 uppercase">Bước 5 / 5</span>
+                  <h3 class="font-bold text-sm text-amber-950 uppercase">${period.name.toUpperCase()} ĐANG MỞ (Chưa khóa bảng công)</h3>
                   <span class="px-2 py-0.5 rounded-full bg-amber-200 text-amber-800 text-[10px] font-bold">Chu kỳ: ${period.startDate} - ${period.endDate}</span>
                 </div>
-                <p class="text-xs text-amber-800 mt-0.5">Dữ liệu công đang được quản lý mở: Nhân viên có thể nộp đề xuất bổ sung công; Quản lý và HR có thể chỉnh sửa/phê duyệt trước khi chuyển sang phân hệ Tính lương (M10).</p>
+                <p class="text-xs text-amber-800 mt-1">Dữ liệu công đang được quản lý mở: Nhân viên có thể nộp đề xuất bổ sung công; Quản lý và HR có thể chỉnh sửa/phê duyệt trước khi chuyển sang phân hệ Tính lương (M10).</p>
               </div>
             </div>
-            <div class="flex items-center space-x-2">
-              <button onclick="runAttendanceValidationCheck()" class="px-3.5 py-2 bg-white text-slate-800 border border-slate-300 hover:bg-slate-50 rounded-lg text-xs font-semibold shadow-2xs transition cursor-pointer flex items-center space-x-1.5">
+            <div class="flex items-center space-x-2 shrink-0">
+              <button type="button" onclick="switchAttendanceLockStep(4)" class="px-3.5 py-2 bg-white/90 hover:bg-white text-slate-700 border border-amber-300 rounded-xl text-xs font-semibold shadow-2xs transition cursor-pointer">← Quay lại Bước 4</button>
+              <button onclick="runAttendanceValidationCheck()" class="px-3.5 py-2 bg-white text-slate-800 border border-slate-300 hover:bg-slate-50 rounded-xl text-xs font-semibold shadow-2xs transition cursor-pointer flex items-center space-x-1.5">
                 <span>🔍 Kiểm tra cảnh báo lỗi</span>
               </button>
-              <button onclick="openAttLockModal()" class="px-4 py-2 bg-rose-600 hover:bg-rose-700 text-white rounded-lg text-xs font-bold shadow-xs transition cursor-pointer flex items-center space-x-1.5">
+              <button onclick="openAttLockModal()" class="px-4 py-2 bg-rose-600 hover:bg-rose-700 text-white rounded-xl text-xs font-bold shadow-xs transition cursor-pointer flex items-center space-x-1.5">
                 <span>🔒 Chốt & Khóa bảng công</span>
               </button>
             </div>
