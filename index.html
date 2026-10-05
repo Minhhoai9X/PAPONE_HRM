@@ -6167,9 +6167,9 @@
                 <div class="text-[10px] text-indigo-600 font-medium">Bình quân 21.8 công/NV</div>
               </div>
               <div class="p-2.5 rounded-xl bg-slate-50 border border-slate-200/60">
-                <div class="text-[10px] font-bold uppercase tracking-wider text-slate-400">Làm thêm giờ (OT)</div>
-                <div id="kpi-lock-ot-hours" class="text-lg font-bold text-amber-600 mt-0.5">482.0 h</div>
-                <div class="text-[10px] text-amber-600 font-medium">Đã bao gồm hệ số ca</div>
+                <div class="text-[10px] font-bold uppercase tracking-wider text-slate-400">Ca đêm S2 (Phụ cấp)</div>
+                <div id="kpi-lock-s2-shifts" class="text-lg font-bold text-indigo-700 mt-0.5">85 ca</div>
+                <div class="text-[10px] text-indigo-600 font-medium">Hưởng phụ cấp ca đêm</div>
               </div>
               <div class="p-2.5 rounded-xl bg-slate-50 border border-slate-200/60">
                 <div class="text-[10px] font-bold uppercase tracking-wider text-slate-400">Nghỉ phép hưởng lương</div>
@@ -6593,7 +6593,7 @@
               <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-slate-100">
                 <div>
                   <h3 class="font-bold text-sm text-slate-900">Bước 3: Áp dụng công thức tính công toàn chu kỳ</h3>
-                  <p class="text-xs text-slate-500 mt-0.5">Hệ thống tự động tính toán tổng số ngày công, đi muộn, về sớm, giờ làm thêm (OT 150%, 200%, 300%) và trừ phép năm dựa trên công thức tính công chuẩn của Cảng Phước An.</p>
+                  <p class="text-xs text-slate-500 mt-0.5">Hệ thống tự động tính toán tổng số ngày công (X, S1, S2), nghỉ lễ (L), phép năm (P) và trừ nghỉ không lương dựa trên công thức tính công chuẩn của Cảng Phước An (Giai đoạn này tạm thời không tính OT theo quy chế hiện hành).</p>
                 </div>
                 <div class="flex items-center space-x-2 shrink-0">
                   <button type="button" onclick="switchAttendanceLockStep(2)" class="px-3.5 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-semibold rounded-xl transition cursor-pointer">
@@ -6610,10 +6610,10 @@
                 <div class="p-4 rounded-xl border border-indigo-100 bg-indigo-50/50 space-y-1.5 text-xs">
                   <div class="font-bold text-[#2E3191] flex items-center space-x-2">
                     <span>🧮</span>
-                    <span>1. Công thức tính ngày công thực tế</span>
+                    <span>1. Công thức tính ngày công thực tế (X, S1, S2)</span>
                   </div>
                   <p class="text-slate-600 text-[11px] leading-relaxed">
-                    Công = Làm đủ ca chuẩn (≥ 8h) được tính <strong>1.0 công</strong>; Làm nửa ca (≥ 4h) tính <strong>0.5 công</strong>; Dưới 4h tính <strong>0 công</strong>. Ca đêm phụ cấp 30% lương theo BLLĐ.
+                    Công Hành chính (X) hoặc Ca ngày (S1) = <strong>1.0 công/ca</strong>; Ca đêm (S2) = <strong>1.0 ca</strong> và cộng thêm phụ cấp đêm ở M10. Đi làm ngày lễ ghi nhận <strong>S1L / S2L</strong>.
                   </p>
                 </div>
 
@@ -6627,13 +6627,13 @@
                   </p>
                 </div>
 
-                <div class="p-4 rounded-xl border border-emerald-100 bg-emerald-50/50 space-y-1.5 text-xs">
-                  <div class="font-bold text-emerald-800 flex items-center space-x-2">
+                <div class="p-4 rounded-xl border border-blue-100 bg-blue-50/50 space-y-1.5 text-xs">
+                  <div class="font-bold text-[#2E3191] flex items-center space-x-2">
                     <span>🌙</span>
-                    <span>3. Làm thêm giờ (Overtime - OT)</span>
+                    <span>3. Ca kíp Cảng & Tạm thời không tính OT</span>
                   </div>
                   <p class="text-slate-600 text-[11px] leading-relaxed">
-                    Ngày làm việc thông thường: <strong>150%</strong>; Ngày nghỉ hàng tuần (OFF): <strong>200%</strong>; Ngày nghỉ Lễ/Tết: <strong>300%</strong>. Giờ OT phải được phê duyệt trước tại phân hệ Phê duyệt M14.
+                    Theo quy chế tính công hiện hành của Cảng Phước An, <strong>tạm thời không tính OT</strong>. Dữ liệu công tập trung đối soát đúng số ca làm việc thực tế S1, S2 và các chế độ nghỉ có lương.
                   </p>
                 </div>
 
@@ -6727,18 +6727,18 @@
                   <thead class="bg-slate-100 text-slate-700 font-semibold uppercase text-[10px] tracking-wider border-b border-slate-200">
                     <tr>
                       <th class="py-2.5 px-3 text-center w-12">STT</th>
-                      <th class="py-2.5 px-3 w-24">Mã NV</th>
+                      <th class="py-2.5 px-3 w-24">MSNV</th>
                       <th class="py-2.5 px-3 min-w-[150px]">Họ và tên</th>
-                      <th class="py-2.5 px-3 min-w-[150px]">Phòng ban</th>
-                      <th class="py-2.5 px-3 text-center w-24">Công chuẩn</th>
-                      <th class="py-2.5 px-3 text-center w-28 bg-blue-50/60 text-[#2E3191]">Công thực tế ✏️</th>
-                      <th class="py-2.5 px-3 text-center w-24">Phép AL</th>
-                      <th class="py-2.5 px-3 text-center w-24">Đi trễ</th>
-                      <th class="py-2.5 px-3 text-center w-24">Về sớm</th>
-                      <th class="py-2.5 px-3 text-center w-24">Giờ OT</th>
-                      <th class="py-2.5 px-3 text-center w-28 font-bold text-emerald-700">Công tính lương</th>
-                      <th class="py-2.5 px-3 min-w-[180px]">Ghi chú điều chỉnh</th>
-                      <th class="py-2.5 px-3 text-center w-24">Thao tác</th>
+                      <th class="py-2.5 px-3 min-w-[140px]">Phòng ban</th>
+                      <th class="py-2.5 px-3 text-center w-20">Công chuẩn</th>
+                      <th class="py-2.5 px-3 text-center w-20 bg-blue-50/60 text-[#2E3191]" title="X: Hành chính">X (HC)</th>
+                      <th class="py-2.5 px-3 text-center w-20 bg-emerald-50/60 text-emerald-800" title="S1: Ca ngày cảng">S1 (Ngày)</th>
+                      <th class="py-2.5 px-3 text-center w-20 bg-indigo-50/60 text-indigo-800" title="S2: Ca đêm cảng">S2 (Đêm)</th>
+                      <th class="py-2.5 px-3 text-center w-16 bg-amber-50/60 text-amber-800" title="L: Nghỉ Lễ Quốc gia">L (Lễ)</th>
+                      <th class="py-2.5 px-3 text-center w-16 bg-purple-50/60 text-purple-800" title="P: Nghỉ phép năm">P (Phép)</th>
+                      <th class="py-2.5 px-3 text-center w-24 font-bold text-emerald-700 bg-emerald-50/50" title="Tổng công hưởng lương = X + S1 + S2 + L + P">TỔNG CỘNG</th>
+                      <th class="py-2.5 px-3 min-w-[160px]">Ghi chú điều chỉnh</th>
+                      <th class="py-2.5 px-3 text-center w-20">Thao tác</th>
                     </tr>
                   </thead>
                   <tbody id="lock-step4-tbody" class="divide-y divide-slate-200 bg-white">
@@ -7008,18 +7008,22 @@
 
               <!-- Container 2: Bảng Ma trận Công chi tiết theo Ngày (1..30) -->
               <div id="lock-step4-matrix-container" class="overflow-x-auto mt-3 border border-slate-200 rounded-xl hidden">
-                <div class="p-3 bg-slate-50 border-b border-slate-200 text-xs flex items-center justify-between">
-                  <div class="flex items-center space-x-2">
-                    <span class="font-bold text-slate-800">Ký hiệu công:</span>
-                    <span class="px-1.5 py-0.5 rounded bg-emerald-100 text-emerald-800 font-bold text-[10px]">X: Đủ công (1.0)</span>
-                    <span class="px-1.5 py-0.5 rounded bg-blue-100 text-blue-800 font-bold text-[10px]">X/2: Nửa công (0.5)</span>
-                    <span class="px-1.5 py-0.5 rounded bg-purple-100 text-purple-800 font-bold text-[10px]">P: Phép năm (1.0)</span>
-                    <span class="px-1.5 py-0.5 rounded bg-slate-200 text-slate-700 font-bold text-[10px]">OFF: Nghỉ tuần</span>
-                    <span class="px-1.5 py-0.5 rounded bg-indigo-100 text-indigo-900 font-bold text-[10px]">⭐: Miễn công</span>
-                    <span class="px-1.5 py-0.5 rounded bg-pink-100 text-pink-800 font-bold text-[10px]">TS: Thai sản</span>
-                    <span class="px-1.5 py-0.5 rounded bg-amber-100 text-amber-800 font-bold text-[10px]">OT: Làm thêm giờ</span>
+                <div class="p-3 bg-slate-50 border-b border-slate-200 text-xs flex flex-wrap items-center justify-between gap-2">
+                  <div class="flex flex-wrap items-center gap-1.5">
+                    <span class="font-bold text-slate-800 mr-1">Ký hiệu công PAP:</span>
+                    <span class="px-1.5 py-0.5 rounded bg-emerald-100 text-emerald-800 font-bold text-[10px]" title="Hành chính">X: Hành chính</span>
+                    <span class="px-1.5 py-0.5 rounded bg-blue-100 text-blue-800 font-bold text-[10px]" title="Ca ngày cảng">S1: Ca ngày</span>
+                    <span class="px-1.5 py-0.5 rounded bg-indigo-100 text-indigo-800 font-bold text-[10px]" title="Ca đêm cảng">S2: Ca đêm</span>
+                    <span class="px-1.5 py-0.5 rounded bg-amber-100 text-amber-800 font-bold text-[10px]" title="Nghỉ Lễ Quốc gia">L: Nghỉ Lễ</span>
+                    <span class="px-1.5 py-0.5 rounded bg-cyan-100 text-cyan-800 font-bold text-[10px]" title="Ca ngày / đêm vào ngày Lễ">S1L / S2L: Ca Lễ</span>
+                    <span class="px-1.5 py-0.5 rounded bg-purple-100 text-purple-800 font-bold text-[10px]" title="Phép năm">P: Phép năm</span>
+                    <span class="px-1.5 py-0.5 rounded bg-rose-100 text-rose-800 font-bold text-[10px]" title="Phép bệnh BHXH">B: Phép bệnh</span>
+                    <span class="px-1.5 py-0.5 rounded bg-teal-100 text-teal-800 font-bold text-[10px]" title="Nghỉ chế độ du lịch">DL: Du lịch</span>
+                    <span class="px-1.5 py-0.5 rounded bg-orange-100 text-orange-800 font-bold text-[10px]" title="Nghỉ việc riêng có lương">R: Việc riêng</span>
+                    <span class="px-1.5 py-0.5 rounded bg-slate-200 text-slate-700 font-bold text-[10px]" title="Nghỉ không lương / thai sản">Ro: Không lương</span>
+                    <span class="px-1.5 py-0.5 rounded bg-slate-100 text-slate-500 font-semibold text-[10px]" title="Nghỉ tuần theo ca">(Trống): Nghỉ ca</span>
                   </div>
-                  <span class="text-slate-500 text-[11px]">Hiển thị toàn bộ 30 ngày trong kỳ</span>
+                  <span class="text-slate-500 text-[11px] font-medium">* Cột màu xanh là ngày nghỉ cuối tuần (T7, CN). Không tính OT giai đoạn này.</span>
                 </div>
                 <div class="overflow-x-auto max-h-[500px]">
                   <table class="w-full text-left text-xs border-collapse">
@@ -7163,18 +7167,18 @@
                   <thead class="bg-slate-100 text-slate-700 font-semibold uppercase text-[10px] tracking-wider border-b border-slate-200">
                     <tr>
                       <th class="py-2.5 px-3 text-center w-12">STT</th>
-                      <th class="py-2.5 px-3 w-24">Mã NV</th>
+                      <th class="py-2.5 px-3 w-24">MSNV</th>
                       <th class="py-2.5 px-3 min-w-[150px]">Họ và tên</th>
-                      <th class="py-2.5 px-3 min-w-[150px]">Phòng ban</th>
-                      <th class="py-2.5 px-3 text-center w-24">Công chuẩn</th>
-                      <th class="py-2.5 px-3 text-center w-24 font-bold text-[#2E3191]">Công thực tế</th>
-                      <th class="py-2.5 px-3 text-center w-20">Phép AL</th>
-                      <th class="py-2.5 px-3 text-center w-20">Đi trễ</th>
-                      <th class="py-2.5 px-3 text-center w-20">Về sớm</th>
-                      <th class="py-2.5 px-3 text-center w-24">Giờ OT</th>
-                      <th class="py-2.5 px-3 text-center w-28 font-bold text-emerald-700 bg-emerald-50/50">Công tính lương</th>
+                      <th class="py-2.5 px-3 min-w-[140px]">Phòng ban</th>
+                      <th class="py-2.5 px-3 text-center w-20">Công chuẩn</th>
+                      <th class="py-2.5 px-3 text-center w-20 bg-blue-50/60 text-[#2E3191]" title="X: Hành chính">X (HC)</th>
+                      <th class="py-2.5 px-3 text-center w-20 bg-emerald-50/60 text-emerald-800" title="S1: Ca ngày">S1 (Ngày)</th>
+                      <th class="py-2.5 px-3 text-center w-20 bg-indigo-50/60 text-indigo-800" title="S2: Ca đêm">S2 (Đêm)</th>
+                      <th class="py-2.5 px-3 text-center w-16 bg-amber-50/60 text-amber-800" title="L: Nghỉ Lễ Quốc gia">L (Lễ)</th>
+                      <th class="py-2.5 px-3 text-center w-16 bg-purple-50/60 text-purple-800" title="P: Nghỉ phép năm">P (Phép)</th>
+                      <th class="py-2.5 px-3 text-center w-24 font-bold text-emerald-700 bg-emerald-50/50" title="Tổng công hưởng lương = X + S1 + S2 + L + P">TỔNG CỘNG</th>
                       <th class="py-2.5 px-3 text-center w-28">Trạng thái khóa</th>
-                      <th class="py-2.5 px-3 min-w-[180px]">Ghi chú điều chỉnh</th>
+                      <th class="py-2.5 px-3 min-w-[160px]">Ghi chú điều chỉnh</th>
                     </tr>
                   </thead>
                   <tbody id="lock-step5-tbody" class="divide-y divide-slate-200 bg-white">
@@ -37918,7 +37922,7 @@
         formulaApplied: true,
         totalEmployees: 13,
         totalActualDays: 255.0,
-        totalOtHours: 108.0,
+        totalNightShifts: 36,
         leaveDays: 6.0,
         missingPunchCount: 8,
         pendingRequestsCount: 5
@@ -37938,7 +37942,7 @@
         formulaApplied: true,
         totalEmployees: 13,
         totalActualDays: 282.5,
-        totalOtHours: 114.0,
+        totalNightShifts: 42,
         leaveDays: 4.0,
         missingPunchCount: 0,
         pendingRequestsCount: 0
@@ -37958,7 +37962,7 @@
         formulaApplied: true,
         totalEmployees: 13,
         totalActualDays: 295.0,
-        totalOtHours: 98.0,
+        totalNightShifts: 38,
         leaveDays: 6.0,
         missingPunchCount: 0,
         pendingRequestsCount: 0
@@ -37999,77 +38003,77 @@
 
         attendancePeriodSummaryStore[pId] = (employeesData || []).map(emp => {
           const isExempt = !!emp.isExempt || (typeof isEmployeeAttendanceExempt === 'function' && isEmployeeAttendanceExempt(emp));
-          let actualDays = stdDays;
-          let leaveDays = 0;
-          let lateCount = 0;
-          let earlyCount = 0;
-          let otHours = 0;
+          let daysX = 0;
+          let shiftsS1 = 0;
+          let shiftsS2 = 0;
+          let daysL = 0;
+          let daysP = 0;
           let note = '';
 
           if (isExempt) {
-            actualDays = stdDays;
-            leaveDays = 0;
-            otHours = 0;
-            lateCount = 0;
-            earlyCount = 0;
+            daysX = 20;
+            daysL = 2;
             note = 'Miễn chấm công (Lãnh đạo HĐQT / C-Level)';
           } else if (emp.pap === 'PAP0009') {
-            actualDays = stdDays - 1.0;
-            leaveDays = 1.0;
-            otHours = 4.0;
-            note = pId === '2026-09' ? 'Trực hệ thống server cảng ngày nghỉ' : 'Đủ công';
+            daysX = 19;
+            daysL = 2;
+            daysP = 1;
+            note = 'Nghỉ phép năm 1 ngày (18/09)';
           } else if (emp.pap === 'PAP0108') {
-            actualDays = stdDays;
-            lateCount = 1;
-            otHours = 6.0;
-            note = pId === '2026-09' ? 'Họp go-live phần mềm TOS cảng (trễ 15p)' : '';
+            daysX = 20;
+            daysL = 2;
+            note = 'Đủ 20 công hành chính + 2 ngày lễ';
           } else if (emp.pap === 'PAP0034') {
-            actualDays = stdDays - 0.5;
-            leaveDays = 0.5;
-            otHours = 18.0;
-            note = 'Dẫn luồng hoa tiêu ca đêm (OT 18h)';
+            shiftsS1 = 8;
+            shiftsS2 = 7;
+            daysL = 1;
+            daysP = 1;
+            note = 'Ca kíp Cảng (8 ca ngày S1, 7 ca đêm S2, 1 lễ, 1 phép)';
           } else if (emp.pap === 'PAP0089') {
-            actualDays = stdDays;
-            otHours = 12.0;
-            note = 'Trực chỉ đạo bốc dỡ hàng cầu bến';
+            shiftsS1 = 9;
+            shiftsS2 = 6;
+            daysL = 1;
+            daysP = 1;
+            note = 'Ca kíp Cảng (9 ca ngày S1, 6 ca đêm S2, 1 lễ, 1 phép)';
           } else if (emp.pap === 'PAP0154') {
-            actualDays = stdDays;
-            lateCount = 1;
-            otHours = 24.0;
-            note = 'Làm thêm ca trực cẩu STS giải phóng tàu (OT 24h)';
+            shiftsS1 = 7;
+            shiftsS2 = 9;
+            daysL = 1;
+            note = 'Ca kíp Cảng (7 ca ngày S1, 9 ca đêm S2, 1 lễ)';
           } else if (emp.pap === 'PAP0245') {
-            actualDays = stdDays - 2.0;
-            leaveDays = 2.0;
-            otHours = 2.0;
-            note = 'Nghỉ phép năm 2 ngày đã phê duyệt M09';
+            daysX = 18;
+            daysL = 2;
+            daysP = 2;
+            note = 'Nghỉ phép năm 2 ngày đã phê duyệt M09 (18-19/09)';
           } else if (emp.pap === 'PAP0299') {
-            actualDays = stdDays - 0.5;
-            leaveDays = 0.5;
-            otHours = 16.0;
-            note = pId === '2026-09' ? 'Bổ sung giờ ra ngày 25/09 (Ca cẩu RTG)' : 'Ca cẩu RTG';
+            shiftsS1 = 6;
+            shiftsS2 = 9;
+            daysL = 2;
+            note = 'Ca kíp Cảng (6 ca ngày S1, 9 ca đêm S2, 2 ngày lễ)';
           } else if (emp.pap === 'PAP0312') {
-            actualDays = stdDays - 1.0;
-            leaveDays = 1.0;
-            lateCount = 1;
-            otHours = 8.0;
-            note = 'Bảo trì hạ tầng CNTT định kỳ & 1 ngày phép';
+            daysX = 19;
+            daysL = 2;
+            daysP = 1;
+            note = '1 ngày phép năm P đã phê duyệt M09';
           } else if (emp.pap === 'PAP0411') {
-            actualDays = stdDays - 1.0;
-            leaveDays = 1.0;
-            otHours = 14.0;
-            note = 'Trực hoa tiêu luồng Soài Rạp (OT 14h)';
+            shiftsS1 = 10;
+            shiftsS2 = 5;
+            daysL = 1;
+            daysP = 1;
+            note = 'Ca kíp Cảng (10 ca ngày S1, 5 ca đêm S2, 1 lễ, 1 phép)';
           } else if (emp.pap === 'PAP0520') {
-            actualDays = 0;
-            leaveDays = 0;
-            note = 'Chế độ thai sản (BHXH chi trả, không tính công)';
+            note = 'Chế độ thai sản Ro (BHXH chi trả, không tính lương cty)';
           } else if (emp.pap === 'PAP0611') {
-            actualDays = stdDays - 3.0;
-            leaveDays = 0;
-            otHours = 4.0;
-            note = 'Nghỉ việc từ 25/09 (Đã thanh lý bàn giao việc)';
+            daysX = 16;
+            daysL = 2;
+            note = 'Nghỉ việc từ 25/09 (16 công X + 2 ngày L)';
+          } else {
+            daysX = 20;
+            daysL = 2;
           }
 
-          const paidDays = actualDays + leaveDays;
+          const actualDays = daysX + shiftsS1 + shiftsS2;
+          const totalPaid = daysX + shiftsS1 + shiftsS2 + daysL + daysP;
 
           return {
             pap: emp.pap,
@@ -38077,52 +38081,103 @@
             dept: emp.dept,
             title: emp.title || emp.position || 'Nhân sự',
             standardDays: stdDays,
+            daysX: daysX,
+            shiftsS1: shiftsS1,
+            shiftsS2: shiftsS2,
+            daysL: daysL,
+            daysP: daysP,
             actualDays: actualDays,
-            leaveDays: leaveDays,
-            lateCount: lateCount,
-            earlyCount: earlyCount,
-            otHours: otHours,
-            paidDays: paidDays,
+            leaveDays: daysP,
+            paidDays: totalPaid,
+            totalPaid: totalPaid,
             isLocked: isLocked,
             note: note
           };
         });
 
-        // 3. Dữ liệu ma trận chi tiết ngày (1..30 hoặc 1..31)
+        // 3. Dữ liệu ma trận chi tiết ngày (1..30 hoặc 1..31) theo chuẩn Cảng Phước An
         const daysInMonth = (pId === '2026-09') ? 30 : 31;
         attendanceDailyMatrixStore[pId] = (attendancePeriodSummaryStore[pId] || []).map(emp => {
-          const isExempt = !!emp.isExempt || emp.note.includes('Miễn');
+          const isExempt = !!emp.isExempt || (emp.note && emp.note.includes('Miễn'));
           const dayRecords = [];
           for (let d = 1; d <= daysInMonth; d++) {
             const dateStr = `${pId}-${String(d).padStart(2, '0')}`;
             const dayOfWeek = new Date(dateStr + 'T00:00:00').getDay();
             const isWeekend = (dayOfWeek === 0 || dayOfWeek === 6);
 
-            let symbol = 'X';
-            let label = '1.0';
+            let symbol = '';
+            let label = '';
 
             if (emp.pap === 'PAP0520') {
-              symbol = 'TS';
-              label = '0';
+              symbol = 'Ro';
+              label = 'Thai sản';
             } else if (emp.pap === 'PAP0611' && d >= 25) {
-              symbol = '—';
-              label = '0';
+              symbol = '';
+              label = 'Đã nghỉ';
             } else if (isExempt) {
-              symbol = isWeekend ? 'OFF' : '⭐';
-              label = isWeekend ? '0' : '1.0';
-            } else if (isWeekend) {
-              symbol = 'OFF';
-              label = '0';
-              if (emp.otHours > 0 && d === 13) { symbol = 'OT'; label = '+4h'; }
+              if (d === 1 || d === 2) symbol = 'L';
+              else if (isWeekend) symbol = '';
+              else symbol = 'X';
+            } else if (emp.shiftsS1 > 0 || emp.shiftsS2 > 0) {
+              // Nhân sự ca kíp Cảng: Phân bổ ca ngày S1, ca đêm S2, ngày lễ S1L/S2L, phép P
+              if (emp.pap === 'PAP0034') {
+                const s1Days = [4, 5, 15, 22, 24, 30];
+                const s2Days = [6, 10, 11, 16, 18, 20, 25, 27];
+                if (d === 1) symbol = 'L';
+                else if (d === 2) symbol = 'S1L';
+                else if (d === 29) symbol = 'P';
+                else if (s1Days.includes(d)) symbol = 'S1';
+                else if (s2Days.includes(d)) symbol = 'S2';
+                else symbol = '';
+              } else if (emp.pap === 'PAP0089') {
+                const s1Days = [7, 10, 11, 15, 18, 21, 25, 29, 30];
+                const s2Days = [3, 8, 16, 22, 26];
+                if (d === 1) symbol = 'L';
+                else if (d === 2) symbol = 'S2L';
+                else if (d === 28) symbol = 'P';
+                else if (s1Days.includes(d)) symbol = 'S1';
+                else if (s2Days.includes(d)) symbol = 'S2';
+                else symbol = '';
+              } else if (emp.pap === 'PAP0154') {
+                const s1Days = [6, 8, 11, 16, 20, 23, 27];
+                const s2Days = [4, 9, 13, 18, 21, 25, 28, 30];
+                if (d === 1) symbol = 'S1L';
+                else if (d === 2) symbol = 'L';
+                else if (s1Days.includes(d)) symbol = 'S1';
+                else if (s2Days.includes(d)) symbol = 'S2';
+                else symbol = '';
+              } else if (emp.pap === 'PAP0299') {
+                const s1Days = [6, 10, 11, 15, 18, 21];
+                const s2Days = [4, 7, 16, 19, 22, 24, 27, 28, 30];
+                if (d === 1 || d === 2) symbol = 'L';
+                else if (s1Days.includes(d)) symbol = 'S1';
+                else if (s2Days.includes(d)) symbol = 'S2';
+                else symbol = '';
+              } else if (emp.pap === 'PAP0411') {
+                const s1Days = [3, 4, 8, 11, 14, 21, 23, 26, 29, 30];
+                const s2Days = [6, 15, 16, 24];
+                if (d === 1) symbol = 'S2L';
+                else if (d === 2) symbol = 'L';
+                else if (d === 20) symbol = 'P';
+                else if (s1Days.includes(d)) symbol = 'S1';
+                else if (s2Days.includes(d)) symbol = 'S2';
+                else symbol = '';
+              } else {
+                if (d === 1 || d === 2) symbol = 'L';
+                else if (d % 3 === 0) symbol = 'S1';
+                else if (d % 3 === 1) symbol = 'S2';
+                else symbol = '';
+              }
             } else {
-              if (emp.leaveDays >= 1 && d === 18) { symbol = 'P'; label = 'AL'; }
-              else if (emp.leaveDays >= 2 && d === 19) { symbol = 'P'; label = 'AL'; }
-              else if (emp.actualDays < emp.standardDays && d === 25) { symbol = 'X/2'; label = '0.5'; }
-              else if (emp.otHours >= 16 && (d === 10 || d === 20)) { symbol = 'X+OT'; label = '1.0+OT'; }
-              else { symbol = 'X'; label = '1.0'; }
+              // Nhân sự hành chính văn phòng: T2-T6 đi làm X, T7-CN nghỉ trống
+              if (d === 1 || d === 2) symbol = 'L';
+              else if (isWeekend) symbol = '';
+              else if (emp.daysP >= 1 && d === 18) symbol = 'P';
+              else if (emp.daysP >= 2 && d === 19) symbol = 'P';
+              else symbol = 'X';
             }
 
-            dayRecords.push({ day: d, symbol: symbol, label: label, isWeekend: isWeekend });
+            dayRecords.push({ day: d, symbol: symbol, label: symbol, isWeekend: isWeekend });
           }
           return { pap: emp.pap, name: emp.name, dept: emp.dept, days: dayRecords };
         });
@@ -38266,7 +38321,7 @@
       // Cập nhật KPIs
       const elEmp = document.getElementById('kpi-lock-employees');
       const elAct = document.getElementById('kpi-lock-actual-work');
-      const elOt = document.getElementById('kpi-lock-ot-hours');
+      const elS2 = document.getElementById('kpi-lock-s2-shifts');
       const elLeave = document.getElementById('kpi-lock-leave-days');
       const elMiss = document.getElementById('kpi-lock-missing-punches');
       const elReq = document.getElementById('kpi-lock-pending-requests');
@@ -38274,8 +38329,8 @@
       const sumData = getAttendancePeriodSummaryData(period.id);
       if (elEmp) elEmp.innerText = sumData.length;
       if (elAct) elAct.innerText = formatNumCompact(period.totalActualDays);
-      if (elOt) elOt.innerText = formatNumCompact(period.totalOtHours) + ' h';
-      if (elLeave) elLeave.innerText = formatNumCompact(period.leaveDays || 5.5);
+      if (elS2) elS2.innerText = (period.totalNightShifts || 36) + ' ca';
+      if (elLeave) elLeave.innerText = formatNumCompact(period.leaveDays || 6.0);
       if (elMiss) elMiss.innerText = period.isLocked ? '0 lượt' : `${attendanceMissingPunches.length} lượt`;
       if (elReq) elReq.innerText = period.isLocked ? '0 đơn' : `${period.pendingRequestsCount} đơn`;
 
@@ -38510,15 +38565,15 @@
               <td class="py-2.5 px-3 font-semibold text-slate-900">${emp.name}</td>
               <td class="py-2.5 px-3 text-slate-600">${emp.dept}</td>
               <td class="py-2.5 px-3 text-center font-bold text-slate-700">${emp.standardDays}</td>
-              <td class="py-2.5 px-3 text-center bg-blue-50/60 cursor-pointer group" onclick="openEditSummaryWorkModal('${emp.pap}')" title="Nhấp vào để chỉnh sửa số công">
-                <span class="font-bold text-[#2E3191] group-hover:underline">${Number(emp.actualDays).toFixed(2)}</span>
+              <td class="py-2.5 px-3 text-center font-bold text-slate-800 bg-blue-50/30">${emp.daysX || 0}</td>
+              <td class="py-2.5 px-3 text-center font-bold text-blue-700 bg-blue-50/40">${emp.shiftsS1 || 0}</td>
+              <td class="py-2.5 px-3 text-center font-bold text-indigo-700 bg-indigo-50/40">${emp.shiftsS2 || 0}</td>
+              <td class="py-2.5 px-3 text-center font-bold text-amber-700 bg-amber-50/40">${emp.daysL || 0}</td>
+              <td class="py-2.5 px-3 text-center font-bold text-purple-700 bg-purple-50/40">${emp.daysP || 0}</td>
+              <td class="py-2.5 px-3 text-center bg-emerald-50/60 cursor-pointer group" onclick="openEditSummaryWorkModal('${emp.pap}')" title="Nhấp vào để chỉnh sửa số công">
+                <span class="font-bold text-emerald-800 text-sm group-hover:underline">${Number(emp.totalPaid || emp.paidDays || 0).toFixed(2)}</span>
                 <span class="text-[10px] text-slate-400 opacity-0 group-hover:opacity-100 ml-1">✏️</span>
               </td>
-              <td class="py-2.5 px-3 text-center text-emerald-700 font-semibold">${emp.leaveDays > 0 ? Number(emp.leaveDays).toFixed(1) : '-'}</td>
-              <td class="py-2.5 px-3 text-center ${emp.lateCount > 0 ? 'text-amber-700 font-bold' : 'text-slate-400'}">${emp.lateCount || '-'}</td>
-              <td class="py-2.5 px-3 text-center ${emp.earlyCount > 0 ? 'text-amber-700 font-bold' : 'text-slate-400'}">${emp.earlyCount || '-'}</td>
-              <td class="py-2.5 px-3 text-center ${emp.otHours > 0 ? 'text-amber-700 font-bold' : 'text-slate-400'}">${emp.otHours > 0 ? Number(emp.otHours).toFixed(1) + 'h' : '-'}</td>
-              <td class="py-2.5 px-3 text-center font-bold text-emerald-800 bg-emerald-50/40">${Number(emp.paidDays).toFixed(2)}</td>
               <td class="py-2.5 px-3 text-slate-600 text-[11px] truncate max-w-[200px]" title="${emp.note}">${emp.note || '-'}</td>
               <td class="py-2.5 px-3 text-center">
                 <button type="button" onclick="openEditSummaryWorkModal('${emp.pap}')" class="px-2.5 py-1 bg-white hover:bg-slate-100 text-slate-700 font-semibold rounded text-xs border border-slate-300 shadow-2xs">Sửa</button>
@@ -38527,7 +38582,7 @@
           `;
         }).join('');
       } else {
-        // Render 30-day daily matrix
+        // Render 30-day daily matrix chuẩn Cảng Phước An (PAP)
         const thead = document.getElementById('lock-step4-matrix-thead');
         const tbody = document.getElementById('lock-step4-matrix-tbody');
         if (!thead || !tbody) return;
@@ -38536,19 +38591,22 @@
         let headThs = `
           <tr>
             <th class="py-2.5 px-2 text-center w-10">STT</th>
-            <th class="py-2.5 px-2.5 w-20">Mã NV</th>
+            <th class="py-2.5 px-2.5 w-20">MSNV</th>
             <th class="py-2.5 px-3 min-w-[150px]">Họ và tên</th>
             <th class="py-2.5 px-3 min-w-[130px]">Phòng ban</th>
         `;
         for (let d = 1; d <= daysInMonth; d++) {
           const dateStr = `${currentAttendancePeriodId}-${String(d).padStart(2, '0')}`;
           const isWeekend = [0, 6].includes(new Date(dateStr + 'T00:00:00').getDay());
-          headThs += `<th class="py-2 px-1.5 text-center min-w-[32px] ${isWeekend ? 'bg-amber-50 text-amber-800' : 'text-slate-700'}">${d}</th>`;
+          headThs += `<th class="py-2 px-1 text-center min-w-[30px] ${isWeekend ? 'bg-emerald-100/70 text-emerald-900 font-bold' : 'text-slate-700'}">${String(d).padStart(2, '0')}</th>`;
         }
         headThs += `
-            <th class="py-2.5 px-2 text-center w-16 bg-blue-50 text-[#2E3191]">Công</th>
-            <th class="py-2.5 px-2 text-center w-14 bg-emerald-50 text-emerald-800">Phép</th>
-            <th class="py-2.5 px-2 text-center w-14 bg-amber-50 text-amber-800">OT</th>
+            <th class="py-2.5 px-2 text-center w-12 bg-blue-50 text-[#2E3191]" title="X: Hành chính">X</th>
+            <th class="py-2.5 px-2 text-center w-12 bg-blue-100/60 text-blue-900" title="S1: Ca ngày">S1</th>
+            <th class="py-2.5 px-2 text-center w-12 bg-indigo-100/60 text-indigo-900" title="S2: Ca đêm">S2</th>
+            <th class="py-2.5 px-2 text-center w-12 bg-amber-50 text-amber-900" title="L: Lễ">L</th>
+            <th class="py-2.5 px-2 text-center w-12 bg-purple-50 text-purple-900" title="P: Phép">P</th>
+            <th class="py-2.5 px-2 text-center w-16 bg-emerald-100 text-emerald-950 font-extrabold" title="TỔNG CỘNG = X + S1 + S2 + L + P">TỔNG</th>
           </tr>
         `;
         thead.innerHTML = headThs;
@@ -38570,21 +38628,29 @@
               <td class="py-2 px-3 text-slate-600 truncate">${empM.dept}</td>
           `;
           empM.days.forEach(dayRec => {
-            let badgeClass = 'text-slate-800 font-semibold';
-            if (dayRec.symbol === 'X') badgeClass = 'text-emerald-700 font-bold';
-            else if (dayRec.symbol === 'X/2') badgeClass = 'text-blue-700 font-bold bg-blue-50 rounded';
-            else if (dayRec.symbol === 'P') badgeClass = 'text-purple-700 font-bold bg-purple-50 rounded';
-            else if (dayRec.symbol === 'OFF') badgeClass = 'text-slate-400';
-            else if (dayRec.symbol === '⭐') badgeClass = 'text-indigo-700 font-bold';
-            else if (dayRec.symbol === 'TS') badgeClass = 'text-pink-700 font-bold bg-pink-50 rounded';
-            else if (dayRec.symbol.includes('OT')) badgeClass = 'text-amber-700 font-bold bg-amber-50 rounded';
+            let badgeClass = 'text-slate-700 font-semibold';
+            if (dayRec.symbol === 'X') badgeClass = 'text-slate-800 font-bold';
+            else if (dayRec.symbol === 'S1') badgeClass = 'text-blue-700 font-bold bg-blue-50/80 rounded px-1';
+            else if (dayRec.symbol === 'S2') badgeClass = 'text-indigo-700 font-bold bg-indigo-50/80 rounded px-1';
+            else if (dayRec.symbol === 'L') badgeClass = 'text-amber-800 font-bold bg-amber-50 rounded px-1';
+            else if (dayRec.symbol === 'S1L') badgeClass = 'text-cyan-800 font-bold bg-cyan-50 rounded px-1';
+            else if (dayRec.symbol === 'S2L') badgeClass = 'text-purple-800 font-bold bg-purple-50 rounded px-1';
+            else if (dayRec.symbol === 'P') badgeClass = 'text-purple-700 font-bold bg-purple-50 rounded px-1';
+            else if (dayRec.symbol === 'B') badgeClass = 'text-rose-700 font-bold bg-rose-50 rounded px-1';
+            else if (dayRec.symbol === 'DL') badgeClass = 'text-teal-700 font-bold bg-teal-50 rounded px-1';
+            else if (dayRec.symbol === 'R') badgeClass = 'text-orange-700 font-bold bg-orange-50 rounded px-1';
+            else if (dayRec.symbol === 'Ro') badgeClass = 'text-slate-500 font-bold bg-slate-100 rounded px-1';
 
-            tds += `<td class="py-2 px-1 text-center text-[10px] ${dayRec.isWeekend ? 'bg-slate-50/60' : ''} ${badgeClass}" title="Ngày ${dayRec.day}: ${dayRec.symbol}">${dayRec.symbol}</td>`;
+            const weekendBg = dayRec.isWeekend ? 'bg-emerald-50/50' : '';
+            tds += `<td class="py-2 px-1 text-center text-[10px] ${weekendBg} ${badgeClass}" title="Ngày ${dayRec.day}: ${dayRec.symbol || 'Nghỉ ca'}">${dayRec.symbol || ''}</td>`;
           });
           tds += `
-              <td class="py-2 px-2 text-center font-bold text-[#2E3191] bg-blue-50/40">${Number(sumInfo.actualDays || 22).toFixed(1)}</td>
-              <td class="py-2 px-2 text-center font-semibold text-emerald-700 bg-emerald-50/40">${sumInfo.leaveDays || '-'}</td>
-              <td class="py-2 px-2 text-center font-semibold text-amber-700 bg-amber-50/40">${sumInfo.otHours ? sumInfo.otHours + 'h' : '-'}</td>
+              <td class="py-2 px-1.5 text-center font-bold text-slate-800 bg-blue-50/30">${sumInfo.daysX || 0}</td>
+              <td class="py-2 px-1.5 text-center font-bold text-blue-700 bg-blue-50/40">${sumInfo.shiftsS1 || 0}</td>
+              <td class="py-2 px-1.5 text-center font-bold text-indigo-700 bg-indigo-50/40">${sumInfo.shiftsS2 || 0}</td>
+              <td class="py-2 px-1.5 text-center font-bold text-amber-700 bg-amber-50/40">${sumInfo.daysL || 0}</td>
+              <td class="py-2 px-1.5 text-center font-bold text-purple-700 bg-purple-50/40">${sumInfo.daysP || 0}</td>
+              <td class="py-2 px-1.5 text-center font-extrabold text-emerald-800 bg-emerald-100/70">${Number(sumInfo.totalPaid || sumInfo.paidDays || 0).toFixed(2)}</td>
             </tr>
           `;
           return tds;
@@ -38602,8 +38668,8 @@
       document.getElementById('edit-work-name').innerText = emp.name;
       document.getElementById('edit-work-code').innerText = emp.pap;
       document.getElementById('edit-work-dept').innerText = emp.dept;
-      document.getElementById('edit-work-orig-days').innerText = Number(emp.actualDays).toFixed(2) + ' ngày';
-      document.getElementById('edit-work-new-days').value = emp.actualDays;
+      document.getElementById('edit-work-orig-days').innerText = `${Number(emp.totalPaid || emp.paidDays || 0).toFixed(2)} công (X:${emp.daysX || 0}, S1:${emp.shiftsS1 || 0}, S2:${emp.shiftsS2 || 0}, L:${emp.daysL || 0}, P:${emp.daysP || 0})`;
+      document.getElementById('edit-work-new-days').value = emp.totalPaid || emp.paidDays || 0;
       document.getElementById('edit-work-reason').value = emp.note || '';
 
       const modal = document.getElementById('modal-att-edit-summary-work');
@@ -38624,10 +38690,10 @@
       const list = getAttendancePeriodSummaryData(currentAttendancePeriodId);
       const emp = list.find(e => e.pap === pap);
       if (emp) {
-        emp.actualDays = newDays;
-        emp.paidDays = newDays + (emp.leaveDays || 0);
+        emp.totalPaid = newDays;
+        emp.paidDays = newDays;
         emp.note = reason;
-        showToast(`✓ Đã cập nhật công cho ${emp.name}: ${newDays.toFixed(2)} công`);
+        showToast(`✓ Đã cập nhật tổng công tính lương cho ${emp.name}: ${newDays.toFixed(2)} công`);
       }
 
       closeEditSummaryWorkModal();
@@ -38755,7 +38821,7 @@
       }
 
       if (filtered.length === 0) {
-        tbody.innerHTML = '<tr><td colspan="13" class="py-8 text-center text-slate-400">Không tìm thấy dữ liệu nhân sự phù hợp</td></tr>';
+        tbody.innerHTML = '<tr><td colspan="12" class="py-8 text-center text-slate-400">Không tìm thấy dữ liệu nhân sự phù hợp</td></tr>';
         return;
       }
 
@@ -38767,12 +38833,12 @@
             <td class="py-2.5 px-3 font-semibold text-slate-900">${emp.name}</td>
             <td class="py-2.5 px-3 text-slate-600">${emp.dept}</td>
             <td class="py-2.5 px-3 text-center font-bold text-slate-700">${emp.standardDays}</td>
-            <td class="py-2.5 px-3 text-center font-bold text-[#2E3191] bg-slate-50/60">${Number(emp.actualDays).toFixed(2)}</td>
-            <td class="py-2.5 px-3 text-center text-emerald-700 font-semibold">${emp.leaveDays > 0 ? Number(emp.leaveDays).toFixed(1) : '-'}</td>
-            <td class="py-2.5 px-3 text-center ${emp.lateCount > 0 ? 'text-amber-700 font-bold' : 'text-slate-400'}">${emp.lateCount || '-'}</td>
-            <td class="py-2.5 px-3 text-center ${emp.earlyCount > 0 ? 'text-amber-700 font-bold' : 'text-slate-400'}">${emp.earlyCount || '-'}</td>
-            <td class="py-2.5 px-3 text-center ${emp.otHours > 0 ? 'text-amber-700 font-bold' : 'text-slate-400'}">${emp.otHours > 0 ? Number(emp.otHours).toFixed(1) + 'h' : '-'}</td>
-            <td class="py-2.5 px-3 text-center font-bold text-emerald-800 bg-emerald-50/40">${Number(emp.paidDays).toFixed(2)}</td>
+            <td class="py-2.5 px-3 text-center font-bold text-slate-800 bg-blue-50/30">${emp.daysX || 0}</td>
+            <td class="py-2.5 px-3 text-center font-bold text-blue-700 bg-blue-50/40">${emp.shiftsS1 || 0}</td>
+            <td class="py-2.5 px-3 text-center font-bold text-indigo-700 bg-indigo-50/40">${emp.shiftsS2 || 0}</td>
+            <td class="py-2.5 px-3 text-center font-bold text-amber-700 bg-amber-50/40">${emp.daysL || 0}</td>
+            <td class="py-2.5 px-3 text-center font-bold text-purple-700 bg-purple-50/40">${emp.daysP || 0}</td>
+            <td class="py-2.5 px-3 text-center font-bold text-emerald-800 bg-emerald-50/60">${Number(emp.totalPaid || emp.paidDays || 0).toFixed(2)}</td>
             <td class="py-2.5 px-3 text-center">
               <span class="px-2 py-0.5 rounded-full ${period.isLocked ? 'bg-indigo-100 text-indigo-900' : 'bg-amber-100 text-amber-800'} text-[10px] font-bold">
                 ${period.isLocked ? '🔒 Đã chốt khóa' : 'Đang xử lý'}
@@ -38802,64 +38868,105 @@
       }, 400);
     }
 
-    // Xuất Excel chuẩn SheetJS XLSX
+    // Xuất Excel chuẩn SheetJS XLSX theo định dạng Cảng Phước An
     function exportAttendanceSummaryExcel() {
       const period = getCurrentAttendancePeriod();
       const summaryData = getAttendancePeriodSummaryData(period.id);
+      const matrixData = attendanceDailyMatrixStore[period.id] || [];
 
       if (typeof XLSX === 'undefined') {
-        showToast(`📥 Đang xuất Bảng công tổng hợp ${period.name}...`);
+        showToast(`📥 Đang xuất Bảng chấm công Cảng Phước An ${period.name}...`);
         return;
       }
 
       try {
-        const headers = [
-          'STT', 'Mã NV (PAP)', 'Họ và tên', 'Phòng ban', 'Chức vụ / Chức danh',
-          'Công chuẩn kỳ', 'Công thực tế', 'Nghỉ phép (AL)', 'Đi trễ (lượt)', 'Về sớm (lượt)',
-          'Giờ làm thêm (OT)', 'Công tính lương', 'Trạng thái chốt', 'Ghi chú điều chỉnh'
-        ];
+        const wb = XLSX.utils.book_new();
 
-        const rows = summaryData.map((emp, idx) => [
+        // 1. SHEET MA TRẬN CHẤM CÔNG CHI TIẾT (CHUẨN PAP)
+        const daysInMonth = period.id === '2026-09' ? 30 : 31;
+        const matrixHeaders = ['STT', 'MSNV', 'HỌ VÀ TÊN', 'PHÒNG BAN'];
+        for (let d = 1; d <= daysInMonth; d++) {
+          matrixHeaders.push(String(d).padStart(2, '0'));
+        }
+        matrixHeaders.push('X', 'S1', 'S2', 'L', 'P', 'TỔNG CỘNG', 'GHI CHÚ');
+
+        const matrixRows = matrixData.map((empM, idx) => {
+          const sumInfo = summaryData.find(e => e.pap === empM.pap) || {};
+          const row = [idx + 1, empM.pap, empM.name, empM.dept];
+          for (let d = 1; d <= daysInMonth; d++) {
+            const dRec = empM.days.find(x => x.day === d);
+            row.push(dRec ? (dRec.symbol || '') : '');
+          }
+          row.push(
+            sumInfo.daysX || 0,
+            sumInfo.shiftsS1 || 0,
+            sumInfo.shiftsS2 || 0,
+            sumInfo.daysL || 0,
+            sumInfo.daysP || 0,
+            sumInfo.totalPaid || sumInfo.paidDays || 0,
+            sumInfo.note || ''
+          );
+          return row;
+        });
+
+        const matrixSheetContent = [
+          ['CÔNG TY CỔ PHẦN DẦU KHÍ ĐẦU TƯ KHAI THÁC CẢNG PHƯỚC AN'],
+          [`BẢNG CHẤM CÔNG ${period.name.toUpperCase()}`],
+          [`Thời gian chu kỳ: ${period.startDate} đến ${period.endDate} | Công chuẩn: ${period.standardDays} ngày | Quy tắc: TỔNG CỘNG = X + S1 + S2 + L + P (Tạm thời không tính OT)`],
+          ['Ký hiệu: X = Hành chính | S1 = Ca ngày | S2 = Ca đêm | L = Nghỉ lễ | S1L/S2L = Ca lễ | P = Phép năm | Ro = Thai sản / Không lương | Ô trống = Nghỉ tuần theo ca'],
+          [],
+          matrixHeaders,
+          ...matrixRows
+        ];
+        const wsMatrix = XLSX.utils.aoa_to_sheet(matrixSheetContent);
+        XLSX.utils.book_append_sheet(wb, wsMatrix, 'BangChamCong_PAP');
+
+        // 2. SHEET TỔNG HỢP CÔNG TÍNH LƯƠNG
+        const summaryHeaders = [
+          'STT', 'Mã NV (PAP)', 'Họ và tên', 'Phòng ban', 'Chức danh',
+          'Công chuẩn', 'X (Hành chính)', 'S1 (Ca ngày)', 'S2 (Ca đêm)',
+          'L (Nghỉ lễ)', 'P (Phép năm)', 'TỔNG CÔNG TÍNH LƯƠNG', 'Trạng thái', 'Ghi chú'
+        ];
+        const sumRows = summaryData.map((emp, idx) => [
           idx + 1,
           emp.pap,
           emp.name,
           emp.dept,
-          emp.title || emp.position || '',
+          emp.title || '',
           emp.standardDays,
-          emp.actualDays,
-          emp.leaveDays || 0,
-          emp.lateCount || 0,
-          emp.earlyCount || 0,
-          emp.otHours || 0,
-          emp.paidDays,
+          emp.daysX || 0,
+          emp.shiftsS1 || 0,
+          emp.shiftsS2 || 0,
+          emp.daysL || 0,
+          emp.daysP || 0,
+          emp.totalPaid || emp.paidDays || 0,
           period.isLocked ? 'Đã chốt & Khóa' : 'Đang mở (Chưa khóa)',
           emp.note || ''
         ]);
+        const wsSummary = XLSX.utils.aoa_to_sheet([summaryHeaders, ...sumRows]);
+        XLSX.utils.book_append_sheet(wb, wsSummary, 'TongHop_TinhLuong');
 
-        const ws = XLSX.utils.aoa_to_sheet([headers, ...rows]);
-        const wb = XLSX.utils.book_new();
-        XLSX.utils.book_append_sheet(wb, ws, 'BangCong_' + period.id.replace('-', '_'));
-
+        // 3. SHEET THÔNG TIN KỲ
         const infoRows = [
-          ['THÔNG TIN KỲ CHỐT BẢNG CÔNG', ''],
+          ['THÔNG TIN KỲ CHỐT BẢNG CÔNG CẢNG PHƯỚC AN', ''],
           ['Kỳ công:', period.name],
           ['Thời gian chu kỳ:', period.startDate + ' đến ' + period.endDate],
           ['Công chuẩn kỳ:', period.standardDays + ' ngày'],
+          ['Công thức:', 'TỔNG CỘNG = X + S1 + S2 + L + P (Không tính OT)'],
           ['Trạng thái:', period.isLocked ? 'ĐÃ CHỐT & KHÓA (LOCKED)' : 'ĐANG MỞ'],
           ['Thời gian chốt:', period.lockedAt || 'Chưa khóa'],
           ['Người thực hiện:', period.lockedBy || 'HR Admin'],
           ['Tổng nhân sự:', summaryData.length],
-          ['Tổng công thực tế:', period.totalActualDays],
-          ['Tổng giờ OT:', period.totalOtHours + ' giờ'],
+          ['Tổng ca đêm S2:', (period.totalNightShifts || 36) + ' ca'],
           ['Ngày xuất file:', new Date().toLocaleDateString('vi-VN') + ' ' + new Date().toLocaleTimeString().slice(0, 5)]
         ];
         const wsInfo = XLSX.utils.aoa_to_sheet(infoRows);
         XLSX.utils.book_append_sheet(wb, wsInfo, 'ThongTinKy');
 
-        XLSX.writeFile(wb, `Bang_cong_chot_ky_${period.id}.xlsx`);
-        showToast(`📥 Đã xuất thành công Bảng công ${period.name} (.xlsx)!`);
+        XLSX.writeFile(wb, `Bang_cham_cong_Cang_Phuoc_An_${period.id}.xlsx`);
+        showToast(`📥 Đã xuất thành công Bảng chấm công Cảng Phước An ${period.name} (.xlsx)!`);
       } catch (err) {
-        showToast(`📥 Đã tải xuống file Bảng công ${period.name}!`);
+        showToast(`📥 Đã xuất file Bảng chấm công ${period.name}!`);
       }
     }
 
