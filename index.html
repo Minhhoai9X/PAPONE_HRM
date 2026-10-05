@@ -6191,7 +6191,7 @@
                     <div id="step-circle-att-3" class="w-8 h-8 rounded-full border-2 border-dashed border-blue-400 bg-white text-blue-500 flex items-center justify-center text-xs font-bold transition">
                       🧮
                     </div>
-                    <span id="step-text-att-3" class="text-[11px] font-medium text-slate-600 mt-1 text-center whitespace-nowrap">Áp dụng công thức excel</span>
+                    <span id="step-text-att-3" class="text-[11px] font-medium text-slate-600 mt-1 text-center whitespace-nowrap">Chạy tính công</span>
                   </div>
 
                   <!-- Line 3-4 -->
@@ -6202,7 +6202,7 @@
                     <div id="step-circle-att-4" class="w-8 h-8 rounded-full border-2 border-dashed border-blue-400 bg-white text-blue-500 flex items-center justify-center text-xs font-bold transition">
                       🏁
                     </div>
-                    <span id="step-text-att-4" class="text-[11px] font-medium text-slate-600 mt-1 text-center whitespace-nowrap">Chỉnh sửa số công</span>
+                    <span id="step-text-att-4" class="text-[11px] font-medium text-slate-600 mt-1 text-center whitespace-nowrap">Bảng công quy đổi</span>
                   </div>
                 </div>
 
@@ -6290,6 +6290,13 @@
                   <option value="Phòng Hành chính Nhân sự">Phòng Hành chính Nhân sự</option>
                 </select>
 
+                <!-- Lọc lịch làm việc -->
+                <select id="lock-filter-schedule" onchange="renderLockWorkspace()" class="px-3 py-1.5 border border-slate-300 rounded-xl text-xs bg-white text-slate-700 font-medium">
+                  <option value="ALL">Tất cả lịch làm việc</option>
+                  <option value="FIXED">Hành chính</option>
+                  <option value="SHIFT">Theo ca</option>
+                </select>
+
                 <!-- Lọc trạng thái chấm công -->
                 <select id="lock-filter-status" onchange="renderLockWorkspace()" class="px-3 py-1.5 border border-slate-300 rounded-xl text-xs bg-white text-slate-700">
                   <option value="ALL">Tất cả trạng thái chấm công</option>
@@ -6330,6 +6337,7 @@
                     <th class="py-2.5 px-3 w-24">MSNV</th>
                     <th class="py-2.5 px-3 min-w-[150px]">Họ và tên</th>
                     <th class="py-2.5 px-3 min-w-[140px]">Phòng ban</th>
+                    <th class="py-2.5 px-3 text-center w-24">Lịch làm việc</th>
                     <th class="py-2.5 px-3 text-center w-20">Công chuẩn</th>
                     <th class="py-2.5 px-3 text-center w-20 bg-blue-50/60 text-[#2E3191]" title="X: Hành chính">X (HC)</th>
                     <th class="py-2.5 px-3 text-center w-20 bg-blue-100/60 text-blue-800" title="S1: Ca ngày cảng">S1 (Ngày)</th>
@@ -37884,11 +37892,11 @@
 
     // 3. ÁP DỤNG CÔNG THỨC CÔNG (BƯỚC 3)
     function executeCalculateAttendanceFormula() {
-      showToast('⚡ Đang áp dụng công thức tính công toàn chu kỳ...');
+      showToast('⚡ Đang chạy tính công toàn chu kỳ...');
       setTimeout(() => {
         const period = getCurrentAttendancePeriod();
         period.formulaApplied = true;
-        showToast(`✓ Đã áp dụng công thức tính công thành công cho toàn bộ nhân sự kỳ ${period.name}!`);
+        showToast(`✓ Đã chạy tính công thành công cho toàn bộ nhân sự kỳ ${period.name}!`);
         renderAttendanceLockStatus();
       }, 500);
     }
@@ -38008,8 +38016,8 @@
       const stepLabels = {
         1: 'Chỉnh sửa lịch làm việc',
         2: 'Chỉnh sửa thời gian chấm công',
-        3: 'Áp dụng công thức excel',
-        4: 'Chỉnh sửa số công'
+        3: 'Chạy tính công',
+        4: 'Bảng công quy đổi'
       };
 
       for (let s = 1; s <= 4; s++) {
@@ -38104,12 +38112,12 @@
           if (hint) hint.innerText = "* Nhấp chuột vào ô màu đỏ để Bổ sung giờ chấm công";
         } else if (currentAttendanceLockStep === 3) {
           ctxIcon.innerText = "🧮";
-          ctxDesc.innerHTML = "<strong>Bước 3: Áp dụng công thức excel</strong> - Tự động tính ngày công thực tế (X, S1, S2), nghỉ lễ (L), phép năm (P) chuẩn Cảng PAP (giai đoạn này không tính OT).";
-          ctxActionContainer.innerHTML = `<button type="button" onclick="executeCalculateAttendanceFormula()" class="px-3 py-1.5 bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-bold rounded-lg shadow-2xs transition cursor-pointer flex items-center space-x-1"><span>⚡</span><span>Áp dụng công thức</span></button>`;
-          if (hint) hint.innerText = "* Nhấn Áp dụng công thức để cập nhật kết quả công của toàn bộ nhân sự";
+          ctxDesc.innerHTML = "<strong>Bước 3: Chạy tính công</strong> - Tự động tính ngày công thực tế (X, S1, S2), nghỉ lễ (L), phép năm (P) chuẩn Cảng PAP (giai đoạn này không tính OT).";
+          ctxActionContainer.innerHTML = `<button type="button" onclick="executeCalculateAttendanceFormula()" class="px-3 py-1.5 bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-bold rounded-lg shadow-2xs transition cursor-pointer flex items-center space-x-1"><span>⚡</span><span>Chạy tính công</span></button>`;
+          if (hint) hint.innerText = "* Nhấn Chạy tính công để cập nhật kết quả công của toàn bộ nhân sự";
         } else if (currentAttendanceLockStep === 4) {
           ctxIcon.innerText = "🏁";
-          ctxDesc.innerHTML = "<strong>Bước 4: Chỉnh sửa số công</strong> - Đưa chuột vào số công để điều chỉnh ngoại lệ nếu cần. Nhấn [Gửi bảng công] để đối soát, sau đó nhấn [✓ Xong] để hoàn tất chốt bảng công.";
+          ctxDesc.innerHTML = "<strong>Bước 4: Bảng công quy đổi</strong> - Đưa chuột vào số công để điều chỉnh ngoại lệ nếu cần. Nhấn [Gửi bảng công] để đối soát, sau đó nhấn [✓ Xong] để hoàn tất chốt bảng công.";
           ctxActionContainer.innerHTML = `<button type="button" onclick="openSendReviewConfirmModal()" class="px-3 py-1.5 bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold rounded-lg shadow-2xs transition cursor-pointer flex items-center space-x-1"><span>📤</span><span>Gửi đối soát 245 NV</span></button>`;
           if (hint) hint.innerText = "* Rê chuột vào số công để hiển thị menu [✏ Điều chỉnh]";
         }
@@ -38151,7 +38159,7 @@
       const search = (document.getElementById('lock-workspace-search')?.value || '').toLowerCase().trim();
       const deptFilter = document.getElementById('lock-filter-dept')?.value || 'ALL';
       const statusFilter = document.getElementById('lock-filter-status')?.value || 'ALL';
-      const scheduleFilter = document.getElementById('select-lock-work-schedule')?.value || 'ALL';
+      const scheduleFilter = document.getElementById('lock-filter-schedule')?.value || document.getElementById('select-lock-work-schedule')?.value || 'ALL';
 
       const allData = getAttendancePeriodSummaryData(currentAttendancePeriodId);
       const matrixData = attendanceDailyMatrixStore[currentAttendancePeriodId] || [];
@@ -38164,7 +38172,10 @@
         
         // Lọc Lịch làm việc
         let mSched = true;
-        if (scheduleFilter === 'HC') mSched = (e.shiftsS1 === 0 && e.shiftsS2 === 0);
+        const empSchedMode = (e.shiftsS1 > 0 || e.shiftsS2 > 0) ? 'SHIFT' : 'FIXED';
+        if (scheduleFilter === 'FIXED') mSched = (empSchedMode === 'FIXED');
+        else if (scheduleFilter === 'SHIFT') mSched = (empSchedMode === 'SHIFT');
+        else if (scheduleFilter === 'HC') mSched = (e.shiftsS1 === 0 && e.shiftsS2 === 0);
         else if (scheduleFilter === 'PORT') mSched = (e.shiftsS1 > 0 || e.shiftsS2 > 0);
         else if (scheduleFilter === 'OPS') mSched = e.dept.includes('Khai thác') || e.dept.includes('Kỹ thuật');
 
@@ -38201,6 +38212,9 @@
               <td class="py-2.5 px-3 font-mono font-bold text-[#1877F2]">${emp.pap}</td>
               <td class="py-2.5 px-3 font-semibold text-slate-900">${emp.name}</td>
               <td class="py-2.5 px-3 text-slate-600">${emp.dept}</td>
+              <td class="py-2.5 px-3 text-center whitespace-nowrap">
+                <span class="px-2 py-0.5 rounded text-[10px] font-semibold border ${(emp.shiftsS1 > 0 || emp.shiftsS2 > 0) ? 'bg-emerald-50 text-emerald-800 border-emerald-200' : 'bg-blue-50 text-[#2E3191] border-blue-200'}">${(emp.shiftsS1 > 0 || emp.shiftsS2 > 0) ? 'Theo ca' : 'Hành chính'}</span>
+              </td>
               <td class="py-2.5 px-3 text-center font-bold text-slate-700">${emp.standardDays}</td>
               <td class="py-2.5 px-3 text-center font-bold text-slate-800 bg-blue-50/30">${emp.daysX || 0}</td>
               <td class="py-2.5 px-3 text-center font-bold text-blue-700 bg-blue-50/40">${emp.shiftsS1 || 0}</td>
@@ -38234,6 +38248,7 @@
             <th class="py-2.5 px-3 text-left text-slate-600 font-bold sticky left-10 z-20 bg-slate-100 w-24">Mã NV</th>
             <th class="py-2.5 px-3 text-left text-slate-600 font-bold sticky left-34 z-20 bg-slate-100 min-w-[170px]">Họ và tên</th>
             <th class="py-2.5 px-2 text-left text-slate-600 font-bold w-28">Phòng ban</th>
+            <th class="py-2.5 px-2 text-center text-slate-600 font-bold w-24">Lịch làm việc</th>
         `;
 
         for (let d = 1; d <= daysInMonth; d++) {
@@ -38287,6 +38302,9 @@
                 </div>
               </td>
               <td class="py-2 px-2 text-slate-600 text-[11px] truncate max-w-[120px] border-r border-slate-200" title="${empM.dept}">${empM.dept}</td>
+              <td class="py-2 px-2 text-center border-r border-slate-200 whitespace-nowrap">
+                <span class="px-2 py-0.5 rounded text-[10px] font-semibold border ${(sumInfo.shiftsS1 > 0 || sumInfo.shiftsS2 > 0) ? 'bg-emerald-50 text-emerald-800 border-emerald-200' : 'bg-blue-50 text-[#2E3191] border-blue-200'}">${(sumInfo.shiftsS1 > 0 || sumInfo.shiftsS2 > 0) ? 'Theo ca' : 'Hành chính'}</span>
+              </td>
           `;
 
           // Các ô ngày 1..30
@@ -38354,32 +38372,30 @@
               }
 
             } else if (currentAttendanceLockStep === 3) {
-              // BƯỚC 3: ÁP DỤNG CÔNG THỨC EXCEL (Hiển thị số công tính toán 0.5, 1.0)
-              if (['X', 'S1', 'S2', 'S1L', 'S2L'].includes(dayRec.symbol)) {
-                let badgeBg = 'bg-blue-100 text-blue-900';
-                let tag = '1.0';
-                if (missPunch) {
-                  badgeBg = 'bg-rose-100 text-rose-800';
-                  tag = '0.0';
-                }
-                cellContent = `
-                  <div class="p-1 rounded ${badgeBg} text-[10px] text-center font-bold shadow-2xs" title="${dayRec.symbol}: ${tag} công">
-                    <div>${dayRec.symbol}</div>
-                    <div class="text-[9px] font-mono">${tag}c</div>
-                  </div>
-                `;
+              // BƯỚC 3: CHẠY TÍNH CÔNG (Chỉ hiển thị ký hiệu X, S1, S2, L, P; bỏ 1c nhỏ ở dưới; công thiếu là trống - luôn)
+              if (missPunch) {
+                // Coi như đã tính công: Thiếu công là TRỐNG LUÔN (không hiển thị X mà 0 công)
+                cellContent = `<div class="text-slate-300 text-[11px] text-center py-1 font-medium">-</div>`;
+              } else if (dayRec.symbol === 'X') {
+                cellContent = `<div class="p-1 rounded bg-blue-50 text-[#1877F2] font-bold text-[11px] text-center border border-blue-200/80 shadow-2xs" title="Công hành chính (X)">X</div>`;
+              } else if (dayRec.symbol === 'S1') {
+                cellContent = `<div class="p-1 rounded bg-indigo-50 text-indigo-700 font-bold text-[11px] text-center border border-indigo-200/80 shadow-2xs" title="Ca ngày (S1)">S1</div>`;
+              } else if (dayRec.symbol === 'S2') {
+                cellContent = `<div class="p-1 rounded bg-purple-50 text-purple-700 font-bold text-[11px] text-center border border-purple-200/80 shadow-2xs" title="Ca đêm (S2)">S2</div>`;
+              } else if (dayRec.symbol === 'S1L' || dayRec.symbol === 'S2L') {
+                cellContent = `<div class="p-1 rounded bg-rose-50 text-rose-700 font-bold text-[11px] text-center border border-rose-200 shadow-2xs" title="Ca ngày lễ (${dayRec.symbol})">${dayRec.symbol}</div>`;
               } else if (dayRec.symbol === 'L') {
-                cellContent = `<div class="p-1 rounded bg-amber-500 text-white text-[10px] text-center font-bold" title="Nghỉ Lễ: 1.0 công">L: 1.0</div>`;
+                cellContent = `<div class="p-1 rounded bg-amber-500 text-white font-bold text-[11px] text-center shadow-2xs" title="Nghỉ Lễ (L)">L</div>`;
               } else if (dayRec.symbol === 'P') {
-                cellContent = `<div class="p-1 rounded bg-purple-500 text-white text-[10px] text-center font-bold" title="Nghỉ Phép: 1.0 công">P: 1.0</div>`;
+                cellContent = `<div class="p-1 rounded bg-purple-600 text-white font-bold text-[11px] text-center shadow-2xs" title="Nghỉ Phép (P)">P</div>`;
               } else if (dayRec.symbol === 'Ro') {
-                cellContent = `<div class="p-1 rounded bg-slate-200 text-slate-700 text-[10px] text-center font-bold">Ro: 0c</div>`;
+                cellContent = `<div class="p-1 rounded bg-slate-200 text-slate-700 font-bold text-[10px] text-center" title="Thai sản (Ro)">Ro</div>`;
               } else {
-                cellContent = `<div class="text-slate-300 text-[10px] text-center py-1">-</div>`;
+                cellContent = `<div class="text-slate-300 text-[11px] text-center py-1 font-medium">-</div>`;
               }
 
             } else {
-              // BƯỚC 4: CHỈNH SỬA SỐ CÔNG (Hiển thị số công tổng kết + Hover Popup Base "Điều chỉnh")
+              // BƯỚC 4: BẢNG CÔNG QUY ĐỔI (Hiển thị số công quy đổi tổng kết + Hover Popup Base "Điều chỉnh")
               if (['X', 'S1', 'S2', 'S1L', 'S2L', 'L', 'P'].includes(dayRec.symbol)) {
                 let val = missPunch ? '0.0' : '1.0';
                 cellContent = `
@@ -38388,7 +38404,7 @@
                       ${val}
                     </span>
                     
-                    <!-- Tooltip Popup chuẩn Base Schedule khi rê chuột (step5.png) -->
+                    <!-- Tooltip Popup chuẩn Base Schedule khi rê chuột -->
                     <div class="hidden group-hover/cell:block absolute left-1/2 -translate-x-1/2 bottom-full mb-1 z-30 w-36 bg-white border border-slate-200 rounded-xl shadow-xl p-2 text-left text-[10px] text-slate-700 pointer-events-auto">
                       <div class="font-bold text-slate-900 border-b border-slate-100 pb-1 mb-1 flex items-center justify-between">
                         <span>Ngày ${dayRec.day}/09</span>
@@ -38396,7 +38412,7 @@
                       </div>
                       <div class="space-y-0.5 text-[9px]">
                         <div>Ca: <strong>${dayRec.symbol}</strong></div>
-                        <div>Số công: <strong class="text-emerald-700">${val}</strong></div>
+                        <div>Số công quy đổi: <strong class="text-emerald-700">${val}</strong></div>
                         <div>Đi muộn: <strong>0p</strong></div>
                         <div>Về sớm: <strong>0p</strong></div>
                       </div>
