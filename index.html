@@ -624,13 +624,32 @@
                   <span class="truncate">Sổ theo dõi phép</span>
                 </div>
               </button>
-              <button onclick="openAnnualLeaveSub('requests')" id="sub-item-leave-requests" class="sidebar-sub-item w-full text-left px-2 py-1.5 rounded flex items-center justify-between cursor-pointer transition text-[11px] text-slate-700 font-medium hover:text-[#2E3191] hover:bg-slate-50 group" title="Quản lý & xét duyệt đơn nghỉ phép">
-                <div class="flex items-center space-x-1.5 truncate">
-                  <span class="w-1.5 h-1.5 rounded-full bg-slate-300 group-hover:bg-[#2E3191]"></span>
-                  <span class="truncate">Đơn nghỉ phép</span>
+              <div class="space-y-0.5">
+                <button onclick="openAnnualLeaveSub('requests')" id="sub-item-leave-requests" class="sidebar-sub-item w-full text-left px-2 py-1.5 rounded flex items-center justify-between cursor-pointer transition text-[11px] text-slate-700 font-medium hover:text-[#2E3191] hover:bg-slate-50 group" title="Quản lý & xét duyệt đơn nghỉ phép">
+                  <div class="flex items-center space-x-1.5 truncate">
+                    <span class="w-1.5 h-1.5 rounded-full bg-slate-300 group-hover:bg-[#2E3191]"></span>
+                    <span class="truncate">Đơn nghỉ phép</span>
+                  </div>
+                  <div class="flex items-center space-x-1">
+                    <span class="text-[9px] px-1 rounded bg-amber-50 text-amber-700 border border-amber-200 font-bold" id="sidebar-leave-requests-count">3</span>
+                    <span onclick="event.stopPropagation(); toggleLeaveRequestsSubmenu()" id="leave-requests-chevron" class="text-[9px] text-slate-400 hover:text-slate-700 p-0.5 cursor-pointer" title="Đóng/Mở các tab đơn">▼</span>
+                  </div>
+                </button>
+                <div id="sub-menu-leave-requests-tabs" class="pl-3.5 space-y-0.5 mt-0.5 border-l border-slate-200 ml-3 hidden">
+                  <button onclick="openAnnualLeaveSub('requests', 'sent')" id="sub-tab-leave-sent" class="sidebar-sub-item w-full text-left px-2 py-1 rounded flex items-center justify-between cursor-pointer transition text-[10.5px] text-slate-600 hover:text-[#2E3191] hover:bg-slate-50" title="Đơn tôi gửi đi">
+                    <span class="truncate">📤 Đơn gửi đi</span>
+                    <span id="side-sub-badge-sent" class="text-[9px] px-1 rounded bg-blue-50 text-[#2E3191] font-semibold">3</span>
+                  </button>
+                  <button onclick="openAnnualLeaveSub('requests', 'inbox')" id="sub-tab-leave-inbox" class="sidebar-sub-item w-full text-left px-2 py-1 rounded flex items-center justify-between cursor-pointer transition text-[10.5px] text-slate-600 hover:text-[#2E3191] hover:bg-slate-50" title="Đơn gửi đến cần duyệt">
+                    <span class="truncate">📥 Đơn gửi đến</span>
+                    <span id="side-sub-badge-inbox" class="text-[9px] px-1 rounded bg-amber-50 text-amber-700 font-bold">3</span>
+                  </button>
+                  <button onclick="openAnnualLeaveSub('requests', 'watching')" id="sub-tab-leave-watching" class="sidebar-sub-item w-full text-left px-2 py-1 rounded flex items-center justify-between cursor-pointer transition text-[10.5px] text-slate-600 hover:text-[#2E3191] hover:bg-slate-50" title="Đang theo dõi">
+                    <span class="truncate">👁️ Đang theo dõi</span>
+                    <span id="side-sub-badge-watching" class="text-[9px] px-1 rounded bg-slate-100 text-slate-600 font-semibold">5</span>
+                  </button>
                 </div>
-                <span class="text-[9px] px-1 rounded bg-amber-50 text-amber-700 border border-amber-200 font-bold" id="sidebar-leave-requests-count">4</span>
-              </button>
+              </div>
               <button onclick="openAnnualLeaveSub('groups')" id="sub-item-leave-groups" class="sidebar-sub-item w-full text-left px-2 py-1.5 rounded flex items-center justify-between cursor-pointer transition text-[11px] text-slate-700 font-medium hover:text-[#2E3191] hover:bg-slate-50 group" title="Quy trình nghỉ phép">
                 <div class="flex items-center space-x-1.5 truncate">
                   <span class="w-1.5 h-1.5 rounded-full bg-slate-300 group-hover:bg-[#2E3191]"></span>
@@ -5182,12 +5201,44 @@
             </div>
           </div>
 
+          <!-- Thanh điều hướng Tab: Đơn gửi đi, Đơn gửi đến, Đang theo dõi, Tất cả đơn -->
+          <div class="bg-white rounded-2xl border border-slate-200 shadow-xs overflow-hidden">
+            <div class="flex items-center justify-between border-b border-slate-200 px-3 pt-2 bg-slate-50/70 overflow-x-auto">
+              <div class="flex space-x-1 shrink-0" role="tablist">
+                <button type="button" onclick="switchLeaveRequestTab('sent')" id="tab-leave-req-sent" class="px-4 py-2.5 text-xs font-bold border-b-2 border-[#2E3191] text-[#2E3191] flex items-center space-x-2 transition cursor-pointer">
+                  <span>📤</span>
+                  <span>Đơn gửi đi</span>
+                  <span id="badge-leave-req-sent" class="px-1.5 py-0.2 rounded-full bg-blue-100 text-[#2E3191] text-[10px] font-bold">3</span>
+                </button>
+                <button type="button" onclick="switchLeaveRequestTab('inbox')" id="tab-leave-req-inbox" class="px-4 py-2.5 text-xs font-semibold border-b-2 border-transparent text-slate-600 hover:text-slate-900 flex items-center space-x-2 transition cursor-pointer">
+                  <span>📥</span>
+                  <span>Đơn gửi đến</span>
+                  <span id="badge-leave-req-inbox" class="px-1.5 py-0.2 rounded-full bg-amber-100 text-amber-800 text-[10px] font-bold">3 chờ duyệt</span>
+                </button>
+                <button type="button" onclick="switchLeaveRequestTab('watching')" id="tab-leave-req-watching" class="px-4 py-2.5 text-xs font-semibold border-b-2 border-transparent text-slate-600 hover:text-slate-900 flex items-center space-x-2 transition cursor-pointer">
+                  <span>👁️</span>
+                  <span>Đang theo dõi</span>
+                  <span id="badge-leave-req-watching" class="px-1.5 py-0.2 rounded-full bg-slate-100 text-slate-700 text-[10px] font-semibold border border-slate-200">5</span>
+                </button>
+                <button type="button" onclick="switchLeaveRequestTab('all')" id="tab-leave-req-all" class="px-4 py-2.5 text-xs font-semibold border-b-2 border-transparent text-slate-600 hover:text-slate-900 flex items-center space-x-2 transition cursor-pointer">
+                  <span>📋</span>
+                  <span>Tất cả đơn</span>
+                  <span id="badge-leave-req-all" class="px-1.5 py-0.2 rounded-full bg-slate-100 text-slate-700 text-[10px] font-semibold border border-slate-200">14</span>
+                </button>
+              </div>
+              <div class="hidden lg:flex items-center text-xs text-slate-500 space-x-1.5 pb-1 pr-3">
+                <span>Tài khoản thao tác:</span>
+                <span class="font-bold text-[#2E3191]">Trần Thị Mai Phương (PAP0009 - GĐ Nhân sự)</span>
+              </div>
+            </div>
+          </div>
+
           <!-- KPI Summary Cards (Chuẩn Enterprise Cảng Phước An) -->
           <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
             <div class="bg-white p-3.5 rounded-xl border border-slate-200 border-l-4 border-l-[#2E3191] shadow-xs flex items-center justify-between">
               <div>
-                <div class="text-[11px] font-semibold text-slate-500 uppercase tracking-wider">Tổng đơn đăng ký</div>
-                <div class="text-xl font-black text-[#2E3191] mt-0.5" id="kpi-leave-req-total">8</div>
+                <div class="text-[11px] font-semibold text-slate-500 uppercase tracking-wider" id="kpi-leave-req-total-label">Tổng đơn gửi đi</div>
+                <div class="text-xl font-black text-[#2E3191] mt-0.5" id="kpi-leave-req-total">3</div>
               </div>
               <span class="text-lg">📋</span>
             </div>
@@ -5277,8 +5328,8 @@
           <div class="bg-white rounded-2xl border border-slate-200 shadow-xs overflow-hidden">
             <div class="p-3.5 border-b border-slate-100 flex items-center justify-between">
               <div class="font-bold text-slate-800 text-xs flex items-center space-x-2">
-                <span>Danh sách đơn xin nghỉ phép:</span>
-                <span id="table-leave-requests-count" class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-amber-50 text-amber-800 border border-amber-200">8 đơn</span>
+                <span id="table-leave-requests-title">Danh sách đơn gửi đi:</span>
+                <span id="table-leave-requests-count" class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-amber-50 text-amber-800 border border-amber-200">3 đơn</span>
               </div>
               <span class="text-[11px] text-slate-500 italic">Đơn đã duyệt tự động trừ số dư phép năm và đồng bộ Bảng công ngày (M06)</span>
             </div>
@@ -33796,132 +33847,95 @@
     // =========================================================================
     // DỮ LIỆU VÀ QUẢN LÝ ĐƠN NGHỈ PHÉP (M09.3 - LEAVE REQUESTS & WORKFLOW M14)
     // =========================================================================
-        // =========================================================================
-    // DỮ LIỆU VÀ QUẢN LÝ ĐƠN NGHỈ PHÉP (M09.3 - LEAVE REQUESTS & WORKFLOW M14)
     // =========================================================================
+    // DỮ LIỆU VÀ QUẢN LÝ ĐƠN NGHỈ PHÉP (M09.3 - LEAVE REQUESTS & WORKFLOW M14)
+    // CÁC PHÂN HỆ TAB: ĐƠN GỬI ĐI (SENT), ĐƠN GỬI ĐẾN (INBOX), ĐANG THEO DÕI (WATCHING), TẤT CẢ (ALL)
+    // Người dùng đăng nhập mô phỏng: Trần Thị Mai Phương (PAP0009 - GĐ Nhân sự)
+    // =========================================================================
+    let currentLeaveRequestTab = 'sent';
+
     let leaveRequestsData = [
+      // 1. ĐƠN GỬI ĐI (SENT) - Do Trần Thị Mai Phương (PAP0009) gửi đi
       {
-        id: 'DON-2026-001',
-        empCode: 'PAP0001',
-        empName: 'Phạm Quốc Tuấn',
-        empDept: 'CÔNG TY CP CẢNG PHƯỚC AN',
+        id: 'DON-2026-S01',
+        scopeType: 'SENT',
+        empCode: 'PAP0009',
+        empName: 'Trần Thị Mai Phương',
+        empDept: 'Phòng Hành chính - Nhân sự',
         empAvatar: '',
-        empInitials: 'TA',
-        empColor: 'bg-blue-700',
+        empInitials: 'MP',
+        empColor: 'bg-indigo-700',
         typeCode: 'AL',
         typeName: 'Nghỉ Phép năm (Annual Leave)',
         session: 'FULL',
-        fromDate: '2026-02-10',
-        toDate: '2026-02-11',
-        days: 2.0,
-        handoverCode: 'PAP0002',
-        handoverName: 'Nguyễn Văn B',
-        reason: 'Nghỉ giải quyết việc gia đình cá nhân',
-        attachment: '',
-        createdAt: '08/02/2026',
-        status: 'APPROVED',
-        approver: 'HĐQT Cảng Phước An',
-        approvedAt: '09/02/2026 14:30',
-        note: 'Đã hoàn tất kiểm tra số dư và trừ 2.0 ngày quỹ phép năm'
-      },
-      {
-        id: 'DON-2026-002',
-        empCode: 'PAP0002',
-        empName: 'Nguyễn Văn B',
-        empDept: 'CÔNG TY CP CẢNG PHƯỚC AN',
-        empAvatar: '',
-        empInitials: 'VB',
-        empColor: 'bg-emerald-600',
-        typeCode: 'PL',
-        typeName: 'Nghỉ Việc riêng có hưởng lương (Hiếu - Hỷ)',
-        session: 'FULL',
-        fromDate: '2026-03-16',
-        toDate: '2026-03-18',
-        days: 3.0,
-        handoverCode: 'PAP0001',
-        handoverName: 'Phạm Quốc Tuấn',
-        reason: 'Kết hôn bản thân (Được nghỉ 3 ngày hưởng nguyên lương theo Khoản 1 Điều 115 BLLĐ)',
-        attachment: 'Giay_dang_ky_ket_hon_scan.pdf',
-        createdAt: '10/03/2026',
-        status: 'APPROVED',
-        approver: 'Phạm Quốc Tuấn (TGĐ)',
-        approvedAt: '11/03/2026 10:15',
-        note: 'Chế độ hưởng 100% lương, không trừ vào quỹ ngày phép năm'
-      },
-      {
-        id: 'DON-2026-003',
-        empCode: 'PAP0003',
-        empName: 'Lê Văn C',
-        empDept: 'Phòng Khai thác cảng',
-        empAvatar: '',
-        empInitials: 'VC',
-        empColor: 'bg-amber-600',
-        typeCode: 'SL',
-        typeName: 'Nghỉ Ốm đau bản thân (Sick Leave - BHXH)',
-        session: 'FULL',
-        fromDate: '2026-05-12',
-        toDate: '2026-05-14',
-        days: 3.0,
-        handoverCode: 'PAP0004',
-        handoverName: 'Phạm Thị D',
-        reason: 'Điều trị nội trú tại Bệnh viện Đa khoa Long Thành',
-        attachment: 'Giay_ra_vien_C65HD.pdf',
-        createdAt: '11/05/2026',
-        status: 'APPROVED',
-        approver: 'Trưởng phòng Khai thác cảng',
-        approvedAt: '12/05/2026 08:30',
-        note: 'BHXH chi trả 75% mức tiền lương đóng BHXH, không trừ quỹ phép năm'
-      },
-      {
-        id: 'DON-2026-004',
-        empCode: 'PAP0004',
-        empName: 'Phạm Thị D',
-        empDept: 'Phòng Kế toán - Tài chính',
-        empAvatar: '',
-        empInitials: 'TD',
-        empColor: 'bg-purple-600',
-        typeCode: 'SCL',
-        typeName: 'Nghỉ Chăm sóc con ốm (Sick Child Leave - BHXH)',
-        session: 'FULL',
-        fromDate: '2026-06-08',
-        toDate: '2026-06-09',
+        fromDate: '2026-10-15',
+        toDate: '2026-10-16',
         days: 2.0,
         handoverCode: 'PAP0006',
         handoverName: 'Đặng Thị F',
-        reason: 'Chăm sóc con 3 tuổi bị sốt virus điều trị ngoại trú',
-        attachment: 'Giay_nghi_BHXH_con_om_C65HD.pdf',
-        createdAt: '07/06/2026',
-        status: 'APPROVED',
-        approver: 'Kế toán trưởng',
-        approvedAt: '07/06/2026 16:45',
-        note: 'BHXH chi trả 75% mức tiền lương đóng BHXH, không trừ quỹ phép năm'
+        reason: 'Nghỉ giải quyết việc gia đình cá nhân',
+        attachment: '',
+        createdAt: '05/10/2026',
+        status: 'PENDING',
+        approver: 'Ban Giám Đốc (TGĐ Phạm Quốc Tuấn)',
+        approvedAt: null,
+        note: 'Đang chờ Tổng Giám đốc xem xét phê duyệt'
       },
       {
-        id: 'DON-2026-005',
-        empCode: 'PAP0005',
-        empName: 'Hoàng Văn E',
-        empDept: 'Phòng Kỹ thuật công nghệ',
+        id: 'DON-2026-S02',
+        scopeType: 'SENT',
+        empCode: 'PAP0009',
+        empName: 'Trần Thị Mai Phương',
+        empDept: 'Phòng Hành chính - Nhân sự',
         empAvatar: '',
-        empInitials: 'VE',
-        empColor: 'bg-indigo-600',
-        typeCode: 'PL-M',
-        typeName: 'Nghỉ Thai sản - Nam khi vợ sinh con (Paternity Leave)',
+        empInitials: 'MP',
+        empColor: 'bg-indigo-700',
+        typeCode: 'PL',
+        typeName: 'Nghỉ Việc riêng có hưởng lương (Hiếu - Hỷ)',
         session: 'FULL',
-        fromDate: '2026-06-15',
-        toDate: '2026-06-19',
-        days: 5.0,
-        handoverCode: 'PAP0003',
-        handoverName: 'Lê Văn C',
-        reason: 'Vợ sinh con đầu lòng (sinh thường được nghỉ 5 ngày theo Khoản 2 Điều 34 Luật BHXH)',
-        attachment: 'Giay_chung_sinh_BV_Tu_Du.pdf',
-        createdAt: '12/06/2026',
+        fromDate: '2026-06-12',
+        toDate: '2026-06-12',
+        days: 1.0,
+        handoverCode: 'PAP0006',
+        handoverName: 'Đặng Thị F',
+        reason: 'Tham dự lễ tốt nghiệp đại học của con gái',
+        attachment: 'Giay_moi_tot_nghiep.pdf',
+        createdAt: '08/06/2026',
         status: 'APPROVED',
-        approver: 'Trưởng phòng Kỹ thuật công nghệ',
-        approvedAt: '13/06/2026 09:20',
-        note: 'BHXH chi trả 100% bình quân tiền lương đóng BHXH, không trừ quỹ phép năm'
+        approver: 'Phạm Quốc Tuấn (TGĐ)',
+        approvedAt: '09/06/2026 15:20',
+        note: 'Đã duyệt; Hưởng 100% lương theo chế độ việc riêng'
       },
       {
-        id: 'DON-2026-006',
+        id: 'DON-2026-S03',
+        scopeType: 'SENT',
+        empCode: 'PAP0009',
+        empName: 'Trần Thị Mai Phương',
+        empDept: 'Phòng Hành chính - Nhân sự',
+        empAvatar: '',
+        empInitials: 'MP',
+        empColor: 'bg-indigo-700',
+        typeCode: 'UL',
+        typeName: 'Nghỉ Việc riêng không hưởng lương (Unpaid Leave)',
+        session: 'FULL',
+        fromDate: '2026-04-20',
+        toDate: '2026-04-22',
+        days: 3.0,
+        handoverCode: 'PAP0006',
+        handoverName: 'Đặng Thị F',
+        reason: 'Giải quyết việc sửa chữa nhà ở gia đình kéo dài',
+        attachment: '',
+        createdAt: '15/04/2026',
+        status: 'REJECTED',
+        approver: 'Phạm Quốc Tuấn (TGĐ)',
+        approvedAt: '16/04/2026 09:10',
+        note: 'Từ chối: Trùng đợt cao điểm nghiệm thu hệ thống Cảng Quốc tế Phước An, cần nhân sự điều phối'
+      },
+
+      // 2. ĐƠN GỬI ĐẾN (INBOX) - Các phòng ban gửi đến GĐ Nhân sự / HC-NS duyệt
+      {
+        id: 'DON-2026-I01',
+        scopeType: 'INBOX',
         empCode: 'PAP0006',
         empName: 'Đặng Thị F',
         empDept: 'Phòng Hành chính - Nhân sự',
@@ -33931,117 +33945,97 @@
         typeCode: 'PC',
         typeName: 'Nghỉ Khám thai định kỳ (Prenatal Care Leave)',
         session: 'FULL',
-        fromDate: '2026-07-10',
-        toDate: '2026-07-10',
+        fromDate: '2026-10-12',
+        toDate: '2026-10-12',
         days: 1.0,
-        handoverCode: 'PAP0001',
-        handoverName: 'Phạm Quốc Tuấn',
-        reason: 'Khám thai định kỳ tháng thứ 6 theo chỉ định của Bệnh viện Phụ sản',
-        attachment: 'So_kham_thai_dinh_ky.pdf',
-        createdAt: '08/07/2026',
-        status: 'APPROVED',
-        approver: 'Trưởng phòng HC-NS',
-        approvedAt: '09/07/2026 11:30',
-        note: 'BHXH chi trả 100% trợ cấp khám thai, không trừ quỹ phép năm'
+        handoverCode: 'PAP0009',
+        handoverName: 'Trần Thị Mai Phương',
+        reason: 'Khám thai định kỳ tháng thứ 7 tại Bệnh viện Phụ sản Từ Dũ',
+        attachment: 'Lich_kham_BVTuDu.pdf',
+        createdAt: '06/10/2026',
+        status: 'PENDING',
+        approver: 'Trần Thị Mai Phương (GĐ Nhân sự)',
+        approvedAt: null,
+        note: 'Chờ GĐ Nhân sự duyệt; Hưởng 100% trợ cấp BHXH'
       },
       {
-        id: 'DON-2026-007',
-        empCode: 'PAP0007',
-        empName: 'Vũ Văn G',
-        empDept: 'Đội Vận hành Cẩu bờ',
+        id: 'DON-2026-I02',
+        scopeType: 'INBOX',
+        empCode: 'PAP0003',
+        empName: 'Lê Văn C',
+        empDept: 'Phòng Khai thác cảng',
         empAvatar: '',
-        empInitials: 'VG',
-        empColor: 'bg-cyan-600',
-        typeCode: 'CL',
-        typeName: 'Nghỉ Bù làm thêm giờ / Trực lễ (Compensatory Leave)',
+        empInitials: 'VC',
+        empColor: 'bg-amber-600',
+        typeCode: 'AL',
+        typeName: 'Nghỉ Phép năm (Annual Leave)',
         session: 'FULL',
-        fromDate: '2026-07-20',
-        toDate: '2026-07-20',
-        days: 1.0,
-        handoverCode: 'PAP0005',
-        handoverName: 'Hoàng Văn E',
-        reason: 'Nghỉ bù ca trực bốc dỡ hàng ban đêm ngày Chủ nhật 12/07',
-        attachment: 'Phieu_xac_nhan_OT_1207.pdf',
-        createdAt: '15/07/2026',
-        status: 'APPROVED',
-        approver: 'Đội trưởng Vận hành',
-        approvedAt: '16/07/2026 14:00',
-        note: 'Hưởng 100% lương, khấu trừ quỹ giờ làm thêm OT tích lũy (không trừ phép năm)'
-      },
-      {
-        id: 'DON-2026-008',
-        empCode: 'PAP0008',
-        empName: 'Bùi Thị H',
-        empDept: 'Phòng Điều độ & Cảng vụ',
-        empAvatar: '',
-        empInitials: 'TH',
-        empColor: 'bg-teal-600',
-        typeCode: 'UL',
-        typeName: 'Nghỉ Việc riêng không hưởng lương (Unpaid Leave)',
-        session: 'FULL',
-        fromDate: '2026-08-03',
-        toDate: '2026-08-04',
-        days: 2.0,
-        handoverCode: 'PAP0003',
-        handoverName: 'Lê Văn C',
-        reason: 'Giải quyết việc sửa chữa nhà ở gia đình theo thỏa thuận',
-        attachment: '',
-        createdAt: '28/07/2026',
-        status: 'APPROVED',
-        approver: 'Trưởng phòng Điều độ & Cảng vụ',
-        approvedAt: '29/07/2026 15:10',
-        note: 'Chế độ 0% lương theo Khoản 3 Điều 115 BLLĐ, không trừ quỹ phép năm'
-      },
-      {
-        id: 'DON-2026-009',
-        empCode: 'PAP0009',
-        empName: 'Đỗ Văn I',
-        empDept: 'Kho bãi & Tiếp vận',
-        empAvatar: '',
-        empInitials: 'VI',
-        empColor: 'bg-rose-600',
-        typeCode: 'WI',
-        typeName: 'Nghỉ Tai nạn lao động & Bệnh nghề nghiệp (Work Injury)',
-        session: 'FULL',
-        fromDate: '2026-08-17',
-        toDate: '2026-08-20',
-        days: 4.0,
+        fromDate: '2026-10-14',
+        toDate: '2026-10-16',
+        days: 3.0,
         handoverCode: 'PAP0007',
         handoverName: 'Vũ Văn G',
-        reason: 'Nghỉ điều trị phục hồi sau chấn thương trượt ngã tại cầu cảng',
-        attachment: 'Bien_ban_dieu_tra_TNLD_benh_an.pdf',
-        createdAt: '15/08/2026',
-        status: 'APPROVED',
-        approver: 'Trưởng phòng HC-NS & An toàn',
-        approvedAt: '16/08/2026 17:00',
-        note: 'Công ty chi trả 100% lương theo Điều 38 Luật ATVSLĐ, không trừ phép năm'
+        reason: 'Về quê giải quyết việc gia đình',
+        attachment: '',
+        createdAt: '05/10/2026',
+        status: 'PENDING',
+        approver: 'Trần Thị Mai Phương (GĐ Nhân sự)',
+        approvedAt: null,
+        note: 'Trưởng phòng Khai thác đã xác nhận, chuyển HC-NS kiểm tra quỹ phép và duyệt'
       },
       {
-        id: 'DON-2026-010',
+        id: 'DON-2026-I03',
+        scopeType: 'INBOX',
+        empCode: 'PAP0005',
+        empName: 'Hoàng Văn E',
+        empDept: 'Phòng Kỹ thuật công nghệ',
+        empAvatar: '',
+        empInitials: 'VE',
+        empColor: 'bg-indigo-600',
+        typeCode: 'CL',
+        typeName: 'Nghỉ Bù làm thêm giờ / Trực lễ (Compensatory Leave)',
+        session: 'MORNING',
+        fromDate: '2026-10-13',
+        toDate: '2026-10-13',
+        days: 0.5,
+        handoverCode: 'PAP0008',
+        handoverName: 'Bùi Thị H',
+        reason: 'Nghỉ bù ca trực ban đêm xử lý sự cố thiết bị cẩu bờ ngày 03/10',
+        attachment: 'Phieu_OT_03102026.pdf',
+        createdAt: '04/10/2026',
+        status: 'PENDING',
+        approver: 'Trần Thị Mai Phương (GĐ Nhân sự)',
+        approvedAt: null,
+        note: 'Đã tích lũy đủ 4h OT; chờ HC-NS xác nhận công'
+      },
+      {
+        id: 'DON-2026-I04',
+        scopeType: 'INBOX',
         empCode: 'PAP0004',
         empName: 'Phạm Thị D',
         empDept: 'Phòng Kế toán - Tài chính',
         empAvatar: '',
         empInitials: 'TD',
         empColor: 'bg-purple-600',
-        typeCode: 'CVL',
-        typeName: 'Nghỉ Dưỡng sức sau ốm đau / thai sản (Convalescence)',
+        typeCode: 'SCL',
+        typeName: 'Nghỉ Chăm sóc con ốm (Sick Child Leave - BHXH)',
         session: 'FULL',
-        fromDate: '2026-09-07',
-        toDate: '2026-09-11',
-        days: 5.0,
-        handoverCode: 'PAP0002',
-        handoverName: 'Nguyễn Văn B',
-        reason: 'Nghỉ dưỡng sức phục hồi sau đợt phẫu thuật nội soi điều trị',
-        attachment: 'De_nghi_Cong_doan_duong_suc.pdf',
-        createdAt: '03/09/2026',
-        status: 'PENDING',
-        approver: 'Kế toán trưởng & Ban Chấp hành Công đoàn',
-        approvedAt: null,
-        note: 'Đang chờ duyệt; Trợ cấp BHXH 30% lương cơ sở/ngày, không trừ phép năm'
+        fromDate: '2026-09-22',
+        toDate: '2026-09-23',
+        days: 2.0,
+        handoverCode: 'PAP0006',
+        handoverName: 'Đặng Thị F',
+        reason: 'Chăm sóc con gái 4 tuổi bị sốt virus điều trị ngoại trú',
+        attachment: 'Giay_nghi_BHXH_C65HD.pdf',
+        createdAt: '21/09/2026',
+        status: 'APPROVED',
+        approver: 'Trần Thị Mai Phương (GĐ Nhân sự)',
+        approvedAt: '21/09/2026 14:15',
+        note: 'Đã duyệt; BHXH thanh toán 75%, không trừ quỹ phép năm'
       },
       {
-        id: 'DON-2026-011',
+        id: 'DON-2026-I05',
+        scopeType: 'INBOX',
         empCode: 'PAP0007',
         empName: 'Vũ Văn G',
         empDept: 'Đội Vận hành Cẩu bờ',
@@ -34050,23 +34044,247 @@
         empColor: 'bg-cyan-600',
         typeCode: 'AL',
         typeName: 'Nghỉ Phép năm (Annual Leave)',
-        session: 'MORNING',
-        fromDate: '2026-09-15',
-        toDate: '2026-09-15',
+        session: 'AFTERNOON',
+        fromDate: '2026-09-18',
+        toDate: '2026-09-18',
         days: 0.5,
         handoverCode: 'PAP0005',
         handoverName: 'Hoàng Văn E',
-        reason: 'Nghỉ buổi sáng giải quyết việc gia đình',
+        reason: 'Nghỉ buổi chiều đi làm thủ tục hành chính tại cơ quan địa phương',
         attachment: '',
-        createdAt: '12/09/2026',
+        createdAt: '16/09/2026',
+        status: 'APPROVED',
+        approver: 'Trần Thị Mai Phương (GĐ Nhân sự)',
+        approvedAt: '17/09/2026 10:00',
+        note: 'Đã phê duyệt; Trừ 0.5 ngày quỹ phép năm'
+      },
+      {
+        id: 'DON-2026-I06',
+        scopeType: 'INBOX',
+        empCode: 'PAP0002',
+        empName: 'Nguyễn Văn B',
+        empDept: 'Phòng Khai thác cảng',
+        empAvatar: '',
+        empInitials: 'VB',
+        empColor: 'bg-emerald-600',
+        typeCode: 'AL',
+        typeName: 'Nghỉ Phép năm (Annual Leave)',
+        session: 'FULL',
+        fromDate: '2026-08-10',
+        toDate: '2026-08-14',
+        days: 5.0,
+        handoverCode: 'PAP0003',
+        handoverName: 'Lê Văn C',
+        reason: 'Nghỉ đi du lịch cùng gia đình tại miền Bắc',
+        attachment: '',
+        createdAt: '01/08/2026',
+        status: 'REJECTED',
+        approver: 'Trần Thị Mai Phương (GĐ Nhân sự)',
+        approvedAt: '02/08/2026 16:30',
+        note: 'Từ chối: Tuần 32 cảng đón tàu container quốc tế trọng tải lớn, cần tập trung điều hành'
+      },
+
+      // 3. ĐANG THEO DÕI (WATCHING) - Trần Thị Mai Phương nhận bàn giao hoặc giám sát tiến độ
+      {
+        id: 'DON-2026-W01',
+        scopeType: 'WATCHING',
+        empCode: 'PAP0001',
+        empName: 'Phạm Quốc Tuấn',
+        empDept: 'Ban Giám Đốc',
+        empAvatar: '',
+        empInitials: 'QT',
+        empColor: 'bg-blue-700',
+        typeCode: 'AL',
+        typeName: 'Nghỉ Phép năm (Annual Leave)',
+        session: 'FULL',
+        fromDate: '2026-10-20',
+        toDate: '2026-10-21',
+        days: 2.0,
+        handoverCode: 'PAP0009',
+        handoverName: 'Trần Thị Mai Phương',
+        reason: 'Nghỉ phép giải quyết việc riêng gia đình',
+        attachment: '',
+        createdAt: '04/10/2026',
         status: 'PENDING',
-        approver: 'Đội trưởng Vận hành',
+        approver: 'Hội đồng Quản trị PAP',
         approvedAt: null,
-        note: 'Chờ phê duyệt; Hưởng 100% lương, khấu trừ 0.5 ngày phép năm'
+        note: 'Bàn giao công tác điều hành nhân sự và HC cho GĐ Nhân sự theo dõi'
+      },
+      {
+        id: 'DON-2026-W02',
+        scopeType: 'WATCHING',
+        empCode: 'PAP0006',
+        empName: 'Đặng Thị F',
+        empDept: 'Phòng Hành chính - Nhân sự',
+        empAvatar: '',
+        empInitials: 'TF',
+        empColor: 'bg-pink-600',
+        typeCode: 'AL',
+        typeName: 'Nghỉ Phép năm (Annual Leave)',
+        session: 'FULL',
+        fromDate: '2026-09-25',
+        toDate: '2026-09-26',
+        days: 2.0,
+        handoverCode: 'PAP0009',
+        handoverName: 'Trần Thị Mai Phương',
+        reason: 'Nghỉ dưỡng sức và thăm người thân ở quê',
+        attachment: '',
+        createdAt: '20/09/2026',
+        status: 'APPROVED',
+        approver: 'Phạm Quốc Tuấn (TGĐ)',
+        approvedAt: '22/09/2026 09:30',
+        note: 'Bàn giao tổng hợp hồ sơ nhân sự cho GĐ Nhân sự theo dõi'
+      },
+      {
+        id: 'DON-2026-W03',
+        scopeType: 'WATCHING',
+        empCode: 'PAP0008',
+        empName: 'Bùi Thị H',
+        empDept: 'Phòng Điều độ & Cảng vụ',
+        empAvatar: '',
+        empInitials: 'TH',
+        empColor: 'bg-teal-600',
+        typeCode: 'SL',
+        typeName: 'Nghỉ Ốm đau bản thân (Sick Leave - BHXH)',
+        session: 'FULL',
+        fromDate: '2026-09-10',
+        toDate: '2026-09-12',
+        days: 3.0,
+        handoverCode: 'PAP0009',
+        handoverName: 'Trần Thị Mai Phương',
+        reason: 'Nghỉ điều trị ngoại trú bệnh viêm xoang cấp',
+        attachment: 'Giay_ra_vien_C65.pdf',
+        createdAt: '09/09/2026',
+        status: 'APPROVED',
+        approver: 'Trưởng phòng Điều độ & Cảng vụ',
+        approvedAt: '10/09/2026 08:00',
+        note: 'HC-NS theo dõi để lập hồ sơ thanh toán trợ cấp BHXH 75%'
+      },
+      {
+        id: 'DON-2026-W04',
+        scopeType: 'WATCHING',
+        empCode: 'PAP0003',
+        empName: 'Lê Văn C',
+        empDept: 'Phòng Khai thác cảng',
+        empAvatar: '',
+        empInitials: 'VC',
+        empColor: 'bg-amber-600',
+        typeCode: 'WI',
+        typeName: 'Nghỉ Tai nạn lao động & Bệnh nghề nghiệp (Work Injury)',
+        session: 'FULL',
+        fromDate: '2026-08-17',
+        toDate: '2026-08-21',
+        days: 5.0,
+        handoverCode: 'PAP0007',
+        handoverName: 'Vũ Văn G',
+        reason: 'Điều trị hồi phục chấn thương trượt ngã tại cầu cảng',
+        attachment: 'Bien_ban_dieu_tra_TNLD.pdf',
+        createdAt: '16/08/2026',
+        status: 'APPROVED',
+        approver: 'Ban Giám Đốc & An toàn Lao động',
+        approvedAt: '17/08/2026 08:30',
+        note: 'HC-NS gán theo dõi hồ sơ giám định y khoa và chi trả nguyên lương'
+      },
+      {
+        id: 'DON-2026-W05',
+        scopeType: 'WATCHING',
+        empCode: 'PAP0005',
+        empName: 'Hoàng Văn E',
+        empDept: 'Phòng Kỹ thuật công nghệ',
+        empAvatar: '',
+        empInitials: 'VE',
+        empColor: 'bg-indigo-600',
+        typeCode: 'PL-M',
+        typeName: 'Nghỉ Thai sản - Nam khi vợ sinh con (Paternity Leave)',
+        session: 'FULL',
+        fromDate: '2026-07-06',
+        toDate: '2026-07-10',
+        days: 5.0,
+        handoverCode: 'PAP0009',
+        handoverName: 'Trần Thị Mai Phương',
+        reason: 'Vợ sinh con đầu lòng tại bệnh viện Phụ sản',
+        attachment: 'Giay_chung_sinh_BV_Tu_Du.pdf',
+        createdAt: '02/07/2026',
+        status: 'APPROVED',
+        approver: 'Trưởng phòng Kỹ thuật công nghệ',
+        approvedAt: '03/07/2026 14:00',
+        note: 'Theo dõi để cập nhật hồ sơ chế độ thai sản nam trên phần mềm BHXH'
       }
     ];
 
     let currentViewingRequestId = null;
+
+    function getLeaveRequestsForTab(tabKey) {
+      if (tabKey === 'sent') {
+        return leaveRequestsData.filter(r => r.scopeType === 'SENT' || r.empCode === 'PAP0009');
+      } else if (tabKey === 'inbox') {
+        return leaveRequestsData.filter(r => r.scopeType === 'INBOX' || (r.empCode !== 'PAP0009' && r.scopeType !== 'SENT' && r.scopeType !== 'WATCHING'));
+      } else if (tabKey === 'watching') {
+        return leaveRequestsData.filter(r => r.scopeType === 'WATCHING' || r.handoverCode === 'PAP0009');
+      } else {
+        return leaveRequestsData;
+      }
+    }
+
+    function toggleLeaveRequestsSubmenu() {
+      const subMenu = document.getElementById('sub-menu-leave-requests-tabs');
+      const chevron = document.getElementById('leave-requests-chevron');
+      if (!subMenu) return;
+      const isHidden = subMenu.classList.contains('hidden');
+      if (isHidden) {
+        subMenu.classList.remove('hidden');
+        if (chevron) chevron.innerText = '▲';
+      } else {
+        subMenu.classList.add('hidden');
+        if (chevron) chevron.innerText = '▼';
+      }
+    }
+
+    function switchLeaveRequestTab(tabKey) {
+      currentLeaveRequestTab = tabKey || 'sent';
+
+      const tabSent = document.getElementById('tab-leave-req-sent');
+      const tabInbox = document.getElementById('tab-leave-req-inbox');
+      const tabWatching = document.getElementById('tab-leave-req-watching');
+      const tabAll = document.getElementById('tab-leave-req-all');
+
+      const sideSent = document.getElementById('sub-tab-leave-sent');
+      const sideInbox = document.getElementById('sub-tab-leave-inbox');
+      const sideWatching = document.getElementById('sub-tab-leave-watching');
+
+      const activeTabClass = 'px-4 py-2.5 text-xs font-bold border-b-2 border-[#2E3191] text-[#2E3191] flex items-center space-x-2 transition cursor-pointer';
+      const inactiveTabClass = 'px-4 py-2.5 text-xs font-semibold border-b-2 border-transparent text-slate-600 hover:text-slate-900 flex items-center space-x-2 transition cursor-pointer';
+
+      const activeSideClass = 'sidebar-sub-item w-full text-left px-2 py-1 rounded flex items-center justify-between cursor-pointer transition text-[10.5px] font-bold text-[#2E3191] bg-indigo-50/70 border border-indigo-100';
+      const inactiveSideClass = 'sidebar-sub-item w-full text-left px-2 py-1 rounded flex items-center justify-between cursor-pointer transition text-[10.5px] text-slate-600 hover:text-[#2E3191] hover:bg-slate-50';
+
+      if (tabSent) tabSent.className = currentLeaveRequestTab === 'sent' ? activeTabClass : inactiveTabClass;
+      if (tabInbox) tabInbox.className = currentLeaveRequestTab === 'inbox' ? activeTabClass : inactiveTabClass;
+      if (tabWatching) tabWatching.className = currentLeaveRequestTab === 'watching' ? activeTabClass : inactiveTabClass;
+      if (tabAll) tabAll.className = currentLeaveRequestTab === 'all' ? activeTabClass : inactiveTabClass;
+
+      if (sideSent) sideSent.className = currentLeaveRequestTab === 'sent' ? activeSideClass : inactiveSideClass;
+      if (sideInbox) sideInbox.className = currentLeaveRequestTab === 'inbox' ? activeSideClass : inactiveSideClass;
+      if (sideWatching) sideWatching.className = currentLeaveRequestTab === 'watching' ? activeSideClass : inactiveSideClass;
+
+      const titleEl = document.getElementById('table-leave-requests-title');
+      const totalLabelEl = document.getElementById('kpi-leave-req-total-label');
+      if (currentLeaveRequestTab === 'sent') {
+        if (titleEl) titleEl.innerText = 'Danh sách đơn gửi đi:';
+        if (totalLabelEl) totalLabelEl.innerText = 'Tổng đơn gửi đi';
+      } else if (currentLeaveRequestTab === 'inbox') {
+        if (titleEl) titleEl.innerText = 'Danh sách đơn gửi đến cần duyệt:';
+        if (totalLabelEl) totalLabelEl.innerText = 'Tổng đơn gửi đến';
+      } else if (currentLeaveRequestTab === 'watching') {
+        if (titleEl) titleEl.innerText = 'Danh sách đơn đang theo dõi:';
+        if (totalLabelEl) totalLabelEl.innerText = 'Tổng đơn theo dõi';
+      } else {
+        if (titleEl) titleEl.innerText = 'Danh sách tất cả đơn xin nghỉ phép:';
+        if (totalLabelEl) totalLabelEl.innerText = 'Tổng tất cả đơn';
+      }
+
+      renderLeaveRequestsTable();
+    }
 
     function renderLeaveRequestsTable() {
       const tbody = document.getElementById('annual-leave-requests-tbody');
@@ -34079,19 +34297,52 @@
       const kpiApproved = document.getElementById('kpi-leave-req-approved');
       const kpiRejected = document.getElementById('kpi-leave-req-rejected');
 
-      const totalCount = leaveRequestsData.length;
-      const pendingCount = leaveRequestsData.filter(r => r.status === 'PENDING').length;
-      const approvedCount = leaveRequestsData.filter(r => r.status === 'APPROVED').length;
-      const rejectedCount = leaveRequestsData.filter(r => r.status === 'REJECTED').length;
+      // Thống kê theo phân loại tab
+      const sentList = getLeaveRequestsForTab('sent');
+      const inboxList = getLeaveRequestsForTab('inbox');
+      const watchingList = getLeaveRequestsForTab('watching');
+      const allList = leaveRequestsData;
 
-      if (badge) badge.innerText = pendingCount;
-      if (sideBadge) sideBadge.innerText = pendingCount;
-      if (tableCount) tableCount.innerText = totalCount + ' đơn';
+      const sentCount = sentList.length;
+      const inboxPendingCount = inboxList.filter(r => r.status === 'PENDING').length;
+      const watchingCount = watchingList.length;
+      const allCount = allList.length;
 
-      if (kpiTotal) kpiTotal.innerText = totalCount;
-      if (kpiPending) kpiPending.innerText = pendingCount;
-      if (kpiApproved) kpiApproved.innerText = approvedCount;
-      if (kpiRejected) kpiRejected.innerText = rejectedCount;
+      // Cập nhật badges trên các Tab
+      const bSent = document.getElementById('badge-leave-req-sent');
+      const bInbox = document.getElementById('badge-leave-req-inbox');
+      const bWatching = document.getElementById('badge-leave-req-watching');
+      const bAll = document.getElementById('badge-leave-req-all');
+
+      if (bSent) bSent.innerText = sentCount;
+      if (bInbox) bInbox.innerText = inboxPendingCount + ' chờ duyệt';
+      if (bWatching) bWatching.innerText = watchingCount;
+      if (bAll) bAll.innerText = allCount;
+
+      // Cập nhật badges thanh sidebar
+      const sideSubSent = document.getElementById('side-sub-badge-sent');
+      const sideSubInbox = document.getElementById('side-sub-badge-inbox');
+      const sideSubWatching = document.getElementById('side-sub-badge-watching');
+
+      if (sideSubSent) sideSubSent.innerText = sentCount;
+      if (sideSubInbox) sideSubInbox.innerText = inboxPendingCount;
+      if (sideSubWatching) sideSubWatching.innerText = watchingCount;
+
+      if (badge) badge.innerText = inboxPendingCount;
+      if (sideBadge) sideBadge.innerText = inboxPendingCount;
+
+      // Lấy danh sách hiển thị theo Tab hiện tại
+      const currentTabList = getLeaveRequestsForTab(currentLeaveRequestTab);
+
+      const tabTotal = currentTabList.length;
+      const tabPending = currentTabList.filter(r => r.status === 'PENDING').length;
+      const tabApproved = currentTabList.filter(r => r.status === 'APPROVED').length;
+      const tabRejected = currentTabList.filter(r => r.status === 'REJECTED').length;
+
+      if (kpiTotal) kpiTotal.innerText = tabTotal;
+      if (kpiPending) kpiPending.innerText = tabPending;
+      if (kpiApproved) kpiApproved.innerText = tabApproved;
+      if (kpiRejected) kpiRejected.innerText = tabRejected;
 
       if (!tbody) return;
 
@@ -34100,7 +34351,7 @@
       const filterType = (document.getElementById('filter-leave-request-type')?.value || '').trim();
       const filterStatus = (document.getElementById('filter-leave-request-status')?.value || '').trim();
 
-      const filtered = leaveRequestsData.filter(req => {
+      const filtered = currentTabList.filter(req => {
         if (searchVal) {
           const matchSearch = req.id.toLowerCase().includes(searchVal) ||
                               req.empName.toLowerCase().includes(searchVal) ||
@@ -34114,8 +34365,10 @@
         return true;
       });
 
+      if (tableCount) tableCount.innerText = filtered.length + ' đơn';
+
       if (filtered.length === 0) {
-        tbody.innerHTML = '<tr><td colspan="11" class="py-8 text-center text-slate-400 italic text-xs">Không tìm thấy đơn xin nghỉ phép nào phù hợp bộ lọc</td></tr>';
+        tbody.innerHTML = '<tr><td colspan="11" class="py-8 text-center text-slate-400 italic text-xs">Không tìm thấy đơn xin nghỉ phép nào phù hợp bộ lọc của tab này</td></tr>';
         return;
       }
 
@@ -34134,6 +34387,42 @@
                          : '';
 
         const attachmentIcon = req.attachment ? '<span class="ml-1 text-blue-600" title="' + req.attachment + '">📎</span>' : '';
+
+        // Tùy biến nút hành động phù hợp từng Tab nghiệp vụ
+        let actionButtonsHtml = `
+          <button type="button" onclick="openViewLeaveRequestModal('${req.id}')" class="p-1.5 text-slate-500 hover:text-[#2E3191] hover:bg-slate-100 rounded-lg transition cursor-pointer" title="Xem chi tiết đơn">
+            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
+          </button>
+        `;
+
+        if (currentLeaveRequestTab === 'inbox' && req.status === 'PENDING') {
+          // Tab Đơn gửi đến: Duyệt nhanh, Từ chối nhanh
+          actionButtonsHtml = `
+            <button type="button" onclick="handleQuickApproveLeaveRequest('${req.id}', event)" class="p-1.5 text-emerald-600 hover:bg-emerald-50 rounded-lg transition cursor-pointer" title="Phê duyệt nhanh">
+              <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+            </button>
+            <button type="button" onclick="handleQuickRejectLeaveRequest('${req.id}', event)" class="p-1.5 text-rose-600 hover:bg-rose-50 rounded-lg transition cursor-pointer" title="Từ chối nhanh">
+              <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>
+            </button>
+            <button type="button" onclick="openViewLeaveRequestModal('${req.id}')" class="p-1.5 text-slate-500 hover:text-[#2E3191] hover:bg-slate-100 rounded-lg transition cursor-pointer" title="Xem chi tiết">
+              <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
+            </button>
+          `;
+        } else if (currentLeaveRequestTab === 'sent' && req.status === 'PENDING') {
+          // Tab Đơn gửi đi: Nút thu hồi đơn
+          actionButtonsHtml += `
+            <button type="button" onclick="cancelMyLeaveRequest('${req.id}', event)" class="p-1.5 text-amber-600 hover:bg-amber-50 rounded-lg transition cursor-pointer" title="Thu hồi đơn">
+              <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M3 10h10a5 5 0 015 5v2M3 10l5-5m-5 5l5 5"/></svg>
+            </button>
+          `;
+        } else if (currentLeaveRequestTab === 'all') {
+          // Tab Tất cả đơn: Nút xóa dành cho admin
+          actionButtonsHtml += `
+            <button type="button" onclick="deleteLeaveRequest('${req.id}')" class="p-1.5 text-slate-400 hover:text-rose-600 hover:bg-rose-50 rounded-lg transition cursor-pointer" title="Xóa đơn">
+              <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
+            </button>
+          `;
+        }
 
         return `
         <tr class="hover:bg-indigo-50/30 transition border-b border-slate-100">
@@ -34171,16 +34460,35 @@
           <td class="py-3 px-3 text-center">${statusBadge}</td>
           <td class="py-3 px-3 text-center">
             <div class="flex items-center justify-center space-x-1">
-              <button type="button" onclick="openViewLeaveRequestModal('${req.id}')" class="p-1.5 text-slate-500 hover:text-[#2E3191] hover:bg-slate-100 rounded-lg transition cursor-pointer" title="Xem chi tiết & Phê duyệt">
-                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
-              </button>
-              <button type="button" onclick="deleteLeaveRequest('${req.id}')" class="p-1.5 text-slate-400 hover:text-rose-600 hover:bg-rose-50 rounded-lg transition cursor-pointer" title="Xóa đơn">
-                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
-              </button>
+              ${actionButtonsHtml}
             </div>
           </td>
         </tr>`;
       }).join('');
+    }
+
+    function handleQuickApproveLeaveRequest(id, event) {
+      if (event) event.stopPropagation();
+      handleApproveLeaveRequest(id);
+    }
+
+    function handleQuickRejectLeaveRequest(id, event) {
+      if (event) event.stopPropagation();
+      handleRejectLeaveRequest(id);
+    }
+
+    function cancelMyLeaveRequest(id, event) {
+      if (event) event.stopPropagation();
+      const req = leaveRequestsData.find(r => r.id === id);
+      if (!req) return;
+      if (confirm(`Bạn có chắc chắn muốn thu hồi đơn nghỉ phép "${req.id}" (${req.typeName})?`)) {
+        const idx = leaveRequestsData.findIndex(r => r.id === id);
+        if (idx !== -1) {
+          leaveRequestsData.splice(idx, 1);
+          renderLeaveRequestsTable();
+          showToast(`Đã thu hồi đơn nghỉ phép ${id} thành công!`);
+        }
+      }
     }
 
     function resetLeaveRequestFilter() {
@@ -34456,9 +34764,11 @@
       const nextId = 'DON-2026-' + String(leaveRequestsData.length + 1).padStart(3, '0');
       const nowStr = new Date().toLocaleDateString('vi-VN');
 
+      const userEmpCode = emp ? emp.pap : empCode;
       const newReq = {
         id: nextId,
-        empCode: emp ? emp.pap : empCode,
+        scopeType: (userEmpCode === 'PAP0009' ? 'SENT' : 'INBOX'),
+        empCode: userEmpCode,
         empName: emp ? emp.name : 'Nhân sự',
         empDept: emp ? emp.dept : 'Cảng Phước An',
         empAvatar: emp ? emp.avatar : '',
@@ -34478,16 +34788,20 @@
         attachment: attachment,
         createdAt: nowStr,
         status: 'PENDING',
-        approver: 'Trưởng phòng / Quản lý trực tiếp',
+        approver: (userEmpCode === 'PAP0009' ? 'Ban Giám Đốc (TGĐ Phạm Quốc Tuấn)' : 'Trần Thị Mai Phương (GĐ Nhân sự)'),
         approvedAt: null,
-        note: 'Đơn mới tạo, chờ Quản lý trực tiếp phê duyệt'
+        note: 'Đơn mới tạo, chờ phê duyệt'
       };
 
       leaveRequestsData.unshift(newReq);
 
       closeCreateLeaveRequestModal();
-      renderLeaveRequestsTable();
-      showToast(`✓ Đã gửi đơn nghỉ phép [${nextId}] thành công (Quy trình duyệt độc lập M09)!`);
+      if (userEmpCode === 'PAP0009') {
+        switchLeaveRequestTab('sent');
+      } else {
+        renderLeaveRequestsTable();
+      }
+      showToast(`✓ Đã gửi đơn nghỉ phép [${nextId}] thành công (Quy trình duyệt M09)!`);
     }
 
     function openViewLeaveRequestModal(id) {
@@ -36881,7 +37195,7 @@
         if (btnRequests) btnRequests.className = activeTabCls;
         if (contentRequests) contentRequests.classList.remove('hidden');
         if (subItemRequests) subItemRequests.className = activeSubCls;
-        renderLeaveRequestsTable();
+        switchLeaveRequestTab(currentLeaveRequestTab || 'sent');
       } else if (subTab === 'groups') {
         if (btnGroups) btnGroups.className = activeTabCls;
         if (contentGroups) contentGroups.classList.remove('hidden');
@@ -36905,9 +37219,18 @@
       }
     }
 
-    function openAnnualLeaveSub(subTab) {
+    function openAnnualLeaveSub(subTab, leaveReqTab) {
       switchSidebarModule('annual-leave');
       switchAnnualLeaveSubTab(subTab);
+      if (subTab === 'requests') {
+        const subMenu = document.getElementById('sub-menu-leave-requests-tabs');
+        const chevron = document.getElementById('leave-requests-chevron');
+        if (subMenu) subMenu.classList.remove('hidden');
+        if (chevron) chevron.innerText = '▲';
+        if (leaveReqTab) {
+          switchLeaveRequestTab(leaveReqTab);
+        }
+      }
     }
 
     function renderAnnualLeavePoliciesTable() {
@@ -41124,6 +41447,11 @@
     window.applyColumnVisibility = applyColumnVisibility;
     window.resetActiveTableColumns = resetActiveTableColumns;
     window.downloadTableExcel = downloadTableExcel;
+    window.switchLeaveRequestTab = switchLeaveRequestTab;
+    window.toggleLeaveRequestsSubmenu = toggleLeaveRequestsSubmenu;
+    window.handleQuickApproveLeaveRequest = handleQuickApproveLeaveRequest;
+    window.handleQuickRejectLeaveRequest = handleQuickRejectLeaveRequest;
+    window.cancelMyLeaveRequest = cancelMyLeaveRequest;
 
     initializeAttendanceManagementColumnHandles();
     initializeCatalogStandardTables();
