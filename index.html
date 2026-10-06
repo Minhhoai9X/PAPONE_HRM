@@ -605,12 +605,12 @@
             </div>
           </div>
 
-          <!-- Quản lý nghỉ phép (Accordion Dropdown Menu Con M09) -->
+          <!-- Quản lý nghỉ phép (Base Timeoff - Accordion Dropdown M09) -->
           <div class="space-y-0.5">
-            <button onclick="switchSidebarModule('annual-leave')" id="side-item-annual-leave" class="sidebar-btn hover:bg-slate-100 hover:text-slate-900 w-full text-left px-3 py-2 rounded-lg flex items-center justify-between cursor-pointer transition text-slate-800 font-medium" title="Quản lý nghỉ phép & phép năm">
+            <button onclick="switchSidebarModule('annual-leave')" id="side-item-annual-leave" class="sidebar-btn hover:bg-slate-100 hover:text-slate-900 w-full text-left px-3 py-2 rounded-lg flex items-center justify-between cursor-pointer transition text-slate-800 font-medium" title="Quản lý nghỉ phép & vắng mặt (Base Timeoff M09)">
               <div class="flex items-center space-x-2.5 overflow-hidden truncate">
                 <span class="text-sm shrink-0">🏖️</span>
-                <span class="sidebar-label truncate font-medium">Quản lý nghỉ phép</span>
+                <span class="sidebar-label truncate font-medium">Nghỉ phép (Timeoff)</span>
               </div>
               <div class="flex items-center space-x-1.5">
                 <span class="sidebar-badge text-[10px] bg-indigo-50 text-[#2E3191] border border-indigo-200 px-1.5 py-0.2 rounded font-semibold">M09</span>
@@ -618,18 +618,25 @@
               </div>
             </button>
             <div id="annual-leave-sub-menu" class="pl-4 space-y-1 mt-0.5 border-l border-slate-200 ml-3.5">
-              <button onclick="openAnnualLeaveSub('ledger')" id="sub-item-leave-ledger" class="sidebar-sub-item w-full text-left px-2 py-1.5 rounded flex items-center justify-between cursor-pointer transition text-[11px] text-[#2E3191] font-bold bg-blue-50/70 group" title="Sổ theo dõi phép">
+              <button onclick="openAnnualLeaveSub('ledger')" id="sub-item-leave-ledger" class="sidebar-sub-item w-full text-left px-2 py-1.5 rounded flex items-center justify-between cursor-pointer transition text-[11px] text-[#2E3191] font-bold bg-blue-50/70 group" title="Sổ theo dõi phép năm & Quỹ phép">
                 <div class="flex items-center space-x-1.5 truncate">
                   <span class="w-1.5 h-1.5 rounded-full bg-[#2E3191]"></span>
                   <span class="truncate">Sổ theo dõi phép</span>
                 </div>
               </button>
-              <button onclick="openAnnualLeaveSub('requests')" id="sub-item-leave-requests" class="sidebar-sub-item w-full text-left px-2 py-1.5 rounded flex items-center justify-between cursor-pointer transition text-[11px] text-slate-700 font-medium hover:text-[#2E3191] hover:bg-slate-50 group" title="Quản lý đơn nghỉ phép">
+              <button onclick="openAnnualLeaveSub('requests')" id="sub-item-leave-requests" class="sidebar-sub-item w-full text-left px-2 py-1.5 rounded flex items-center justify-between cursor-pointer transition text-[11px] text-slate-700 font-medium hover:text-[#2E3191] hover:bg-slate-50 group" title="Quản lý & xét duyệt đơn nghỉ phép">
                 <div class="flex items-center space-x-1.5 truncate">
                   <span class="w-1.5 h-1.5 rounded-full bg-slate-300 group-hover:bg-[#2E3191]"></span>
                   <span class="truncate">Đơn nghỉ phép</span>
                 </div>
                 <span class="text-[9px] px-1 rounded bg-amber-50 text-amber-700 border border-amber-200 font-bold" id="sidebar-leave-requests-count">4</span>
+              </button>
+              <button onclick="openAnnualLeaveSub('groups')" id="sub-item-leave-groups" class="sidebar-sub-item w-full text-left px-2 py-1.5 rounded flex items-center justify-between cursor-pointer transition text-[11px] text-slate-700 font-medium hover:text-[#2E3191] hover:bg-slate-50 group" title="Nhóm đề xuất nghỉ phép & Luồng duyệt riêng Base Timeoff">
+                <div class="flex items-center space-x-1.5 truncate">
+                  <span class="w-1.5 h-1.5 rounded-full bg-slate-300 group-hover:bg-[#2E3191]"></span>
+                  <span class="truncate">Nhóm đề xuất nghỉ phép</span>
+                </div>
+                <span class="text-[9px] px-1 rounded bg-indigo-50 text-[#2E3191] font-bold" id="sidebar-leave-groups-count">6</span>
               </button>
               <button onclick="openAnnualLeaveSub('policies')" id="sub-item-leave-policies" class="sidebar-sub-item w-full text-left px-2 py-1.5 rounded flex items-center justify-between cursor-pointer transition text-[11px] text-slate-700 font-medium hover:text-[#2E3191] hover:bg-slate-50 group" title="Chính sách nghỉ phép">
                 <div class="flex items-center space-x-1.5 truncate">
@@ -650,12 +657,12 @@
         </div>
       </div>
 
-      <!-- Group 5: Phê duyệt & Quy trình -->
+      <!-- Group 5: Phê duyệt đề xuất (Base Request) -->
       <div>
-        <div class="sidebar-section-header px-3 mb-1.5 text-[10px] font-bold uppercase tracking-wider text-slate-400">Phê duyệt & Luồng xử lý</div>
+        <div class="sidebar-section-header px-3 mb-1.5 text-[10px] font-bold uppercase tracking-wider text-slate-400">Phê duyệt đề xuất (Base Request)</div>
         <div class="space-y-0.5">
           <!-- 1. Hộp thư phê duyệt (M14) -->
-          <button onclick="switchSidebarModule('approval')" id="side-item-approval" class="sidebar-btn hover:bg-slate-100 hover:text-slate-900 w-full text-left px-3 py-2 rounded-lg flex items-center justify-between cursor-pointer transition text-slate-800 font-medium text-xs" title="Hộp thư phê duyệt">
+          <button onclick="switchSidebarModule('approval')" id="side-item-approval" class="sidebar-btn hover:bg-slate-100 hover:text-slate-900 w-full text-left px-3 py-2 rounded-lg flex items-center justify-between cursor-pointer transition text-slate-800 font-medium text-xs" title="Hộp thư phê duyệt chung các đề xuất">
             <div class="flex items-center space-x-2.5 truncate">
               <span class="text-sm shrink-0">📥</span>
               <span class="sidebar-label truncate font-medium">Hộp thư phê duyệt</span>
@@ -667,12 +674,12 @@
           </button>
 
           <!-- 2. Thiết lập quy trình (Workflow Engine) -->
-          <button onclick="switchSidebarModule('approval-workflow')" id="side-item-approval-workflow" class="sidebar-btn hover:bg-slate-100 hover:text-slate-900 w-full text-left px-3 py-2 rounded-lg flex items-center justify-between cursor-pointer transition text-slate-800 font-medium text-xs" title="Thiết lập quy trình & nhóm đề xuất">
+          <button onclick="switchSidebarModule('approval-workflow')" id="side-item-approval-workflow" class="sidebar-btn hover:bg-slate-100 hover:text-slate-900 w-full text-left px-3 py-2 rounded-lg flex items-center justify-between cursor-pointer transition text-slate-800 font-medium text-xs" title="Thiết lập quy trình đề xuất (Mua sắm, Thanh toán, Tuyển dụng...)">
             <div class="flex items-center space-x-2.5 truncate">
               <span class="text-sm shrink-0">⚙️</span>
-              <span class="sidebar-label truncate font-medium">Thiết lập quy trình</span>
+              <span class="sidebar-label truncate font-medium">Quy trình đề xuất</span>
             </div>
-            <span class="sidebar-badge text-[10px] bg-indigo-50 text-[#2E3191] border border-indigo-200 px-1.5 py-0.2 rounded font-semibold">Workflow</span>
+            <span class="sidebar-badge text-[10px] bg-indigo-50 text-[#2E3191] border border-indigo-200 px-1.5 py-0.2 rounded font-semibold">Request</span>
           </button>
         </div>
       </div>
@@ -4855,7 +4862,7 @@
       <!-- VIEW 10: QUẢN LÝ PHÉP Năm NHÂN VIÊN (ANNUAL LEAVE LEDGER)                 -->
       <!-- ========================================================================= -->
       <section id="view-annual-leave" class="space-y-3 hidden">
-        <!-- Thanh Tab Chuyển đổi: Sổ theo dõi phép năm / Danh mục Chính sách nghỉ phép -->
+        <!-- Thanh Tab Chuyển đổi: Sổ theo dõi phép / Đơn nghỉ phép / Nhóm đề xuất / Chính sách / Loại nghỉ -->
         <div class="bg-white p-1.5 rounded-2xl border border-slate-200 shadow-xs flex items-center space-x-1.5 text-xs font-semibold overflow-x-auto shrink-0">
           <button type="button" onclick="switchAnnualLeaveSubTab('ledger')" id="tab-btn-annual-leave-ledger" class="sub-tab-active px-4 py-2 rounded-xl flex items-center space-x-2 transition cursor-pointer shrink-0">
             <span>📊</span>
@@ -4865,6 +4872,11 @@
             <span>📝</span>
             <span>Đơn nghỉ phép</span>
             <span id="badge-annual-leave-requests" class="ml-1 px-1.5 py-0.2 rounded-full text-[10px] font-bold bg-amber-50 text-amber-700 border border-amber-200">4</span>
+          </button>
+          <button type="button" onclick="switchAnnualLeaveSubTab('groups')" id="tab-btn-annual-leave-groups" class="px-4 py-2 rounded-xl text-slate-700 hover:text-[#2E3191] hover:bg-slate-50 flex items-center space-x-2 transition cursor-pointer shrink-0">
+            <span>⚙️</span>
+            <span>Nhóm đề xuất nghỉ phép</span>
+            <span id="badge-annual-leave-groups" class="ml-1 px-1.5 py-0.2 rounded-full text-[10px] font-bold bg-indigo-50 text-[#2E3191] border border-indigo-200">6</span>
           </button>
           <button type="button" onclick="switchAnnualLeaveSubTab('policies')" id="tab-btn-annual-leave-policies" class="px-4 py-2 rounded-xl text-slate-700 hover:text-[#2E3191] hover:bg-slate-50 flex items-center space-x-2 transition cursor-pointer shrink-0">
             <span>📋</span>
@@ -5449,7 +5461,97 @@
           </div>
         </div>
 
-</section>
+        <!-- 3. NỘI DUNG TAB NHÓM ĐỀ XUẤT NGHỈ PHÉP & VẮNG MẶT (CHUẨN BASE TIMEOFF) -->
+        <div id="annual-leave-content-groups" class="space-y-3 hidden">
+          <!-- Header Nhóm đề xuất -->
+          <div class="bg-white p-4 rounded-2xl border border-slate-200 shadow-xs flex flex-col md:flex-row md:items-center md:justify-between gap-3">
+            <div>
+              <div class="flex items-center space-x-2 text-xs text-slate-700 font-medium mb-1">
+                <span>Quản lý nhân sự</span>
+                <span>/</span>
+                <span>Nghỉ phép (Base Timeoff)</span>
+                <span>/</span>
+                <span class="text-[#2E3191] font-semibold">Nhóm đề xuất nghỉ phép</span>
+              </div>
+              <h2 class="text-base font-bold text-slate-900 flex items-center space-x-2">
+                <span>⚙️</span>
+                <span>NHÓM ĐỀ XUẤT NGHỈ PHÉP & VẮNG MẶT (BASE TIMEOFF)</span>
+              </h2>
+              <p class="text-xs text-slate-500 mt-0.5">Tự cấu hình quy trình phê duyệt riêng cho từng nhóm đề xuất (QLTT, Cố định, Linh động, Điều kiện > 3 ngày), thời hạn báo trước/hồi tố, và ưu tiên trừ quỹ phép tự động.</p>
+            </div>
+
+            <div class="flex items-center flex-wrap gap-2">
+              <button type="button" onclick="openCreateLeaveGroupModal()" class="px-3.5 py-2 pap-primary text-white rounded-lg text-xs font-semibold pap-primary-hover shadow-xs flex items-center space-x-1.5 transition cursor-pointer">
+                <span>➕</span>
+                <span>Tạo nhóm đề xuất mới</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- KPI Cards Nhóm đề xuất Base Timeoff -->
+          <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
+            <div class="bg-white p-3.5 rounded-xl border border-slate-200 border-l-4 border-l-[#2E3191] shadow-xs">
+              <div class="text-[11px] font-semibold text-slate-500 uppercase tracking-wider">Tổng nhóm đề xuất</div>
+              <div class="text-xl font-black text-[#2E3191] mt-0.5" id="kpi-leave-grp-total">6</div>
+              <div class="text-[10px] text-slate-400 mt-0.5">Phân loại theo tính chất & khối</div>
+            </div>
+
+            <div class="bg-white p-3.5 rounded-xl border border-slate-200 border-l-4 border-l-emerald-500 shadow-xs">
+              <div class="text-[11px] font-semibold text-emerald-700 uppercase tracking-wider">Đang áp dụng</div>
+              <div class="text-xl font-black text-emerald-600 mt-0.5" id="kpi-leave-grp-active">6</div>
+              <div class="text-[10px] text-emerald-600 font-medium mt-0.5">100% nhóm đã kích hoạt</div>
+            </div>
+
+            <div class="bg-white p-3.5 rounded-xl border border-slate-200 border-l-4 border-l-indigo-500 shadow-xs">
+              <div class="text-[11px] font-semibold text-indigo-700 uppercase tracking-wider">Duyệt theo điều kiện</div>
+              <div class="text-xl font-black text-indigo-600 mt-0.5">2 nhóm</div>
+              <div class="text-[10px] text-slate-500 mt-0.5">Nghỉ > 3 ngày qua Ban Giám đốc</div>
+            </div>
+
+            <div class="bg-white p-3.5 rounded-xl border border-slate-200 border-l-4 border-l-amber-500 shadow-xs">
+              <div class="text-[11px] font-semibold text-amber-700 uppercase tracking-wider">Ràng buộc thời hạn</div>
+              <div class="text-xl font-black text-amber-600 mt-0.5">6 / 6 nhóm</div>
+              <div class="text-[10px] text-slate-500 mt-0.5">Có quy định báo trước / nộp bù</div>
+            </div>
+          </div>
+
+          <!-- Bảng Danh mục Nhóm đề xuất nghỉ phép -->
+          <div class="bg-white rounded-2xl border border-slate-200 shadow-xs overflow-hidden">
+            <div class="p-3.5 border-b border-slate-100 flex flex-wrap items-center justify-between gap-2">
+              <div class="font-bold text-slate-800 text-xs flex items-center space-x-2">
+                <span>Danh sách nhóm đề xuất đã cấu hình:</span>
+                <span id="table-leave-groups-count" class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-indigo-50 text-[#2E3191] border border-indigo-200">6 nhóm</span>
+              </div>
+              <div class="flex items-center space-x-2">
+                <input type="text" id="search-leave-groups" oninput="renderLeaveGroupsTable()" placeholder="Tìm theo tên nhóm, mã nhóm..." class="px-3 py-1.5 border border-slate-200 rounded-lg text-xs focus:ring-2 focus:ring-[#2E3191] w-64 bg-slate-50">
+              </div>
+            </div>
+
+            <div class="overflow-x-auto pap-table-frame">
+              <table id="annual-leave-groups-table" class="w-full text-left text-xs border-collapse pap-data-table">
+                <thead class="bg-[#2E3191] text-white select-none border-b border-[#2E3191] shadow-xs">
+                  <tr class="text-xs font-bold divide-x divide-white/10">
+                    <th class="py-2.5 px-3 text-center w-12">STT</th>
+                    <th class="py-2.5 px-3 text-center w-28">Mã nhóm</th>
+                    <th class="py-2.5 px-3.5 min-w-[210px]">Tên nhóm đề xuất</th>
+                    <th class="py-2.5 px-3 text-center min-w-[140px]">Loại ngày nghỉ</th>
+                    <th class="py-2.5 px-3.5 min-w-[220px]">Quy trình người duyệt Timeoff</th>
+                    <th class="py-2.5 px-3 text-center min-w-[140px]">Thời hạn nộp đơn</th>
+                    <th class="py-2.5 px-3 min-w-[180px]">Hạn mức & Trừ quỹ phép</th>
+                    <th class="py-2.5 px-3 min-w-[160px]">Có hiệu lực với</th>
+                    <th class="py-2.5 px-3 text-center w-24">Trạng thái</th>
+                    <th class="py-2.5 px-3 text-center w-24">Thao tác</th>
+                  </tr>
+                </thead>
+                <tbody id="annual-leave-groups-tbody" class="divide-y divide-slate-100 bg-white">
+                  <!-- Rendered dynamically by renderLeaveGroupsTable() -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+      </section>
 
       <!-- ===================================================================== -->
       <!-- VIEW: THIẾT LẬP ĐỊA ĐIỂM & TỌA ĐỘ GPS CHẤM CÔNG (MODULE 05)            -->
@@ -7500,10 +7602,12 @@
                 </div>
                 <!-- Filter Type -->
                 <select id="inbox-filter-type" onchange="filterApprovalInbox()" class="text-xs border border-slate-300 rounded-lg px-2.5 py-1.5 bg-white text-slate-700 font-medium">
-                  <option value="ALL">Tất cả nghiệp vụ</option>
-                  <option value="LEAVE">🏖️ Đăng ký nghỉ phép (M09)</option>
+                  <option value="ALL">Tất cả đề xuất Base Request</option>
+                  <option value="PURCHASE">🛒 Mua sắm trang thiết bị & CCDC</option>
+                  <option value="PAYMENT">💰 Thanh toán & Tạm ứng kinh phí</option>
+                  <option value="RECRUIT">👥 Tuyển dụng nhân sự</option>
                   <option value="ATTENDANCE">📝 Giải trình chấm công (M06)</option>
-                  <option value="GENERAL">📄 Đề xuất chung</option>
+                  <option value="GENERAL">📄 Đề xuất hành chính chung</option>
                 </select>
                 <!-- Filter SLA -->
                 <select id="inbox-filter-sla" onchange="filterApprovalInbox()" class="text-xs border border-slate-300 rounded-lg px-2.5 py-1.5 bg-white text-slate-700 font-medium">
@@ -12559,11 +12663,13 @@
 
       <form onsubmit="handleQuickRequestSubmit(event)" class="p-5 space-y-3.5 text-xs">
         <div>
-          <label class="block font-semibold text-slate-700 mb-1">Loại nghiệp vụ <span class="text-rose-500">*</span></label>
+          <label class="block font-semibold text-slate-700 mb-1">Loại đề xuất (Base Request) <span class="text-rose-500">*</span></label>
           <select id="quick-req-type" onchange="onQuickReqTypeChange()" class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-[#2E3191] bg-white font-bold text-[#2E3191]">
-            <option value="LEAVE">🏖️ Đăng ký Nghỉ phép năm (M09)</option>
+            <option value="PURCHASE">🛒 Đề xuất Mua sắm trang thiết bị & CCDC</option>
+            <option value="PAYMENT">💰 Đề nghị Thanh toán & Tạm ứng kinh phí</option>
+            <option value="RECRUIT">👥 Đề xuất Tuyển dụng nhân sự bổ sung</option>
             <option value="ATTENDANCE">📝 Giải trình Chấm công (M06)</option>
-            <option value="GENERAL">📄 Đề xuất chung (phê duyệt thuần)</option>
+            <option value="GENERAL">📄 Đề xuất hành chính chung</option>
           </select>
         </div>
 
@@ -12574,7 +12680,7 @@
 
         <div>
           <label class="block font-semibold text-slate-700 mb-1">Lý do đề xuất <span class="text-rose-500">*</span></label>
-          <textarea id="quick-req-reason" required rows="2" placeholder="Nêu rõ lý do, kế hoạch bàn giao công việc..." class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-[#2E3191] bg-white"></textarea>
+          <textarea id="quick-req-reason" required rows="2" placeholder="Nêu rõ lý do đề xuất, mục đích và sự cần thiết..." class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-[#2E3191] bg-white"></textarea>
         </div>
 
         <!-- Preview Approver Flow -->
@@ -31148,84 +31254,86 @@
     // 1. Dữ liệu Hộp thư Chờ tôi duyệt (SCR-APR-02 Pending Approvals Inbox)
     let approvalInboxData = [
       {
-        id: 'DON-2026-011',
-        type: 'LEAVE',
-        typeName: 'Nghỉ Phép năm',
-        typeBadgeCls: 'bg-teal-50 text-teal-700 border-teal-200',
-        typeIcon: '🏖️',
+        id: 'MS-2026-0034',
+        type: 'PURCHASE',
+        typeName: 'Mua sắm thiết bị & CCDC',
+        typeBadgeCls: 'bg-blue-50 text-blue-700 border-blue-200',
+        typeIcon: '🛒',
         reqPap: 'PAP0007',
         reqName: 'Vũ Văn G',
         reqDept: 'Đội Vận hành Cẩu bờ',
         reqRole: 'Công nhân Vận hành cẩu giàn STS',
-        details: 'Nghỉ 0.5 ngày (Buổi sáng 15/09/2026)',
-        reason: 'Nghỉ buổi sáng giải quyết việc gia đình',
+        details: 'Trang bị 04 bộ đàm vô tuyến Motorola chống cháy nổ IP67 cho tổ cẩu',
+        reason: 'Bộ đàm hiện tại bị nhiễu sóng khi tàu cập bến đêm, cần trang bị mới đảm bảo an toàn hàng hải.',
         handoverTo: 'Hoàng Văn E (PAP0005)',
-        currentLevelName: 'Cấp 1: Đội trưởng Vận hành',
+        currentLevelName: 'Khối 1: Đội trưởng Vận hành',
         levelIndex: 1,
-        totalLevels: 1,
+        totalLevels: 2,
         slaHoursLeft: 6,
         isUrgent: true,
         isDelegated: false,
         delegatedFrom: '',
         createdAt: '12/09/2026 10:00',
-        watchers: ['Phòng Nhân sự', 'Trưởng ban An toàn Cảng'],
+        watchers: ['Phòng Kỹ thuật & Thiết bị Cảng', 'Phòng Kế toán - Tài chính'],
         approvalMode: 'ANY',
         auditTrail: [
-          { step: 1, role: 'Đội trưởng Vận hành (Bạn)', name: 'Trần Thị Mai Phương', action: 'PENDING', time: '', note: '' }
+          { step: 1, role: 'Đội trưởng Vận hành (Bạn)', name: 'Trần Thị Mai Phương', action: 'PENDING', time: '', note: '' },
+          { step: 2, role: 'Trưởng phòng Kỹ thuật thiết bị', name: 'Nguyễn Văn Long (PAP0003)', action: 'WAIT', time: '', note: '' }
         ]
       },
       {
-        id: 'DON-2026-010',
-        type: 'LEAVE',
-        typeName: 'Nghỉ Dưỡng sức sau ốm đau',
-        typeBadgeCls: 'bg-teal-50 text-teal-700 border-teal-200',
-        typeIcon: '🏥',
+        id: 'TT-2026-0018',
+        type: 'PAYMENT',
+        typeName: 'Thanh toán & Tạm ứng',
+        typeBadgeCls: 'bg-emerald-50 text-emerald-700 border-emerald-200',
+        typeIcon: '💰',
         reqPap: 'PAP0004',
-        reqName: 'Phạm Thị D',
-        reqDept: 'Phòng Kế toán - Tài chính',
-        reqRole: 'Kế toán viên',
-        details: 'Nghỉ 5.0 ngày (07/09/2026 ➔ 11/09/2026)',
-        reason: 'Nghỉ dưỡng sức phục hồi sau đợt phẫu thuật nội soi điều trị',
-        handoverTo: 'Nguyễn Văn B (PAP0002)',
-        currentLevelName: 'Cấp 1: Kế toán trưởng & Ban Chấp hành Công đoàn',
+        reqName: 'Hoàng Kim Lân',
+        reqDept: 'Phòng Kỹ thuật & Bảo trì',
+        reqRole: 'Đội trưởng Cơ điện Cảng',
+        details: 'Tạm ứng kinh phí thay thế cáp nâng cẩu khung RTG số 03 (45.000.000 VNĐ)',
+        reason: 'Cáp nâng RTG03 có dấu hiệu mòn quá tiêu chuẩn đăng kiểm, cần thay thế khẩn cấp phục vụ giải phóng tàu.',
+        handoverTo: 'Phạm Thị D (PAP0004)',
+        currentLevelName: 'Khối 1: Kế toán trưởng',
         levelIndex: 1,
         totalLevels: 2,
         slaHoursLeft: 14,
         isUrgent: false,
         isDelegated: false,
         delegatedFrom: '',
-        createdAt: '03/09/2026 09:15',
-        watchers: ['Ban Chấp hành Công đoàn', 'Phòng Hành chính - Nhân sự'],
+        createdAt: '11/09/2026 09:15',
+        watchers: ['Kế toán thanh toán', 'Ban Giám đốc Kỹ thuật'],
         approvalMode: 'ANY',
         auditTrail: [
-          { step: 1, role: 'Kế toán trưởng & BCH Công đoàn', name: 'Trần Thị Mai Phương (Bạn)', action: 'PENDING', time: '', note: '' },
-          { step: 2, role: 'Giám đốc Nhân sự & Tổ chức', name: 'Lãnh đạo phê duyệt', action: 'WAIT', time: '', note: '' }
+          { step: 1, role: 'Kế toán trưởng', name: 'Trần Thị Mai Phương (Bạn)', action: 'PENDING', time: '', note: '' },
+          { step: 2, role: 'Giám đốc Tài chính', name: 'Lãnh đạo phê duyệt', action: 'WAIT', time: '', note: '' }
         ]
       },
       {
-        id: 'NP-2026-0045',
-        type: 'LEAVE',
-        typeName: 'Nghỉ phép năm',
-        typeBadgeCls: 'bg-teal-50 text-teal-700 border-teal-200',
-        typeIcon: '🏖️',
-        reqPap: 'PAP0005',
-        reqName: 'Lê Văn C',
-        reqDept: 'Phòng Vận hành Cầu bến',
-        reqRole: 'Công nhân Vận hành cẩu giàn STS',
-        details: 'Nghỉ 3 ngày (18/09/2026 ➔ 20/09/2026)',
-        reason: 'Về quê có việc gia đình đột xuất và đưa con đi nhập học đại học.',
-        handoverTo: 'Nguyễn Văn Long (PAP0003)',
-        currentLevelName: 'Cấp 2: Giám đốc Nhân sự & Tổ chức',
+        id: 'TD-2026-0005',
+        type: 'RECRUIT',
+        typeName: 'Tuyển dụng nhân sự',
+        typeBadgeCls: 'bg-amber-50 text-amber-800 border-amber-200',
+        typeIcon: '👥',
+        reqPap: 'PAP0002',
+        reqName: 'Phạm Văn Đồng',
+        reqDept: 'Phòng Khai thác Cảng',
+        reqRole: 'Phó Giám đốc Khai thác',
+        details: 'Tuyển dụng bổ sung 03 Kỹ sư vận hành hệ thống phần mềm điều hành bãi TOS',
+        reason: 'Mở rộng cầu bến số 2 tiếp nhận tàu container 50.000 DWT quý 4/2026, tăng quy mô khai thác bãi container.',
+        handoverTo: '',
+        currentLevelName: 'Khối 2: Trưởng phòng Hành chính - Nhân sự',
         levelIndex: 2,
-        totalLevels: 2,
+        totalLevels: 3,
         slaHoursLeft: 16,
         isUrgent: false,
         isDelegated: false,
         delegatedFrom: '',
         createdAt: '15/09/2026 14:20',
         auditTrail: [
-          { step: 1, role: 'Quản lý trực tiếp (Đội trưởng)', name: 'Hoàng Kim Lân (PAP0004)', action: 'APPROVED', time: '15/09/2026 15:10', note: 'Đã bố trí đồng chí Long trực thay ca. Đề xuất duyệt.' },
-          { step: 2, role: 'Giám đốc Nhân sự & Tổ chức', name: 'Trần Thị Mai Phương (Bạn)', action: 'PENDING', time: '', note: '' }
+          { step: 1, role: 'Trưởng phòng Khai thác Cảng', name: 'Nguyễn Văn A', action: 'APPROVED', time: '15/09/2026 15:10', note: 'Đã thống nhất nhu cầu nhân sự theo kế hoạch mở bến mới.' },
+          { step: 2, role: 'Trưởng phòng HC-NS', name: 'Trần Thị Mai Phương (Bạn)', action: 'PENDING', time: '', note: '' },
+          { step: 3, role: 'Tổng Giám đốc Cảng', name: 'Phạm Quốc Tuấn', action: 'WAIT', time: '', note: '' }
         ]
       },
       {
@@ -31312,22 +31420,22 @@
     // 2. Dữ liệu Yêu cầu của tôi (SCR-APR-03 My Requests Tracking)
     let myApprovalRequestsData = [
       {
-        id: 'NP-2026-0038',
-        type: 'LEAVE',
-        typeName: 'Nghỉ phép năm',
-        typeBadgeCls: 'bg-teal-50 text-teal-700 border-teal-200',
-        details: 'Nghỉ phép 1.5 ngày (25/09/2026 ➔ 26/09/2026)',
-        reason: 'Tham dự Hội thảo Hiệp hội Cảng biển Đông Nam Á (APSN) tại TP.HCM',
+        id: 'MS-2026-0038',
+        type: 'PURCHASE',
+        typeName: 'Mua sắm thiết bị & CCDC',
+        typeBadgeCls: 'bg-blue-50 text-blue-700 border-blue-200',
+        details: 'Đề xuất mua sắm 02 máy đo độ sâu cầm tay cho Đội Hoa tiêu',
+        reason: 'Phục vụ đo độ sâu mép bến trước khi tàu 50.000 DWT cập cầu số 1.',
         createdAt: '14/09/2026 09:30',
         status: 'PENDING',
-        statusText: 'Đang xử lý (Cấp 2/3)',
+        statusText: 'Đang xử lý (Khối 2/3)',
         statusCls: 'bg-amber-100 text-amber-800',
         canRecall: true,
         steps: [
           { name: 'Khởi tạo', role: 'Bạn', status: 'DONE', time: '14/09 09:30' },
-          { name: 'QL Trực tiếp', role: 'Phó Tổng Giám đốc', status: 'DONE', time: '14/09 11:20', note: 'Đồng ý cử đi công tác kết hợp nghỉ bù.' },
-          { name: 'Tổng Giám đốc', role: 'CEO Phước An', status: 'CURRENT', time: 'Đang chờ duyệt', note: '' },
-          { name: 'Phòng Nhân sự', role: 'Lưu hồ sơ công', status: 'WAIT', time: '', note: '' }
+          { name: 'QL Đơn vị', role: 'Trưởng đội Hoa tiêu', status: 'DONE', time: '14/09 11:20', note: 'Đồng ý trang bị cấp bách phục vụ an toàn tàu cập bến.' },
+          { name: 'Phòng Kỹ thuật & Cung ứng', role: 'Trưởng phòng Kỹ thuật thiết bị', status: 'CURRENT', time: 'Đang thẩm định giá', note: '' },
+          { name: 'Ban Giám đốc Cảng', role: 'Phó TGĐ Kỹ thuật', status: 'WAIT', time: '', note: '' }
         ]
       },
       {
@@ -31387,17 +31495,17 @@
     // 3. Dữ liệu Lịch sử đã duyệt (SCR-APR-02 History Audit)
     let approvalHistoryData = [
       {
-        id: 'NP-2026-0041',
-        type: 'LEAVE',
-        typeName: 'Nghỉ phép năm',
+        id: 'TT-2026-0041',
+        type: 'PAYMENT',
+        typeName: 'Thanh toán & Tạm ứng',
         reqName: 'Phạm Thị Lan',
         reqDept: 'Phòng Tài chính - Kế toán',
-        details: 'Nghỉ 2.0 ngày (04/09 ➔ 05/09/2026)',
+        details: 'Thanh toán chi phí giám định độc lập thiết bị cẩu bờ STS (28.500.000 VNĐ)',
         decision: 'APPROVED',
         decisionText: 'Đã phê duyệt',
         decisionCls: 'bg-emerald-100 text-emerald-800 border-emerald-200',
         decisionIcon: '✓',
-        note: 'Đã hoàn thành báo cáo thuế quý trước khi nghỉ. Chấp thuận.',
+        note: 'Đầy đủ biên bản nghiệm thu giám định và hóa đơn VAT hợp lệ. Đã duyệt chi.',
         actionTime: '02/09/2026 16:30',
         delegatedText: ''
       },
@@ -31478,16 +31586,56 @@
       }
     ];
 
-    // 5. Cấu hình Luồng duyệt Đa cấp (SCR-APR-01 Visual Workflow Builder Data)
+    // 5. Cấu hình Luồng duyệt Đa cấp (SCR-APR-01 Visual Workflow Builder Data - Chuẩn Base Request)
     const workflowDefinitionsData = {
-      'LEAVE': {
-        type: 'LEAVE', code: 'LEAVE', name: 'Đăng ký nghỉ phép', category: 'Nghỉ phép', description: 'Yêu cầu nghỉ phép được duyệt theo các khối cấu hình. Khi hoàn tất, kết quả được chuyển về phân hệ M09.', integration: 'M09 · Cập nhật kết quả nghỉ phép sau khi duyệt hoàn tất', status: 'ACTIVE', version: 1, requestSlaHours: 48, reminderLeadHours: 8,
+      'PURCHASE': {
+        type: 'PURCHASE', code: 'PURCHASE', name: 'Mua sắm thiết bị & CCDC', category: 'Mua sắm', description: 'Đề xuất mua sắm bổ sung công cụ dụng cụ, thiết bị phục vụ khai thác cảng và văn phòng.', integration: 'Phê duyệt chung Base Request · Lưu hồ sơ & trigger cấp phát thiết bị', status: 'ACTIVE', version: 1, requestSlaHours: 48, reminderLeadHours: 8,
         processType: 'BLOCK_BASED', blockNotification: 'YES',
-        creators: ['Toàn bộ nhân viên'], watchers: ['Quản lý trực tiếp', 'Chuyên viên Tiền lương'],
-        formFields: [{ label: 'Loại nghỉ', type: 'Danh mục M09', required: true }, { label: 'Từ ngày – Đến ngày', type: 'Khoảng ngày', required: true }, { label: 'Người bàn giao', type: 'Nhân viên', required: false }, { label: 'Lý do', type: 'Văn bản nhiều dòng', required: true }],
+        creators: ['Toàn bộ nhân viên'], watchers: ['Phòng Kỹ thuật & Thiết bị Cảng', 'Phòng Kế toán - Tài chính'],
+        formFields: [
+          { label: 'Tên thiết bị / CCDC', type: 'Văn bản một dòng', required: true },
+          { label: 'Số lượng đề xuất', type: 'Số', required: true },
+          { label: 'Đơn giá ước tính (VNĐ)', type: 'Tiền tệ', required: false },
+          { label: 'Mục đích sử dụng', type: 'Văn bản nhiều dòng', required: true },
+          { label: 'Báo giá đính kèm (nếu có)', type: 'Tệp đính kèm', required: false }
+        ],
         steps: [
-          { level: 1, name: 'Quản lý trực tiếp', approverRole: 'Quản lý trực tiếp của người gửi', approvers: ['DIRECT_MANAGER'], mode: 'ANY', slaHours: 24 },
-          { level: 2, name: 'Nhân sự', approverRole: 'HR phụ trách hồ sơ nghỉ phép', approvers: ['HR_LEAVE'], mode: 'ANY', slaHours: 24 }
+          { level: 1, name: 'Quản lý đơn vị', approverRole: 'Trưởng bộ phận người gửi', approvers: ['DIRECT_MANAGER'], mode: 'ANY', slaHours: 24 },
+          { level: 2, name: 'Phòng Kỹ thuật & Cung ứng', approverRole: 'Trưởng phòng Kỹ thuật thiết bị', approvers: ['UNIT_MANAGER'], mode: 'ANY', slaHours: 24 },
+          { level: 3, name: 'Ban Giám đốc Cảng', approverRole: 'Phó Tổng Giám đốc Kỹ thuật / TGĐ', approvers: ['HR_ADMIN'], mode: 'ANY', slaHours: 48 }
+        ]
+      },
+      'PAYMENT': {
+        type: 'PAYMENT', code: 'PAYMENT', name: 'Thanh toán & Tạm ứng kinh phí', category: 'Tài chính', description: 'Đề nghị thanh toán chi phí công tác, tạm ứng kinh phí sửa chữa phương tiện, mua nhiên liệu.', integration: 'Phê duyệt chung Base Request · Lưu hồ sơ chứng từ tài chính', status: 'ACTIVE', version: 1, requestSlaHours: 36, reminderLeadHours: 6,
+        processType: 'BLOCK_BASED', blockNotification: 'YES',
+        creators: ['Toàn bộ nhân viên'], watchers: ['Kế toán trưởng', 'Kế toán thanh toán'],
+        formFields: [
+          { label: 'Số tiền đề nghị (VNĐ)', type: 'Tiền tệ', required: true },
+          { label: 'Hình thức', type: 'Danh mục lựa chọn', required: true },
+          { label: 'Số tài khoản / Ngân hàng thụ hưởng', type: 'Văn bản một dòng', required: true },
+          { label: 'Nội dung chi tiết khoản chi', type: 'Văn bản nhiều dòng', required: true },
+          { label: 'Hóa đơn / Hợp đồng đính kèm', type: 'Tệp đính kèm', required: true }
+        ],
+        steps: [
+          { level: 1, name: 'Quản lý trực tiếp', approverRole: 'Quản lý trực tiếp của người gửi', approvers: ['DIRECT_MANAGER'], mode: 'ANY', slaHours: 12 },
+          { level: 2, name: 'Kế toán trưởng', approverRole: 'Kế toán trưởng phê duyệt chứng từ', approvers: ['HR_ADMIN'], mode: 'ANY', slaHours: 24 },
+          { level: 3, name: 'Giám đốc Tài chính', approverRole: 'CFO / Ban Giám đốc phê duyệt chi', approvers: ['HR_ADMIN'], mode: 'ANY', slaHours: 24 }
+        ]
+      },
+      'RECRUIT': {
+        type: 'RECRUIT', code: 'RECRUIT', name: 'Tuyển dụng nhân sự bổ sung', category: 'Nhân sự', description: 'Đề xuất tuyển thêm vị trí chuyên môn, công nhân vận hành cảng phục vụ mở rộng sản xuất.', integration: 'Phê duyệt chung Base Request · Kích hoạt quy trình tuyển dụng M01', status: 'ACTIVE', version: 1, requestSlaHours: 72, reminderLeadHours: 12,
+        processType: 'BLOCK_BASED', blockNotification: 'YES',
+        creators: ['Cán bộ quản lý'], watchers: ['Phòng HC-NS', 'Ban Tổng Giám đốc'],
+        formFields: [
+          { label: 'Vị trí chức danh cần tuyển', type: 'Văn bản một dòng', required: true },
+          { label: 'Số lượng nhân sự cần bổ sung', type: 'Số', required: true },
+          { label: 'Thời hạn cần tiếp nhận', type: 'Ngày', required: true },
+          { label: 'Lý do & Tiêu chuẩn ứng viên', type: 'Văn bản nhiều dòng', required: true }
+        ],
+        steps: [
+          { level: 1, name: 'Trưởng phòng nghiệp vụ', approverRole: 'Trưởng đơn vị đề xuất', approvers: ['UNIT_MANAGER'], mode: 'ANY', slaHours: 24 },
+          { level: 2, name: 'Trưởng phòng HC-NS', approverRole: 'Trưởng phòng Nhân sự & Tiền lương', approvers: ['HR_ADMIN'], mode: 'ANY', slaHours: 24 },
+          { level: 3, name: 'Tổng Giám đốc Cảng', approverRole: 'Tổng Giám đốc phê duyệt định biên', approvers: ['HR_ADMIN'], mode: 'ANY', slaHours: 48 }
         ]
       },
       'ATTENDANCE': {
@@ -31501,7 +31649,7 @@
         ]
       },
       'GENERAL': {
-        type: 'GENERAL', code: 'GENERAL', name: 'Đề xuất chung', category: 'Khác', description: 'Nhóm yêu cầu phê duyệt thuần; không tự ghi dữ liệu vào phân hệ nghiệp vụ khác.', integration: 'Không tích hợp nghiệp vụ · Chỉ lưu kết quả phê duyệt và lịch sử', status: 'ACTIVE', version: 1, requestSlaHours: 72, reminderLeadHours: 8,
+        type: 'GENERAL', code: 'GENERAL', name: 'Đề xuất hành chính chung', category: 'Khác', description: 'Nhóm yêu cầu phê duyệt thuần; không tự ghi dữ liệu vào phân hệ nghiệp vụ khác.', integration: 'Không tích hợp nghiệp vụ · Chỉ lưu kết quả phê duyệt và lịch sử', status: 'ACTIVE', version: 1, requestSlaHours: 72, reminderLeadHours: 8,
         processType: 'BLOCK_BASED', blockNotification: 'NO',
         creators: ['Toàn bộ nhân viên'], watchers: ['Quản lý đơn vị'],
         formFields: [{ label: 'Tiêu đề', type: 'Văn bản một dòng', required: true }, { label: 'Nội dung đề xuất', type: 'Văn bản nhiều dòng', required: true }, { label: 'Tệp đính kèm', type: 'Tệp đính kèm', required: false }],
@@ -31831,54 +31979,9 @@
         auditTrail: item.auditTrail
       });
 
-      // Xóa khỏi Inbox
-      // Đồng bộ trả kết quả về phân hệ Đơn Nghỉ phép M09 (nếu là loại LEAVE)
-      if (item.type === 'LEAVE' && !stillWaitingForAll && !movesToNextBlock) {
-        if (typeof leaveRequestsData !== 'undefined') {
-          const lReq = leaveRequestsData.find(r => r.id === item.id);
-          if (lReq) {
-            lReq.status = 'APPROVED';
-            lReq.approvedAt = timeStr;
-            lReq.approver = 'Phê duyệt qua Trung tâm M14';
-            lReq.note = note || 'Đã phê duyệt qua Trung tâm Phê duyệt M14';
+      // Kiến trúc chuẩn Base: M09 (Base Timeoff) tự sở hữu Sổ cái phép & luồng duyệt riêng biệt.
+      // M14 (Base Request) là động cơ phê duyệt chung cho Đề xuất hành chính, Mua sắm, Thanh toán, Tuyển dụng...
 
-            // Khấu trừ vào quỹ sổ theo dõi nghỉ phép nếu loại nghỉ có trừ quỹ phép năm (AL)
-            if (lReq.typeCode === 'AL' && typeof leaveLedgerData !== 'undefined') {
-              const ledger = leaveLedgerData.find(e => e.pap === lReq.empCode);
-              if (ledger) {
-                ledger.usedLeave = Math.round(((ledger.usedLeave || 0) + (lReq.days || 0)) * 10) / 10;
-                if (!ledger.history) ledger.history = [];
-                ledger.history.unshift({
-                  id: lReq.id,
-                  type: lReq.typeName,
-                  from: lReq.fromDate,
-                  to: lReq.toDate,
-                  days: lReq.days,
-                  reason: lReq.reason,
-                  status: 'Đã duyệt',
-                  approver: 'Phê duyệt M14'
-                });
-              }
-            }
-          }
-        }
-        if (typeof renderLeaveRequestsTable === 'function') renderLeaveRequestsTable();
-        if (typeof renderLeaveTable === 'function') renderLeaveTable();
-      }
-
-      // Đồng bộ trạng thái từ chối về phân hệ Đơn Nghỉ phép M09 (nếu là loại LEAVE)
-      if (item.type === 'LEAVE') {
-        if (typeof leaveRequestsData !== 'undefined') {
-          const lReq = leaveRequestsData.find(r => r.id === item.id);
-          if (lReq) {
-            lReq.status = 'REJECTED';
-            lReq.approvedAt = timeStr;
-            lReq.approver = 'Từ chối qua Trung tâm M14';
-            lReq.note = `Từ chối: ${reason}`;
-          }
-        }
-        if (typeof renderLeaveRequestsTable === 'function') renderLeaveRequestsTable();
-      }
 
       approvalInboxData.splice(index, 1);
       selectedInboxIds.delete(reqId);
@@ -32509,8 +32612,8 @@
       ['DIRECT_MANAGER', 'Quản lý trực tiếp của người gửi'],
       ['UNIT_MANAGER', 'Quản lý đơn vị của người gửi'],
       ['HR_ADMIN', 'HR Admin'],
-      ['HR_LEAVE', 'HR phụ trách hồ sơ nghỉ phép'],
-      ['HR_ATTENDANCE', 'HR phụ trách chấm công'],
+      ['TECH_SUPPLY', 'Trưởng phòng Kỹ thuật & Cung ứng'],
+      ['HR_ATTENDANCE', 'HR phụ trách chấm công (M06)'],
       ['PAP0004', 'Hoàng Kim Lân (PAP0004)'],
       ['PAP0009', 'Trần Thị Mai Phương (PAP0009)']
     ];
@@ -32615,7 +32718,7 @@
     }
 
     function activateRequestGroupVersion() {
-      const typeKey = document.getElementById('workflow-select-type')?.value || 'LEAVE';
+      const typeKey = document.getElementById('workflow-select-type')?.value || 'PURCHASE';
       const def = workflowDefinitionsData[typeKey];
       if (!def) return;
       if (def.steps.some(step => !step.approverRole.trim())) {
@@ -32679,9 +32782,9 @@
     // PHÂN HỆ QUẢN TRỊ QUY TRÌNH PHÊ DUYỆT (HR ADMIN - M14)
     // ==========================================
     // ==========================================
-    // PHÂN HỆ QUẢN TRỊ QUY TRÌNH PHÊ DUYỆT (M14 ENGINE)
+    // PHÂN HỆ QUẢN TRỊ QUY TRÌNH PHÊ DUYỆT (M14 ENGINE - CHUẨN BASE REQUEST)
     // ==========================================
-    let currentWorkflowActiveGroupCode = 'LEAVE';
+    let currentWorkflowActiveGroupCode = 'PURCHASE';
     let currentWorkflowDetailTabKey = 'general'; // 1 of 8 tabs: general | form | print | forward | permissions | esign | counter | notifications
 
     // Chuyển đổi giữa 2 màn hình lớn: Danh sách tất cả nhóm & Cài đặt chi tiết 1 nhóm
@@ -32703,13 +32806,13 @@
     }
 
     function showWorkflowDetailScreen(groupCode) {
-      currentWorkflowActiveGroupCode = groupCode || currentWorkflowActiveGroupCode || 'LEAVE';
+      currentWorkflowActiveGroupCode = groupCode || currentWorkflowActiveGroupCode || 'PURCHASE';
       const scrList = document.getElementById('wf-screen-list');
       const scrDetail = document.getElementById('wf-screen-detail');
       if (scrList) scrList.classList.add('hidden');
       if (scrDetail) scrDetail.classList.remove('hidden');
 
-      const def = workflowDefinitionsData[currentWorkflowActiveGroupCode] || workflowDefinitionsData.LEAVE;
+      const def = workflowDefinitionsData[currentWorkflowActiveGroupCode] || workflowDefinitionsData.PURCHASE;
       const titleEl = document.getElementById('wf-detail-group-title');
       const codeBadge = document.getElementById('wf-detail-group-code-badge');
       const verBadge = document.getElementById('wf-detail-version-badge');
@@ -32863,7 +32966,7 @@
       const container = document.getElementById('wf-detail-tab-content');
       if (!container) return;
 
-      const def = workflowDefinitionsData[currentWorkflowActiveGroupCode] || workflowDefinitionsData.LEAVE;
+      const def = workflowDefinitionsData[currentWorkflowActiveGroupCode] || workflowDefinitionsData.PURCHASE;
 
       if (tabKey === 'general') {
         // TAB 1: THIẾT LẬP CHUNG & KHỐI NGƯỜI DUYỆT (Core Approval Engine Feature)
@@ -33449,63 +33552,153 @@
 
       const type = typeSelect.value;
 
-      if (type === 'LEAVE') {
+      if (type === 'PURCHASE') {
         container.innerHTML = `
-          <div class="grid grid-cols-2 gap-3">
+          <div class="space-y-2.5">
             <div>
-              <label class="block font-semibold text-slate-700 mb-1">Từ ngày <span class="text-rose-500">*</span></label>
-              <input type="date" id="quick-leave-from" required value="2026-09-21" class="w-full px-3 py-2 border border-slate-300 rounded-lg bg-white">
+              <label class="block font-semibold text-slate-700 mb-1">Tên thiết bị / CCDC đề xuất <span class="text-rose-500">*</span></label>
+              <input type="text" id="quick-purchase-item" required placeholder="VD: Bộ đàm cầm tay Kenwood TK-2000, Thiết bị kiểm định..." class="w-full px-3 py-2 border border-slate-300 rounded-lg bg-white">
+            </div>
+            <div class="grid grid-cols-2 gap-3">
+              <div>
+                <label class="block font-semibold text-slate-700 mb-1">Số lượng đề xuất <span class="text-rose-500">*</span></label>
+                <input type="number" id="quick-purchase-qty" required min="1" value="1" class="w-full px-3 py-2 border border-slate-300 rounded-lg bg-white">
+              </div>
+              <div>
+                <label class="block font-semibold text-slate-700 mb-1">Đơn giá ước tính (VNĐ)</label>
+                <input type="text" id="quick-purchase-price" placeholder="VD: 15,000,000 VNĐ" class="w-full px-3 py-2 border border-slate-300 rounded-lg bg-white">
+              </div>
             </div>
             <div>
-              <label class="block font-semibold text-slate-700 mb-1">Đến hết ngày <span class="text-rose-500">*</span></label>
-              <input type="date" id="quick-leave-to" required value="2026-09-22" class="w-full px-3 py-2 border border-slate-300 rounded-lg bg-white">
+              <label class="block font-semibold text-slate-700 mb-1">Mục đích sử dụng <span class="text-rose-500">*</span></label>
+              <textarea id="quick-purchase-purpose" required rows="2" placeholder="Trang bị cho đội kỹ thuật hiện trường phục vụ bốc dỡ hàng..." class="w-full px-3 py-2 border border-slate-300 rounded-lg bg-white"></textarea>
             </div>
-          </div>
-          <div>
-            <label class="block font-semibold text-slate-700 mb-1">Số ngày nghỉ dự kiến</label>
-            <input type="text" disabled value="2.0 ngày (Trừ vào phép năm 2026)" class="w-full px-3 py-2 bg-slate-100 border border-slate-200 rounded-lg font-bold text-emerald-700">
+            <div>
+              <label class="block font-semibold text-slate-700 mb-1">Báo giá / Tài liệu đính kèm</label>
+              <input type="file" id="quick-purchase-file" class="w-full px-3 py-2 border border-slate-300 rounded-lg bg-white text-slate-500">
+            </div>
           </div>
         `;
-        if (flowPreview) flowPreview.innerText = getRequestFlowPreview(type);
-      } else if (type === 'ATTENDANCE') {
+      } else if (type === 'PAYMENT') {
         container.innerHTML = `
-          <div class="grid grid-cols-2 gap-3">
-            <div>
-              <label class="block font-semibold text-slate-700 mb-1">Ngày sự cố chấm công <span class="text-rose-500">*</span></label>
-              <input type="date" required value="2026-09-15" class="w-full px-3 py-2 border border-slate-300 rounded-lg bg-white">
+          <div class="space-y-2.5">
+            <div class="grid grid-cols-2 gap-3">
+              <div>
+                <label class="block font-semibold text-slate-700 mb-1">Số tiền đề nghị (VNĐ) <span class="text-rose-500">*</span></label>
+                <input type="text" id="quick-payment-amount" required placeholder="VD: 25,500,000 VNĐ" class="w-full px-3 py-2 border border-slate-300 rounded-lg bg-white font-bold text-emerald-700">
+              </div>
+              <div>
+                <label class="block font-semibold text-slate-700 mb-1">Hình thức thanh toán <span class="text-rose-500">*</span></label>
+                <select id="quick-payment-method" required class="w-full px-3 py-2 border border-slate-300 rounded-lg bg-white">
+                  <option value="Chuyển khoản thanh toán NCC">Chuyển khoản thanh toán NCC</option>
+                  <option value="Tạm ứng công tác">Tạm ứng công tác</option>
+                  <option value="Hoàn ứng chi phí nghiệp vụ">Hoàn ứng chi phí nghiệp vụ</option>
+                  <option value="Chi tiếp khách / Hội nghị">Chi tiếp khách / Hội nghị</option>
+                </select>
+              </div>
             </div>
             <div>
-              <label class="block font-semibold text-slate-700 mb-1">Loại sự cố <span class="text-rose-500">*</span></label>
-              <select class="w-full px-3 py-2 border border-slate-300 rounded-lg bg-white">
-                <option>Quên chấm công vào ca</option>
-                <option>Quên chấm công ra ca</option>
-                <option>Máy chấm công lỗi kết nối</option>
-              </select>
+              <label class="block font-semibold text-slate-700 mb-1">Số tài khoản / Ngân hàng thụ hưởng <span class="text-rose-500">*</span></label>
+              <input type="text" id="quick-payment-bank" required placeholder="VD: 0421000123456 - Vietcombank Long Thành" class="w-full px-3 py-2 border border-slate-300 rounded-lg bg-white">
+            </div>
+            <div>
+              <label class="block font-semibold text-slate-700 mb-1">Nội dung chi tiết khoản chi <span class="text-rose-500">*</span></label>
+              <textarea id="quick-payment-content" required rows="2" placeholder="Thanh toán đợt 2 theo hợp đồng sửa chữa cẩu trục..." class="w-full px-3 py-2 border border-slate-300 rounded-lg bg-white"></textarea>
+            </div>
+            <div>
+              <label class="block font-semibold text-slate-700 mb-1">Hóa đơn / Hợp đồng đính kèm</label>
+              <input type="file" id="quick-payment-file" class="w-full px-3 py-2 border border-slate-300 rounded-lg bg-white text-slate-500">
+            </div>
+          </div>
+        `;
+      } else if (type === 'RECRUIT') {
+        container.innerHTML = `
+          <div class="space-y-2.5">
+            <div>
+              <label class="block font-semibold text-slate-700 mb-1">Vị trí chức danh cần tuyển <span class="text-rose-500">*</span></label>
+              <input type="text" id="quick-recruit-title" required placeholder="VD: Kỹ sư bảo trì thiết bị cảng, Nhân viên điều độ..." class="w-full px-3 py-2 border border-slate-300 rounded-lg bg-white">
+            </div>
+            <div class="grid grid-cols-2 gap-3">
+              <div>
+                <label class="block font-semibold text-slate-700 mb-1">Số lượng nhân sự <span class="text-rose-500">*</span></label>
+                <input type="number" id="quick-recruit-qty" required min="1" value="1" class="w-full px-3 py-2 border border-slate-300 rounded-lg bg-white">
+              </div>
+              <div>
+                <label class="block font-semibold text-slate-700 mb-1">Thời hạn cần tiếp nhận <span class="text-rose-500">*</span></label>
+                <input type="date" id="quick-recruit-deadline" required value="2026-11-01" class="w-full px-3 py-2 border border-slate-300 rounded-lg bg-white">
+              </div>
+            </div>
+            <div>
+              <label class="block font-semibold text-slate-700 mb-1">Tiêu chuẩn ứng viên & Kinh nghiệm <span class="text-rose-500">*</span></label>
+              <textarea id="quick-recruit-desc" required rows="2" placeholder="Tốt nghiệp ĐH chuyên ngành, tối thiểu 2 năm kinh nghiệm kỹ thuật cảng biển..." class="w-full px-3 py-2 border border-slate-300 rounded-lg bg-white"></textarea>
+            </div>
+          </div>
+        `;
+      } else if (type === 'ATTENDANCE') {
+        container.innerHTML = `
+          <div class="space-y-2.5">
+            <div class="grid grid-cols-2 gap-3">
+              <div>
+                <label class="block font-semibold text-slate-700 mb-1">Ngày sự cố chấm công <span class="text-rose-500">*</span></label>
+                <input type="date" id="quick-att-date" required value="2026-09-15" class="w-full px-3 py-2 border border-slate-300 rounded-lg bg-white">
+              </div>
+              <div>
+                <label class="block font-semibold text-slate-700 mb-1">Loại sự cố <span class="text-rose-500">*</span></label>
+                <select id="quick-att-type" required class="w-full px-3 py-2 border border-slate-300 rounded-lg bg-white">
+                  <option value="Quên chấm công vào ca">Quên chấm công vào ca</option>
+                  <option value="Quên chấm công ra ca">Quên chấm công ra ca</option>
+                  <option value="Máy chấm công lỗi kết nối">Máy chấm công lỗi kết nối</option>
+                  <option value="Chấm công trễ do sự cố điều hành">Chấm công trễ do sự cố điều hành</option>
+                </select>
+              </div>
             </div>
             <div>
               <label class="block font-semibold text-slate-700 mb-1">Ca làm việc <span class="text-rose-500">*</span></label>
-              <select required class="w-full px-3 py-2 border border-slate-300 rounded-lg bg-white"><option>Ca sáng</option><option>Ca chiều</option><option>Ca đêm</option><option>Ca hành chính</option></select>
+              <select id="quick-att-shift" required class="w-full px-3 py-2 border border-slate-300 rounded-lg bg-white">
+                <option value="Ca sáng (06:00 - 14:00)">Ca sáng (06:00 - 14:00)</option>
+                <option value="Ca chiều (14:00 - 22:00)">Ca chiều (14:00 - 22:00)</option>
+                <option value="Ca đêm (22:00 - 06:00)">Ca đêm (22:00 - 06:00)</option>
+                <option value="Ca hành chính (07:30 - 16:30)">Ca hành chính (07:30 - 16:30)</option>
+              </select>
+            </div>
+            <div>
+              <label class="block font-semibold text-slate-700 mb-1">Tệp minh chứng (Hình ảnh/Biên bản)</label>
+              <input type="file" id="quick-att-file" class="w-full px-3 py-2 border border-slate-300 rounded-lg bg-white text-slate-500">
             </div>
           </div>
         `;
-        if (flowPreview) flowPreview.innerText = getRequestFlowPreview(type);
       } else if (type === 'GENERAL') {
-        container.innerHTML = `<div><label class="block font-semibold text-slate-700 mb-1">Tiêu đề yêu cầu <span class="text-rose-500">*</span></label><input id="quick-general-title" required maxlength="120" placeholder="Nhập tiêu đề ngắn gọn" class="w-full px-3 py-2 border border-slate-300 rounded-lg bg-white"></div><div><label class="block font-semibold text-slate-700 mb-1">Nội dung đề xuất <span class="text-rose-500">*</span></label><textarea id="quick-general-content" required rows="3" placeholder="Mô tả nội dung cần phê duyệt" class="w-full px-3 py-2 border border-slate-300 rounded-lg bg-white"></textarea></div><div><label class="block font-semibold text-slate-700 mb-1">Tệp minh chứng</label><input type="file" class="w-full px-3 py-2 border border-slate-300 rounded-lg bg-white"></div>`;
-        if (flowPreview) flowPreview.innerText = getRequestFlowPreview(type);
+        container.innerHTML = `
+          <div class="space-y-2.5">
+            <div>
+              <label class="block font-semibold text-slate-700 mb-1">Tiêu đề yêu cầu <span class="text-rose-500">*</span></label>
+              <input id="quick-general-title" required maxlength="120" placeholder="Nhập tiêu đề đề xuất ngắn gọn" class="w-full px-3 py-2 border border-slate-300 rounded-lg bg-white">
+            </div>
+            <div>
+              <label class="block font-semibold text-slate-700 mb-1">Nội dung đề xuất chi tiết <span class="text-rose-500">*</span></label>
+              <textarea id="quick-general-content" required rows="3" placeholder="Mô tả nội dung cần phê duyệt..." class="w-full px-3 py-2 border border-slate-300 rounded-lg bg-white"></textarea>
+            </div>
+            <div>
+              <label class="block font-semibold text-slate-700 mb-1">Tệp tài liệu đính kèm</label>
+              <input type="file" id="quick-general-file" class="w-full px-3 py-2 border border-slate-300 rounded-lg bg-white text-slate-500">
+            </div>
+          </div>
+        `;
       }
+      if (flowPreview) flowPreview.innerText = getRequestFlowPreview(type);
     }
 
     function getRequestFlowPreview(type) {
       const def = workflowDefinitionsData[type];
       if (!def) return 'Chưa cấu hình luồng duyệt';
-      return `(Bắt đầu) ➔ ${def.steps.map((step, index) => `[Khối ${index + 1}: ${step.name} · ${step.mode === 'ANY' ? 'Một người' : step.mode === 'ALL' ? 'Tất cả' : 'Lần lượt'}]`).join(' ➔ ')} ➔ (Hoàn tất${def.integration.includes('M09') ? ' · chuyển M09' : def.integration.includes('M06') ? ' · chuyển M06' : ' · phê duyệt thuần'})`;
+      return `(Bắt đầu) ➔ ${def.steps.map((step, index) => `[Khối ${index + 1}: ${step.name} · ${step.mode === 'ANY' ? 'Một người' : step.mode === 'ALL' ? 'Tất cả' : 'Lần lượt'}]`).join(' ➔ ')} ➔ (Hoàn tất${def.integration.includes('M06') ? ' · chuyển M06' : def.integration.includes('M01') ? ' · chuyển M01' : ' · phê duyệt thuần'})`;
     }
 
     function handleQuickRequestSubmit(e) {
       e.preventDefault();
       const typeSelect = document.getElementById('quick-req-type');
       const reasonInput = document.getElementById('quick-req-reason');
-      const type = typeSelect ? typeSelect.value : 'LEAVE';
+      const type = typeSelect ? typeSelect.value : 'PURCHASE';
       const reason = reasonInput ? reasonInput.value.trim() : '';
       const def = workflowDefinitionsData[type];
       if (!reason) { showToast('Vui lòng nhập lý do đề xuất.'); return; }
@@ -33536,10 +33729,37 @@
       }
 
       const typeName = def.name;
-      const typeBadgeCls = type === 'LEAVE' ? 'bg-teal-50 text-teal-700 border-teal-200' : type === 'ATTENDANCE' ? 'bg-purple-50 text-purple-700 border-purple-200' : 'bg-indigo-50 text-indigo-700 border-indigo-200';
-      let details = type === 'LEAVE' ? `Nghỉ phép từ ${document.getElementById('quick-leave-from')?.value || ''} đến ${document.getElementById('quick-leave-to')?.value || ''}`
-        : type === 'ATTENDANCE' ? `Giải trình chấm công ngày ${document.querySelector('#quick-req-fields input[type="date"]')?.value || ''}`
-          : document.getElementById('quick-general-title')?.value.trim() || '';
+      const badgeClsMap = {
+        'PURCHASE': 'bg-blue-50 text-blue-700 border-blue-200',
+        'PAYMENT': 'bg-emerald-50 text-emerald-700 border-emerald-200',
+        'RECRUIT': 'bg-violet-50 text-violet-700 border-violet-200',
+        'ATTENDANCE': 'bg-purple-50 text-purple-700 border-purple-200',
+        'GENERAL': 'bg-indigo-50 text-indigo-700 border-indigo-200'
+      };
+      const typeBadgeCls = badgeClsMap[type] || 'bg-slate-50 text-slate-700 border-slate-200';
+
+      let details = '';
+      if (type === 'PURCHASE') {
+        const item = document.getElementById('quick-purchase-item')?.value.trim() || 'Thiết bị CCDC';
+        const qty = document.getElementById('quick-purchase-qty')?.value || '1';
+        const price = document.getElementById('quick-purchase-price')?.value.trim();
+        details = `Mua sắm ${qty} ${item}${price ? ` (Dự kiến: ${price})` : ''}`;
+      } else if (type === 'PAYMENT') {
+        const amount = document.getElementById('quick-payment-amount')?.value.trim() || 'Kinh phí';
+        const method = document.getElementById('quick-payment-method')?.value || 'Chuyển khoản';
+        details = `Đề nghị thanh toán/tạm ứng: ${amount} [${method}]`;
+      } else if (type === 'RECRUIT') {
+        const title = document.getElementById('quick-recruit-title')?.value.trim() || 'Nhân sự';
+        const qty = document.getElementById('quick-recruit-qty')?.value || '1';
+        details = `Tuyển dụng bổ sung ${qty} nhân sự vị trí ${title}`;
+      } else if (type === 'ATTENDANCE') {
+        const attDate = document.getElementById('quick-att-date')?.value || '';
+        const attType = document.getElementById('quick-att-type')?.value || 'Sự cố';
+        details = `Giải trình chấm công ngày ${attDate} (${attType})`;
+      } else {
+        details = document.getElementById('quick-general-title')?.value.trim() || 'Đề xuất hành chính chung';
+      }
+
       const newReq = {
         id: newId,
         type: type,
@@ -34150,68 +34370,14 @@
         status: 'PENDING',
         approver: 'Trưởng phòng / Quản lý trực tiếp',
         approvedAt: null,
-        note: 'Đơn mới tạo, chuyển sang luồng duyệt M14'
+        note: 'Đơn mới tạo, chờ Quản lý trực tiếp phê duyệt (Base Timeoff)'
       };
 
       leaveRequestsData.unshift(newReq);
 
-      // Đẩy tự động vào Trung tâm Phê duyệt M14 (Workflow Engine integration)
-      if (typeof approvalInboxData !== 'undefined') {
-        approvalInboxData.unshift({
-          id: nextId,
-          type: 'LEAVE',
-          typeName: lt ? lt.name : 'Nghỉ phép',
-          typeBadgeCls: 'bg-teal-50 text-teal-700 border-teal-200',
-          typeIcon: '🏖️',
-          reqPap: emp ? emp.pap : empCode,
-          reqName: emp ? emp.name : 'Nhân sự',
-          reqDept: emp ? emp.dept : 'Cảng Phước An',
-          reqRole: 'Nhân viên',
-          details: `Nghỉ ${days.toFixed(1)} ngày (${fromDate} ➔ ${toDate})`,
-          reason: reason,
-          handoverTo: handoverEmp ? handoverEmp.name : 'Không có',
-          currentLevelName: 'Khối 1: Quản lý trực tiếp',
-          levelIndex: 1,
-          totalLevels: (days > 2) ? 2 : 1,
-          slaHoursLeft: 24,
-          isUrgent: false,
-          isDelegated: false,
-          delegatedFrom: '',
-          createdAt: nowStr + ' ' + new Date().getHours() + ':' + String(new Date().getMinutes()).padStart(2, '0'),
-          watchers: ['Phòng Hành chính - Nhân sự', 'Người nhận bàn giao: ' + (handoverEmp ? handoverEmp.name : 'N/A')],
-          approvalMode: 'ANY',
-          auditTrail: [
-            { step: 1, role: 'Quản lý trực tiếp', name: 'Trần Thị Mai Phương (Bạn)', action: 'PENDING', time: '', note: '' }
-          ]
-        });
-      }
-
-      if (typeof myApprovalRequestsData !== 'undefined') {
-        myApprovalRequestsData.unshift({
-          id: nextId,
-          type: 'LEAVE',
-          typeName: lt ? lt.name : 'Nghỉ phép',
-          typeBadgeCls: 'bg-teal-50 text-teal-700 border-teal-200',
-          details: `Nghỉ ${days.toFixed(1)} ngày (${fromDate} ➔ ${toDate})`,
-          reason: reason,
-          createdAt: nowStr,
-          status: 'PENDING',
-          statusText: 'Đang xử lý (Khối 1)',
-          statusCls: 'bg-amber-100 text-amber-800',
-          canRecall: true,
-          steps: [
-            { name: 'Khởi tạo', role: 'Bạn', status: 'DONE', time: nowStr },
-            { name: 'Quản lý trực tiếp', role: 'Trần Thị Mai Phương', status: 'CURRENT', time: 'Đang chờ duyệt', note: '' }
-          ]
-        });
-      }
-
-      if (typeof updateApprovalBadges === 'function') updateApprovalBadges();
-      if (typeof renderApprovalInbox === 'function') renderApprovalInbox();
-
       closeCreateLeaveRequestModal();
       renderLeaveRequestsTable();
-      showToast(`✓ Đã gửi đơn nghỉ phép [${nextId}] và chuyển đồng bộ sang Trung tâm Phê duyệt M14!`);
+      showToast(`✓ Đã gửi đơn nghỉ phép [${nextId}] thành công (Quy trình duyệt độc lập M09 - Base Timeoff)!`);
     }
 
     function openViewLeaveRequestModal(id) {
@@ -34263,7 +34429,7 @@
         if (attRow) attRow.classList.add('hidden');
       }
 
-      // Render timeline M14
+      // Render tiến trình duyệt Base Timeoff (M09)
       const timelineEl = document.getElementById('detail-req-timeline');
       if (timelineEl) {
         timelineEl.innerHTML = `
@@ -40640,17 +40806,157 @@
   </div>
 
 
-  <!-- ================= MODAL: THÊM / SỬA CHÍNH SÁCH NGHỈ PHÉP (M09) ================= -->
-      <!-- ================= MODAL: THÊM / SỬA LOẠI NGHỈ PHÉP (M09.0) ================= -->
-    <!-- ================= MODAL: TẠO ĐƠN NGHỈ PHÉP (M09.3) ================= -->
+  <!-- ================= MODAL: THIẾT LẬP NHÓM ĐỀ XUẤT NGHỈ PHÉP (CHUẨN BASE TIMEOFF) ================= -->
+  <div id="modal-leave-group-config" class="fixed inset-0 bg-slate-900/60 backdrop-blur-xs z-50 flex items-center justify-center p-3 sm:p-5 hidden">
+    <div class="bg-white rounded-2xl max-w-2xl w-full shadow-2xl border border-slate-200 overflow-hidden flex flex-col max-h-[92vh] animate-in fade-in duration-200">
+      <div class="pap-primary text-white px-5 py-3.5 flex items-center justify-between shrink-0 shadow-xs">
+        <div class="flex items-center space-x-2.5">
+          <span class="text-xl">⚙️</span>
+          <div>
+            <h3 class="text-sm font-bold" id="modal-leave-group-title">Thiết lập Nhóm đề xuất Nghỉ phép / Vắng mặt (Base Timeoff)</h3>
+            <p class="text-[11px] text-white/80">Cấu hình luồng duyệt riêng, thời hạn báo trước/hồi tố và ưu tiên trừ quỹ phép</p>
+          </div>
+        </div>
+        <button type="button" onclick="closeLeaveGroupConfigModal()" class="text-white/70 hover:text-white text-2xl leading-none cursor-pointer p-1 transition">&times;</button>
+      </div>
+
+      <form onsubmit="handleSaveLeaveGroup(event)" class="p-5 overflow-y-auto space-y-4 text-xs">
+        <input type="hidden" id="leave-group-id" value="">
+
+        <!-- Khối 1: Thông tin cơ bản -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+          <div>
+            <label class="block font-semibold text-slate-700 mb-1">Mã nhóm đề xuất <span class="text-rose-500">*</span></label>
+            <input type="text" id="leave-group-code" required placeholder="VD: GR-AL-OFFICE" class="w-full px-3 py-2 border border-slate-300 rounded-lg text-xs font-semibold focus:ring-2 focus:ring-[#2E3191]">
+          </div>
+          <div>
+            <label class="block font-semibold text-slate-700 mb-1">Tên nhóm đề xuất <span class="text-rose-500">*</span></label>
+            <input type="text" id="leave-group-name" required placeholder="VD: Nghỉ phép năm (Khối Văn phòng)" class="w-full px-3 py-2 border border-slate-300 rounded-lg text-xs font-semibold focus:ring-2 focus:ring-[#2E3191]">
+          </div>
+        </div>
+
+        <div>
+          <label class="block font-semibold text-slate-700 mb-1">Loại phép tương ứng <span class="text-rose-500">*</span></label>
+          <select id="leave-group-type" required class="w-full px-3 py-2 border border-slate-300 rounded-lg text-xs bg-white focus:ring-2 focus:ring-[#2E3191]">
+            <!-- Dynamically populated from leaveTypesData -->
+          </select>
+        </div>
+
+        <div>
+          <label class="block font-semibold text-slate-700 mb-1">Mô tả nhóm</label>
+          <textarea id="leave-group-desc" rows="2" placeholder="Mô tả phạm vi và hướng dẫn áp dụng cho nhóm đề xuất..." class="w-full px-3 py-2 border border-slate-300 rounded-lg text-xs focus:ring-2 focus:ring-[#2E3191]"></textarea>
+        </div>
+
+        <!-- Khối 2: Thiết lập quy trình & Người duyệt Timeoff -->
+        <div class="p-3.5 bg-slate-50 rounded-xl border border-slate-200 space-y-3">
+          <div class="font-bold text-slate-800 text-xs flex items-center justify-between">
+            <span class="flex items-center space-x-1.5 text-[#2E3191]">
+              <span>👥</span>
+              <span>Quy trình & Khối người duyệt riêng của Timeoff</span>
+            </span>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+            <div>
+              <label class="block font-semibold text-slate-700 mb-1">Yêu cầu Quản lý trực tiếp duyệt?</label>
+              <select id="leave-group-direct-mgr" class="w-full px-3 py-1.5 border border-slate-300 rounded-lg text-xs bg-white">
+                <option value="YES">Bắt buộc QLTT duyệt trước tiên</option>
+                <option value="NO">Không yêu cầu QLTT</option>
+              </select>
+            </div>
+            <div>
+              <label class="block font-semibold text-slate-700 mb-1">Hình thức phê duyệt</label>
+              <select id="leave-group-mode" class="w-full px-3 py-1.5 border border-slate-300 rounded-lg text-xs bg-white">
+                <option value="SEQUENTIAL">Duyệt lần lượt (Theo thứ tự các cấp)</option>
+                <option value="ANY">Chỉ cần 1 người duyệt (Hoàn tất ngay)</option>
+                <option value="ALL">Duyệt đồng thời (Tất cả đồng ý)</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="space-y-2 pt-1 border-t border-slate-200/80">
+            <label class="flex items-center space-x-2 cursor-pointer">
+              <input type="checkbox" id="leave-group-allow-dynamic" checked class="rounded text-[#2E3191] focus:ring-0">
+              <span class="text-xs font-semibold text-slate-800">Cho phép người tạo tự @tag người duyệt linh động</span>
+            </label>
+            <label class="flex items-center space-x-2 cursor-pointer">
+              <input type="checkbox" id="leave-group-conditional-enabled" checked class="rounded text-[#2E3191] focus:ring-0">
+              <span class="text-xs font-semibold text-slate-800">Người duyệt theo điều kiện: Nghỉ > 3 ngày tự động thêm Ban Giám đốc</span>
+            </label>
+          </div>
+        </div>
+
+        <!-- Khối 3: Ràng buộc thời hạn & Hạn mức -->
+        <div class="p-3.5 bg-amber-50/60 rounded-xl border border-amber-200/80 space-y-3">
+          <div class="font-bold text-amber-900 text-xs flex items-center space-x-1.5">
+            <span>⏱️</span>
+            <span>Ràng buộc thời hạn nộp đơn & Giới hạn số ngày</span>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
+            <div>
+              <label class="block font-semibold text-slate-700 mb-1">Báo trước tối thiểu</label>
+              <div class="flex items-center space-x-1">
+                <input type="number" id="leave-group-notice-days" value="2" min="0" max="30" class="w-20 px-2.5 py-1.5 border border-slate-300 rounded-lg text-xs font-bold text-center bg-white">
+                <span class="text-slate-600 font-medium">ngày</span>
+              </div>
+            </div>
+            <div>
+              <label class="block font-semibold text-slate-700 mb-1">Nộp trễ tối đa (hồi tố)</label>
+              <div class="flex items-center space-x-1">
+                <input type="number" id="leave-group-grace-days" value="0" min="-10" max="0" class="w-20 px-2.5 py-1.5 border border-slate-300 rounded-lg text-xs font-bold text-center bg-white">
+                <span class="text-slate-600 font-medium">ngày</span>
+              </div>
+            </div>
+            <div>
+              <label class="block font-semibold text-slate-700 mb-1">Giới hạn số ngày/đơn</label>
+              <div class="flex items-center space-x-1">
+                <input type="number" id="leave-group-max-days" value="12" min="1" max="30" class="w-20 px-2.5 py-1.5 border border-slate-300 rounded-lg text-xs font-bold text-center bg-white">
+                <span class="text-slate-600 font-medium">ngày</span>
+              </div>
+            </div>
+          </div>
+
+          <div>
+            <label class="block font-semibold text-slate-700 mb-1">Thứ tự ưu tiên trừ quỹ ngày nghỉ</label>
+            <select id="leave-group-deduct-priority" class="w-full px-3 py-1.5 border border-slate-300 rounded-lg text-xs bg-white">
+              <option value="COMP_CARRY_SENIOR_ANNUAL">Quỹ nghỉ bù OT ➔ Phép tồn năm trước ➔ Phép thâm niên ➔ Phép năm</option>
+              <option value="CARRY_FIRST">Ưu tiên phép tồn năm trước ➔ Phép năm hiện tại</option>
+              <option value="OT_ONLY">Chỉ trừ Quỹ nghỉ bù OT tích lũy</option>
+              <option value="NONE">Không trừ quỹ phép (Hưởng BHXH / Đi công tác / Không lương)</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Khối 4: Người theo dõi & Phạm vi -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+          <div>
+            <label class="block font-semibold text-slate-700 mb-1">Người theo dõi mặc định (Watchers)</label>
+            <input type="text" id="leave-group-watchers" placeholder="VD: Chuyên viên Tiền lương, Phòng HC-NS" value="Chuyên viên Tiền lương, Phòng HC-NS" class="w-full px-3 py-2 border border-slate-300 rounded-lg text-xs bg-white">
+          </div>
+          <div>
+            <label class="block font-semibold text-slate-700 mb-1">Có hiệu lực với (Phòng ban)</label>
+            <input type="text" id="leave-group-scope" placeholder="VD: Toàn bộ nhân sự hoặc Phòng ban..." value="Toàn bộ nhân sự Cảng" class="w-full px-3 py-2 border border-slate-300 rounded-lg text-xs bg-white">
+          </div>
+        </div>
+
+        <div class="pt-3 flex items-center justify-end space-x-2 border-t border-slate-200">
+          <button type="button" onclick="closeLeaveGroupConfigModal()" class="px-4 py-2 border border-slate-300 rounded-lg text-slate-700 hover:bg-slate-50 transition cursor-pointer font-medium">Hủy bỏ</button>
+          <button type="submit" class="px-5 py-2 pap-primary text-white font-bold rounded-lg shadow-xs transition cursor-pointer hover:bg-[#242775]">Lưu cấu hình nhóm</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ================= MODAL: TẠO ĐƠN NGHỈ PHÉP (M09.3 / BASE TIMEOFF) ================= -->
   <div id="modal-create-leave-request" class="fixed inset-0 bg-slate-900/60 backdrop-blur-xs z-50 flex items-center justify-center p-3 sm:p-5 hidden">
     <div class="bg-white rounded-2xl max-w-xl w-full shadow-2xl border border-slate-200 overflow-hidden flex flex-col max-h-[92vh] animate-in fade-in duration-200">
       <div class="bg-[#2E3191] text-white px-5 py-3.5 flex items-center justify-between shrink-0 shadow-xs">
         <div class="flex items-center space-x-2.5">
           <span class="text-xl">📝</span>
           <div>
-            <h3 class="text-sm font-bold">Đăng ký Đơn xin nghỉ phép (M09.3)</h3>
-            <p class="text-[11px] text-white/80">Kiểm tra số dư phép khả dụng và gửi luồng phê duyệt M14</p>
+            <h3 class="text-sm font-bold">Đăng ký Đơn xin nghỉ phép (Base Timeoff M09)</h3>
+            <p class="text-[11px] text-white/80">Kiểm tra số dư quỹ phép và định tuyến phê duyệt theo Nhóm đề xuất</p>
           </div>
         </div>
         <button type="button" onclick="closeCreateLeaveRequestModal()" class="text-white/70 hover:text-white text-2xl leading-none cursor-pointer p-1 transition">&times;</button>
@@ -40669,7 +40975,7 @@
         <div class="p-3 bg-indigo-50/70 rounded-xl border border-indigo-100">
           <div class="text-[11px] font-bold text-[#2E3191] uppercase tracking-wider mb-1.5 flex items-center space-x-1.5">
             <span>📊</span>
-            <span>Tình trạng phép năm 2026 của nhân sự</span>
+            <span>Tình trạng quỹ phép 2026 của nhân sự</span>
           </div>
           <div class="grid grid-cols-3 gap-2 text-center">
             <div class="bg-white p-2 rounded-lg border border-slate-200 shadow-2xs">
@@ -40687,9 +40993,20 @@
           </div>
         </div>
 
+        <!-- 2.5. Chọn Nhóm đề xuất nghỉ phép (Chuẩn Base Timeoff) -->
+        <div>
+          <label class="block font-semibold text-slate-700 text-xs mb-1">Nhóm đề xuất nghỉ phép / vắng mặt <span class="text-rose-500">*</span></label>
+          <select id="req-group-select" onchange="onLeaveRequestGroupChange()" required class="w-full px-3 py-2 border border-slate-300 rounded-lg text-xs font-semibold bg-white focus:ring-2 focus:ring-[#2E3191]">
+            <!-- Dynamically populated from leaveGroupsData -->
+          </select>
+          <div id="req-group-rule-box" class="mt-1.5 p-2.5 bg-blue-50/80 rounded-lg border border-blue-200 text-[11px] text-blue-900 space-y-1">
+            <!-- Dynamic policy preview rendered by onLeaveRequestGroupChange() -->
+          </div>
+        </div>
+
         <!-- 3. Chọn Loại nghỉ phép -->
         <div>
-          <label class="block font-semibold text-slate-700 text-xs mb-1">Loại nghỉ phép <span class="text-rose-500">*</span></label>
+          <label class="block font-semibold text-slate-700 text-xs mb-1">Loại ngày nghỉ <span class="text-rose-500">*</span></label>
           <select id="req-type-select" onchange="onLeaveRequestTypeChange()" required class="w-full px-3 py-2 border border-slate-300 rounded-lg text-xs font-semibold bg-white focus:ring-2 focus:ring-[#2E3191]">
             <!-- Dynamically populated from leaveTypesData -->
           </select>
