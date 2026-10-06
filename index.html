@@ -39231,9 +39231,9 @@
               } else if (dayRec.symbol === 'S1L' || dayRec.symbol === 'S2L') {
                 cellContent = `<div class="p-1 rounded bg-rose-50 text-rose-700 font-bold text-[10px] text-center border border-rose-200 hover:border-rose-400 cursor-pointer shadow-2xs" onclick="openShiftAssignmentModal('${empM.pap}')" title="Ca ngày lễ">${dayRec.symbol}</div>`;
               } else if (dayRec.symbol === 'L') {
-                cellContent = `<div class="p-1 rounded bg-amber-100 text-amber-800 font-bold text-[10px] text-center" title="Nghỉ Lễ Quốc khánh">LỄ</div>`;
+                cellContent = `<div class="p-1 rounded bg-amber-100 text-amber-800 font-bold text-[10px] text-center border border-amber-200 hover:border-amber-400 cursor-pointer shadow-2xs" onclick="openShiftAssignmentModal('${empM.pap}')" title="Nghỉ Lễ Quốc khánh (L)">L</div>`;
               } else if (dayRec.symbol === 'P') {
-                cellContent = `<div class="p-1 rounded bg-purple-100 text-purple-800 font-bold text-[10px] text-center" title="Nghỉ phép năm đã duyệt">PHÉP</div>`;
+                cellContent = `<div class="p-1 rounded bg-purple-100 text-purple-800 font-bold text-[10px] text-center border border-purple-200 hover:border-purple-400 cursor-pointer shadow-2xs" onclick="openShiftAssignmentModal('${empM.pap}')" title="Nghỉ phép năm đã duyệt (P)">P</div>`;
               } else if (dayRec.symbol === 'Ro') {
                 cellContent = `<div class="p-1 rounded bg-slate-100 text-slate-600 font-bold text-[10px] text-center" title="Nghỉ thai sản">RO</div>`;
               } else {
