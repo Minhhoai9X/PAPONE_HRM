@@ -6271,30 +6271,6 @@
 
           <!-- ================= SUB-VIEW 2: CHI TIẾT KỲ CÔNG & 4 BƯỚC RÀ SOÁT (DETAIL VIEW) ================= -->
           <div id="att-lock-detail-view" class="space-y-3.5 hidden">
-            
-            <!-- Detail Breadcrumb Navigation Bar -->
-            <div class="bg-white rounded-xl border border-slate-200 shadow-2xs px-4 py-2.5 flex flex-wrap items-center justify-between gap-3">
-              <div class="flex items-center space-x-2.5 text-xs">
-                <button type="button" onclick="openAttendanceLockMaster()" class="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-bold text-slate-700 bg-slate-100 hover:bg-[#2E3191] hover:text-white rounded-lg transition cursor-pointer shadow-2xs" title="Quay lại danh sách tổng quan các kỳ công">
-                  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path></svg>
-                  <span>← Danh sách kỳ công</span>
-                </button>
-                <span class="text-slate-300">/</span>
-                <span class="font-extrabold text-slate-900 text-sm" id="detail-breadcrumb-name">Kỳ Tháng 09/2026</span>
-                <span class="text-slate-400 font-semibold" id="detail-breadcrumb-code">(KC-2026-09)</span>
-                <span id="detail-breadcrumb-badge" class="px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-amber-100 text-amber-800 border border-amber-200">
-                  🟡 Đang rà soát
-                </span>
-              </div>
-
-              <div class="flex items-center space-x-2">
-                <span class="text-xs text-slate-500 font-semibold">Đổi nhanh kỳ:</span>
-                <select id="select-attendance-period-quick" onchange="changeAttendancePeriod(this.value)" class="text-xs font-bold text-slate-900 border border-slate-300 rounded-lg px-2.5 py-1 bg-white shadow-2xs hover:border-[#1877F2] focus:ring-2 focus:ring-[#1877F2] cursor-pointer">
-                  <!-- options dynamically rendered -->
-                </select>
-              </div>
-            </div>
-
             <!-- Base Schedule Timesheet Header Card -->
             <div class="bg-white rounded-2xl border border-slate-200 shadow-xs p-4 sm:p-5 relative overflow-hidden">
             <!-- Ribbon XONG chuẩn Base (hiện khi bảng công đã chốt và khóa) -->
