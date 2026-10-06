@@ -5786,6 +5786,14 @@
                 <option value="FIXED">Hành chính</option>
                 <option value="SHIFT">Theo ca</option>
               </select>
+              <select id="raw-filter-shift" onchange="renderAttendanceRawLogs()" class="px-2.5 py-1.5 border border-slate-300 rounded-lg text-xs font-medium bg-white focus:outline-none focus:ring-1 focus:ring-[#2E3191]">
+                <option value="ALL">Tất cả ca làm việc</option>
+                <option value="HC">Ca Hành chính (08:00 - 17:00)</option>
+                <option value="SA">Ca Sáng (SA - 08:00 - 12:00)</option>
+                <option value="CH">Ca Chiều (CH - 13:00 - 17:00)</option>
+                <option value="S1">Ca Ngày (S1) (07:00 - 19:00)</option>
+                <option value="S2">Ca Đêm (S2) (19:00 - 07:00)</option>
+              </select>
               <select id="raw-filter-type" onchange="renderAttendanceRawLogs()" class="px-2.5 py-1.5 border border-slate-300 rounded-lg text-xs font-medium bg-white focus:outline-none focus:ring-1 focus:ring-[#2E3191]">
                 <option value="ALL">Tất cả loại quét</option>
                 <option value="IN">Chỉ Check-in (Vào ca)</option>
@@ -5820,6 +5828,7 @@
                     <th data-column-key="name" class="py-2.5 px-3 min-w-[180px]">Họ và tên <span class="pap-column-controls"><span class="pap-column-drag" draggable="true" ondragstart="startAttendanceRawColumnDrag(event, 'name')" ondragover="event.preventDefault()" ondrop="dropAttendanceRawColumn(event, 'name')" aria-label="Kéo đổi vị trí cột"><svg class="w-2.5 h-3.5" viewBox="0 0 8 14" fill="currentColor"><circle cx="2" cy="2" r="1.1"/><circle cx="6" cy="2" r="1.1"/><circle cx="2" cy="7" r="1.1"/><circle cx="6" cy="7" r="1.1"/><circle cx="2" cy="12" r="1.1"/><circle cx="6" cy="12" r="1.1"/></svg></span><button type="button" class="pap-column-control" onclick="sortAttendanceRawLogs('name')" aria-label="Sắp xếp theo họ và tên" title="Sắp xếp"><svg class="w-2.5 h-3" viewBox="0 0 10 12" fill="currentColor"><path d="M5 1L9 5H1L5 1Z"/><path d="M1 7H9L5 11L1 7Z"/></svg></button><button type="button" class="pap-column-control" onclick="toggleAttendanceRawSearch('name')" aria-label="Tìm theo họ và tên" title="Tìm kiếm"><svg class="w-3.5 h-3.5" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="6.5" cy="6.5" r="4.5"/><path d="M9.8 9.8L13.8 13.8"/></svg></button></span><input id="raw-column-search-name" class="pap-header-search" hidden placeholder="Tìm tên nhân viên..." oninput="renderAttendanceRawLogs()" /></th>
                     <th data-column-key="dept" class="py-2.5 px-3 min-w-[160px]">Đơn vị / Phòng ban <span class="pap-column-controls"><span class="pap-column-drag" draggable="true" ondragstart="startAttendanceRawColumnDrag(event, 'dept')" ondragover="event.preventDefault()" ondrop="dropAttendanceRawColumn(event, 'dept')" aria-label="Kéo đổi vị trí cột"><svg class="w-2.5 h-3.5" viewBox="0 0 8 14" fill="currentColor"><circle cx="2" cy="2" r="1.1"/><circle cx="6" cy="2" r="1.1"/><circle cx="2" cy="7" r="1.1"/><circle cx="6" cy="7" r="1.1"/><circle cx="2" cy="12" r="1.1"/><circle cx="6" cy="12" r="1.1"/></svg></span><button type="button" class="pap-column-control" onclick="sortAttendanceRawLogs('dept')" aria-label="Sắp xếp theo đơn vị" title="Sắp xếp"><svg class="w-2.5 h-3" viewBox="0 0 10 12" fill="currentColor"><path d="M5 1L9 5H1L5 1Z"/><path d="M1 7H9L5 11L1 7Z"/></svg></button><button type="button" class="pap-column-control" onclick="focusAttendanceRawFilter('raw-filter-dept')" aria-label="Lọc theo đơn vị" title="Mở bộ lọc"><svg class="w-3.5 h-3.5" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="1.5,2 14.5,2 9.5,8 9.5,14 6.5,14 6.5,8"/></svg></button></span></th>
                     <th data-column-key="schedule" class="py-2.5 px-3 min-w-[140px] text-center">Lịch làm việc <span class="pap-column-controls"><span class="pap-column-drag" draggable="true" ondragstart="startAttendanceRawColumnDrag(event, 'schedule')" ondragover="event.preventDefault()" ondrop="dropAttendanceRawColumn(event, 'schedule')" aria-label="Kéo đổi vị trí cột"><svg class="w-2.5 h-3.5" viewBox="0 0 8 14" fill="currentColor"><circle cx="2" cy="2" r="1.1"/><circle cx="6" cy="2" r="1.1"/><circle cx="2" cy="7" r="1.1"/><circle cx="6" cy="7" r="1.1"/><circle cx="2" cy="12" r="1.1"/><circle cx="6" cy="12" r="1.1"/></svg></span><button type="button" class="pap-column-control" onclick="sortAttendanceRawLogs('schedule')" aria-label="Sắp xếp theo lịch làm việc" title="Sắp xếp"><svg class="w-2.5 h-3" viewBox="0 0 10 12" fill="currentColor"><path d="M5 1L9 5H1L5 1Z"/><path d="M1 7H9L5 11L1 7Z"/></svg></button><button type="button" class="pap-column-control" onclick="focusAttendanceRawFilter('raw-filter-schedule')" aria-label="Lọc theo lịch làm việc" title="Mở bộ lọc"><svg class="w-3.5 h-3.5" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="1.5,2 14.5,2 9.5,8 9.5,14 6.5,14 6.5,8"/></svg></button></span></th>
+                    <th data-column-key="shift" class="py-2.5 px-3 min-w-[140px] text-center">Ca <span class="pap-column-controls"><span class="pap-column-drag" draggable="true" ondragstart="startAttendanceRawColumnDrag(event, 'shift')" ondragover="event.preventDefault()" ondrop="dropAttendanceRawColumn(event, 'shift')" aria-label="Kéo đổi vị trí cột"><svg class="w-2.5 h-3.5" viewBox="0 0 8 14" fill="currentColor"><circle cx="2" cy="2" r="1.1"/><circle cx="6" cy="2" r="1.1"/><circle cx="2" cy="7" r="1.1"/><circle cx="6" cy="7" r="1.1"/><circle cx="2" cy="12" r="1.1"/><circle cx="6" cy="12" r="1.1"/></svg></span><button type="button" class="pap-column-control" onclick="sortAttendanceRawLogs('shift')" aria-label="Sắp xếp theo ca" title="Sắp xếp"><svg class="w-2.5 h-3" viewBox="0 0 10 12" fill="currentColor"><path d="M5 1L9 5H1L5 1Z"/><path d="M1 7H9L5 11L1 7Z"/></svg></button><button type="button" class="pap-column-control" onclick="focusAttendanceRawFilter('raw-filter-shift')" aria-label="Lọc theo ca" title="Mở bộ lọc"><svg class="w-3.5 h-3.5" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="1.5,2 14.5,2 9.5,8 9.5,14 6.5,14 6.5,8"/></svg></button></span></th>
                     <th data-column-key="date" class="py-2.5 px-3 min-w-[120px] text-center">Ngày <span class="pap-column-controls"><span class="pap-column-drag" draggable="true" ondragstart="startAttendanceRawColumnDrag(event, 'date')" ondragover="event.preventDefault()" ondrop="dropAttendanceRawColumn(event, 'date')" aria-label="Kéo đổi vị trí cột"><svg class="w-2.5 h-3.5" viewBox="0 0 8 14" fill="currentColor"><circle cx="2" cy="2" r="1.1"/><circle cx="6" cy="2" r="1.1"/><circle cx="2" cy="7" r="1.1"/><circle cx="6" cy="7" r="1.1"/><circle cx="2" cy="12" r="1.1"/><circle cx="6" cy="12" r="1.1"/></svg></span><button type="button" class="pap-column-control" onclick="sortAttendanceRawLogs('date')" aria-label="Sắp xếp theo ngày" title="Sắp xếp"><svg class="w-2.5 h-3" viewBox="0 0 10 12" fill="currentColor"><path d="M5 1L9 5H1L5 1Z"/><path d="M1 7H9L5 11L1 7Z"/></svg></button></span></th>
                     <th data-column-key="time" class="py-2.5 px-3 min-w-[140px] text-center">Thời gian quét <span class="pap-column-controls"><span class="pap-column-drag" draggable="true" ondragstart="startAttendanceRawColumnDrag(event, 'time')" ondragover="event.preventDefault()" ondrop="dropAttendanceRawColumn(event, 'time')" aria-label="Kéo đổi vị trí cột"><svg class="w-2.5 h-3.5" viewBox="0 0 8 14" fill="currentColor"><circle cx="2" cy="2" r="1.1"/><circle cx="6" cy="2" r="1.1"/><circle cx="2" cy="7" r="1.1"/><circle cx="6" cy="7" r="1.1"/><circle cx="2" cy="12" r="1.1"/><circle cx="6" cy="12" r="1.1"/></svg></span><button type="button" class="pap-column-control" onclick="sortAttendanceRawLogs('time')" aria-label="Sắp xếp theo thời gian" title="Sắp xếp"><svg class="w-2.5 h-3" viewBox="0 0 10 12" fill="currentColor"><path d="M5 1L9 5H1L5 1Z"/><path d="M1 7H9L5 11L1 7Z"/></svg></button></span></th>
                     <th data-column-key="type" class="py-2.5 px-3 min-w-[100px] text-center">Loại quét <span class="pap-column-controls"><span class="pap-column-drag" draggable="true" ondragstart="startAttendanceRawColumnDrag(event, 'type')" ondragover="event.preventDefault()" ondrop="dropAttendanceRawColumn(event, 'type')" aria-label="Kéo đổi vị trí cột"><svg class="w-2.5 h-3.5" viewBox="0 0 8 14" fill="currentColor"><circle cx="2" cy="2" r="1.1"/><circle cx="6" cy="2" r="1.1"/><circle cx="2" cy="7" r="1.1"/><circle cx="6" cy="7" r="1.1"/><circle cx="2" cy="12" r="1.1"/><circle cx="6" cy="12" r="1.1"/></svg></span><button type="button" class="pap-column-control" onclick="sortAttendanceRawLogs('type')" aria-label="Sắp xếp theo loại quét" title="Sắp xếp"><svg class="w-2.5 h-3" viewBox="0 0 10 12" fill="currentColor"><path d="M5 1L9 5H1L5 1Z"/><path d="M1 7H9L5 11L1 7Z"/></svg></button><button type="button" class="pap-column-control" onclick="focusAttendanceRawFilter('raw-filter-type')" aria-label="Lọc theo loại quét" title="Mở bộ lọc"><svg class="w-3.5 h-3.5" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="1.5,2 14.5,2 9.5,8 9.5,14 6.5,14 6.5,8"/></svg></button></span></th>
@@ -5917,6 +5926,8 @@
               <select id="daily-filter-shift" onchange="renderAttendanceDailyTimesheet()" class="px-2.5 py-1.5 border border-slate-300 rounded-lg text-xs font-medium bg-white focus:outline-none focus:ring-1 focus:ring-[#2E3191]">
                 <option value="ALL">Tất cả ca kíp</option>
                 <option value="HC">Ca Hành chính (HC)</option>
+                <option value="SA">Ca Sáng (SA - 08:00 - 12:00)</option>
+                <option value="CH">Ca Chiều (CH - 13:00 - 17:00)</option>
                 <option value="S1">Ca Ngày S1 (07:00 - 19:00)</option>
                 <option value="S2">Ca Đêm S2 (19:00 - 07:00)</option>
                 <option value="OFF">Nghỉ tuần (OFF)</option>
@@ -6110,8 +6121,209 @@
                         <!-- ================= PANEL 5: CHỐT BẢNG CÔNG Ở SCHEDULE VÀO CUỐI CHU KỲ (CHUẨN BASE SCHEDULE) ================= -->
         <div id="att-panel-lock" class="space-y-3.5 hidden relative">
           
-          <!-- Base Schedule Timesheet Header Card -->
-          <div class="bg-white rounded-2xl border border-slate-200 shadow-xs p-4 sm:p-5 relative overflow-hidden">
+          <!-- Thanh Tab 2 Cấp Quản Lý Kỳ Công (Tab 1: Danh sách kỳ công | Tab 2: Chi tiết kỳ công hiện hành) -->
+          <div class="bg-white rounded-2xl border border-slate-200 shadow-xs p-2 sm:p-2.5 flex flex-wrap items-center justify-between gap-3">
+            <div class="flex items-center flex-wrap gap-2">
+              <!-- Tab 1: Danh sách chốt bảng công kỳ -->
+              <button id="tab-btn-lock-master" type="button" onclick="openAttendanceLockMaster()" class="px-3.5 sm:px-4 py-2 rounded-xl text-xs font-bold transition flex items-center space-x-2 cursor-pointer bg-slate-100 text-slate-700 hover:bg-slate-200">
+                <span class="text-sm">📋</span>
+                <span>Danh sách kỳ công</span>
+                <span id="badge-lock-master-count" class="px-2 py-0.5 rounded-full text-[10px] font-extrabold bg-blue-100 text-[#2E3191]">4 kỳ</span>
+              </button>
+
+              <!-- Tab 2: Chi tiết bảng công kỳ (Hiện hành) -->
+              <button id="tab-btn-lock-detail" type="button" onclick="openAttendanceLockDetail()" class="px-3.5 sm:px-4 py-2 rounded-xl text-xs font-bold transition flex items-center space-x-2 cursor-pointer bg-[#2E3191] text-white shadow-xs">
+                <span class="text-sm">📑</span>
+                <span>Chi tiết bảng công kỳ</span>
+                <span id="tab-lock-detail-name-badge" class="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-amber-400 text-slate-900 flex items-center gap-1 shadow-2xs">
+                  <span class="w-1.5 h-1.5 rounded-full bg-slate-900 animate-pulse"></span>
+                  <span id="tab-lock-detail-badge-text">Kỳ Tháng 10/2026 (Hiện hành)</span>
+                </span>
+              </button>
+            </div>
+
+            <div class="flex items-center flex-wrap gap-2 pr-1">
+              <button type="button" onclick="downloadTableExcel('attendance-periods-table', 'Danh_sach_ky_chot_cong')" class="bg-white border border-slate-300 text-slate-700 hover:bg-slate-50 font-semibold text-xs rounded-xl px-3 py-2 shadow-2xs transition inline-flex items-center gap-1.5 cursor-pointer" title="Tải xuống Excel">
+                <svg class="w-4 h-4 text-emerald-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="12" y1="18" x2="12" y2="12"/><line x2="9" y2="15" x1="12"/><line x2="15" y2="15" x1="12"/></svg>
+                <span>Tải Excel</span>
+              </button>
+              <button type="button" onclick="openCreateAttendancePeriodModal()" class="bg-[#2E3191] hover:bg-[#242775] text-white font-bold text-xs rounded-xl px-3.5 py-2 shadow-xs transition inline-flex items-center gap-1.5 cursor-pointer">
+                <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15"/></svg>
+                <span>+ Tạo mới kỳ công</span>
+              </button>
+            </div>
+          </div>
+          
+          <!-- ================= SUB-VIEW 1: DANH SÁCH KỲ CÔNG (MASTER VIEW) ================= -->
+          <div id="att-lock-master-view" class="space-y-3.5">
+            <!-- Header Card -->
+            <div class="bg-white rounded-2xl border border-slate-200 shadow-xs p-4 sm:p-5 flex flex-col md:flex-row md:items-center justify-between gap-4">
+              <div class="flex items-center space-x-3.5">
+                <div class="w-12 h-12 rounded-2xl bg-blue-50 border border-blue-200 text-[#2E3191] flex items-center justify-center font-bold text-2xl shrink-0 shadow-2xs">
+                  🗓️
+                </div>
+                <div>
+                  <div class="flex items-center space-x-2.5">
+                    <h2 class="text-base font-bold text-slate-900 tracking-tight">DANH SÁCH CHỐT BẢNG CÔNG KỲ</h2>
+                    <span class="text-xs font-semibold px-2.5 py-0.5 rounded-full bg-blue-50 text-[#2E3191] border border-blue-100">M06 • Timesheet Period Locking</span>
+                  </div>
+                  <p class="text-xs text-slate-500 mt-0.5 font-medium">Quản lý chu kỳ tính công, giám sát tiến độ rà soát 4 bước và chốt số liệu công chuyển tính lương M10</p>
+                </div>
+              </div>
+
+              <div class="flex items-center flex-wrap gap-2.5 shrink-0">
+                <button type="button" onclick="downloadTableExcel('attendance-periods-table', 'Danh_sach_ky_chot_cong')" class="bg-white border border-slate-300 text-slate-700 hover:bg-slate-50 font-semibold text-xs rounded-xl px-3.5 py-2 shadow-2xs transition inline-flex items-center gap-1.5 cursor-pointer" title="Tải xuống Excel">
+                  <svg class="w-4 h-4 text-emerald-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="12" y1="18" x2="12" y2="12"/><line x2="9" y2="15" x1="12"/><line x2="15" y2="15" x1="12"/></svg>
+                  <span>Tải Excel</span>
+                </button>
+                <button type="button" onclick="openCreateAttendancePeriodModal()" class="bg-[#2E3191] hover:bg-[#242775] text-white font-bold text-xs rounded-xl px-4 py-2 shadow-xs transition inline-flex items-center gap-1.5 cursor-pointer">
+                  <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15"/></svg>
+                  <span>+ Tạo mới kỳ công</span>
+                </button>
+              </div>
+            </div>
+
+            <!-- KPI Summary Cards -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
+              <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-xs flex items-center justify-between">
+                <div>
+                  <p class="text-[11px] font-bold text-slate-400 uppercase tracking-wider">Tổng số kỳ trong năm</p>
+                  <div class="flex items-baseline space-x-2 mt-1">
+                    <span id="kpi-periods-total" class="text-2xl font-black text-slate-900">4</span>
+                    <span class="text-xs font-semibold text-slate-500">kỳ công</span>
+                  </div>
+                </div>
+                <div class="w-10 h-10 rounded-xl bg-blue-50 text-[#2E3191] flex items-center justify-center font-bold text-lg border border-blue-100">
+                  📅
+                </div>
+              </div>
+
+              <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-xs flex items-center justify-between">
+                <div>
+                  <p class="text-[11px] font-bold text-slate-400 uppercase tracking-wider">Đang rà soát công</p>
+                  <div class="flex items-baseline space-x-2 mt-1">
+                    <span id="kpi-periods-reviewing" class="text-2xl font-black text-amber-600">2</span>
+                    <span class="text-xs font-semibold text-amber-600">kỳ công</span>
+                  </div>
+                </div>
+                <div class="w-10 h-10 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center font-bold text-lg border border-amber-100">
+                  ⚡
+                </div>
+              </div>
+
+              <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-xs flex items-center justify-between">
+                <div>
+                  <p class="text-[11px] font-bold text-slate-400 uppercase tracking-wider">Đã chốt công</p>
+                  <div class="flex items-baseline space-x-2 mt-1">
+                    <span id="kpi-periods-locked" class="text-2xl font-black text-emerald-600">1</span>
+                    <span class="text-xs font-semibold text-emerald-600">kỳ (T08/2026)</span>
+                  </div>
+                </div>
+                <div class="w-10 h-10 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center font-bold text-lg border border-emerald-100">
+                  ✅
+                </div>
+              </div>
+
+              <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-xs flex items-center justify-between">
+                <div>
+                  <p class="text-[11px] font-bold text-slate-400 uppercase tracking-wider">Đã khóa làm lương</p>
+                  <div class="flex items-baseline space-x-2 mt-1">
+                    <span id="kpi-periods-payroll" class="text-2xl font-black text-purple-700">1</span>
+                    <span class="text-xs font-semibold text-purple-700">kỳ (T07/2026)</span>
+                  </div>
+                </div>
+                <div class="w-10 h-10 rounded-xl bg-purple-50 text-purple-700 flex items-center justify-center font-bold text-lg border border-purple-100">
+                  🔒
+                </div>
+              </div>
+            </div>
+
+            <!-- Toolbar Lọc & Tìm kiếm -->
+            <div class="bg-white rounded-xl border border-slate-200 shadow-xs p-3.5 flex flex-wrap items-center justify-between gap-3">
+              <div class="flex items-center flex-wrap gap-2.5 flex-1 min-w-[280px]">
+                <div class="relative flex-1 min-w-[200px] max-w-sm">
+                  <svg class="w-4 h-4 absolute left-3 top-2.5 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+                  <input type="text" id="filter-period-search" oninput="filterAttendancePeriodsMaster()" placeholder="Tìm kiếm theo mã, tên kỳ công..." class="w-full pl-9 pr-3 py-1.5 border border-slate-300 rounded-lg text-xs focus:ring-2 focus:ring-[#2E3191] focus:border-transparent outline-none">
+                </div>
+
+                <select id="filter-period-year" onchange="filterAttendancePeriodsMaster()" class="px-2.5 py-1.5 border border-slate-300 rounded-lg text-xs font-semibold text-slate-700 bg-white">
+                  <option value="ALL">Tất cả năm</option>
+                  <option value="2026" selected>Năm 2026</option>
+                  <option value="2025">Năm 2025</option>
+                </select>
+
+                <select id="filter-period-status" onchange="filterAttendancePeriodsMaster()" class="px-2.5 py-1.5 border border-slate-300 rounded-lg text-xs font-semibold text-slate-700 bg-white">
+                  <option value="ALL" selected>Tất cả trạng thái</option>
+                  <option value="OPEN">Đang mở / Rà soát</option>
+                  <option value="LOCKED">Đã chốt công</option>
+                  <option value="PAYROLL">Đã khóa làm lương</option>
+                </select>
+
+                <select id="filter-period-target" onchange="filterAttendancePeriodsMaster()" class="px-2.5 py-1.5 border border-slate-300 rounded-lg text-xs font-semibold text-slate-700 bg-white">
+                  <option value="ALL" selected>Tất cả đối tượng</option>
+                  <option value="ALL_COMPANY">Toàn bộ công ty</option>
+                  <option value="HC">Khối Văn phòng</option>
+                  <option value="PORT">Khối Ca cảng</option>
+                </select>
+              </div>
+
+              <div class="text-xs text-slate-500 font-medium">
+                Tìm thấy <span id="period-match-count" class="font-bold text-slate-900">4</span> kỳ công
+              </div>
+            </div>
+
+            <!-- Bảng Danh sách kỳ công -->
+            <div class="bg-white rounded-xl border border-slate-200 shadow-xs overflow-hidden pap-table-frame">
+              <table id="attendance-periods-table" class="w-full text-left border-collapse text-xs pap-data-table">
+                <thead class="bg-[#2E3191] text-white select-none border-b border-[#2E3191] shadow-xs">
+                  <tr class="divide-x divide-white/10 font-bold">
+                    <th class="py-3 px-3 text-center w-12 sticky left-0 bg-[#2E3191] z-10">STT</th>
+                    <th class="py-3 px-3 min-w-[110px]">Mã kỳ công</th>
+                    <th class="py-3 px-4 min-w-[170px]">Tên kỳ công</th>
+                    <th class="py-3 px-3 min-w-[160px] text-center">Chu kỳ ngày</th>
+                    <th class="py-3 px-3 min-w-[150px]">Đối tượng áp dụng</th>
+                    <th class="py-3 px-3 text-center min-w-[90px]">Số nhân sự</th>
+                    <th class="py-3 px-3.5 min-w-[210px]">Tiến độ & Trạng thái</th>
+                    <th class="py-3 px-3 min-w-[140px]">Người phụ trách</th>
+                    <th class="py-3 px-3 text-center min-w-[130px]">Ngày chốt</th>
+                    <th class="py-3 px-3 text-center w-36 sticky right-0 bg-[#2E3191] z-10 shadow-[-6px_0_10px_-4px_rgba(0,0,0,0.25)] sticky-action">Thao tác</th>
+                  </tr>
+                </thead>
+                <tbody id="attendance-periods-master-tbody" class="divide-y divide-slate-100 bg-white">
+                  <!-- Rendered dynamically via renderAttendancePeriodsMasterTable() -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- ================= SUB-VIEW 2: CHI TIẾT KỲ CÔNG & 4 BƯỚC RÀ SOÁT (DETAIL VIEW) ================= -->
+          <div id="att-lock-detail-view" class="space-y-3.5 hidden">
+            
+            <!-- Detail Breadcrumb Navigation Bar -->
+            <div class="bg-white rounded-xl border border-slate-200 shadow-2xs px-4 py-2.5 flex flex-wrap items-center justify-between gap-3">
+              <div class="flex items-center space-x-2.5 text-xs">
+                <button type="button" onclick="openAttendanceLockMaster()" class="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-bold text-slate-700 bg-slate-100 hover:bg-[#2E3191] hover:text-white rounded-lg transition cursor-pointer shadow-2xs" title="Quay lại danh sách tổng quan các kỳ công">
+                  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path></svg>
+                  <span>← Danh sách kỳ công</span>
+                </button>
+                <span class="text-slate-300">/</span>
+                <span class="font-extrabold text-slate-900 text-sm" id="detail-breadcrumb-name">Kỳ Tháng 09/2026</span>
+                <span class="text-slate-400 font-semibold" id="detail-breadcrumb-code">(KC-2026-09)</span>
+                <span id="detail-breadcrumb-badge" class="px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-amber-100 text-amber-800 border border-amber-200">
+                  🟡 Đang rà soát
+                </span>
+              </div>
+
+              <div class="flex items-center space-x-2">
+                <span class="text-xs text-slate-500 font-semibold">Đổi nhanh kỳ:</span>
+                <select id="select-attendance-period-quick" onchange="changeAttendancePeriod(this.value)" class="text-xs font-bold text-slate-900 border border-slate-300 rounded-lg px-2.5 py-1 bg-white shadow-2xs hover:border-[#1877F2] focus:ring-2 focus:ring-[#1877F2] cursor-pointer">
+                  <!-- options dynamically rendered -->
+                </select>
+              </div>
+            </div>
+
+            <!-- Base Schedule Timesheet Header Card -->
+            <div class="bg-white rounded-2xl border border-slate-200 shadow-xs p-4 sm:p-5 relative overflow-hidden">
             <!-- Ribbon XONG chuẩn Base (hiện khi bảng công đã chốt và khóa) -->
             <div id="att-lock-corner-ribbon" class="absolute -top-7 -left-7 w-24 h-24 pointer-events-none hidden z-20">
               <div class="absolute transform -rotate-45 bg-emerald-600 text-white font-black text-[10px] tracking-wider text-center py-1 w-32 top-7 -left-3 shadow-md uppercase">
@@ -6373,8 +6585,87 @@
             </div>
 
           </div>
+        </div> <!-- /#att-lock-detail-view -->
 
-          <!-- Modal Xem Lịch sử Audit Trail -->
+        <!-- Modal Tạo mới kỳ công (M06) -->
+        <div id="modal-create-attendance-period" class="fixed inset-0 bg-slate-900/50 backdrop-blur-xs z-50 flex items-center justify-center p-4 hidden">
+          <div class="bg-white rounded-2xl border border-slate-200 shadow-2xl max-w-xl w-full p-5 sm:p-6 space-y-4">
+            <div class="flex items-center justify-between border-b border-slate-100 pb-3">
+              <div class="flex items-center space-x-2.5">
+                <div class="w-9 h-9 rounded-xl bg-blue-50 text-[#2E3191] flex items-center justify-center text-lg font-bold border border-blue-100">
+                  ➕
+                </div>
+                <div>
+                  <h3 class="font-bold text-sm text-slate-900 uppercase">Khởi tạo kỳ chốt công mới</h3>
+                  <p class="text-[11px] text-slate-500">Tạo chu kỳ tính công và chuẩn bị dữ liệu rà soát 4 bước</p>
+                </div>
+              </div>
+              <button type="button" onclick="closeCreateAttendancePeriodModal()" class="text-slate-400 hover:text-slate-600 text-xl leading-none cursor-pointer">×</button>
+            </div>
+
+            <form id="form-create-attendance-period" onsubmit="event.preventDefault(); submitCreateAttendancePeriod();" class="space-y-3.5 text-xs">
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <div>
+                  <label class="block font-bold text-slate-700 mb-1">Mã kỳ công <span class="text-rose-500">*</span></label>
+                  <input type="text" id="new-period-code" required placeholder="vd: KC-2026-10" class="w-full px-3 py-2 border border-slate-300 rounded-lg uppercase font-semibold text-slate-900 focus:ring-2 focus:ring-[#2E3191] outline-none">
+                </div>
+                <div>
+                  <label class="block font-bold text-slate-700 mb-1">Tên kỳ công <span class="text-rose-500">*</span></label>
+                  <input type="text" id="new-period-name" required placeholder="vd: Kỳ Tháng 10/2026" class="w-full px-3 py-2 border border-slate-300 rounded-lg font-semibold text-slate-900 focus:ring-2 focus:ring-[#2E3191] outline-none">
+                </div>
+              </div>
+
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <div>
+                  <label class="block font-bold text-slate-700 mb-1">Từ ngày <span class="text-rose-500">*</span></label>
+                  <input type="date" id="new-period-start" required class="w-full px-3 py-2 border border-slate-300 rounded-lg text-slate-900 focus:ring-2 focus:ring-[#2E3191] outline-none">
+                </div>
+                <div>
+                  <label class="block font-bold text-slate-700 mb-1">Đến ngày <span class="text-rose-500">*</span></label>
+                  <input type="date" id="new-period-end" required class="w-full px-3 py-2 border border-slate-300 rounded-lg text-slate-900 focus:ring-2 focus:ring-[#2E3191] outline-none">
+                </div>
+              </div>
+
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <div>
+                  <label class="block font-bold text-slate-700 mb-1">Số ngày công chuẩn</label>
+                  <input type="number" id="new-period-standard-days" value="22" min="15" max="31" class="w-full px-3 py-2 border border-slate-300 rounded-lg font-semibold text-slate-900 focus:ring-2 focus:ring-[#2E3191] outline-none">
+                </div>
+                <div>
+                  <label class="block font-bold text-slate-700 mb-1">Đối tượng áp dụng</label>
+                  <select id="new-period-target-group" class="w-full px-3 py-2 border border-slate-300 rounded-lg font-semibold text-slate-900 focus:ring-2 focus:ring-[#2E3191] outline-none bg-white">
+                    <option value="Toàn bộ công ty (245 NV)">Toàn bộ công ty (245 NV)</option>
+                    <option value="Khối Hành chính Văn phòng (HC)">Khối Hành chính Văn phòng (HC)</option>
+                    <option value="Khối Vận hành Cầu bến (Ca kíp)">Khối Vận hành Cầu bến (Ca kíp)</option>
+                    <option value="Khối Khai thác Cảng & Cơ giới">Khối Khai thác Cảng & Cơ giới</option>
+                  </select>
+                </div>
+              </div>
+
+              <div>
+                <label class="block font-bold text-slate-700 mb-1">Ghi chú / Mô tả</label>
+                <textarea id="new-period-note" rows="2" placeholder="vd: Chu kỳ tính công tháng 10 chuẩn 22 ngày công, khối ca 3 kíp..." class="w-full px-3 py-2 border border-slate-300 rounded-lg text-slate-900 focus:ring-2 focus:ring-[#2E3191] outline-none"></textarea>
+              </div>
+
+              <div class="bg-blue-50/70 border border-blue-200 rounded-xl p-3 flex items-start space-x-2 text-slate-700">
+                <span class="text-blue-600 text-sm">💡</span>
+                <div class="text-[11px] leading-relaxed">
+                  Sau khi khởi tạo, hệ thống sẽ tự động tổng hợp dữ liệu quẹt thẻ và mở ngay <strong class="text-slate-900">Bước 1: Chỉnh sửa lịch làm việc</strong> của kỳ mới để HR tiến hành quy trình rà soát.
+                </div>
+              </div>
+
+              <div class="flex items-center justify-end space-x-2.5 pt-2 border-t border-slate-100">
+                <button type="button" onclick="closeCreateAttendancePeriodModal()" class="px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold rounded-xl transition cursor-pointer">Hủy bỏ</button>
+                <button type="submit" class="px-4 py-2 bg-[#2E3191] hover:bg-[#242775] text-white font-bold rounded-xl shadow-xs transition cursor-pointer flex items-center space-x-1.5">
+                  <span>Khởi tạo & Bắt đầu rà soát</span>
+                  <span>→</span>
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+
+        <!-- Modal Xem Lịch sử Audit Trail -->
           <div id="modal-att-audit-trail" class="fixed inset-0 bg-slate-900/50 backdrop-blur-xs z-50 flex items-center justify-center p-4 hidden">
             <div class="bg-white rounded-2xl border border-slate-200 shadow-2xl max-w-2xl w-full p-5 space-y-4">
               <div class="flex items-center justify-between border-b border-slate-100 pb-3">
@@ -6563,8 +6854,8 @@
                 <select id="schedule-filter-shift" onchange="handleScheduleFilter()" class="px-3 py-2 border border-slate-300 rounded-lg text-xs bg-white text-slate-700 focus:ring-2 focus:ring-[#2E3191] cursor-pointer">
                   <option value="ALL">Tất cả ca / trạng thái</option>
                   <option value="HC">Ca Hành chính (08:00 - 17:00)</option>
-                  <option value="SANG">Ca Sáng (08:00 - 12:00)</option>
-                  <option value="CHIEU">Ca Chiều (14:00 - 17:00)</option>
+                  <option value="SA">Ca Sáng (08:00 - 12:00)</option>
+                  <option value="CH">Ca Chiều (13:00 - 17:00)</option>
                   <option value="S1">Ca Ngày - S1 (07:00 - 19:00)</option>
                   <option value="S2">Ca Đêm - S2 (19:00 - 07:00)</option>
                   <option value="OFF">Nghỉ tuần (OFF)</option>
@@ -6861,6 +7152,14 @@
                     <th class="py-2.5 px-3 min-w-[130px] text-center whitespace-nowrap">
                       <div class="inline-flex items-center justify-center">
                         <span>Trạng thái</span>
+                        <button type="button" class="inline-flex items-center justify-center text-white/70 hover:text-white transition-colors cursor-pointer ml-1.5 p-0.5 rounded hover:bg-white/10 shrink-0" title="Lọc">
+                          <svg class="w-3.5 h-3.5" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="1.5,2 14.5,2 9.5,8 9.5,14 6.5,14 6.5,8"/></svg>
+                        </button>
+                      </div>
+                    </th>
+                    <th class="py-2.5 px-3 min-w-[150px] text-center whitespace-nowrap">
+                      <div class="inline-flex items-center justify-center">
+                        <span>Chính sách chấm công</span>
                         <button type="button" class="inline-flex items-center justify-center text-white/70 hover:text-white transition-colors cursor-pointer ml-1.5 p-0.5 rounded hover:bg-white/10 shrink-0" title="Lọc">
                           <svg class="w-3.5 h-3.5" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="1.5,2 14.5,2 9.5,8 9.5,14 6.5,14 6.5,8"/></svg>
                         </button>
@@ -9039,8 +9338,8 @@
             <span class="px-1.5 py-0.5 rounded bg-blue-100 text-[#2E3191] font-bold">[HC] Hành chính</span>
             <span class="px-1.5 py-0.5 rounded bg-emerald-100 text-emerald-800 font-bold">[S1] Ca Ngày</span>
             <span class="px-1.5 py-0.5 rounded bg-purple-100 text-purple-800 font-bold">[S2] Ca Đêm</span>
-            <span class="px-1.5 py-0.5 rounded bg-sky-100 text-sky-800 font-bold">[SANG] Ca Sáng</span>
-            <span class="px-1.5 py-0.5 rounded bg-amber-100 text-amber-800 font-bold">[CHIEU] Ca Chiều</span>
+            <span class="px-1.5 py-0.5 rounded bg-sky-100 text-sky-800 font-bold">[SA] Ca Sáng</span>
+            <span class="px-1.5 py-0.5 rounded bg-amber-100 text-amber-800 font-bold">[CH] Ca Chiều</span>
             <span class="px-1.5 py-0.5 rounded bg-slate-200 text-slate-700 font-bold">[OFF] Nghỉ tuần</span>
           </div>
           <span class="text-slate-400 shrink-0 ml-2">Ô trống = giữ nguyên ca</span>
@@ -9237,7 +9536,7 @@
                     🚌 Tuyến xe: T2-T6 [HC-DR], T7-CN [OFF]
                   </button>
                   <button type="button" onclick="applyCreateSchedulePreset('VP_SAT')" class="px-2 py-0.8 bg-white border border-slate-300 hover:border-amber-600 hover:text-amber-700 rounded text-[10.5px] font-medium transition cursor-pointer">
-                    🏢 VP + T7 Sáng: T2-T6 [HC], T7 [SANG]
+                    🏢 VP + T7 Sáng: T2-T6 [HC], T7 [SA]
                   </button>
                   <button type="button" onclick="applyCreateSchedulePreset('S1_ALL')" class="px-2 py-0.8 bg-white border border-slate-300 hover:border-emerald-600 hover:text-emerald-700 rounded text-[10.5px] font-medium transition cursor-pointer">
                     ⚓ Kíp ngày: [S1] 07:00 - 19:00
@@ -9811,7 +10110,7 @@
                   </div>
                   <span id="badge-preset-VP_SAT" class="w-4 h-4 rounded-full bg-slate-200 text-slate-400 text-[10px] font-bold flex items-center justify-center hidden">✓</span>
                 </div>
-                <div class="text-xs text-slate-500 mt-1 leading-snug">T2 - T6 làm [HC], Thứ 7 sáng [SANG] (08:00 - 12:00), CN nghỉ [OFF].</div>
+                <div class="text-xs text-slate-500 mt-1 leading-snug">T2 - T6 làm [HC], Thứ 7 sáng [SA] (08:00 - 12:00), CN nghỉ [OFF].</div>
                 <div class="mt-2 text-[11px] font-semibold text-slate-600 flex items-center space-x-2">
                   <span>📊 5.5 công / tuần</span>
                   <span>•</span>
@@ -18795,7 +19094,8 @@
           <div class="rounded-xl border border-slate-200 p-3"><div class="text-[11px] text-slate-500">Mã mẫu</div><div class="mt-1 font-bold text-slate-900">${escape(policy.code)}</div></div>
           <div class="rounded-xl border border-slate-200 p-3"><div class="text-[11px] text-slate-500">Hình thức làm việc</div><div class="mt-1 font-bold text-slate-900">${policy.type === 'FIXED' ? 'Hành chính' : 'Theo ca'}</div></div>
           <div class="rounded-xl border border-slate-200 p-3"><div class="text-[11px] text-slate-500">Trạng thái</div><div class="mt-1 font-bold text-slate-900">${status}</div></div>
-          <div class="rounded-xl border border-slate-200 p-3"><div class="text-[11px] text-slate-500">Nhân viên đang được gán</div><div class="mt-1 font-bold text-slate-900">${employeeCount} nhân viên</div></div>
+          <div class="rounded-xl border border-slate-200 p-3"><div class="text-[11px] text-slate-500">Chính sách chấm công</div><div class="mt-1 font-bold text-slate-900">${policy.attendanceRule === 'SHIFT' ? 'Theo ca' : 'Theo ngày'}</div></div>
+          <div class="rounded-xl border border-slate-200 p-3 sm:col-span-2"><div class="text-[11px] text-slate-500">Nhân viên đang được gán</div><div class="mt-1 font-bold text-slate-900">${employeeCount} nhân viên</div></div>
           <div class="rounded-xl border border-slate-200 p-3 sm:col-span-2"><div class="text-[11px] text-slate-500">${scopeLabel}</div><div class="mt-1 text-sm text-slate-800">${escape(scopeValue)}</div></div>
           <div class="rounded-xl border border-slate-200 p-3 sm:col-span-2"><div class="text-[11px] text-slate-500">Mô tả</div><div class="mt-1 text-sm text-slate-800">${escape(policy.description)}</div></div>
         </div>`;
@@ -18893,6 +19193,9 @@
         const statusBadge = isActive
           ? '<span class="inline-block whitespace-nowrap px-2.5 py-0.5 rounded-full text-[10px] font-semibold bg-emerald-50 text-emerald-700 border border-emerald-200">Đang hoạt động</span>'
           : '<span class="inline-block whitespace-nowrap px-2.5 py-0.5 rounded-full text-[10px] font-semibold bg-slate-100 text-slate-600 border border-slate-200">Ngừng hoạt động</span>';
+        const attendanceBadge = (p.attendanceRule === 'SHIFT')
+          ? '<span class="inline-block whitespace-nowrap px-2.5 py-0.5 rounded-full text-[10px] font-semibold bg-amber-50 text-amber-800 border border-amber-200">Theo ca</span>'
+          : '<span class="inline-block whitespace-nowrap px-2.5 py-0.5 rounded-full text-[10px] font-semibold bg-blue-50 text-blue-700 border border-blue-200">Theo ngày</span>';
         const weekdayRows = [
           ['T2', p.weeklyPattern?.mon], ['T3', p.weeklyPattern?.tue], ['T4', p.weeklyPattern?.wed],
           ['T5', p.weeklyPattern?.thu], ['T6', p.weeklyPattern?.fri], ['T7', p.weeklyPattern?.sat], ['CN', p.weeklyPattern?.sun]
@@ -18927,6 +19230,7 @@
               </span>
             </td>
             <td class="py-3 px-3 text-center whitespace-nowrap">${statusBadge}</td>
+            <td class="py-3 px-3 text-center whitespace-nowrap">${attendanceBadge}</td>
             <td class="py-3 px-3.5">${cycleHtml}</td>
             <td class="py-3 px-3 text-center whitespace-nowrap">
               <span class="font-bold text-slate-800">${p.weeklyHours ? p.weeklyHours.toFixed(1) + 'h' : '≤ 48.0h'}</span>
@@ -19045,10 +19349,10 @@
     // =========================================================================
     const POLICY_AVAILABLE_SHIFTS = [
       { code: 'HC', label: 'HC (8h)', name: 'Hành chính VP Tiêu chuẩn', timeDesc: '08:00 - 17:00 (Nghỉ trưa 12:00 - 13:00)', hours: 8.0 },
-      { code: 'SANG', label: 'Sáng (4h)', name: 'Ca Sáng', timeDesc: '08:00 - 12:00 (Buổi sáng)', hours: 4.0 },
-      { code: 'CHIEU', label: 'Chiều (3h)', name: 'Ca Chiều', timeDesc: '14:00 - 17:00 (Buổi chiều)', hours: 3.0 },
-      { code: 'S1', label: 'Kíp S1 (12h)', name: 'Kíp Ngày S1', timeDesc: '07:00 - 19:00 (12 tiếng ca ngày)', hours: 12.0 },
-      { code: 'S2', label: 'Kíp S2 (12h)', name: 'Kíp Đêm S2', timeDesc: '19:00 - 07:00 (12 tiếng ca đêm)', hours: 12.0 },
+      { code: 'SA', label: 'Sáng (4h)', name: 'Ca Sáng', timeDesc: '08:00 - 12:00 (Buổi sáng)', hours: 4.0 },
+      { code: 'CH', label: 'Chiều (4h)', name: 'Ca Chiều', timeDesc: '13:00 - 17:00 (Buổi chiều)', hours: 4.0 },
+      { code: 'S1', label: 'Kíp S1 (12h)', name: 'Kíp Ngày S1', timeDesc: '07:00 - 19:00 (12 tiếng ca ngày, không nghỉ giữa ca)', hours: 12.0 },
+      { code: 'S2', label: 'Kíp S2 (12h)', name: 'Kíp Đêm S2', timeDesc: '19:00 - 07:00 (12 tiếng ca đêm, không nghỉ giữa ca)', hours: 12.0 },
       { code: 'HC-DR', label: 'Xe đưa rước (8h)', name: 'Hành chính Tuyến xe đưa rước', timeDesc: '07:30 - 17:00 (Theo giờ xe Cảng)', hours: 8.0 },
       { code: 'TOI', label: 'Ca Tối (4h)', name: 'Ca Tối tăng cường', timeDesc: '18:00 - 22:00 (Buổi tối)', hours: 4.0 }
     ];
@@ -19251,8 +19555,8 @@
         ['mon', 'tue', 'wed', 'thu', 'fri'].forEach(k => currentEditorWeeklyPattern[k] = ['HC']);
         currentEditorWeeklyPattern.sat = ['OFF'];
         currentEditorWeeklyPattern.sun = ['OFF'];
-      } else if (type === 'SANG_CHIEU' || type === 'SPLIT') {
-        ['mon', 'tue', 'wed', 'thu', 'fri'].forEach(k => currentEditorWeeklyPattern[k] = ['SANG', 'CHIEU']);
+      } else if (type === 'SA_CH' || type === 'SANG_CHIEU' || type === 'SPLIT') {
+        ['mon', 'tue', 'wed', 'thu', 'fri'].forEach(k => currentEditorWeeklyPattern[k] = ['SA', 'CH']);
         currentEditorWeeklyPattern.sat = ['OFF'];
         currentEditorWeeklyPattern.sun = ['OFF'];
       }
@@ -19287,6 +19591,8 @@
       if (form) form.reset();
       const codeInput = document.getElementById('add-policy-code');
       if (codeInput) codeInput.disabled = false;
+      const attendanceRuleSelect = document.getElementById('add-policy-attendance-rule');
+      if (attendanceRuleSelect) attendanceRuleSelect.value = 'DAILY';
       document.getElementById('add-policy-modal-title').textContent = 'Tạo mẫu lịch làm việc mới';
       document.getElementById('add-policy-submit-label').textContent = 'Tạo mẫu lịch';
       populateSchedulePolicyUnitOptions();
@@ -19313,6 +19619,8 @@
       document.getElementById('add-policy-code').disabled = true;
       document.getElementById('add-policy-name').value = policy.name || '';
       document.getElementById('add-policy-status').value = policy.isActive === false ? 'INACTIVE' : 'ACTIVE';
+      const attendanceRuleSelect = document.getElementById('add-policy-attendance-rule');
+      if (attendanceRuleSelect) attendanceRuleSelect.value = policy.attendanceRule === 'SHIFT' ? 'SHIFT' : 'DAILY';
       document.getElementById('add-policy-description').value = policy.description || '';
       const unitSelect = document.getElementById('add-policy-units');
       let savedUnit = policy.applicableOrgUnitId || '';
@@ -19544,6 +19852,7 @@
       const audience = `${applicableUnits[0]} · ${applicableEmployeeCodes.length} nhân viên được chọn`;
       const description = document.getElementById('add-policy-description').value.trim();
       const isActive = document.getElementById('add-policy-status').value === 'ACTIVE';
+      const attendanceRule = document.getElementById('add-policy-attendance-rule')?.value === 'SHIFT' ? 'SHIFT' : 'DAILY';
 
       // Build weekly pattern from multi-shift editor
       const weeklyPattern = {
@@ -19583,6 +19892,7 @@
         applicableEmployeeCodes,
         excludedEmployeeCodes: [],
         isActive,
+        attendanceRule,
         weeklyPattern,
         weeklyHours: Math.round(weeklyHours * 10) / 10,
         weeklyDays: Math.round(weeklyDays * 10) / 10,
@@ -19655,7 +19965,8 @@
         typeName: '🏢 Hành chính',
         typeBadgeCls: 'bg-indigo-50 text-[#2E3191] border-indigo-200',
         targetAudience: 'Khối Văn phòng, Gián tiếp, Kế toán, PM, TCHC, Pháp chế',
-        weeklyPattern: { mon: ['SANG', 'CHIEU'], tue: ['HC'], wed: ['HC'], thu: ['HC'], fri: ['HC'], sat: ['OFF'], sun: ['OFF'] },
+        attendanceRule: 'DAILY',
+        weeklyPattern: { mon: ['SA', 'CH'], tue: ['HC'], wed: ['HC'], thu: ['HC'], fri: ['HC'], sat: ['OFF'], sun: ['OFF'] },
         weeklyHours: 40.0,
         weeklyDays: 5.0,
         transport: 'Tự túc phương tiện',
@@ -19669,6 +19980,7 @@
         typeName: '🏢 Hành chính',
         typeBadgeCls: 'bg-emerald-50 text-emerald-800 border-emerald-200',
         targetAudience: 'CBCNV di chuyển bằng tuyến xe đưa rước Cảng (Tuyến TP.HCM - Nhơn Trạch)',
+        attendanceRule: 'DAILY',
         weeklyPattern: { mon: ['HC-DR'], tue: ['HC-DR'], wed: ['HC-DR'], thu: ['HC-DR'], fri: ['HC-DR'], sat: ['OFF'], sun: ['OFF'] },
         weeklyHours: 40.0,
         weeklyDays: 5.0,
@@ -19683,7 +19995,8 @@
         typeName: '🏢 Hành chính',
         typeBadgeCls: 'bg-amber-50 text-amber-800 border-amber-200',
         targetAudience: 'Bộ phận Tiếp nhận chứng từ Hải quan, Hiện trường Cảng',
-        weeklyPattern: { mon: ['HC'], tue: ['HC'], wed: ['HC'], thu: ['HC'], fri: ['HC'], sat: ['SANG'], sun: ['OFF'] },
+        attendanceRule: 'DAILY',
+        weeklyPattern: { mon: ['HC'], tue: ['HC'], wed: ['HC'], thu: ['HC'], fri: ['HC'], sat: ['SA'], sun: ['OFF'] },
         weeklyHours: 44.0,
         weeklyDays: 5.5,
         transport: 'Tự túc phương tiện',
@@ -19697,12 +20010,13 @@
         typeName: '🏢 Hành chính',
         typeBadgeCls: 'bg-indigo-50 text-[#2E3191] border-indigo-200',
         targetAudience: 'Bộ phận Lễ tân, Dịch vụ hỗ trợ Khách hàng và Tiếp nhận hồ sơ',
-        weeklyPattern: { mon: ['SANG', 'CHIEU'], tue: ['SANG', 'CHIEU'], wed: ['SANG', 'CHIEU'], thu: ['SANG', 'CHIEU'], fri: ['SANG', 'CHIEU'], sat: ['OFF'], sun: ['OFF'] },
-        weeklyHours: 35.0,
+        attendanceRule: 'DAILY',
+        weeklyPattern: { mon: ['SA', 'CH'], tue: ['SA', 'CH'], wed: ['SA', 'CH'], thu: ['SA', 'CH'], fri: ['SA', 'CH'], sat: ['OFF'], sun: ['OFF'] },
+        weeklyHours: 40.0,
         weeklyDays: 5.0,
         transport: 'Tự túc phương tiện',
-        rosterNote: 'Tự hiện 2 ca/ngày (Sáng 4h & Chiều 3h) theo mẫu tuần',
-        description: 'Mỗi ngày làm 2 ca: Ca Sáng (08:00 - 12:00) và Ca Chiều (14:00 - 17:00). Thứ Bảy và Chủ Nhật nghỉ tuần.'
+        rosterNote: 'Tự hiện 2 ca/ngày (Sáng 4h & Chiều 4h) theo mẫu tuần',
+        description: 'Mỗi ngày làm 2 ca: Ca Sáng (08:00 - 12:00) và Ca Chiều (13:00 - 17:00). Thứ Bảy và Chủ Nhật nghỉ tuần.'
       }
     ];
 
@@ -19767,9 +20081,9 @@
     // Helper: Lấy thông tin cấu hình chi tiết của 1 ca theo mã ca
     function getShiftDetailsByCode(code) {
       if (!code || code === 'OFF' || code === 'EXEMPT' || code === 'P') return null;
-      const tpl = (typeof shiftTemplatesData !== 'undefined') ? shiftTemplatesData.find(item => item.code === code) : null;
+      const tpl = (typeof shiftTemplatesData !== 'undefined') ? shiftTemplatesData.find(item => item.code === code || (code === 'SANG' && item.code === 'SA') || (code === 'CHIEU' && item.code === 'CH')) : null;
       if (tpl) {
-        const sName = code === 'SANG' ? 'Ca Sáng' : (code === 'CHIEU' ? 'Ca Chiều' : (code === 'S1' ? 'Ca Ngày (S1)' : (code === 'S2' ? 'Ca Đêm (S2)' : (code === 'HC' ? 'Ca Hành chính' : tpl.name))));
+        const sName = (code === 'SA' || code === 'SANG') ? 'Ca Sáng' : ((code === 'CH' || code === 'CHIEU') ? 'Ca Chiều' : (code === 'S1' ? 'Ca Ngày (S1)' : (code === 'S2' ? 'Ca Đêm (S2)' : (code === 'HC' ? 'Ca Hành chính' : tpl.name))));
         return {
           code: tpl.code,
           name: tpl.name,
@@ -19777,19 +20091,19 @@
           startTime: tpl.startTime || '08:00',
           endTime: tpl.endTime || '17:00',
           hours: `${tpl.startTime || '08:00'} - ${tpl.endTime || '17:00'}`,
-          workHours: tpl.code === 'HC' ? 8 : (tpl.code === 'SANG' ? 4 : (tpl.code === 'CHIEU' ? 3 : (tpl.code === 'S1' || tpl.code === 'S2' ? 12 : 8))),
-          rate: tpl.workDayRate || 1.0,
+          workHours: tpl.code === 'HC' ? 8 : ((tpl.code === 'SA' || tpl.code === 'SANG') ? 4 : ((tpl.code === 'CH' || tpl.code === 'CHIEU') ? 4 : (tpl.code === 'S1' || tpl.code === 'S2' ? 12 : 8))),
+          rate: tpl.workDayRate !== undefined ? tpl.workDayRate : 1.0,
           colorHex: tpl.colorHex || '#2E3191',
           cls: tpl.colorCls || 'bg-blue-50 text-[#2E3191] border-blue-200',
           ciWindow: tpl.checkinWindow || `${tpl.startTime || '08:00'} - 15p`,
           coWindow: tpl.checkoutWindow || `${tpl.endTime || '17:00'} - 15p`
         };
       }
-      const def = (typeof shiftDefinitions !== 'undefined') ? shiftDefinitions[code] : null;
+      const def = (typeof shiftDefinitions !== 'undefined') ? (shiftDefinitions[code] || (code === 'SA' ? shiftDefinitions['SANG'] : (code === 'CH' ? shiftDefinitions['CHIEU'] : null))) : null;
       if (def) {
         let sTime = '08:00', eTime = '17:00', wHours = def.hours || 8, sName = def.label;
-        if (code === 'SANG') { sTime = '08:00'; eTime = '12:00'; wHours = 4; sName = 'Ca Sáng'; }
-        else if (code === 'CHIEU') { sTime = '14:00'; eTime = '17:00'; wHours = 3; sName = 'Ca Chiều'; }
+        if (code === 'SA' || code === 'SANG') { sTime = '08:00'; eTime = '12:00'; wHours = 4; sName = 'Ca Sáng'; }
+        else if (code === 'CH' || code === 'CHIEU') { sTime = '13:00'; eTime = '17:00'; wHours = 4; sName = 'Ca Chiều'; }
         else if (code === 'S1' || code === 'CA1') { sTime = '07:00'; eTime = '19:00'; wHours = 12; sName = 'Ca Ngày (S1)'; }
         else if (code === 'S2' || code === 'CA3' || code === 'DEM') { sTime = '19:00'; eTime = '07:00'; wHours = 12; sName = 'Ca Đêm (S2)'; }
         else if (code === 'HC') { sTime = '08:00'; eTime = '17:00'; wHours = 8; sName = 'Ca Hành chính'; }
@@ -19801,7 +20115,7 @@
           endTime: eTime,
           hours: `${sTime} - ${eTime}`,
           workHours: wHours,
-          rate: wHours >= 8 ? 1.0 : (wHours >= 12 ? 1.5 : 0.5),
+          rate: (code === 'SA' || code === 'SANG' || code === 'CH' || code === 'CHIEU') ? 0.5 : (code === 'S1' || code === 'S2' ? 1.0 : (wHours >= 8 ? 1.0 : 0.5)),
           colorHex: def.colorHex || '#2E3191',
           cls: def.cls || 'bg-slate-100 text-slate-700',
           ciWindow: `${sTime} - 15p`,
@@ -19851,7 +20165,7 @@
         if (empPap === 'PAP0008') {
           return { inTime: '07:50', outTime: '--:--', hasPunch: true, punchText: '07:50 - --:--', status: 'MISSING_OUT' };
         }
-        if (shiftCode === 'SANG') {
+        if (shiftCode === 'SA' || shiftCode === 'SANG') {
           return { inTime: '07:54', outTime: '12:05', hasPunch: true, punchText: '07:54 - 12:05', status: 'VALID' };
         }
         if (shiftCode === 'S1' || shiftCode === 'CA1') {
@@ -19867,8 +20181,8 @@
           return { inTime: '--:--', outTime: '--:--', hasPunch: false, punchText: '--:--', status: 'NOT_YET' };
         }
         if (empPap === 'PAP0245') {
-          if (shiftCode === 'CHIEU') {
-            return { inTime: '13:58', outTime: '17:04', hasPunch: true, punchText: '13:58 - 17:04', status: 'VALID' };
+          if (shiftCode === 'CH' || shiftCode === 'CHIEU') {
+            return { inTime: '12:58', outTime: '17:04', hasPunch: true, punchText: '12:58 - 17:04', status: 'VALID' };
           }
           return { inTime: '13:55', outTime: '18:02', hasPunch: true, punchText: '13:55 - 18:02', status: 'VALID' };
         }
@@ -19918,19 +20232,21 @@
         return { code: 'OFF', name: 'Nghỉ tuần', startTime: '—', endTime: '—', breakMinutes: 0, workDayRate: 0.0, colorCls: 'bg-slate-100 text-slate-500 border-slate-200' };
       }
       if (typeof shiftTemplatesData !== 'undefined' && Array.isArray(shiftTemplatesData)) {
-        const found = shiftTemplatesData.find(s => s.code === shiftCode);
+        const found = shiftTemplatesData.find(s => s.code === shiftCode || (shiftCode === 'SANG' && s.code === 'SA') || (shiftCode === 'CHIEU' && s.code === 'CH'));
         if (found) return found;
       }
       const fallbacks = {
         'HC': { code: 'HC', name: 'Ca Hành chính (08:00 - 17:00)', startTime: '08:00', endTime: '17:00', breakMinutes: 60, breakStartTime: '12:00', breakEndTime: '13:00', workDayRate: 1.0, colorCls: 'bg-blue-50 text-[#2E3191] border-blue-200', checkinWindow: '08:00 - 08:15', checkoutWindow: '16:45 - 17:00', ciLateMin: 15, coEarlyMin: 15 },
-        'SANG': { code: 'SANG', name: 'Ca Sáng (08:00 - 12:00)', startTime: '08:00', endTime: '12:00', breakMinutes: 0, workDayRate: 0.5, colorCls: 'bg-sky-50 text-sky-800 border-sky-200', checkinWindow: '08:00 - 08:15', checkoutWindow: '11:45 - 12:00', ciLateMin: 15, coEarlyMin: 15 },
-        'CHIEU': { code: 'CHIEU', name: 'Ca Chiều (14:00 - 17:00)', startTime: '14:00', endTime: '17:00', breakMinutes: 0, workDayRate: 0.5, colorCls: 'bg-amber-50 text-amber-800 border-amber-200', checkinWindow: '14:00 - 14:15', checkoutWindow: '16:45 - 17:00', ciLateMin: 15, coEarlyMin: 15 },
-        'S1': { code: 'S1', name: 'Ca Ngày - S1 (07:00 - 19:00)', startTime: '07:00', endTime: '19:00', breakMinutes: 60, breakStartTime: '12:00', breakEndTime: '13:00', workDayRate: 1.5, isOvernight: false, colorCls: 'bg-emerald-50 text-emerald-800 border-emerald-200', checkinWindow: '07:00 - 07:15', checkoutWindow: '18:45 - 19:00', ciLateMin: 15, coEarlyMin: 15 },
-        'S2': { code: 'S2', name: 'Ca Đêm - S2 (19:00 - 07:00) 🌙', startTime: '19:00', endTime: '07:00', breakMinutes: 60, breakStartTime: '00:00', breakEndTime: '01:00', workDayRate: 1.5, isOvernight: true, colorCls: 'bg-purple-50 text-purple-700 border-purple-200', checkinWindow: '19:00 - 19:15', checkoutWindow: '06:45 - 07:00', ciLateMin: 15, coEarlyMin: 15 },
+        'SA': { code: 'SA', name: 'Ca Sáng (08:00 - 12:00)', startTime: '08:00', endTime: '12:00', breakMinutes: 0, breakStartTime: '', breakEndTime: '', workDayRate: 0.5, colorCls: 'bg-sky-50 text-sky-800 border-sky-200', checkinWindow: '08:00 - 08:15', checkoutWindow: '11:45 - 12:00', ciLateMin: 15, coEarlyMin: 15 },
+        'SANG': { code: 'SA', name: 'Ca Sáng (08:00 - 12:00)', startTime: '08:00', endTime: '12:00', breakMinutes: 0, breakStartTime: '', breakEndTime: '', workDayRate: 0.5, colorCls: 'bg-sky-50 text-sky-800 border-sky-200', checkinWindow: '08:00 - 08:15', checkoutWindow: '11:45 - 12:00', ciLateMin: 15, coEarlyMin: 15 },
+        'CH': { code: 'CH', name: 'Ca Chiều (13:00 - 17:00)', startTime: '13:00', endTime: '17:00', breakMinutes: 0, breakStartTime: '', breakEndTime: '', workDayRate: 0.5, colorCls: 'bg-amber-50 text-amber-800 border-amber-200', checkinWindow: '13:00 - 13:15', checkoutWindow: '16:45 - 17:00', ciLateMin: 15, coEarlyMin: 15 },
+        'CHIEU': { code: 'CH', name: 'Ca Chiều (13:00 - 17:00)', startTime: '13:00', endTime: '17:00', breakMinutes: 0, breakStartTime: '', breakEndTime: '', workDayRate: 0.5, colorCls: 'bg-amber-50 text-amber-800 border-amber-200', checkinWindow: '13:00 - 13:15', checkoutWindow: '16:45 - 17:00', ciLateMin: 15, coEarlyMin: 15 },
+        'S1': { code: 'S1', name: 'Ca Ngày - S1 (07:00 - 19:00)', startTime: '07:00', endTime: '19:00', breakMinutes: 0, breakStartTime: '', breakEndTime: '', workDayRate: 1.0, isOvernight: false, colorCls: 'bg-emerald-50 text-emerald-800 border-emerald-200', checkinWindow: '07:00 - 07:15', checkoutWindow: '18:45 - 19:00', ciLateMin: 15, coEarlyMin: 15 },
+        'S2': { code: 'S2', name: 'Ca Đêm - S2 (19:00 - 07:00) 🌙', startTime: '19:00', endTime: '07:00', breakMinutes: 0, breakStartTime: '', breakEndTime: '', workDayRate: 1.0, isOvernight: true, colorCls: 'bg-purple-50 text-purple-700 border-purple-200', checkinWindow: '19:00 - 19:15', checkoutWindow: '06:45 - 07:00', ciLateMin: 15, coEarlyMin: 15 },
         'HC-DR': { code: 'HC-DR', name: 'Hành chính Xe đưa rước', startTime: '07:30', endTime: '17:00', breakMinutes: 60, workDayRate: 1.0, colorCls: 'bg-emerald-50 text-emerald-800 border-emerald-200', checkinWindow: '07:30 - 08:00', checkoutWindow: '16:45 - 17:00', ciLateMin: 30, coEarlyMin: 15 },
-        'CA1': { code: 'S1', name: 'Ca Ngày - S1 (07:00 - 19:00)', startTime: '07:00', endTime: '19:00', breakMinutes: 60, breakStartTime: '12:00', breakEndTime: '13:00', workDayRate: 1.5, isOvernight: false, colorCls: 'bg-emerald-50 text-emerald-800 border-emerald-200', checkinWindow: '07:00 - 07:15', checkoutWindow: '18:45 - 19:00', ciLateMin: 15, coEarlyMin: 15 },
-        'CA2': { code: 'CHIEU', name: 'Ca Chiều (14:00 - 17:00)', startTime: '14:00', endTime: '17:00', breakMinutes: 0, workDayRate: 0.5, colorCls: 'bg-amber-50 text-amber-800 border-amber-200', checkinWindow: '14:00 - 14:15', checkoutWindow: '16:45 - 17:00', ciLateMin: 15, coEarlyMin: 15 },
-        'CA3': { code: 'S2', name: 'Ca Đêm - S2 (19:00 - 07:00) 🌙', startTime: '19:00', endTime: '07:00', breakMinutes: 60, breakStartTime: '00:00', breakEndTime: '01:00', workDayRate: 1.5, isOvernight: true, colorCls: 'bg-purple-50 text-purple-700 border-purple-200', checkinWindow: '19:00 - 19:15', checkoutWindow: '06:45 - 07:00', ciLateMin: 15, coEarlyMin: 15 },
+        'CA1': { code: 'S1', name: 'Ca Ngày - S1 (07:00 - 19:00)', startTime: '07:00', endTime: '19:00', breakMinutes: 0, breakStartTime: '', breakEndTime: '', workDayRate: 1.0, isOvernight: false, colorCls: 'bg-emerald-50 text-emerald-800 border-emerald-200', checkinWindow: '07:00 - 07:15', checkoutWindow: '18:45 - 19:00', ciLateMin: 15, coEarlyMin: 15 },
+        'CA2': { code: 'CH', name: 'Ca Chiều (13:00 - 17:00)', startTime: '13:00', endTime: '17:00', breakMinutes: 0, breakStartTime: '', breakEndTime: '', workDayRate: 0.5, colorCls: 'bg-amber-50 text-amber-800 border-amber-200', checkinWindow: '13:00 - 13:15', checkoutWindow: '16:45 - 17:00', ciLateMin: 15, coEarlyMin: 15 },
+        'CA3': { code: 'S2', name: 'Ca Đêm - S2 (19:00 - 07:00) 🌙', startTime: '19:00', endTime: '07:00', breakMinutes: 0, breakStartTime: '', breakEndTime: '', workDayRate: 1.0, isOvernight: true, colorCls: 'bg-purple-50 text-purple-700 border-purple-200', checkinWindow: '19:00 - 19:15', checkoutWindow: '06:45 - 07:00', ciLateMin: 15, coEarlyMin: 15 },
         'GAY-01': { code: 'GAY-01', name: 'Ca Gãy CSKH & Điều phối', startTime: '08:00', endTime: '21:00', breakMinutes: 300, workDayRate: 1.0, colorCls: 'bg-rose-50 text-rose-700 border-rose-200', checkinWindow: '08:00 - 08:15', checkoutWindow: '20:45 - 21:00', ciLateMin: 15, coEarlyMin: 15 }
       };
       return fallbacks[shiftCode] || fallbacks['HC'];
@@ -20570,7 +20886,7 @@
         if (typeof updateApprovalBadges === 'function') updateApprovalBadges();
       }
       if (moduleKey === 'attendance') {
-        const targetTab = (typeof currentAttendanceTabKey !== 'undefined' && currentAttendanceTabKey) ? currentAttendanceTabKey : 'daily';
+        const targetTab = (typeof currentAttendanceTabKey !== 'undefined' && currentAttendanceTabKey) ? currentAttendanceTabKey : 'lock';
         if (typeof switchAttendanceTab === 'function') switchAttendanceTab(targetTab);
         else if (typeof renderAttendanceDailyTimesheet === 'function') renderAttendanceDailyTimesheet();
       }
@@ -24645,19 +24961,35 @@
         cls: 'bg-blue-50 text-[#2E3191] border-blue-200 font-bold', 
         colorHex: '#2E3191' 
       },
+      'SA': { 
+        code: 'SA', 
+        label: 'SA', 
+        name: 'Ca Sáng (08:00 - 12:00)', 
+        hours: 4.0, 
+        cls: 'bg-sky-50 text-sky-700 border-sky-200 font-bold', 
+        colorHex: '#0284C7' 
+      },
+      'CH': { 
+        code: 'CH', 
+        label: 'CH', 
+        name: 'Ca Chiều (13:00 - 17:00)', 
+        hours: 4.0, 
+        cls: 'bg-amber-50 text-amber-800 border-amber-200 font-bold', 
+        colorHex: '#D97706' 
+      },
       'SANG': { 
-        code: 'SANG', 
-        label: 'SÁNG', 
+        code: 'SA', 
+        label: 'SA', 
         name: 'Ca Sáng (08:00 - 12:00)', 
         hours: 4.0, 
         cls: 'bg-sky-50 text-sky-700 border-sky-200 font-bold', 
         colorHex: '#0284C7' 
       },
       'CHIEU': { 
-        code: 'CHIEU', 
-        label: 'CHIỀU', 
-        name: 'Ca Chiều (14:00 - 17:00)', 
-        hours: 3.0, 
+        code: 'CH', 
+        label: 'CH', 
+        name: 'Ca Chiều (13:00 - 17:00)', 
+        hours: 4.0, 
         cls: 'bg-amber-50 text-amber-800 border-amber-200 font-bold', 
         colorHex: '#D97706' 
       },
@@ -24679,7 +25011,7 @@
       },
       // Hỗ trợ tương thích ngược (Legacy Aliases)
       'CA1': { code: 'S1', label: 'S1', name: 'Ca Ngày S1 (07:00 - 19:00)', hours: 12.0, cls: 'bg-emerald-50 text-emerald-800 border-emerald-200 font-bold', colorHex: '#059669' },
-      'CA2': { code: 'CHIEU', label: 'CHIỀU', name: 'Ca Chiều (14:00 - 17:00)', hours: 3.0, cls: 'bg-amber-50 text-amber-800 border-amber-200 font-bold', colorHex: '#D97706' },
+      'CA2': { code: 'CH', label: 'CH', name: 'Ca Chiều (13:00 - 17:00)', hours: 4.0, cls: 'bg-amber-50 text-amber-800 border-amber-200 font-bold', colorHex: '#D97706' },
       'CA3': { code: 'S2', label: 'S2 🌙', name: 'Ca Đêm S2 (19:00 - 07:00 hôm sau)', hours: 12.0, cls: 'bg-purple-50 text-purple-700 border-purple-200 font-bold', colorHex: '#7C3AED' },
       'DEM': { code: 'S2', label: 'S2 🌙', name: 'Ca Đêm S2 (19:00 - 07:00 hôm sau)', hours: 12.0, cls: 'bg-purple-50 text-purple-700 border-purple-200 font-bold', colorHex: '#7C3AED' },
       'HC-DR': { code: 'HC-DR', label: 'HC-DR', name: 'Hành chính Tuyến xe (07:30 - 17:00)', hours: 8.0, cls: 'bg-emerald-50 text-emerald-800 border-emerald-200', colorHex: '#059669' },
@@ -24908,7 +25240,7 @@
         'PAP0003': ['HC', 'HC', 'HC', 'HC', 'HC', 'OFF', 'OFF'],
         'PAP0010': ['HC-DR', 'HC-DR', 'HC-DR', 'HC-DR', 'HC-DR', 'OFF', 'OFF'],
         'PAP0012': ['HC-DR', 'HC-DR', 'HC-DR', 'HC-DR', 'HC-DR', 'OFF', 'OFF'],
-        'PAP0020': ['HC', 'HC', 'HC', 'HC', 'HC', 'SANG', 'OFF'],
+        'PAP0020': ['HC', 'HC', 'HC', 'HC', 'HC', 'SA', 'OFF'],
         'PAP0034': ['S1', 'S1', 'S2', 'S2', 'OFF', 'OFF', 'S1'],
         'PAP0089': ['S2', 'S2', 'OFF', 'OFF', 'S1', 'S1', 'S2'],
         'PAP0154': ['OFF', 'S1', 'S1', 'S2', 'S2', 'OFF', 'OFF'],
@@ -25184,7 +25516,7 @@
         createdAt: '01/01/2026 08:30', createdBy: 'AdminSystem', updatedAt: '25/09/2026 14:30', updatedBy: 'AdminSystem'
       },
       {
-        code: 'SANG',
+        code: 'SA',
         name: 'Ca Sáng (08:00 - 12:00)',
         branchCode: 'ALL',
         branchName: 'Toàn Cảng',
@@ -25205,24 +25537,24 @@
         createdAt: '01/01/2026 08:30', createdBy: 'AdminSystem', updatedAt: '25/09/2026 14:30', updatedBy: 'AdminSystem'
       },
       {
-        code: 'CHIEU',
-        name: 'Ca Chiều (14:00 - 17:00)',
+        code: 'CH',
+        name: 'Ca Chiều (13:00 - 17:00)',
         branchCode: 'ALL',
         branchName: 'Toàn Cảng',
-        startTime: '14:00',
+        startTime: '13:00',
         endTime: '17:00',
         breakMinutes: 0,
         workDayRate: 0.5,
         isOvernight: false,
         ciLateMin: 15,
         coEarlyMin: 15,
-        checkinWindow: '14:00 - 14:15',
+        checkinWindow: '13:00 - 13:15',
         checkoutWindow: '16:45 - 17:00',
         status: 'ACTIVE',
         colorKey: 'amber',
         colorHex: '#D97706',
         colorCls: 'bg-amber-50 text-amber-800 border-amber-200',
-        note: 'Ca Chiều 14h - 17h (thời lượng 3 tiếng, tính 0.5 công chuẩn)',
+        note: 'Ca Chiều 13h - 17h (thời lượng 4 tiếng, tính 0.5 công chuẩn)',
         createdAt: '01/01/2026 08:30', createdBy: 'AdminSystem', updatedAt: '25/09/2026 14:30', updatedBy: 'AdminSystem'
       },
       {
@@ -25232,10 +25564,10 @@
         branchName: 'Phòng Vận hành Cầu bến',
         startTime: '07:00',
         endTime: '19:00',
-        breakMinutes: 60,
-        breakStartTime: '12:00',
-        breakEndTime: '13:00',
-        workDayRate: 1.5,
+        breakMinutes: 0,
+        breakStartTime: '',
+        breakEndTime: '',
+        workDayRate: 1.0,
         isOvernight: false,
         ciLateMin: 15,
         coEarlyMin: 15,
@@ -25245,7 +25577,7 @@
         colorKey: 'emerald',
         colorHex: '#059669',
         colorCls: 'bg-emerald-50 text-emerald-800 border-emerald-200',
-        note: 'Ca Ngày kíp 12h: 07:00 - 19:00 (Nghỉ giữa ca 60 phút: 12:00 - 13:00). Vận hành cẩu giàn STS, bến bãi container 24/7',
+        note: 'Ca Ngày kíp 12h: 07:00 - 19:00 (Không nghỉ giữa ca, tính 1.0 công). Vận hành cẩu giàn STS, bến bãi container 24/7',
         createdAt: '01/01/2026 08:30', createdBy: 'AdminSystem', updatedAt: '25/09/2026 14:30', updatedBy: 'AdminSystem'
       },
       {
@@ -25255,10 +25587,10 @@
         branchName: 'Phòng Vận hành Cầu bến',
         startTime: '19:00',
         endTime: '07:00',
-        breakMinutes: 60,
-        breakStartTime: '00:00',
-        breakEndTime: '01:00',
-        workDayRate: 1.5,
+        breakMinutes: 0,
+        breakStartTime: '',
+        breakEndTime: '',
+        workDayRate: 1.0,
         isOvernight: true,
         ciLateMin: 15,
         coEarlyMin: 15,
@@ -25268,7 +25600,7 @@
         colorKey: 'purple',
         colorHex: '#7C3AED',
         colorCls: 'bg-purple-50 text-purple-700 border-purple-200',
-        note: 'Ca Đêm kíp 12h: 19:00 - 07:00 hôm sau (Nghỉ ăn đêm 60 phút: 00:00 - 01:00). Vận hành bến bãi xuyên đêm (Qua ngày)',
+        note: 'Ca Đêm kíp 12h: 19:00 - 07:00 hôm sau (Không nghỉ giữa ca, tính 1.0 công). Vận hành bến bãi xuyên đêm (Qua ngày)',
         createdAt: '01/01/2026 08:30', createdBy: 'AdminSystem', updatedAt: '25/09/2026 14:30', updatedBy: 'AdminSystem'
       },
       {
@@ -25542,7 +25874,7 @@
         targetName: 'Nguyễn Văn Long',
         targetDept: 'Phòng Vận hành Cầu bến',
         targetDate: '10/09/2026 (Thứ 5)',
-        targetShift: 'CHIEU',
+        targetShift: 'CH',
         reason: 'Có việc gia đình đột xuất ca đêm, đã thỏa thuận đổi sang ca chiều',
         step: 1,
         status: 'WAIT_PEER', // 🟡 Bước 1: Chờ B xác nhận
@@ -26800,7 +27132,7 @@
 
     function summarizeScheduleShifts(shiftCodes) {
       const excluded = new Set(['OFF', 'EXEMPT', 'P', 'UNSCHEDULED', 'UNASSIGNED']);
-      const aliases = { CA1: 'S1', CA2: 'CHIEU', CA3: 'S2', DEM: 'S2' };
+      const aliases = { CA1: 'S1', CA2: 'CH', SANG: 'SA', CHIEU: 'CH', CA3: 'S2', DEM: 'S2' };
       const counts = {};
       shiftCodes.forEach(code => {
         if (!code || excluded.has(code)) return;
@@ -26854,8 +27186,8 @@
         });
         let matchShift = true;
         if (shiftFilter !== 'ALL') {
-          if (shiftFilter === 'SANG') matchShift = visibleShifts.includes('SANG') || visibleShifts.includes('CA1');
-          else if (shiftFilter === 'CHIEU') matchShift = visibleShifts.includes('CHIEU') || visibleShifts.includes('CA2');
+          if (shiftFilter === 'SA' || shiftFilter === 'SANG') matchShift = visibleShifts.includes('SA') || visibleShifts.includes('SANG') || visibleShifts.includes('CA1');
+          else if (shiftFilter === 'CH' || shiftFilter === 'CHIEU') matchShift = visibleShifts.includes('CH') || visibleShifts.includes('CHIEU') || visibleShifts.includes('CA2');
           else if (shiftFilter === 'S1') matchShift = visibleShifts.includes('S1') || visibleShifts.includes('CA1');
           else if (shiftFilter === 'S2') matchShift = visibleShifts.includes('S2') || visibleShifts.includes('DEM') || visibleShifts.includes('CA3');
           else if (shiftFilter === 'DEM') matchShift = visibleShifts.includes('S2') || visibleShifts.includes('DEM') || visibleShifts.includes('CA3');
@@ -27221,8 +27553,8 @@
             ? scheduleDraftChanges[source.sourceWeek]?.[`${emp.pap}_${source.dayIdx}`]
             : null;
           const shift = draft?.newShift || source.code;
-          if (shiftFilter === 'SANG') return ['SANG', 'CA1'].includes(shift);
-          if (shiftFilter === 'CHIEU') return ['CHIEU', 'CA2'].includes(shift);
+          if (shiftFilter === 'SA' || shiftFilter === 'SANG') return ['SA', 'SANG', 'CA1'].includes(shift);
+          if (shiftFilter === 'CH' || shiftFilter === 'CHIEU') return ['CH', 'CHIEU', 'CA2'].includes(shift);
           if (shiftFilter === 'S1') return ['S1', 'CA1'].includes(shift);
           if (shiftFilter === 'S2' || shiftFilter === 'DEM') return ['S2', 'DEM', 'CA3'].includes(shift);
           return shift === shiftFilter;
@@ -27497,7 +27829,7 @@
           tagsContainer.innerHTML = `<span class="px-2.5 py-0.5 rounded-full text-xs font-semibold bg-rose-50 text-rose-700 border border-rose-200">🔴 Nghỉ tuần (OFF)</span>`;
         } else {
           tagsContainer.innerHTML = selectedCellShiftCodes.map(c => {
-            const tpl = (typeof shiftTemplatesData !== 'undefined') ? shiftTemplatesData.find(t => t.code === c) : null;
+            const tpl = (typeof shiftTemplatesData !== 'undefined') ? shiftTemplatesData.find(t => t.code === c || (c === 'SANG' && t.code === 'SA') || (c === 'CHIEU' && t.code === 'CH')) : null;
             const shiftName = tpl ? tpl.name : c;
             return `
               <span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-md text-xs font-bold bg-indigo-50 text-[#2E3191] border border-indigo-200 shadow-2xs">
@@ -27519,10 +27851,11 @@
           let totalHours = 0;
           let totalRate = 0;
           selectedCellShiftCodes.forEach(c => {
-            const tpl = (typeof shiftTemplatesData !== 'undefined') ? shiftTemplatesData.find(t => t.code === c) : null;
+            const tpl = (typeof shiftTemplatesData !== 'undefined') ? shiftTemplatesData.find(t => t.code === c || (c === 'SANG' && t.code === 'SA') || (c === 'CHIEU' && t.code === 'CH')) : null;
             if (tpl) {
-              totalHours += (tpl.workHours || 8);
-              totalRate += (tpl.workDayRate || 1.0);
+              const defHours = tpl.code === 'HC' ? 8 : ((tpl.code === 'SA' || tpl.code === 'CH') ? 4 : (tpl.code === 'S1' || tpl.code === 'S2' ? 12 : 8));
+              totalHours += (tpl.workHours || defHours);
+              totalRate += (tpl.workDayRate !== undefined ? tpl.workDayRate : 1.0);
             }
           });
           statsContainer.innerText = `Tổng: ${totalHours.toFixed(1)}h · ${totalRate.toFixed(1)} công`;
@@ -27682,7 +28015,7 @@
       const lockText = document.getElementById('modal-cell-lock-text');
 
       // Tra cứu thông tin ca
-      const tpl = (typeof shiftTemplatesData !== 'undefined') ? shiftTemplatesData.find(t => t.code === shiftCode) : null;
+      const tpl = (typeof shiftTemplatesData !== 'undefined') ? shiftTemplatesData.find(t => t.code === shiftCode || (shiftCode === 'SANG' && t.code === 'SA') || (shiftCode === 'CHIEU' && t.code === 'CH')) : null;
       const shiftDef = shiftDefinitions[shiftCode] || shiftDefinitions['HC'];
 
       // Huy hiệu ca
@@ -28116,8 +28449,8 @@
     function populateCreateScheduleShiftOptions() {
       const shiftCatalogList = [
         { code: 'HC', label: '[HC] Ca Hành chính (08:00 - 17:00)', hours: 8.0 },
-        { code: 'SANG', label: '[SANG] Ca Sáng (08:00 - 12:00)', hours: 4.0 },
-        { code: 'CHIEU', label: '[CHIEU] Ca Chiều (14:00 - 17:00)', hours: 3.0 },
+        { code: 'SA', label: '[SA] Ca Sáng (08:00 - 12:00)', hours: 4.0 },
+        { code: 'CH', label: '[CH] Ca Chiều (13:00 - 17:00)', hours: 4.0 },
         { code: 'S1', label: '[S1] Ca Ngày (07:00 - 19:00)', hours: 12.0 },
         { code: 'S2', label: '[S2] Ca Đêm (19:00 - 07:00)', hours: 12.0 },
         { code: 'HC-DR', label: '[HC-DR] Hành chính Xe đưa rước (07:30 - 17:00)', hours: 8.0 },
@@ -28199,14 +28532,14 @@
           ]
         },
         'VP_SAT': {
-          name: '🏢 VP + T7 Sáng: T2-T6 [HC], T7 [SANG], CN [OFF]',
+          name: '🏢 VP + T7 Sáng: T2-T6 [HC], T7 [SA], CN [OFF]',
           days: [
             { checked: true, shift: 'HC' },
             { checked: true, shift: 'HC' },
             { checked: true, shift: 'HC' },
             { checked: true, shift: 'HC' },
             { checked: true, shift: 'HC' },
-            { checked: true, shift: 'SANG' },
+            { checked: true, shift: 'SA' },
             { checked: false, shift: 'OFF' }
           ]
         },
@@ -28259,15 +28592,15 @@
           ]
         },
         'CA2_ALL': {
-          name: '⚓ Cả tuần: [CHIEU] Ca Chiều',
+          name: '⚓ Cả tuần: [CH] Ca Chiều',
           days: [
-            { checked: true, shift: 'CHIEU' },
-            { checked: true, shift: 'CHIEU' },
-            { checked: true, shift: 'CHIEU' },
-            { checked: true, shift: 'CHIEU' },
-            { checked: true, shift: 'CHIEU' },
-            { checked: true, shift: 'CHIEU' },
-            { checked: true, shift: 'CHIEU' }
+            { checked: true, shift: 'CH' },
+            { checked: true, shift: 'CH' },
+            { checked: true, shift: 'CH' },
+            { checked: true, shift: 'CH' },
+            { checked: true, shift: 'CH' },
+            { checked: true, shift: 'CH' },
+            { checked: true, shift: 'CH' }
           ]
         },
         'CA3_ALL': {
@@ -29352,12 +29685,12 @@
       setTimeout(renderBulkShiftPreviewGrid, 50);
       const presets = {
         'VP_STD': ['HC', 'HC', 'HC', 'HC', 'HC', 'OFF', 'OFF'],
-        'VP_SAT': ['HC', 'HC', 'HC', 'HC', 'HC', 'SANG', 'OFF'],
+        'VP_SAT': ['HC', 'HC', 'HC', 'HC', 'HC', 'SA', 'OFF'],
         'VP_DR': ['HC-DR', 'HC-DR', 'HC-DR', 'HC-DR', 'HC-DR', 'OFF', 'OFF'],
         'S1_ALL': ['S1', 'S1', 'S1', 'S1', 'S1', 'OFF', 'OFF'],
         'S2_ALL': ['S2', 'S2', 'S2', 'S2', 'S2', 'OFF', 'OFF'],
         'CA1_ALL': ['S1', 'S1', 'S1', 'S1', 'S1', 'OFF', 'OFF'],
-        'CA2_ALL': ['CHIEU', 'CHIEU', 'CHIEU', 'CHIEU', 'CHIEU', 'OFF', 'OFF'],
+        'CA2_ALL': ['CH', 'CH', 'CH', 'CH', 'CH', 'OFF', 'OFF'],
         'CA3_ALL': ['S2', 'S2', 'S2', 'S2', 'S2', 'OFF', 'OFF']
       };
       const arr = presets[preset];
@@ -29784,8 +30117,8 @@
       // 2. Điền options ca cho 7 ngày
       const shortShiftOptions = [
         { code: 'HC', label: 'HC (08:00 - 17:00)' },
-        { code: 'SANG', label: 'SANG (08:00 - 12:00)' },
-        { code: 'CHIEU', label: 'CHIEU (14:00 - 17:00)' },
+        { code: 'SA', label: 'SA (08:00 - 12:00)' },
+        { code: 'CH', label: 'CH (13:00 - 17:00)' },
         { code: 'S1', label: 'S1 (07:00 - 19:00)' },
         { code: 'S2', label: 'S2 (19:00 - 07:00)' },
         { code: 'HC-DR', label: 'HC Tuyến xe (07:30 - 17:00)' },
@@ -29891,7 +30224,7 @@
           const sel = document.getElementById(`bulk-shift-d${d}`);
           if (sel) {
             if (d < 5) sel.value = 'HC';
-            else if (d === 5) sel.value = 'SANG';
+            else if (d === 5) sel.value = 'SA';
             else sel.value = 'OFF';
           }
         }
@@ -29899,6 +30232,11 @@
         for (let d = 0; d < 7; d++) {
           const sel = document.getElementById(`bulk-shift-d${d}`);
           if (sel) sel.value = 'S1';
+        }
+      } else if (preset === 'CA2_ALL') {
+        for (let d = 0; d < 7; d++) {
+          const sel = document.getElementById(`bulk-shift-d${d}`);
+          if (sel) sel.value = (d < 5) ? 'CH' : 'OFF';
         }
       }
 
@@ -29926,8 +30264,8 @@
       const badgeForShift = (s) => {
         if (!s) return '<span class="text-[11px] text-slate-400">Chưa xếp ca</span>';
         if (s === 'HC') return '<span class="px-2 py-0.5 rounded text-[11px] font-bold bg-blue-50 text-[#2E3191] border border-blue-200">HC</span>';
-        if (s === 'SANG') return '<span class="px-2 py-0.5 rounded text-[11px] font-bold bg-sky-50 text-sky-800 border border-sky-200">SÁNG</span>';
-        if (s === 'CHIEU') return '<span class="px-2 py-0.5 rounded text-[11px] font-bold bg-amber-50 text-amber-800 border border-amber-200">CHIỀU</span>';
+        if (s === 'SA' || s === 'SANG') return '<span class="px-2 py-0.5 rounded text-[11px] font-bold bg-sky-50 text-sky-800 border border-sky-200">SA</span>';
+        if (s === 'CH' || s === 'CHIEU') return '<span class="px-2 py-0.5 rounded text-[11px] font-bold bg-amber-50 text-amber-800 border border-amber-200">CH</span>';
         if (s === 'S1') return '<span class="px-2 py-0.5 rounded text-[11px] font-bold bg-emerald-50 text-emerald-800 border border-emerald-200">S1</span>';
         if (s === 'S2') return '<span class="px-2 py-0.5 rounded text-[11px] font-bold bg-purple-50 text-purple-700 border border-purple-200">S2</span>';
         if (s === 'CA1') return '<span class="px-2 py-0.5 rounded text-[11px] font-bold bg-emerald-50 text-emerald-700 border border-emerald-200">CA1</span>';
@@ -30098,7 +30436,7 @@
           shifts.map(item => `<option value="${item.code}">[${item.code}] ${item.name} (${item.startTime} - ${item.endTime})</option>`).join('') +
           '</optgroup>' +
           '<optgroup label="Ghép nhiều ca trong ngày">' +
-          '<option value="SANG+CHIEU">[SANG+CHIEU] Ca Sáng & Chiều (08:00 - 12:00 & 14:00 - 17:00 • 7h • 1 công)</option>' +
+          '<option value="SA+CH">[SA+CH] Ca Sáng & Chiều (08:00 - 12:00 & 13:00 - 17:00 • 8h • 1 công)</option>' +
           '<option value="S1+S2">[S1+S2] Ca Ngày S1 & Ca Đêm S2 (24h • 3 công)</option>' +
           '</optgroup>' +
           '<optgroup label="Nghỉ">' +
@@ -30378,7 +30716,7 @@
           shifts.map(item => `<option value="${item.code}">[${item.code}] ${item.name} (${item.startTime} - ${item.endTime})</option>`).join('') +
           '</optgroup>' +
           '<optgroup label="Ghép nhiều ca trong ngày">' +
-          '<option value="SANG+CHIEU">[SANG+CHIEU] Ca Sáng & Chiều (08:00 - 12:00 & 14:00 - 17:00 • 7h • 1 công)</option>' +
+          '<option value="SA+CH">[SA+CH] Ca Sáng & Chiều (08:00 - 12:00 & 13:00 - 17:00 • 8h • 1 công)</option>' +
           '<option value="S1+S2">[S1+S2] Ca Ngày S1 & Ca Đêm S2 (24h • 3 công)</option>' +
           '</optgroup>' +
           '<optgroup label="Nghỉ">' +
@@ -30813,10 +31151,10 @@
       const targetPap = document.getElementById('swap-target-emp') ? document.getElementById('swap-target-emp').value : '';
       const currentList = scheduleWeekStore[currentScheduleWeekKey] || defaultWeekSchedule;
       const sched = currentList.find(s => s.pap === targetPap);
-      const targetShift = sched ? (sched.shifts[2] || 'CHIEU') : 'CHIEU';
-      const def = shiftDefinitions[targetShift] || shiftDefinitions['CHIEU'];
+      const targetShift = sched ? (sched.shifts[2] || 'CH') : 'CH';
+      const def = shiftDefinitions[targetShift] || shiftDefinitions['CH'] || shiftDefinitions['CHIEU'];
       if (document.getElementById('swap-target-shift')) {
-        document.getElementById('swap-target-shift').value = def.name;
+        document.getElementById('swap-target-shift').value = def ? def.name : targetShift;
       }
     }
 
@@ -30846,7 +31184,7 @@
         targetName: empB ? empB.name : targetPap,
         targetDept: empB ? empB.dept : 'Cảng Phước An',
         targetDate: '10/09/2026 (Thứ 5)',
-        targetShift: 'CHIEU',
+        targetShift: 'CH',
         reason: reason,
         step: 1,
         status: 'WAIT_PEER',
@@ -36351,23 +36689,23 @@
 
     // 1. Dữ liệu Nhật ký chấm công thô (Raw Logs)
     let attendanceRawLogs = [
-      { id: 'LOG-001', pap: 'PAP0001', name: 'Phạm Quốc Tuấn', dept: 'CÔNG TY CP CẢNG PHƯỚC AN', date: '2026-09-28', time: '07:45:12', type: 'IN', loc: 'Trụ sở Điều hành Cảng', dist: '25m / 500m', dev: 'iPhone 15 Pro Max • iOS 18.0', isValid: true, note: 'Check-in đúng giờ' },
-      { id: 'LOG-002', pap: 'PAP0002', name: 'Nguyễn Văn Hải', dept: 'PHÒNG KHAI THÁC CẢNG', date: '2026-09-28', time: '07:48:22', type: 'IN', loc: 'Trụ sở Điều hành Cảng', dist: '35m / 500m', dev: 'Samsung Galaxy S24 • Android 14', isValid: true, note: 'Xe đưa rước đến cổng chính' },
-      { id: 'LOG-003', pap: 'PAP0003', name: 'Trần Thị Kim Oanh', dept: 'PHÒNG HÀNH CHÍNH NHÂN SỰ', date: '2026-09-28', time: '07:52:05', type: 'IN', loc: 'Trụ sở Điều hành Cảng', dist: '40m / 500m', dev: 'iPhone 13 • iOS 17.6', isValid: true, note: 'Check-in sảnh A' },
-      { id: 'LOG-004', pap: 'PAP0004', name: 'Lê Minh Quân', dept: 'PHÒNG KỸ THUẬT CÔNG NGHỆ', date: '2026-09-28', time: '06:55:18', type: 'IN', loc: 'Cầu bến Container số 1 & 2', dist: '45m / 350m', dev: 'Xiaomi 13T • Android 14', isValid: true, note: 'Ca S1 trực điều độ cẩu STS' },
-      { id: 'LOG-005', pap: 'PAP0005', name: 'Vũ Đình Trọng', dept: 'PHÒNG LOGISTICS & DỊCH VỤ', date: '2026-09-28', time: '08:12:44', type: 'IN', loc: 'Bãi bến Container & Kho RTG CFS', dist: '60m / 400m', dev: 'Oppo Reno 10 • Android 13', isValid: true, note: 'Xe đưa rước chuyến 2 (Châm chước Grace period)' },
-      { id: 'LOG-006', pap: 'PAP0006', name: 'Đoàn Thu Hà', dept: 'PHÒNG TÀI CHÍNH KẾ TOÁN', date: '2026-09-28', time: '07:58:30', type: 'IN', loc: 'Văn phòng Đại diện TP.HCM', dist: '15m / 200m', dev: 'iPhone 14 • iOS 17.5', isValid: true, note: 'VP Bitexco Tầng 8' },
-      { id: 'LOG-007', pap: 'PAP0007', name: 'Bùi Thanh Tùng', dept: 'PHÒNG KHAI THÁC CẢNG', date: '2026-09-28', time: '08:24:15', type: 'IN', loc: 'Trụ sở Điều hành Cảng', dist: '30m / 500m', dev: 'Samsung A54 • Android 14', isValid: true, note: 'Đi muộn 24 phút (xe cá nhân)' },
-      { id: 'LOG-008', pap: 'PAP0008', name: 'Lê Hoàng Long', dept: 'PHÒNG KHAI THÁC CẢNG', date: '2026-09-28', time: '07:50:11', type: 'IN', loc: 'Cầu bến Container số 1 & 2', dist: '55m / 350m', dev: 'iPhone 12 • iOS 16.7', isValid: true, note: 'Check-in ca sáng (Chưa Check-out)' },
-      { id: 'LOG-009', pap: 'PAP0009', name: 'Nguyễn Thị Bích Thảo', dept: 'PHÒNG HÀNH CHÍNH NHÂN SỰ', date: '2026-09-28', time: '08:05:10', type: 'IN', loc: 'Trụ sở Điều hành Cảng', dist: '48m / 500m', dev: 'iPhone 15 • iOS 17.6', isValid: true, note: 'Xe đưa rước chuyến 1 (Châm chước)' },
-      { id: 'LOG-010', pap: 'PAP0010', name: 'Trần Đại Nghĩa', dept: 'PHÒNG KỸ THUẬT CÔNG NGHỆ', date: '2026-09-28', time: '07:54:19', type: 'IN', loc: 'Bãi bến Container & Kho RTG CFS', dist: '80m / 400m', dev: 'Samsung S22 • Android 14', isValid: true, note: 'Trực trạm cân' },
-      { id: 'LOG-011', pap: 'PAP0015', name: 'Hoàng Hải Đăng', dept: 'PHÒNG KHAI THÁC CẢNG', date: '2026-09-28', time: '08:25:10', type: 'IN', loc: 'Trụ sở Điều hành Cảng', dist: '680m / 500m', dev: 'Realme 11 • Android 13', isValid: false, note: 'Cảnh báo: Ngoài bán kính cho phép (Cách 680m)' },
-      { id: 'LOG-012', pap: 'PAP0002', name: 'Nguyễn Văn Hải', dept: 'PHÒNG KHAI THÁC CẢNG', date: '2026-09-28', time: '17:05:40', type: 'OUT', loc: 'Trụ sở Điều hành Cảng', dist: '30m / 500m', dev: 'Samsung Galaxy S24 • Android 14', isValid: true, note: 'Check-out ca chiều đúng giờ' },
-      { id: 'LOG-013', pap: 'PAP0003', name: 'Trần Thị Kim Oanh', dept: 'PHÒNG HÀNH CHÍNH NHÂN SỰ', date: '2026-09-28', time: '17:02:15', type: 'OUT', loc: 'Trụ sở Điều hành Cảng', dist: '42m / 500m', dev: 'iPhone 13 • iOS 17.6', isValid: true, note: 'Check-out đón xe đưa rước 17:15' },
-      { id: 'LOG-014', pap: 'PAP0004', name: 'Lê Minh Quân', dept: 'PHÒNG KỸ THUẬT CÔNG NGHỆ', date: '2026-09-28', time: '19:04:55', type: 'OUT', loc: 'Cầu bến Container số 1 & 2', dist: '50m / 350m', dev: 'Xiaomi 13T • Android 14', isValid: true, note: 'Hết ca ngày S1 bàn giao ca S2' },
-      { id: 'LOG-015', pap: 'PAP0005', name: 'Vũ Đình Trọng', dept: 'PHÒNG LOGISTICS & DỊCH VỤ', date: '2026-09-28', time: '16:45:10', type: 'OUT', loc: 'Bãi bến Container & Kho RTG CFS', dist: '70m / 400m', dev: 'Oppo Reno 10 • Android 13', isValid: true, note: 'Về sớm 15 phút (Châm chước Grace period)' },
-      { id: 'LOG-016', pap: 'PAP0006', name: 'Đoàn Thu Hà', dept: 'PHÒNG TÀI CHÍNH KẾ TOÁN', date: '2026-09-28', time: '17:10:02', type: 'OUT', loc: 'Văn phòng Đại diện TP.HCM', dist: '18m / 200m', dev: 'iPhone 14 • iOS 17.5', isValid: true, note: 'VP Bitexco' },
-      { id: 'LOG-017', pap: 'PAP0007', name: 'Bùi Thanh Tùng', dept: 'PHÒNG KHAI THÁC CẢNG', date: '2026-09-28', time: '17:12:40', type: 'OUT', loc: 'Trụ sở Điều hành Cảng', dist: '32m / 500m', dev: 'Samsung A54 • Android 14', isValid: true, note: 'Check-out hoàn tất ca' }
+      { id: 'LOG-001', pap: 'PAP0001', name: 'Phạm Quốc Tuấn', dept: 'CÔNG TY CP CẢNG PHƯỚC AN', shiftCode: 'HC', date: '2026-09-28', time: '07:45:12', type: 'IN', loc: 'Trụ sở Điều hành Cảng', dist: '25m / 500m', dev: 'iPhone 15 Pro Max • iOS 18.0', isValid: true, note: 'Check-in đúng giờ' },
+      { id: 'LOG-002', pap: 'PAP0002', name: 'Nguyễn Văn Hải', dept: 'PHÒNG KHAI THÁC CẢNG', shiftCode: 'HC', date: '2026-09-28', time: '07:48:22', type: 'IN', loc: 'Trụ sở Điều hành Cảng', dist: '35m / 500m', dev: 'Samsung Galaxy S24 • Android 14', isValid: true, note: 'Xe đưa rước đến cổng chính' },
+      { id: 'LOG-003', pap: 'PAP0003', name: 'Trần Thị Kim Oanh', dept: 'PHÒNG HÀNH CHÍNH NHÂN SỰ', shiftCode: 'HC', date: '2026-09-28', time: '07:52:05', type: 'IN', loc: 'Trụ sở Điều hành Cảng', dist: '40m / 500m', dev: 'iPhone 13 • iOS 17.6', isValid: true, note: 'Check-in sảnh A' },
+      { id: 'LOG-004', pap: 'PAP0004', name: 'Lê Minh Quân', dept: 'PHÒNG KỸ THUẬT CÔNG NGHỆ', shiftCode: 'S1', date: '2026-09-28', time: '06:55:18', type: 'IN', loc: 'Cầu bến Container số 1 & 2', dist: '45m / 350m', dev: 'Xiaomi 13T • Android 14', isValid: true, note: 'Ca S1 trực điều độ cẩu STS' },
+      { id: 'LOG-005', pap: 'PAP0005', name: 'Vũ Đình Trọng', dept: 'PHÒNG LOGISTICS & DỊCH VỤ', shiftCode: 'HC', date: '2026-09-28', time: '08:12:44', type: 'IN', loc: 'Bãi bến Container & Kho RTG CFS', dist: '60m / 400m', dev: 'Oppo Reno 10 • Android 13', isValid: true, note: 'Xe đưa rước chuyến 2 (Châm chước Grace period)' },
+      { id: 'LOG-006', pap: 'PAP0006', name: 'Đoàn Thu Hà', dept: 'PHÒNG TÀI CHÍNH KẾ TOÁN', shiftCode: 'HC', date: '2026-09-28', time: '07:58:30', type: 'IN', loc: 'Văn phòng Đại diện TP.HCM', dist: '15m / 200m', dev: 'iPhone 14 • iOS 17.5', isValid: true, note: 'VP Bitexco Tầng 8' },
+      { id: 'LOG-007', pap: 'PAP0007', name: 'Bùi Thanh Tùng', dept: 'PHÒNG KHAI THÁC CẢNG', shiftCode: 'HC', date: '2026-09-28', time: '08:24:15', type: 'IN', loc: 'Trụ sở Điều hành Cảng', dist: '30m / 500m', dev: 'Samsung A54 • Android 14', isValid: true, note: 'Đi muộn 24 phút (xe cá nhân)' },
+      { id: 'LOG-008', pap: 'PAP0008', name: 'Lê Hoàng Long', dept: 'PHÒNG KHAI THÁC CẢNG', shiftCode: 'HC', date: '2026-09-28', time: '07:50:11', type: 'IN', loc: 'Cầu bến Container số 1 & 2', dist: '55m / 350m', dev: 'iPhone 12 • iOS 16.7', isValid: true, note: 'Check-in ca sáng (Chưa Check-out)' },
+      { id: 'LOG-009', pap: 'PAP0009', name: 'Nguyễn Thị Bích Thảo', dept: 'PHÒNG HÀNH CHÍNH NHÂN SỰ', shiftCode: 'HC', date: '2026-09-28', time: '08:05:10', type: 'IN', loc: 'Trụ sở Điều hành Cảng', dist: '48m / 500m', dev: 'iPhone 15 • iOS 17.6', isValid: true, note: 'Xe đưa rước chuyến 1 (Châm chước)' },
+      { id: 'LOG-010', pap: 'PAP0010', name: 'Trần Đại Nghĩa', dept: 'PHÒNG KỸ THUẬT CÔNG NGHỆ', shiftCode: 'HC', date: '2026-09-28', time: '07:54:19', type: 'IN', loc: 'Bãi bến Container & Kho RTG CFS', dist: '80m / 400m', dev: 'Samsung S22 • Android 14', isValid: true, note: 'Trực trạm cân' },
+      { id: 'LOG-011', pap: 'PAP0015', name: 'Hoàng Hải Đăng', dept: 'PHÒNG KHAI THÁC CẢNG', shiftCode: 'HC', date: '2026-09-28', time: '08:25:10', type: 'IN', loc: 'Trụ sở Điều hành Cảng', dist: '680m / 500m', dev: 'Realme 11 • Android 13', isValid: false, note: 'Cảnh báo: Ngoài bán kính cho phép (Cách 680m)' },
+      { id: 'LOG-012', pap: 'PAP0002', name: 'Nguyễn Văn Hải', dept: 'PHÒNG KHAI THÁC CẢNG', shiftCode: 'HC', date: '2026-09-28', time: '17:05:40', type: 'OUT', loc: 'Trụ sở Điều hành Cảng', dist: '30m / 500m', dev: 'Samsung Galaxy S24 • Android 14', isValid: true, note: 'Check-out ca chiều đúng giờ' },
+      { id: 'LOG-013', pap: 'PAP0003', name: 'Trần Thị Kim Oanh', dept: 'PHÒNG HÀNH CHÍNH NHÂN SỰ', shiftCode: 'HC', date: '2026-09-28', time: '17:02:15', type: 'OUT', loc: 'Trụ sở Điều hành Cảng', dist: '42m / 500m', dev: 'iPhone 13 • iOS 17.6', isValid: true, note: 'Check-out đón xe đưa rước 17:15' },
+      { id: 'LOG-014', pap: 'PAP0004', name: 'Lê Minh Quân', dept: 'PHÒNG KỸ THUẬT CÔNG NGHỆ', shiftCode: 'S1', date: '2026-09-28', time: '19:04:55', type: 'OUT', loc: 'Cầu bến Container số 1 & 2', dist: '50m / 350m', dev: 'Xiaomi 13T • Android 14', isValid: true, note: 'Hết ca ngày S1 bàn giao ca S2' },
+      { id: 'LOG-015', pap: 'PAP0005', name: 'Vũ Đình Trọng', dept: 'PHÒNG LOGISTICS & DỊCH VỤ', shiftCode: 'HC', date: '2026-09-28', time: '16:45:10', type: 'OUT', loc: 'Bãi bến Container & Kho RTG CFS', dist: '70m / 400m', dev: 'Oppo Reno 10 • Android 13', isValid: true, note: 'Về sớm 15 phút (Châm chước Grace period)' },
+      { id: 'LOG-016', pap: 'PAP0006', name: 'Đoàn Thu Hà', dept: 'PHÒNG TÀI CHÍNH KẾ TOÁN', shiftCode: 'HC', date: '2026-09-28', time: '17:10:02', type: 'OUT', loc: 'Văn phòng Đại diện TP.HCM', dist: '18m / 200m', dev: 'iPhone 14 • iOS 17.5', isValid: true, note: 'VP Bitexco' },
+      { id: 'LOG-017', pap: 'PAP0007', name: 'Bùi Thanh Tùng', dept: 'PHÒNG KHAI THÁC CẢNG', shiftCode: 'HC', date: '2026-09-28', time: '17:12:40', type: 'OUT', loc: 'Trụ sở Điều hành Cảng', dist: '32m / 500m', dev: 'Samsung A54 • Android 14', isValid: true, note: 'Check-out hoàn tất ca' }
     ];
 
     // 2. Dữ liệu Đề xuất bổ sung công (Giải trình công)
@@ -36469,6 +36807,9 @@
     // =========================================================================
 
     function openAttendanceSub(tabKey) {
+      if (tabKey === 'lock') {
+        if (!attendanceLockCurrentView) attendanceLockCurrentView = 'detail';
+      }
       switchSidebarModule('attendance');
       switchAttendanceTab(tabKey);
       updateAttendanceSubHighlight(tabKey);
@@ -36502,17 +36843,18 @@
       });
     }
 
-    let currentAttendanceTabKey = 'daily';
+    let currentAttendanceTabKey = 'lock';
 
     function switchAttendanceTab(tabKey) {
-      currentAttendanceTabKey = tabKey || 'daily';
+      currentAttendanceTabKey = tabKey || 'lock';
       const isLockTab = (tabKey === 'lock');
 
-      // Tự động ẩn Header Banner chung và Thanh Sub-tabs khi vào màn hình Chốt bảng công kỳ
+      // Tự động ẩn Header Banner chung khi vào màn hình Chốt bảng công kỳ để rộng không gian
       const topBanner = document.getElementById('att-top-header-banner');
       const subTabsBar = document.getElementById('att-sub-tabs-bar');
       if (topBanner) topBanner.classList.toggle('hidden', isLockTab);
-      if (subTabsBar) subTabsBar.classList.toggle('hidden', isLockTab);
+      // Giữ thanh subTabsBar luôn hiển thị để chuyển qua lại thuận tiện
+      if (subTabsBar) subTabsBar.classList.remove('hidden');
 
       const tabs = ['setup', 'exempt', 'raw', 'daily', 'requests', 'lock'];
       tabs.forEach(t => {
@@ -36559,7 +36901,13 @@
       else if (tabKey === 'daily') renderAttendanceDailyTimesheet();
       else if (tabKey === 'raw') renderAttendanceRawLogs();
       else if (tabKey === 'requests') renderAttendanceRequests();
-      else if (tabKey === 'lock') renderAttendanceLockStatus();
+      else if (tabKey === 'lock') {
+        if (attendanceLockCurrentView === 'detail') {
+          openAttendanceLockDetail(currentAttendancePeriodId);
+        } else {
+          openAttendanceLockMaster();
+        }
+      }
     }
 
     // =========================================================================
@@ -36648,6 +36996,43 @@
       return mode === 'FIXED' ? 'Hành chính' : 'Theo ca';
     }
 
+    function getRawLogShiftInfo(log) {
+      let code = log.shiftCode || log.shift;
+      if (!code) {
+        if (log.note && (log.note.includes('Ca S1') || log.note.includes('ca ngày S1') || log.note.includes('S1'))) {
+          code = 'S1';
+        } else if (log.note && (log.note.includes('Ca S2') || log.note.includes('ca đêm S2') || log.note.includes('S2'))) {
+          code = 'S2';
+        } else {
+          const emp = (typeof employeesData !== 'undefined') ? employeesData.find(e => e.pap === log.pap) : null;
+          if (emp && typeof resolveEmployeeDayShift === 'function') {
+            const dayIdx = new Date(log.date + 'T00:00:00').getDay();
+            const schedDayIdx = dayIdx === 0 ? 6 : dayIdx - 1;
+            const currentList = (typeof scheduleWeekStore !== 'undefined' && scheduleWeekStore[currentScheduleWeekKey]) || (typeof defaultWeekSchedule !== 'undefined' ? defaultWeekSchedule : []);
+            const roster = currentList.find(s => s.pap === emp.pap);
+            const resolved = resolveEmployeeDayShift(emp, log.date, roster && roster.shifts && roster.shifts[schedDayIdx], (typeof fixedScheduleExceptions !== 'undefined') ? fixedScheduleExceptions[`${emp.pap}_${log.date}`] : null);
+            if (resolved && resolved !== 'OFF' && resolved !== 'MIEN' && resolved !== 'P') {
+              code = resolved.includes('+') ? resolved.split('+')[0] : resolved;
+            }
+          }
+          if (!code) code = 'HC';
+        }
+      }
+
+      const detail = (typeof getShiftDetailsByCode === 'function') ? getShiftDetailsByCode(code) : null;
+      if (detail) {
+        return {
+          code: detail.code,
+          name: detail.shortName || detail.name,
+          hours: detail.hours || `${detail.startTime} - ${detail.endTime}`
+        };
+      }
+
+      if (code === 'S1') return { code: 'S1', name: 'Ca Ngày (S1)', hours: '07:00 - 19:00' };
+      if (code === 'S2') return { code: 'S2', name: 'Ca Đêm (S2)', hours: '19:00 - 07:00' };
+      return { code: 'HC', name: 'Ca Hành chính', hours: '08:00 - 17:00' };
+    }
+
     function renderAttendanceRawLogs() {
       const tbody = document.getElementById('raw-attendance-tbody');
       if (!tbody) return;
@@ -36656,6 +37041,7 @@
       const dateToVal = document.getElementById('raw-filter-date-to')?.value || '';
       const deptVal = document.getElementById('raw-filter-dept')?.value || 'ALL';
       const scheduleVal = document.getElementById('raw-filter-schedule')?.value || 'ALL';
+      const shiftVal = document.getElementById('raw-filter-shift')?.value || 'ALL';
       const typeVal = document.getElementById('raw-filter-type')?.value || 'ALL';
       const statusVal = document.getElementById('raw-filter-status')?.value || 'ALL';
       const searchVal = document.getElementById('raw-search-input')?.value.toLowerCase().trim() || '';
@@ -36670,6 +37056,10 @@
           if (scheduleVal === 'FIXED' && itemSched !== 'Hành chính') return false;
           if (scheduleVal === 'SHIFT' && itemSched !== 'Theo ca') return false;
         }
+        if (shiftVal !== 'ALL') {
+          const sInfo = getRawLogShiftInfo(item);
+          if (sInfo.code !== shiftVal) return false;
+        }
         if (typeVal !== 'ALL' && item.type !== typeVal) return false;
         if (statusVal === 'VALID' && !item.isValid) return false;
         if (statusVal === 'OUT_OF_BOUNDS' && item.isValid) return false;
@@ -36683,6 +37073,12 @@
         if (attendanceRawLogSort.key === 'schedule') {
           const left = getRawLogScheduleType(a);
           const right = getRawLogScheduleType(b);
+          const compare = left.localeCompare(right, 'vi', { numeric: true, sensitivity: 'base' });
+          return attendanceRawLogSort.direction === 'asc' ? compare : -compare;
+        }
+        if (attendanceRawLogSort.key === 'shift') {
+          const left = getRawLogShiftInfo(a).name;
+          const right = getRawLogShiftInfo(b).name;
           const compare = left.localeCompare(right, 'vi', { numeric: true, sensitivity: 'base' });
           return attendanceRawLogSort.direction === 'asc' ? compare : -compare;
         }
@@ -36709,7 +37105,7 @@
       if (summaryEl) summaryEl.textContent = `Hiển thị ${filtered.length} bản ghi`;
 
       if (filtered.length === 0) {
-        tbody.innerHTML = '<tr><td colspan="13" class="py-8 text-center text-slate-400 font-medium">Không tìm thấy bản ghi chấm công nào phù hợp với bộ lọc</td></tr>';
+        tbody.innerHTML = '<tr><td colspan="14" class="py-8 text-center text-slate-400 font-medium">Không tìm thấy bản ghi chấm công nào phù hợp với bộ lọc</td></tr>';
         applyAttendanceRawColumnOrder();
         return;
       }
@@ -36721,6 +37117,7 @@
         const schedBadge = schedType === 'Hành chính'
           ? '<span class="inline-flex px-2 py-0.5 rounded-full text-[10.5px] font-semibold bg-indigo-50 text-[#2E3191] border border-indigo-200">Hành chính</span>'
           : '<span class="inline-flex px-2 py-0.5 rounded-full text-[10.5px] font-semibold bg-sky-50 text-sky-800 border border-sky-200">Theo ca</span>';
+        const shiftInfo = getRawLogShiftInfo(log);
         const typeBadge = log.type === 'IN' 
           ? '<span class="px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200 font-bold text-[10px]">CHECK-IN</span>'
           : '<span class="px-2 py-0.5 rounded-full bg-amber-50 text-amber-800 border border-amber-200 font-bold text-[10px]">CHECK-OUT</span>';
@@ -36736,6 +37133,10 @@
             <td data-column-key="name" class="py-2.5 px-3 font-medium text-slate-900">${log.name}</td>
             <td data-column-key="dept" class="py-2.5 px-3 text-slate-600">${log.dept}</td>
             <td data-column-key="schedule" class="py-2.5 px-3 text-center whitespace-nowrap">${schedBadge}</td>
+            <td data-column-key="shift" class="py-2.5 px-3 text-center whitespace-nowrap">
+              <div class="font-bold text-slate-800 text-[11px] leading-tight">${shiftInfo.name}</div>
+              <div class="text-[10px] text-slate-500 font-mono mt-0.5 leading-tight">${shiftInfo.hours}</div>
+            </td>
             <td data-column-key="date" class="py-2.5 px-3 text-center font-medium text-slate-700 whitespace-nowrap">${displayDate}</td>
             <td data-column-key="time" class="py-2.5 px-3 text-center font-mono font-medium text-slate-800">${log.time}</td>
             <td data-column-key="type" class="py-2.5 px-3 text-center">${typeBadge}</td>
@@ -37243,6 +37644,11 @@
       if (!deptInput) return;
       const emp = employeesData.find(e => e.pap === pap);
       deptInput.value = emp ? emp.dept : '';
+      const shiftSelect = document.getElementById('raw-modal-shift');
+      if (shiftSelect && emp) {
+        const mode = (typeof getEmployeeScheduleMode === 'function') ? getEmployeeScheduleMode(emp) : 'FIXED';
+        shiftSelect.value = mode === 'FIXED' ? 'HC' : 'S1';
+      }
     }
 
     function onRawModalLocationChange(loc) {
@@ -37272,6 +37678,8 @@
 
       document.getElementById('raw-modal-date').value = today;
       document.getElementById('raw-modal-time').value = `${hours}:${mins}:${secs}`;
+      const shiftSelect = document.getElementById('raw-modal-shift');
+      if (shiftSelect) shiftSelect.value = 'HC';
       document.getElementById('raw-modal-type').value = 'IN';
       document.getElementById('raw-modal-status').value = 'VALID';
       document.getElementById('raw-modal-loc').value = 'Trụ sở Điều hành Cảng';
@@ -37299,6 +37707,11 @@
       document.getElementById('raw-modal-dept').value = log.dept;
       document.getElementById('raw-modal-date').value = log.date;
       document.getElementById('raw-modal-time').value = log.time;
+      const shiftSelect = document.getElementById('raw-modal-shift');
+      if (shiftSelect) {
+        const sInfo = getRawLogShiftInfo(log);
+        shiftSelect.value = sInfo.code || 'HC';
+      }
       document.getElementById('raw-modal-type').value = log.type;
       document.getElementById('raw-modal-status').value = log.isValid ? 'VALID' : 'OUT_OF_BOUNDS';
       document.getElementById('raw-modal-loc').value = log.loc;
@@ -37331,6 +37744,7 @@
       let time = document.getElementById('raw-modal-time').value.trim();
       if (time.length === 5) time += ':00'; // Đảm bảo định dạng HH:mm:ss
 
+      const shiftCode = document.getElementById('raw-modal-shift')?.value || 'HC';
       const type = document.getElementById('raw-modal-type').value;
       const isValid = document.getElementById('raw-modal-status').value === 'VALID';
       const loc = document.getElementById('raw-modal-loc').value;
@@ -37347,6 +37761,7 @@
             pap,
             name,
             dept,
+            shiftCode,
             date,
             time,
             type,
@@ -37366,6 +37781,7 @@
           pap,
           name,
           dept,
+          shiftCode,
           date,
           time,
           type,
@@ -37405,34 +37821,67 @@
       lockedBy: null
     };
 
+    let attendanceLockCurrentView = 'detail'; // 'detail' (hiện hành mặc định) | 'master' (danh sách)
+
     let attendancePeriodsData = [
       {
+        id: '2026-10',
+        code: 'KC-2026-10',
+        name: 'Kỳ Tháng 10/2026',
+        startDate: '2026-10-01',
+        endDate: '2026-10-31',
+        targetGroup: 'Toàn bộ công ty (245 NV)',
+        standardDays: 22,
+        isLocked: false,
+        lockedAt: null,
+        lockedBy: null,
+        sentForReview: false,
+        sentAt: null,
+        currentStep: 1, // Bước 1: Lịch làm việc
+        formulaApplied: false,
+        totalEmployees: 13,
+        totalActualDays: 0,
+        totalNightShifts: 0,
+        leaveDays: 0,
+        missingPunchCount: 0,
+        pendingRequestsCount: 0,
+        createdDate: '01/10/2026',
+        createdBy: 'Hệ thống (Auto System)'
+      },
+      {
         id: '2026-09',
+        code: 'KC-2026-09',
         name: 'Kỳ Tháng 09/2026',
         startDate: '2026-09-01',
         endDate: '2026-09-30',
+        targetGroup: 'Toàn bộ công ty (245 NV)',
         standardDays: 22,
         isLocked: false,
         lockedAt: null,
         lockedBy: null,
         sentForReview: true,
         sentAt: '28/09/2026 16:00',
-        currentStep: 4,
+        currentStep: 3, // Bước 3: Chạy tính công
         formulaApplied: true,
         totalEmployees: 13,
         totalActualDays: 255.0,
         totalNightShifts: 36,
         leaveDays: 6.0,
         missingPunchCount: 8,
-        pendingRequestsCount: 5
+        pendingRequestsCount: 5,
+        createdDate: '01/09/2026',
+        createdBy: 'Hệ thống (Auto System)'
       },
       {
         id: '2026-08',
+        code: 'KC-2026-08',
         name: 'Kỳ Tháng 08/2026',
         startDate: '2026-08-01',
         endDate: '2026-08-31',
+        targetGroup: 'Toàn bộ công ty (245 NV)',
         standardDays: 22,
         isLocked: true,
+        isPayrollLocked: false,
         lockedAt: '31/08/2026 18:00',
         lockedBy: 'Nguyễn Thị Mai (HR Admin)',
         sentForReview: true,
@@ -37444,15 +37893,20 @@
         totalNightShifts: 42,
         leaveDays: 4.0,
         missingPunchCount: 0,
-        pendingRequestsCount: 0
+        pendingRequestsCount: 0,
+        createdDate: '01/08/2026',
+        createdBy: 'Nguyễn Thị Mai (HR Admin)'
       },
       {
         id: '2026-07',
+        code: 'KC-2026-07',
         name: 'Kỳ Tháng 07/2026',
         startDate: '2026-07-01',
         endDate: '2026-07-31',
+        targetGroup: 'Toàn bộ công ty (245 NV)',
         standardDays: 23,
         isLocked: true,
+        isPayrollLocked: true,
         lockedAt: '31/07/2026 17:30',
         lockedBy: 'Nguyễn Thị Mai (HR Admin)',
         sentForReview: true,
@@ -37464,12 +37918,14 @@
         totalNightShifts: 38,
         leaveDays: 6.0,
         missingPunchCount: 0,
-        pendingRequestsCount: 0
+        pendingRequestsCount: 0,
+        createdDate: '01/07/2026',
+        createdBy: 'Nguyễn Thị Mai (HR Admin)'
       }
     ];
 
     let currentAttendancePeriodId = '2026-09';
-    let currentAttendanceLockStep = 4; // 1 to 5
+    let currentAttendanceLockStep = 3; // 1 to 4
     let currentStep4ViewMode = 'summary'; // 'summary' | 'matrix'
     let currentMissingPunchFilter = 'ALL';
 
@@ -37494,7 +37950,7 @@
       ];
 
       // 2. Dữ liệu tổng hợp công theo kỳ cho toàn bộ 13 nhân sự employeesData
-      const periods = ['2026-09', '2026-08', '2026-07'];
+      const periods = ['2026-10', '2026-09', '2026-08', '2026-07'];
       periods.forEach(pId => {
         const pObj = attendancePeriodsData.find(p => p.id === pId);
         const stdDays = pObj ? pObj.standardDays : 22;
@@ -37683,6 +38139,9 @@
       });
 
       // 4. Lịch sử Audit Trail theo kỳ
+      attendancePeriodHistoryStore['2026-10'] = [
+        { ver: 'v1.0', time: '01/10/2026 08:30', actor: 'Hệ thống (Auto System)', action: 'Khởi tạo kỳ', total: '0.0 c', note: 'Khởi tạo Bảng công tự động cho Tháng 10/2026. Sẵn sàng rà soát lịch làm việc.' }
+      ];
       attendancePeriodHistoryStore['2026-09'] = [
         { ver: 'v1.2', time: '28/09/2026 15:30', actor: 'Nguyễn Thị Mai (HR Admin)', action: 'Tính lại công', total: '279.0 c', note: 'Đồng bộ lại sau khi duyệt 24 đề xuất giải trình công đợt 2.' },
         { ver: 'v1.1', time: '25/09/2026 17:00', actor: 'Trần Văn Hùng (HR C&B)', action: 'Cập nhật phép', total: '278.0 c', note: 'Ánh xạ 7 ngày nghỉ phép năm đã duyệt từ phân hệ M09.' },
@@ -37731,13 +38190,509 @@
     let currentLockWorkspaceMode = 'grid'; // 'grid' | 'summary'
     let lockMissingFilterOnly = false;
 
-    // Đổi chu kỳ
+    // Helper định dạng ngày Việt Nam dd/mm/yyyy
+    function formatDateVN(dateStr) {
+      if (!dateStr) return '';
+      const parts = dateStr.split('-');
+      if (parts.length === 3) return `${parts[2]}/${parts[1]}/${parts[0]}`;
+      return dateStr;
+    }
+
+    // =========================================================================
+    // MÔ HÌNH MASTER - DETAIL: DANH SÁCH KỲ CÔNG & CHI TIẾT 4 BƯỚC
+    // =========================================================================
+
+    // 0. Cập nhật giao diện 2 Tab Điều hướng (Master / Detail)
+    function updateAttendanceLockTabsUI(viewMode) {
+      const btnMaster = document.getElementById('tab-btn-lock-master');
+      const btnDetail = document.getElementById('tab-btn-lock-detail');
+      const badgeText = document.getElementById('tab-lock-detail-badge-text');
+      const badgeCount = document.getElementById('badge-lock-master-count');
+
+      const period = (typeof getCurrentAttendancePeriod === 'function') ? getCurrentAttendancePeriod() : null;
+      if (badgeText && period) {
+        badgeText.innerText = `${period.name} ${period.isLocked ? '(Đã chốt)' : '(Hiện hành)'}`;
+      }
+      if (badgeCount) {
+        badgeCount.innerText = `${attendancePeriodsData.length} kỳ`;
+      }
+
+      if (viewMode === 'master') {
+        if (btnMaster) {
+          btnMaster.className = "px-3.5 sm:px-4 py-2 rounded-xl text-xs font-bold transition flex items-center space-x-2 cursor-pointer bg-[#2E3191] text-white shadow-xs";
+        }
+        if (btnDetail) {
+          btnDetail.className = "px-3.5 sm:px-4 py-2 rounded-xl text-xs font-bold transition flex items-center space-x-2 cursor-pointer bg-slate-100 text-slate-700 hover:bg-slate-200";
+        }
+      } else {
+        if (btnMaster) {
+          btnMaster.className = "px-3.5 sm:px-4 py-2 rounded-xl text-xs font-bold transition flex items-center space-x-2 cursor-pointer bg-slate-100 text-slate-700 hover:bg-slate-200";
+        }
+        if (btnDetail) {
+          btnDetail.className = "px-3.5 sm:px-4 py-2 rounded-xl text-xs font-bold transition flex items-center space-x-2 cursor-pointer bg-[#2E3191] text-white shadow-xs";
+        }
+      }
+    }
+
+    // 1. Mở Màn hình Danh sách Kỳ công (Master View)
+    function openAttendanceLockMaster() {
+      attendanceLockCurrentView = 'master';
+      const masterView = document.getElementById('att-lock-master-view');
+      const detailView = document.getElementById('att-lock-detail-view');
+      if (masterView) masterView.classList.remove('hidden');
+      if (detailView) detailView.classList.add('hidden');
+
+      // Cập nhật Breadcrumb chính trên thanh tiêu đề trang
+      const bp = document.getElementById('breadcrumb-parent');
+      const bc = document.getElementById('breadcrumb-current');
+      const tp = document.getElementById('top-page-title');
+      if (bp) bp.innerText = 'Quản lý chấm công';
+      if (bc) bc.innerText = 'Danh sách chốt bảng công kỳ';
+      if (tp) tp.innerText = 'Danh sách chốt bảng công kỳ';
+
+      updateAttendanceLockTabsUI('master');
+      renderAttendancePeriodsMasterTable();
+      updateAttendancePeriodsKPICards();
+    }
+
+    // 2. Mở Màn hình Chi tiết Kỳ công (Detail View - 4 Bước)
+    function openAttendanceLockDetail(periodId) {
+      attendanceLockCurrentView = 'detail';
+      if (periodId) {
+        currentAttendancePeriodId = periodId;
+      }
+      const masterView = document.getElementById('att-lock-master-view');
+      const detailView = document.getElementById('att-lock-detail-view');
+      if (masterView) masterView.classList.add('hidden');
+      if (detailView) detailView.classList.remove('hidden');
+
+      const period = getCurrentAttendancePeriod();
+      currentAttendanceLockStep = period.isLocked ? 4 : (period.currentStep || 1);
+
+      updateAttendanceLockTabsUI('detail');
+
+      // Đồng bộ các dropdown chọn kỳ
+      syncAttendancePeriodSelectOptions();
+
+      // Cập nhật Breadcrumb bar trong Detail View
+      const bName = document.getElementById('detail-breadcrumb-name');
+      const bCode = document.getElementById('detail-breadcrumb-code');
+      const bBadge = document.getElementById('detail-breadcrumb-badge');
+      if (bName) bName.innerText = period.name;
+      if (bCode) bCode.innerText = `(${period.code || ('KC-' + period.id)})`;
+      if (bBadge) {
+        if (period.isPayrollLocked) {
+          bBadge.className = "px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-purple-100 text-purple-800 border border-purple-200";
+          bBadge.innerHTML = "<span>🔒</span><span>Đã khóa lương M10</span>";
+        } else if (period.isLocked) {
+          bBadge.className = "px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-emerald-100 text-emerald-800 border border-emerald-200";
+          bBadge.innerHTML = "<span>🟢</span><span>Đã chốt (v1.3)</span>";
+        } else {
+          bBadge.className = "px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-amber-100 text-amber-800 border border-amber-200";
+          const stepNames = { 1: 'Bước 1: Lịch làm việc', 2: 'Bước 2: Giờ quẹt thẻ', 3: 'Bước 3: Chạy tính công', 4: 'Bước 4: Bảng quy đổi' };
+          bBadge.innerHTML = `<span>🟡</span><span>Đang rà soát (${stepNames[currentAttendanceLockStep] || 'Bước 1'})</span>`;
+        }
+      }
+
+      // Cập nhật Breadcrumb chung của trang
+      const bp = document.getElementById('breadcrumb-parent');
+      const bc = document.getElementById('breadcrumb-current');
+      const tp = document.getElementById('top-page-title');
+      if (bp) bp.innerText = 'Chốt bảng công kỳ';
+      if (bc) bc.innerText = `${period.name} (${formatDateVN(period.startDate)} - ${formatDateVN(period.endDate)})`;
+      if (tp) tp.innerText = `${period.name} • Quy trình chốt công`;
+
+      renderAttendanceLockStatus();
+    }
+
+    // 3. Đồng bộ các Select dropdown chọn kỳ
+    function syncAttendancePeriodSelectOptions() {
+      const selects = [
+        document.getElementById('select-attendance-period'),
+        document.getElementById('select-attendance-period-quick')
+      ];
+      selects.forEach(sel => {
+        if (!sel) return;
+        const currentVal = currentAttendancePeriodId;
+        sel.innerHTML = attendancePeriodsData.map(p => {
+          let suffix = '';
+          if (p.isPayrollLocked) suffix = ' (Đã khóa lương)';
+          else if (p.isLocked) suffix = ' (Đã chốt - v1.3)';
+          else suffix = ` (Bước ${p.currentStep || 1}/4)`;
+          return `<option value="${p.id}" ${p.id === currentVal ? 'selected' : ''}>${p.name}${suffix}</option>`;
+        }).join('');
+      });
+    }
+
+    // 4. Cập nhật các Thẻ KPI Cards ở Master View
+    function updateAttendancePeriodsKPICards() {
+      const total = attendancePeriodsData.length;
+      const reviewing = attendancePeriodsData.filter(p => !p.isLocked).length;
+      const locked = attendancePeriodsData.filter(p => p.isLocked && !p.isPayrollLocked).length;
+      const payroll = attendancePeriodsData.filter(p => p.isPayrollLocked).length;
+
+      const elTotal = document.getElementById('kpi-periods-total');
+      const elReviewing = document.getElementById('kpi-periods-reviewing');
+      const elLocked = document.getElementById('kpi-periods-locked');
+      const elPayroll = document.getElementById('kpi-periods-payroll');
+
+      if (elTotal) elTotal.innerText = total;
+      if (elReviewing) elReviewing.innerText = reviewing;
+      if (elLocked) elLocked.innerText = locked;
+      if (elPayroll) elPayroll.innerText = payroll;
+    }
+
+    // 5. Lọc bảng Danh sách Kỳ công
+    function filterAttendancePeriodsMaster() {
+      renderAttendancePeriodsMasterTable();
+    }
+
+    // 6. Render Bảng Danh sách Kỳ công
+    function renderAttendancePeriodsMasterTable() {
+      const tbody = document.getElementById('attendance-periods-master-tbody');
+      if (!tbody) return;
+
+      const searchVal = (document.getElementById('filter-period-search')?.value || '').toLowerCase().trim();
+      const yearVal = document.getElementById('filter-period-year')?.value || 'ALL';
+      const statusVal = document.getElementById('filter-period-status')?.value || 'ALL';
+      const targetVal = document.getElementById('filter-period-target')?.value || 'ALL';
+
+      const filtered = attendancePeriodsData.filter(p => {
+        if (searchVal) {
+          const matchCode = (p.code || '').toLowerCase().includes(searchVal);
+          const matchName = (p.name || '').toLowerCase().includes(searchVal);
+          const matchActor = (p.lockedBy || p.createdBy || '').toLowerCase().includes(searchVal);
+          if (!matchCode && !matchName && !matchActor) return false;
+        }
+        if (yearVal !== 'ALL') {
+          if (!p.startDate.startsWith(yearVal)) return false;
+        }
+        if (statusVal === 'OPEN') {
+          if (p.isLocked) return false;
+        } else if (statusVal === 'LOCKED') {
+          if (!p.isLocked || p.isPayrollLocked) return false;
+        } else if (statusVal === 'PAYROLL') {
+          if (!p.isPayrollLocked) return false;
+        }
+        if (targetVal === 'HC') {
+          if (!p.targetGroup.includes('Hành chính') && !p.targetGroup.includes('Văn phòng')) return false;
+        } else if (targetVal === 'PORT') {
+          if (!p.targetGroup.includes('Cầu bến') && !p.targetGroup.includes('Ca kíp')) return false;
+        } else if (targetVal === 'ALL_COMPANY') {
+          if (!p.targetGroup.includes('Toàn bộ công ty')) return false;
+        }
+        return true;
+      });
+
+      const countEl = document.getElementById('period-match-count');
+      if (countEl) countEl.innerText = filtered.length;
+
+      if (filtered.length === 0) {
+        tbody.innerHTML = `
+          <tr>
+            <td colspan="10" class="py-8 text-center text-slate-400">
+              <div class="text-3xl mb-1">🔍</div>
+              <div class="font-semibold text-slate-600">Không tìm thấy kỳ công phù hợp</div>
+              <div class="text-[11px] text-slate-400 mt-0.5">Vui lòng thay đổi từ khóa tìm kiếm hoặc bộ lọc.</div>
+            </td>
+          </tr>
+        `;
+        return;
+      }
+
+      tbody.innerHTML = filtered.map((period, index) => {
+        let statusBadge = '';
+        if (period.isPayrollLocked) {
+          statusBadge = `
+            <div class="flex items-center space-x-1.5">
+              <span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-[11px] font-bold bg-purple-100 text-purple-800 border border-purple-200">
+                <span>🔒</span><span>Đã khóa lương M10</span>
+              </span>
+            </div>
+            <div class="text-[10px] text-slate-400 mt-1">Đã chốt ngày ${period.lockedAt ? period.lockedAt.split(' ')[0] : '31/07/2026'}</div>
+          `;
+        } else if (period.isLocked) {
+          statusBadge = `
+            <div class="flex items-center space-x-1.5">
+              <span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-[11px] font-bold bg-emerald-100 text-emerald-800 border border-emerald-200">
+                <span>🟢</span><span>Đã chốt công (v1.3)</span>
+              </span>
+            </div>
+            <div class="text-[10px] text-slate-400 mt-1">Chốt lúc: ${period.lockedAt || '31/08/2026 18:00'}</div>
+          `;
+        } else {
+          const step = period.currentStep || 1;
+          const stepNames = { 1: 'Lịch làm việc', 2: 'Giờ quẹt thẻ', 3: 'Chạy tính công', 4: 'Bảng quy đổi' };
+          const stepColors = { 1: 'bg-blue-100 text-blue-800', 2: 'bg-cyan-100 text-cyan-800', 3: 'bg-amber-100 text-amber-800', 4: 'bg-indigo-100 text-indigo-800' };
+          statusBadge = `
+            <div>
+              <span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-[11px] font-bold ${stepColors[step] || 'bg-amber-100 text-amber-800'} border border-amber-200">
+                <span>🟡</span><span>Đang rà soát (Bước ${step}/4: ${stepNames[step]})</span>
+              </span>
+            </div>
+            <div class="w-full bg-slate-100 rounded-full h-1.5 mt-1.5 overflow-hidden">
+              <div class="bg-[#1877F2] h-1.5 rounded-full" style="width: ${(step / 4) * 100}%"></div>
+            </div>
+          `;
+        }
+
+        const dateRangeFormatted = `${formatDateVN(period.startDate)} - ${formatDateVN(period.endDate)}`;
+        const actorName = period.isLocked ? (period.lockedBy || 'Nguyễn Thị Mai (HR Admin)') : (period.createdBy || 'Hệ thống (Auto System)');
+        const lockDateText = period.lockedAt ? period.lockedAt.split(' ')[0] : '—';
+
+        return `
+          <tr class="hover:bg-blue-50/40 group transition cursor-pointer" onclick="handlePeriodRowClick(event, '${period.id}')">
+            <td class="py-3 px-3 text-center text-slate-600 font-medium sticky left-0 bg-white group-hover:bg-blue-50/40 z-10">${index + 1}</td>
+            <td class="py-3 px-3 font-mono font-bold text-slate-800">${period.code || ('KC-' + period.id)}</td>
+            <td class="py-3 px-4">
+              <div class="font-bold text-slate-900 group-hover:text-[#2E3191] transition flex items-center space-x-1.5">
+                <span>${period.name}</span>
+                ${period.id === currentAttendancePeriodId ? '<span class="text-[9px] bg-blue-100 text-blue-700 font-bold px-1.5 py-0.2 rounded-full">Hiện hành</span>' : ''}
+              </div>
+              <div class="text-[11px] text-slate-400 mt-0.5">Chuẩn ${period.standardDays || 22} ngày công</div>
+            </td>
+            <td class="py-3 px-3 text-center">
+              <span class="font-medium text-slate-700 bg-slate-100 px-2 py-0.5 rounded text-[11px] whitespace-nowrap">${dateRangeFormatted}</span>
+            </td>
+            <td class="py-3 px-3">
+              <span class="inline-block text-slate-700 text-[11px] font-medium truncate max-w-[150px]" title="${period.targetGroup}">${period.targetGroup}</span>
+            </td>
+            <td class="py-3 px-3 text-center">
+              <span class="font-bold text-slate-800">${period.totalEmployees || 13}</span>
+              <span class="text-[10px] text-slate-400"> NV</span>
+            </td>
+            <td class="py-3 px-3.5">
+              ${statusBadge}
+            </td>
+            <td class="py-3 px-3">
+              <div class="font-medium text-slate-800 truncate max-w-[130px]" title="${actorName}">${actorName}</div>
+              <div class="text-[10px] text-slate-400">HR C&B / Admin</div>
+            </td>
+            <td class="py-3 px-3 text-center font-medium text-slate-600">
+              ${lockDateText}
+            </td>
+            <td class="py-3 px-3 text-center sticky right-0 bg-white group-hover:bg-blue-50/40 shadow-[-6px_0_10px_-4px_rgba(0,0,0,0.08)] sticky-action z-10" onclick="event.stopPropagation()">
+              <div class="flex items-center justify-center space-x-1">
+                <button type="button" onclick="openAttendanceLockDetail('${period.id}')" class="px-2.5 py-1 text-xs font-bold rounded-lg ${period.isLocked ? 'bg-slate-100 text-slate-700 hover:bg-slate-200' : 'bg-blue-50 text-[#1877F2] hover:bg-blue-100'} transition cursor-pointer flex items-center space-x-1" title="${period.isLocked ? 'Xem chi tiết bảng công' : 'Rà soát & Xử lý kỳ công'}">
+                  <span>${period.isLocked ? '👁️ Xem' : '⚡ Xử lý'}</span>
+                </button>
+                <button type="button" onclick="toggleLockPeriodFromMaster('${period.id}')" class="p-1 text-slate-400 hover:text-amber-600 rounded-lg hover:bg-slate-100 transition cursor-pointer" title="${period.isLocked ? 'Mở lại kỳ công' : 'Khóa kỳ công'}">
+                  <span>${period.isLocked ? '🔓' : '🔒'}</span>
+                </button>
+                ${!period.isLocked ? `
+                  <button type="button" onclick="deleteAttendancePeriod('${period.id}')" class="p-1 text-slate-400 hover:text-rose-600 rounded-lg hover:bg-slate-100 transition cursor-pointer" title="Xóa kỳ công">
+                    <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
+                  </button>
+                ` : ''}
+              </div>
+            </td>
+          </tr>
+        `;
+      }).join('');
+    }
+
+    function handlePeriodRowClick(event, periodId) {
+      if (event.target.closest('button') || event.target.closest('select') || event.target.closest('input')) return;
+      openAttendanceLockDetail(periodId);
+    }
+
+    // 7. Modal Tạo mới kỳ công
+    function openCreateAttendancePeriodModal() {
+      const modal = document.getElementById('modal-create-attendance-period');
+      if (!modal) return;
+
+      const codeInput = document.getElementById('new-period-code');
+      const nameInput = document.getElementById('new-period-name');
+      const startInput = document.getElementById('new-period-start');
+      const endInput = document.getElementById('new-period-end');
+      const stdInput = document.getElementById('new-period-standard-days');
+      const noteInput = document.getElementById('new-period-note');
+
+      if (codeInput) codeInput.value = 'KC-2026-11';
+      if (nameInput) nameInput.value = 'Kỳ Tháng 11/2026';
+      if (startInput) startInput.value = '2026-11-01';
+      if (endInput) endInput.value = '2026-11-30';
+      if (stdInput) stdInput.value = '22';
+      if (noteInput) noteInput.value = '';
+
+      modal.classList.remove('hidden');
+    }
+
+    function closeCreateAttendancePeriodModal() {
+      const modal = document.getElementById('modal-create-attendance-period');
+      if (modal) modal.classList.add('hidden');
+    }
+
+    function submitCreateAttendancePeriod() {
+      const code = document.getElementById('new-period-code')?.value.trim();
+      const name = document.getElementById('new-period-name')?.value.trim();
+      const startDate = document.getElementById('new-period-start')?.value;
+      const endDate = document.getElementById('new-period-end')?.value;
+      const stdDays = parseInt(document.getElementById('new-period-standard-days')?.value) || 22;
+      const targetGroup = document.getElementById('new-period-target-group')?.value || 'Toàn bộ công ty (245 NV)';
+      const note = document.getElementById('new-period-note')?.value.trim() || '';
+
+      if (!code || !name || !startDate || !endDate) {
+        alert('Vui lòng điền đầy đủ các thông tin bắt buộc (*)!');
+        return;
+      }
+
+      const id = startDate.slice(0, 7);
+      if (attendancePeriodsData.some(p => p.id === id || p.code === code)) {
+        alert(`Kỳ công với mã "${code}" hoặc tháng "${id}" đã tồn tại trong hệ thống!`);
+        return;
+      }
+
+      const newPeriod = {
+        id: id,
+        code: code,
+        name: name,
+        startDate: startDate,
+        endDate: endDate,
+        targetGroup: targetGroup,
+        standardDays: stdDays,
+        isLocked: false,
+        lockedAt: null,
+        lockedBy: null,
+        sentForReview: false,
+        sentAt: null,
+        currentStep: 1, // Bắt đầu ở Bước 1
+        formulaApplied: false,
+        totalEmployees: 13,
+        totalActualDays: 0,
+        totalNightShifts: 0,
+        leaveDays: 0,
+        missingPunchCount: 0,
+        pendingRequestsCount: 0,
+        createdDate: new Date().toLocaleDateString('vi-VN'),
+        createdBy: 'Nguyễn Thị Mai (HR Admin)',
+        note: note
+      };
+
+      attendancePeriodsData.unshift(newPeriod);
+
+      // Khởi tạo data stores cho kỳ mới
+      initPeriodDataStoresForNewPeriod(id, stdDays);
+
+      closeCreateAttendancePeriodModal();
+      showToast(`🎉 Khởi tạo thành công ${name}! Đang chuyển sang màn hình rà soát...`);
+
+      // Mở ngay màn hình Chi tiết kỳ công mới tạo!
+      openAttendanceLockDetail(id);
+    }
+
+    function initPeriodDataStoresForNewPeriod(pId, stdDays) {
+      if (!attendancePeriodSummaryStore[pId]) {
+        attendancePeriodSummaryStore[pId] = (employeesData || []).map(emp => ({
+          pap: emp.pap,
+          name: emp.name,
+          dept: emp.dept,
+          title: emp.title || emp.position || 'Nhân sự',
+          standardDays: stdDays,
+          daysX: 0,
+          shiftsS1: 0,
+          shiftsS2: 0,
+          daysL: 0,
+          daysP: 0,
+          actualDays: 0,
+          leaveDays: 0,
+          paidDays: 0,
+          totalPaid: 0,
+          isLocked: false,
+          note: 'Kỳ công mới khởi tạo - sẵn sàng rà soát'
+        }));
+      }
+
+      if (!attendanceDailyMatrixStore[pId]) {
+        const daysInMonth = 30;
+        attendanceDailyMatrixStore[pId] = (employeesData || []).map(emp => {
+          const dayRecords = [];
+          for (let d = 1; d <= daysInMonth; d++) {
+            const dateStr = `${pId}-${String(d).padStart(2, '0')}`;
+            const dayOfWeek = new Date(dateStr + 'T00:00:00').getDay();
+            const isWeekend = (dayOfWeek === 0 || dayOfWeek === 6);
+            let symbol = isWeekend ? '' : 'X';
+            dayRecords.push({ day: d, symbol: symbol, label: symbol, isWeekend: isWeekend });
+          }
+          return { pap: emp.pap, name: emp.name, dept: emp.dept, days: dayRecords };
+        });
+      }
+
+      if (!attendancePeriodHistoryStore[pId]) {
+        attendancePeriodHistoryStore[pId] = [
+          {
+            ver: 'v1.0',
+            time: new Date().toLocaleDateString('vi-VN') + ' ' + new Date().toLocaleTimeString().slice(0, 5),
+            actor: 'Nguyễn Thị Mai (HR Admin)',
+            action: 'Khởi tạo kỳ',
+            total: '0 c',
+            note: 'Khởi tạo kỳ chốt công mới'
+          }
+        ];
+      }
+    }
+
+    // 8. Thao tác Khóa / Mở lại và Xóa kỳ công từ Master
+    function toggleLockPeriodFromMaster(periodId) {
+      const p = attendancePeriodsData.find(item => item.id === periodId);
+      if (!p) return;
+      if (p.isLocked) {
+        currentAttendancePeriodId = periodId;
+        openAttUnlockModal();
+      } else {
+        if (confirm(`Bạn có chắc chắn muốn chốt và khóa kỳ "${p.name}"? Dữ liệu công sẽ được đóng băng.`)) {
+          p.isLocked = true;
+          p.lockedAt = new Date().toLocaleDateString('vi-VN') + ' ' + new Date().toLocaleTimeString().slice(0, 5);
+          p.lockedBy = 'Nguyễn Thị Mai (HR Admin)';
+          showToast(`🔒 Đã khóa thành công ${p.name}!`);
+          renderAttendancePeriodsMasterTable();
+          updateAttendancePeriodsKPICards();
+        }
+      }
+    }
+
+    function deleteAttendancePeriod(periodId) {
+      const p = attendancePeriodsData.find(item => item.id === periodId);
+      if (!p) return;
+      if (p.isLocked) {
+        alert('Không thể xóa kỳ công đã được chốt và khóa!');
+        return;
+      }
+      if (confirm(`Bạn có chắc chắn muốn xóa "${p.name}"? Thao tác này không thể hoàn tác.`)) {
+        attendancePeriodsData = attendancePeriodsData.filter(item => item.id !== periodId);
+        showToast(`Đã xóa kỳ công ${p.name}`);
+        renderAttendancePeriodsMasterTable();
+        updateAttendancePeriodsKPICards();
+        syncAttendancePeriodSelectOptions();
+      }
+    }
+
+    // Đổi chu kỳ trong Detail View
     function changeAttendancePeriod(periodId) {
       currentAttendancePeriodId = periodId;
       const period = getCurrentAttendancePeriod();
       currentAttendanceLockStep = period.isLocked ? 4 : (period.currentStep || 1);
-      const sel = document.getElementById('select-attendance-period');
-      if (sel) sel.value = periodId;
+      syncAttendancePeriodSelectOptions();
+      
+      const bName = document.getElementById('detail-breadcrumb-name');
+      const bCode = document.getElementById('detail-breadcrumb-code');
+      const bBadge = document.getElementById('detail-breadcrumb-badge');
+      if (bName) bName.innerText = period.name;
+      if (bCode) bCode.innerText = `(${period.code || ('KC-' + period.id)})`;
+      if (bBadge) {
+        if (period.isPayrollLocked) {
+          bBadge.className = "px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-purple-100 text-purple-800 border border-purple-200";
+          bBadge.innerHTML = "<span>🔒</span><span>Đã khóa lương M10</span>";
+        } else if (period.isLocked) {
+          bBadge.className = "px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-emerald-100 text-emerald-800 border border-emerald-200";
+          bBadge.innerHTML = "<span>🟢</span><span>Đã chốt (v1.3)</span>";
+        } else {
+          bBadge.className = "px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-amber-100 text-amber-800 border border-amber-200";
+          const stepNames = { 1: 'Bước 1: Lịch làm việc', 2: 'Bước 2: Giờ quẹt thẻ', 3: 'Bước 3: Chạy tính công', 4: 'Bước 4: Bảng quy đổi' };
+          bBadge.innerHTML = `<span>🟡</span><span>Đang rà soát (${stepNames[currentAttendanceLockStep] || 'Bước 1'})</span>`;
+        }
+      }
+
       renderAttendanceLockStatus();
       showToast(`Đã chuyển sang ${period.name}`);
     }
@@ -37982,6 +38937,27 @@
       attendancePeriodLockState.isLocked = period.isLocked;
       attendancePeriodLockState.lockedAt = period.lockedAt;
       attendancePeriodLockState.lockedBy = period.lockedBy;
+
+      // Cập nhật Breadcrumb bar trong Detail View
+      const bName = document.getElementById('detail-breadcrumb-name');
+      const bCode = document.getElementById('detail-breadcrumb-code');
+      const bBadge = document.getElementById('detail-breadcrumb-badge');
+      if (bName) bName.innerText = period.name;
+      if (bCode) bCode.innerText = `(${period.code || ('KC-' + period.id)})`;
+      if (bBadge) {
+        if (period.isPayrollLocked) {
+          bBadge.className = "px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-purple-100 text-purple-800 border border-purple-200";
+          bBadge.innerHTML = "<span>🔒</span><span>Đã khóa lương M10</span>";
+        } else if (period.isLocked) {
+          bBadge.className = "px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-emerald-100 text-emerald-800 border border-emerald-200";
+          bBadge.innerHTML = "<span>🟢</span><span>Đã chốt (v1.3)</span>";
+        } else {
+          bBadge.className = "px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-amber-100 text-amber-800 border border-amber-200";
+          const stepNames = { 1: 'Bước 1: Lịch làm việc', 2: 'Bước 2: Giờ quẹt thẻ', 3: 'Bước 3: Chạy tính công', 4: 'Bước 4: Bảng quy đổi' };
+          bBadge.innerHTML = `<span>🟡</span><span>Đang rà soát (${stepNames[currentAttendanceLockStep] || 'Bước 1'})</span>`;
+        }
+      }
+      syncAttendancePeriodSelectOptions();
 
       // 1. Cập nhật Ribbon XONG góc trái
       const ribbon = document.getElementById('att-lock-corner-ribbon');
@@ -38591,6 +39567,8 @@
       closeAttLockModal();
       showToast(`🔒 ĐÃ CHỐT & KHÓA BẢNG CÔNG ${period.name.toUpperCase()} THÀNH CÔNG!`);
       renderAttendanceLockStatus();
+      if (typeof renderAttendancePeriodsMasterTable === 'function') renderAttendancePeriodsMasterTable();
+      if (typeof updateAttendancePeriodsKPICards === 'function') updateAttendancePeriodsKPICards();
     }
 
     function openAttLockModal() {
@@ -38641,6 +39619,8 @@
       closeAttUnlockModal();
       showToast(`🔓 Đã mở khóa ${period.name} thành công. Dữ liệu có thể được điều chỉnh.`);
       renderAttendanceLockStatus();
+      if (typeof renderAttendancePeriodsMasterTable === 'function') renderAttendancePeriodsMasterTable();
+      if (typeof updateAttendancePeriodsKPICards === 'function') updateAttendancePeriodsKPICards();
     }
 
     function runAttendanceValidationCheck() {
@@ -39086,6 +40066,11 @@
       renderAttendanceLockStatus();
     }
 
+    // Tự động kích hoạt hiển thị ngay phân hệ Chốt bảng công kỳ (Giao diện kỳ công) khi tải trang
+    if (typeof openAttendanceSub === 'function') {
+      openAttendanceSub('lock');
+    }
+
   </script>
 
   <!-- ================= MODAL: CHI TIẾT MẪU LỊCH (CHỈ ĐỌC) ================= -->
@@ -39169,6 +40154,13 @@
                   <select id="add-policy-status" required class="w-full px-3 py-2.5 border border-slate-300 rounded-lg bg-white shadow-inner font-semibold">
                     <option value="ACTIVE" selected>Đang hoạt động</option>
                     <option value="INACTIVE">Ngừng hoạt động</option>
+                  </select>
+                </div>
+                <div>
+                  <label for="add-policy-attendance-rule" class="block font-semibold text-slate-700 mb-1.5">Chính sách chấm công <span class="text-rose-500">*</span></label>
+                  <select id="add-policy-attendance-rule" required class="w-full px-3 py-2.5 border border-slate-300 rounded-lg bg-white shadow-inner font-semibold">
+                    <option value="DAILY" selected>Theo ngày</option>
+                    <option value="SHIFT">Theo ca</option>
                   </select>
                 </div>
                 <div class="col-span-2">
@@ -39330,6 +40322,24 @@
 
         <div class="grid grid-cols-2 gap-3">
           <div>
+            <label class="block font-semibold text-slate-700 mb-1">Ca làm việc <span class="text-rose-500">*</span></label>
+            <select id="raw-modal-shift" required class="w-full px-3 py-2 border border-slate-300 rounded-lg text-xs font-semibold bg-white text-slate-800 focus:outline-none focus:ring-1 focus:ring-[#2E3191]">
+              <option value="HC">Ca Hành chính (08:00 - 17:00)</option>
+              <option value="S1">Ca Ngày (S1) (07:00 - 19:00)</option>
+              <option value="S2">Ca Đêm (S2) (19:00 - 07:00)</option>
+            </select>
+          </div>
+          <div>
+            <label class="block font-semibold text-slate-700 mb-1">Loại quét <span class="text-rose-500">*</span></label>
+            <select id="raw-modal-type" required class="w-full px-3 py-2 border border-slate-300 rounded-lg text-xs font-semibold bg-white text-slate-800 focus:outline-none focus:ring-1 focus:ring-[#2E3191]">
+              <option value="IN">CHECK-IN (Vào ca)</option>
+              <option value="OUT">CHECK-OUT (Ra ca)</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-2 gap-3">
+          <div>
             <label class="block font-semibold text-slate-700 mb-1">Ngày quét <span class="text-rose-500">*</span></label>
             <input type="date" id="raw-modal-date" required class="w-full px-3 py-2 border border-slate-300 rounded-lg text-xs bg-white text-slate-800 focus:outline-none focus:ring-1 focus:ring-[#2E3191]">
           </div>
@@ -39339,21 +40349,12 @@
           </div>
         </div>
 
-        <div class="grid grid-cols-2 gap-3">
-          <div>
-            <label class="block font-semibold text-slate-700 mb-1">Loại quét <span class="text-rose-500">*</span></label>
-            <select id="raw-modal-type" required class="w-full px-3 py-2 border border-slate-300 rounded-lg text-xs font-semibold bg-white text-slate-800 focus:outline-none focus:ring-1 focus:ring-[#2E3191]">
-              <option value="IN">CHECK-IN (Vào ca)</option>
-              <option value="OUT">CHECK-OUT (Ra ca)</option>
-            </select>
-          </div>
-          <div>
-            <label class="block font-semibold text-slate-700 mb-1">Trạng thái định vị <span class="text-rose-500">*</span></label>
-            <select id="raw-modal-status" required class="w-full px-3 py-2 border border-slate-300 rounded-lg text-xs font-semibold bg-white text-slate-800 focus:outline-none focus:ring-1 focus:ring-[#2E3191]">
-              <option value="VALID">🟢 Hợp lệ (Trong bán kính)</option>
-              <option value="OUT_OF_BOUNDS">🔴 Ngoài bán kính cho phép</option>
-            </select>
-          </div>
+        <div>
+          <label class="block font-semibold text-slate-700 mb-1">Trạng thái định vị <span class="text-rose-500">*</span></label>
+          <select id="raw-modal-status" required class="w-full px-3 py-2 border border-slate-300 rounded-lg text-xs font-semibold bg-white text-slate-800 focus:outline-none focus:ring-1 focus:ring-[#2E3191]">
+            <option value="VALID">🟢 Hợp lệ (Trong bán kính)</option>
+            <option value="OUT_OF_BOUNDS">🔴 Ngoài bán kính cho phép</option>
+          </select>
         </div>
 
         <div>
