@@ -34529,9 +34529,11 @@
         groupSelect.innerHTML = leaveGroupsData.map(g => `<option value="${g.code}">${g.name} (${g.code})</option>`).join('');
       }
 
-      // Populate leave types dropdown
-      if (typeSelect && typeof leaveTypesData !== 'undefined') {
-        typeSelect.innerHTML = leaveTypesData.map(t => `<option value="${t.code}">${t.name} (${t.symbol})</option>`).join('');
+      // Populate leave types dropdown if SELECT element
+      if (typeSelect) {
+        if (typeSelect.tagName === 'SELECT' && typeof leaveTypesData !== 'undefined') {
+          typeSelect.innerHTML = leaveTypesData.map(t => `<option value="${t.code}">${t.name} (${t.symbol})</option>`).join('');
+        }
       }
 
       // Set default dates (today & tomorrow)
@@ -34563,8 +34565,8 @@
 
       // Auto sync leave type if matching typeCode
       const typeSelect = document.getElementById('req-type-select');
-      if (typeSelect && group.typeCode) {
-        typeSelect.value = group.typeCode;
+      if (typeSelect) {
+        typeSelect.value = group.typeCode || 'AL';
         onLeaveRequestTypeChange();
       }
 
@@ -34580,10 +34582,10 @@
         ruleBox.innerHTML = `
           <div class="font-bold flex items-center space-x-1.5 text-blue-950">
             <span>🛡️</span>
-            <span>Quy trình duyệt: ${group.directMgr === 'YES' ? 'Bắt buộc Quản lý trực tiếp (QLTT) duyệt trước' : 'Không yêu cầu QLTT'} · ${wfText} · SLA: <strong>${group.slaHours}h</strong></span>
+            <span>Quy trình: <strong>${group.name}</strong> · ${group.directMgr === 'YES' ? 'Bắt buộc QLTT duyệt trước' : 'Không yêu cầu QLTT'} · ${wfText} · SLA: <strong>${group.slaHours}h</strong></span>
           </div>
           <div class="text-[10.5px] text-blue-800">
-            Báo trước tối thiểu: <strong>${group.noticeDays} ngày</strong> · Tối đa: <strong>${group.maxDays} ngày/đơn</strong> · ${group.deadlineStrict === 'STRICT' ? '<span class="text-rose-600 font-bold">Ràng buộc bắt buộc</span>' : '<span class="text-amber-700">Có cảnh báo</span>'}
+            Loại ngày nghỉ: <strong class="text-[#2E3191]">${group.typeName || 'Nghỉ phép'}</strong> (${group.typeCode || 'AL'}) · Báo trước tối thiểu: <strong>${group.noticeDays} ngày</strong> · Tối đa: <strong>${group.maxDays} ngày/đơn</strong> · ${group.deadlineStrict === 'STRICT' ? '<span class="text-rose-600 font-bold">Ràng buộc bắt buộc</span>' : '<span class="text-amber-700">Có cảnh báo</span>'}
           </div>
           <div class="text-[10px] text-blue-700 italic">
             Thứ tự trừ: ${group.deductFundText} · Phạm vi: ${group.scope || 'Toàn bộ CBCNV'}
@@ -34743,7 +34745,8 @@
       if (event) event.preventDefault();
       const empCode = document.getElementById('req-emp-select').value;
       const groupCode = document.getElementById('req-group-select')?.value || '';
-      const typeCode = document.getElementById('req-type-select').value;
+      const grp = typeof leaveGroupsData !== 'undefined' ? leaveGroupsData.find(g => g.code === groupCode) : null;
+      const typeCode = document.getElementById('req-type-select')?.value || (grp ? grp.typeCode : 'AL');
       const session = document.querySelector('input[name="req-session"]:checked')?.value || 'FULL';
       const fromDate = document.getElementById('req-from-date').value;
       const toDate = document.getElementById('req-to-date').value;
@@ -34758,7 +34761,6 @@
 
       const emp = typeof employeesData !== 'undefined' ? employeesData.find(e => e.pap === empCode) : null;
       const handoverEmp = typeof employeesData !== 'undefined' ? employeesData.find(e => e.pap === handoverCode) : null;
-      const grp = typeof leaveGroupsData !== 'undefined' ? leaveGroupsData.find(g => g.code === groupCode) : null;
       const lt = typeof leaveTypesData !== 'undefined' ? leaveTypesData.find(t => t.code === typeCode) : null;
 
       const d1 = new Date(fromDate);
@@ -42630,17 +42632,8 @@
           <!-- Dynamically populated if group requires QLTT or dynamic approvers -->
         </div>
 
-        <!-- 3. Chọn Loại nghỉ phép -->
-        <div>
-          <label class="block font-semibold text-slate-700 text-xs mb-1">Loại ngày nghỉ <span class="text-rose-500">*</span></label>
-          <select id="req-type-select" onchange="onLeaveRequestTypeChange()" required class="w-full px-3 py-2 border border-slate-300 rounded-lg text-xs font-semibold bg-white focus:ring-2 focus:ring-[#2E3191]">
-            <!-- Dynamically populated from leaveTypesData -->
-          </select>
-          <div id="req-type-notice" class="mt-1 text-[11px] text-slate-500 flex items-center space-x-1">
-            <span>💡</span>
-            <span id="req-type-notice-text">Trừ vào quỹ phép năm của nhân viên. Hưởng 100% lương.</span>
-          </div>
-        </div>
+        <!-- Loại ngày nghỉ (tự động xác định theo Quy trình đã chọn) -->
+        <input type="hidden" id="req-type-select" value="AL">
 
         <!-- 4. Hình thức nghỉ -->
         <div>
@@ -42700,18 +42693,6 @@
         <div>
           <label class="block font-semibold text-slate-700 text-xs mb-1">Tài liệu / Minh chứng (giấy viện, khai sinh, kết hôn nếu có)</label>
           <input type="text" id="req-attachment-name" placeholder="Tên tệp hoặc số chứng từ (VD: Giay_ra_vien_01.pdf)..." class="w-full px-3 py-2 border border-slate-300 rounded-lg text-xs focus:ring-2 focus:ring-[#2E3191]">
-        </div>
-
-        <!-- 9. Preview luồng duyệt M14 -->
-        <div class="p-3 bg-slate-50 rounded-xl border border-slate-200">
-          <div class="text-[11px] font-bold text-slate-700 uppercase tracking-wider mb-1">Luồng phê duyệt M14 tự động:</div>
-          <div class="flex items-center space-x-2 text-[11px] text-slate-600 font-medium">
-            <span class="px-2 py-0.5 rounded bg-white border border-slate-200">1. Người bàn giao</span>
-            <span>➔</span>
-            <span class="px-2 py-0.5 rounded bg-white border border-slate-200 text-[#2E3191] font-bold">2. Trưởng phòng</span>
-            <span>➔</span>
-            <span class="px-2 py-0.5 rounded bg-white border border-slate-200">3. HC-NS chốt công</span>
-          </div>
         </div>
 
         <!-- Footer Buttons -->
