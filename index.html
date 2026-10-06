@@ -5572,7 +5572,7 @@
                     <th class="py-2.5 px-3 text-center min-w-[150px]">Thời hạn &amp; SLA</th>
                     <th class="py-2.5 px-3 min-w-[150px]">Có hiệu lực với</th>
                     <th class="py-2.5 px-3 text-center w-28">Trạng thái</th>
-                    <th class="py-2.5 px-3 text-center w-28">Thao tác</th>
+                    <th class="py-2.5 px-2 text-center w-20 sticky right-0 top-0 bg-[#2E3191] z-20 shadow-[-6px_0_10px_-4px_rgba(0,0,0,0.25)] sticky-action font-semibold text-xs">Thao tác</th>
                   </tr>
                 </thead>
                 <tbody id="annual-leave-groups-tbody" class="divide-y divide-slate-100 bg-white">
@@ -36026,12 +36026,12 @@
     let leaveGroupsData = [
       {
         id: 1,
-        code: 'GR-AL-OFFICE',
-        name: 'Nghỉ phép năm (Khối Văn phòng)',
+        code: 'GR-ANNUAL-LEAVE',
+        name: 'Nghỉ phép năm',
         typeCode: 'AL',
         typeName: 'Nghỉ phép năm',
         typeIcon: '🏖️',
-        approversTag: '@lan.nt, @dung.pt',
+        approversTag: '@quanly.tructiep, @lan.nt',
         directMgr: 'YES',
         workflowType: 'SEQUENTIAL',
         deductFund: 'LEAVE_FUND',
@@ -36044,9 +36044,9 @@
         maxDays: 12,
         monthlyCreateLimit: null,
         monthlyApproveLimit: null,
-        scope: 'Toàn bộ Khối Văn phòng PAP',
+        scope: 'Toàn bộ cán bộ nhân viên Cảng',
         watchers: '@lan.nt, @tienluong.pap',
-        desc: 'Áp dụng cho nhân viên khối hành chính, văn phòng, phòng ban nghiệp vụ cảng.',
+        desc: 'Áp dụng chung cho toàn thể cán bộ nhân viên PAP. Quản lý trực tiếp duyệt ➔ P.HC-NS.',
         status: 'ACTIVE',
         blockDirectManager: { enabled: true, note: 'Bắt buộc Quản lý trực tiếp duyệt trước tiên' },
         blockFixedApprovers: 'Nguyễn Thị Lan (Trưởng phòng HC-NS)',
@@ -36064,54 +36064,45 @@
       },
       {
         id: 2,
-        code: 'GR-AL-OPERATIONS',
-        name: 'Nghỉ phép năm (Khối Hiện trường Cảng)',
-        typeCode: 'AL',
-        typeName: 'Nghỉ phép năm',
-        typeIcon: '🏖️',
-        approversTag: '@thang.lc, @hung.dq',
+        code: 'GR-FORGOT-CLOCKIN',
+        name: 'Quên chấm công (Giải trình công)',
+        typeCode: 'OTHER',
+        typeName: 'Giải trình công',
+        typeIcon: '⏱️',
+        approversTag: '@quanly.tructiep',
         directMgr: 'YES',
-        workflowType: 'SEQUENTIAL',
-        deductFund: 'COMP_FUND',
-        deductFundText: 'Quỹ nghỉ bù: Phép bù ➔ Phép tồn ➔ Phép thâm niên ➔ Phép trong năm',
+        workflowType: 'ANY',
+        deductFund: 'NONE',
+        deductFundText: 'Không trừ quỹ phép (Cập nhật dữ liệu công thực tế sau khi duyệt)',
         allowManagerCreate: true,
         slaHours: 24,
-        deadlineStrict: 'STRICT',
-        noticeDays: 3,
-        graceDays: 0,
-        maxDays: 10,
+        deadlineStrict: 'WARNING',
+        noticeDays: -3,
+        graceDays: -3,
+        maxDays: 1,
         monthlyCreateLimit: null,
         monthlyApproveLimit: null,
-        scope: 'Phòng Khai thác cảng & Đội Cơ giới',
-        watchers: '@dieudo.pap, @nhansu.pap',
-        desc: 'Áp dụng cho công nhân bến bãi, lái cẩu QC/RTG, ca kíp vận hành cảng Phước An.',
+        scope: 'Toàn bộ cán bộ nhân viên Cảng',
+        watchers: '@chamcong.pap, @hcns.pap',
+        desc: 'Giải trình quên quẹt thẻ / chấm công vào ra ca, đi muộn về sớm có lý do chính đáng được QLTT xác nhận.',
         status: 'ACTIVE',
-        blockDirectManager: { enabled: true, note: 'Bắt buộc Đội trưởng / QLTT ca duyệt trước' },
-        blockFixedApprovers: 'Lê Cao Thắng (Trưởng phòng Khai thác Cảng)',
-        blockDynamicApprovers: {
-          enabled: true,
-          title: 'Trưởng ca trực điều độ hiện trường',
-          mode: 'PRESET_LIST'
-        },
-        blockConditionalApprovers: {
-          enabled: true,
-          thresholdDays: 3,
-          approverName: 'Phó Tổng Giám đốc Khai thác',
-          ruleText: 'Nếu số ngày nghỉ > 3 ngày, bổ sung PTGĐ Khai thác cảng'
-        }
+        blockDirectManager: { enabled: true, note: 'Quản lý trực tiếp duyệt xác nhận' },
+        blockFixedApprovers: '',
+        blockDynamicApprovers: { enabled: false, title: '', mode: 'ANY_USER' },
+        blockConditionalApprovers: { enabled: false, thresholdDays: 0, approverName: '', ruleText: '' }
       },
       {
         id: 3,
         code: 'GR-COMP-LEAVE',
         name: 'Nghỉ bù làm thêm giờ (Compensatory Leave)',
         typeCode: 'OTHER',
-        typeName: 'Các loại khác (Nghỉ bù OT)',
+        typeName: 'Nghỉ bù OT',
         typeIcon: '📋',
         approversTag: '@quanly.tructiep',
         directMgr: 'YES',
         workflowType: 'ANY',
         deductFund: 'COMP_FUND',
-        deductFundText: 'Quỹ nghỉ bù: Trừ vào quỹ giờ làm thêm tích lũy của nhân sự',
+        deductFundText: 'Quỹ nghỉ bù: Trừ vào quỹ làm thêm giờ tích lũy của nhân sự',
         allowManagerCreate: true,
         slaHours: 12,
         deadlineStrict: 'WARNING',
@@ -36120,9 +36111,9 @@
         maxDays: 5,
         monthlyCreateLimit: null,
         monthlyApproveLimit: null,
-        scope: 'Toàn bộ nhân sự Cảng',
+        scope: 'Toàn bộ cán bộ nhân viên Cảng',
         watchers: '@nhansu.pap',
-        desc: 'Nghỉ bù giải quyết từ quỹ giờ làm thêm ca đêm hoặc trực tàu giải phóng hàng ngày lễ.',
+        desc: 'Nghỉ bù từ quỹ giờ làm thêm ngoài giờ hoặc ngày nghỉ theo quy định của Cảng.',
         status: 'ACTIVE',
         blockDirectManager: { enabled: true, note: 'QLTT xác nhận trừ quỹ OT' },
         blockFixedApprovers: '',
@@ -36132,11 +36123,11 @@
       {
         id: 4,
         code: 'GR-BUSINESS-TRIP',
-        name: 'Đi công tác / Ra ngoài làm việc đối tác',
+        name: 'Đi công tác',
         typeCode: 'BT',
         typeName: 'Đi công tác',
         typeIcon: '✈️',
-        approversTag: '@lan.nt, @dung.pt',
+        approversTag: '@quanly.tructiep, @lan.nt',
         directMgr: 'YES',
         workflowType: 'SEQUENTIAL',
         deductFund: 'NONE',
@@ -36149,14 +36140,19 @@
         maxDays: 14,
         monthlyCreateLimit: null,
         monthlyApproveLimit: null,
-        scope: 'Toàn bộ CBCNV Cảng',
+        scope: 'Toàn bộ cán bộ nhân viên Cảng',
         watchers: '@ketoan.pap, @hcns.pap',
-        desc: 'Đi công tác thị trường hàng hải, làm việc cơ quan hữu quan (Hải quan, Cảng vụ Đồng Nai).',
+        desc: 'Đi công tác thị trường, đối tác hoặc cơ quan quản lý nhà nước.',
         status: 'ACTIVE',
-        blockDirectManager: { enabled: true, note: 'QLTT duyệt phê duyệt lịch trình' },
-        blockFixedApprovers: 'Phạm Tiến Dũng (Tổng Giám đốc)',
+        blockDirectManager: { enabled: true, note: 'QLTT duyệt lịch trình công tác' },
+        blockFixedApprovers: 'Nguyễn Thị Lan (Trưởng phòng HC-NS)',
         blockDynamicApprovers: { enabled: false, title: '', mode: 'ANY_USER' },
-        blockConditionalApprovers: { enabled: false, thresholdDays: 0, approverName: '', ruleText: '' }
+        blockConditionalApprovers: {
+          enabled: true,
+          thresholdDays: 5,
+          approverName: 'Tổng Giám đốc Cảng',
+          ruleText: 'Nếu công tác > 5 ngày, bổ sung Tổng Giám đốc duyệt'
+        }
       },
       {
         id: 5,
@@ -36165,7 +36161,7 @@
         typeCode: 'WFH',
         typeName: 'Làm việc ngoài văn phòng',
         typeIcon: '💻',
-        approversTag: '@truongphong',
+        approversTag: '@quanly.tructiep',
         directMgr: 'YES',
         workflowType: 'ANY',
         deductFund: 'NONE',
@@ -36178,11 +36174,11 @@
         maxDays: 2,
         monthlyCreateLimit: 4,
         monthlyApproveLimit: 4,
-        scope: 'Khối Văn phòng & Ban Công nghệ IT',
+        scope: 'Toàn bộ cán bộ nhân viên Cảng',
         watchers: '@hcns.pap',
-        desc: 'Đăng ký làm việc từ xa, bảo đảm kết nối liên lạc và hoàn thành KPIs trong ngày.',
+        desc: 'Đăng ký làm việc từ xa, bảo đảm liên lạc thông suốt và hoàn thành nhiệm vụ.',
         status: 'ACTIVE',
-        blockDirectManager: { enabled: true, note: 'Chỉ cần Trưởng bộ phận phê duyệt' },
+        blockDirectManager: { enabled: true, note: 'QLTT phê duyệt' },
         blockFixedApprovers: '',
         blockDynamicApprovers: { enabled: false, title: '', mode: 'ANY_USER' },
         blockConditionalApprovers: { enabled: false, thresholdDays: 0, approverName: '', ruleText: '' }
@@ -36194,7 +36190,7 @@
         typeCode: 'PL',
         typeName: 'Nghỉ cá nhân',
         typeIcon: '💍',
-        approversTag: '@lan.nt',
+        approversTag: '@quanly.tructiep, @lan.nt',
         directMgr: 'YES',
         workflowType: 'SEQUENTIAL',
         deductFund: 'NONE',
@@ -36207,9 +36203,9 @@
         maxDays: 3,
         monthlyCreateLimit: null,
         monthlyApproveLimit: null,
-        scope: 'Toàn bộ CBCNV Cảng',
+        scope: 'Toàn bộ cán bộ nhân viên Cảng',
         watchers: '@hcns.pap, @congdoan.pap',
-        desc: 'Kết hôn bản thân (3 ngày), con kết hôn (1 ngày), tang chế (3 ngày) - Điều 115 BLLĐ 2019.',
+        desc: 'Bản thân kết hôn (3 ngày), con kết hôn (1 ngày), tang chế (3 ngày) - Điều 115 BLLĐ 2019.',
         status: 'ACTIVE',
         blockDirectManager: { enabled: true, note: 'QLTT xác nhận bước 1' },
         blockFixedApprovers: 'Nguyễn Thị Lan (Trưởng phòng HC-NS)',
@@ -36223,7 +36219,7 @@
         typeCode: 'UL',
         typeName: 'Nghỉ không lương',
         typeIcon: '⏳',
-        approversTag: '@lan.nt, @dung.pt',
+        approversTag: '@quanly.tructiep, @lan.nt',
         directMgr: 'YES',
         workflowType: 'SEQUENTIAL',
         deductFund: 'NONE',
@@ -36236,9 +36232,9 @@
         maxDays: 30,
         monthlyCreateLimit: null,
         monthlyApproveLimit: null,
-        scope: 'Toàn bộ CBCNV Cảng',
+        scope: 'Toàn bộ cán bộ nhân viên Cảng',
         watchers: '@hcns.pap, @tienluong.pap',
-        desc: 'Giải quyết việc riêng cá nhân sau khi hết phép năm hoặc lý do đột xuất.',
+        desc: 'Giải quyết việc riêng cá nhân sau khi hết phép năm hoặc lý do gia đình cá nhân.',
         status: 'ACTIVE',
         blockDirectManager: { enabled: true, note: 'QLTT phê duyệt bước 1' },
         blockFixedApprovers: 'Nguyễn Thị Lan (Trưởng phòng HC-NS)',
@@ -36255,7 +36251,7 @@
         code: 'GR-HOURLY-OFFSITE',
         name: 'Làm việc ngoài văn phòng theo giờ',
         typeCode: 'WFH_HOURLY',
-        typeName: 'Làm việc ngoài văn phòng theo giờ',
+        typeName: 'Làm việc ngoài theo giờ',
         typeIcon: '⏱️',
         approversTag: '@quanly.tructiep',
         directMgr: 'YES',
@@ -36270,7 +36266,7 @@
         maxDays: 1,
         monthlyCreateLimit: null,
         monthlyApproveLimit: null,
-        scope: 'Toàn bộ CBCNV Cảng',
+        scope: 'Toàn bộ cán bộ nhân viên Cảng',
         watchers: '@chamcong.pap',
         desc: 'Ra ngoài xử lý công vụ khẩn cấp hoặc việc sự vụ theo giờ (1-4 giờ trong ca).',
         status: 'ACTIVE',
@@ -36374,7 +36370,7 @@
         `;
 
         return `
-          <tr class="hover:bg-slate-50/80 transition border-b border-slate-100 text-xs">
+          <tr class="group hover:bg-slate-50/80 transition border-b border-slate-100 text-xs">
             <td class="py-3 px-3 text-center text-slate-500 font-medium">${idx + 1}</td>
             <td class="py-3 px-3.5">
               <div class="flex items-center space-x-2">
@@ -36409,18 +36405,15 @@
             <td class="py-3 px-3 text-center">
               ${statusBadge}
             </td>
-            <td class="py-3 px-3 text-center">
-              <div class="flex items-center justify-center space-x-1">
-                <button type="button" onclick="openViewLeaveGroupDetail('${g.code}')" class="p-1.5 text-slate-600 hover:text-[#2E3191] hover:bg-indigo-50 rounded-lg transition cursor-pointer" title="Xem chi tiết & 4 khối người duyệt">
+            <td class="py-3 px-1 text-center w-20 sticky right-0 bg-white group-hover:bg-slate-50 transition z-10 shadow-[-6px_0_10px_-4px_rgba(0,0,0,0.12)]">
+              <div class="flex items-center justify-center space-x-0.5">
+                <button type="button" onclick="openViewLeaveGroupDetail('${g.code}')" class="p-1 text-slate-500 hover:text-[#2E3191] hover:bg-indigo-50 rounded transition cursor-pointer" title="Xem chi tiết & 4 khối người duyệt">
                   <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
                 </button>
-                <button type="button" onclick="openEditLeaveGroupModal('${g.code}')" class="p-1.5 text-slate-600 hover:text-[#2E3191] hover:bg-slate-100 rounded-lg transition cursor-pointer" title="Chỉnh sửa nhóm">
+                <button type="button" onclick="openEditLeaveGroupModal('${g.code}')" class="p-1 text-slate-500 hover:text-[#2E3191] hover:bg-slate-100 rounded transition cursor-pointer" title="Chỉnh sửa nhóm">
                   <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" /></svg>
                 </button>
-                <button type="button" onclick="toggleLeaveGroupStatus('${g.code}')" class="p-1.5 ${isActive ? 'text-amber-600 hover:bg-amber-50' : 'text-emerald-600 hover:bg-emerald-50'} rounded-lg transition cursor-pointer" title="${isActive ? 'Tạm dừng nhóm' : 'Kích hoạt lại'}">
-                  <span class="text-xs">${isActive ? '⏸️' : '▶️'}</span>
-                </button>
-                <button type="button" onclick="deleteLeaveGroup('${g.code}')" class="p-1.5 text-rose-500 hover:text-rose-700 hover:bg-rose-50 rounded-lg transition cursor-pointer" title="Xóa nhóm đề xuất">
+                <button type="button" onclick="deleteLeaveGroup('${g.code}')" class="p-1 text-rose-500 hover:text-rose-700 hover:bg-rose-50 rounded transition cursor-pointer" title="Xóa nhóm đề xuất">
                   <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" /></svg>
                 </button>
               </div>
@@ -36467,6 +36460,8 @@
         codeInput.disabled = false;
       }
       document.getElementById('leave-group-name').value = '';
+      const statusSelect = document.getElementById('leave-group-status');
+      if (statusSelect) statusSelect.value = 'ACTIVE';
       document.getElementById('leave-group-approvers-tag').value = '@lan.nt, @dung.pt';
       document.getElementById('leave-group-type').value = 'AL';
       onLeaveGroupTypeSelectChange();
@@ -36528,6 +36523,8 @@
         codeInput.disabled = true;
       }
       document.getElementById('leave-group-name').value = group.name;
+      const statusSelect = document.getElementById('leave-group-status');
+      if (statusSelect) statusSelect.value = group.status || 'ACTIVE';
       document.getElementById('leave-group-approvers-tag').value = group.approversTag || '';
       document.getElementById('leave-group-type').value = group.typeCode || 'AL';
       onLeaveGroupTypeSelectChange();
@@ -36581,6 +36578,7 @@
       if (event) event.preventDefault();
       const code = document.getElementById('leave-group-code').value.trim();
       const name = document.getElementById('leave-group-name').value.trim();
+      const status = document.getElementById('leave-group-status')?.value || 'ACTIVE';
       const typeCode = document.getElementById('leave-group-type').value;
       const approversTag = document.getElementById('leave-group-approvers-tag').value.trim();
 
@@ -36625,6 +36623,7 @@
         typeCode,
         typeName: matchedType.name,
         typeIcon: matchedType.icon,
+        status,
         approversTag,
         directMgr,
         workflowType,
@@ -36666,8 +36665,7 @@
       } else {
         leaveGroupsData.push({
           id: Date.now(),
-          ...groupPayload,
-          status: 'ACTIVE'
+          ...groupPayload
         });
         showToast(`✓ Đã tạo mới nhóm đề xuất [${code}] thành công theo chuẩn Base Timeoff!`);
       }
@@ -41865,17 +41863,26 @@
             <span>Bước 2: Thiết lập thông tin nhóm đề xuất cơ bản</span>
           </div>
 
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
             <div>
               <label class="block font-bold text-slate-800 mb-1">Tên nhóm đề xuất <span class="text-rose-500">*</span></label>
-              <input type="text" id="leave-group-name" required placeholder="VD: Nghỉ phép năm (Khối Văn phòng)" class="w-full px-3 py-2 border border-slate-300 rounded-lg text-xs font-semibold focus:ring-2 focus:ring-[#2E3191] bg-white">
-              <span class="text-[10.5px] text-slate-500 mt-0.5 block">Trường thông tin bắt buộc hiển thị trên biểu mẫu đề xuất</span>
+              <input type="text" id="leave-group-name" required placeholder="VD: Nghỉ phép năm" class="w-full px-3 py-2 border border-slate-300 rounded-lg text-xs font-semibold focus:ring-2 focus:ring-[#2E3191] bg-white">
+              <span class="text-[10.5px] text-slate-500 mt-0.5 block">Hiển thị trên biểu mẫu đề xuất</span>
             </div>
 
             <div>
               <label class="block font-bold text-slate-800 mb-1">Mã nhóm đề xuất <span class="text-rose-500">*</span></label>
-              <input type="text" id="leave-group-code" required placeholder="VD: GR-AL-OFFICE" class="w-full px-3 py-2 border border-slate-300 rounded-lg text-xs font-mono font-bold focus:ring-2 focus:ring-[#2E3191] bg-white">
-              <span class="text-[10.5px] text-slate-500 mt-0.5 block">Mã định danh duy nhất trong hệ thống Base Timeoff</span>
+              <input type="text" id="leave-group-code" required placeholder="VD: GR-ANNUAL-LEAVE" class="w-full px-3 py-2 border border-slate-300 rounded-lg text-xs font-mono font-bold focus:ring-2 focus:ring-[#2E3191] bg-white">
+              <span class="text-[10.5px] text-slate-500 mt-0.5 block">Mã định danh duy nhất</span>
+            </div>
+
+            <div>
+              <label class="block font-bold text-slate-800 mb-1">Trạng thái áp dụng <span class="text-rose-500">*</span></label>
+              <select id="leave-group-status" required class="w-full px-3 py-2 border border-slate-300 rounded-lg text-xs font-bold bg-white focus:ring-2 focus:ring-[#2E3191]">
+                <option value="ACTIVE">🟢 Đang áp dụng</option>
+                <option value="INACTIVE">⚪ Tạm ngừng áp dụng</option>
+              </select>
+              <span class="text-[10.5px] text-slate-500 mt-0.5 block">Bật / Tắt hiệu lực nhóm đề xuất</span>
             </div>
           </div>
 
@@ -42180,7 +42187,7 @@
           <span class="w-8 h-8 rounded-lg bg-white/10 flex items-center justify-center text-lg" id="detail-group-icon">🏖️</span>
           <div>
             <h3 class="text-sm font-bold" id="detail-group-name">Chi tiết Nhóm đề xuất: Nghỉ phép năm</h3>
-            <p class="text-[11px] text-white/80" id="detail-group-code">Mã: GR-AL-OFFICE · Base Timeoff PAP</p>
+            <p class="text-[11px] text-white/80" id="detail-group-code">Mã: GR-ANNUAL-LEAVE · Base Timeoff PAP</p>
           </div>
         </div>
         <button type="button" onclick="closeLeaveGroupDetailModal()" class="text-white/70 hover:text-white text-2xl leading-none cursor-pointer p-1 transition">&times;</button>
