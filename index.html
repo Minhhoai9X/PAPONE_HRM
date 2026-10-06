@@ -6331,20 +6331,10 @@
 
               <!-- Khối bên phải: Nút Hành động Top (Chuẩn Base) -->
               <div class="flex items-center space-x-2 shrink-0">
-                <!-- Nút Xong (khi chưa khóa) / Mở khóa (khi đã khóa) -->
-                <button type="button" id="btn-top-lock-action" onclick="handleBaseLockTopAction()" class="px-3.5 py-1.5 bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold rounded-xl shadow-xs transition cursor-pointer flex items-center space-x-1.5">
-                  <span id="btn-top-lock-icon">✓</span>
-                  <span id="btn-top-lock-label">Xong</span>
-                </button>
-
-                <!-- Nút Gửi bảng công đối soát (Máy bay giấy) -->
-                <button type="button" onclick="openSendReviewConfirmModal()" class="w-8.5 h-8.5 rounded-xl border border-slate-300 hover:bg-slate-50 text-slate-700 flex items-center justify-center transition cursor-pointer shadow-2xs" title="Gửi bảng công cho nhân viên kiểm tra">
-                  <span>✈️</span>
-                </button>
-
-                <!-- Nút Xuất Excel (Đám mây) -->
-                <button type="button" onclick="exportAttendanceSummaryExcel()" class="w-8.5 h-8.5 rounded-xl border border-slate-300 hover:bg-slate-50 text-slate-700 flex items-center justify-center transition cursor-pointer shadow-2xs" title="Xuất dữ liệu Excel">
-                  <span>☁️</span>
+                <!-- Nút Chốt công (Chỉ hiện ở Bước 4) / Mở khóa (khi đã khóa) -->
+                <button type="button" id="btn-top-lock-action" onclick="handleBaseLockTopAction()" class="hidden px-4 py-1.5 bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold rounded-xl shadow-xs transition cursor-pointer flex items-center space-x-1.5">
+                  <span id="btn-top-lock-icon">🔒</span>
+                  <span id="btn-top-lock-label">Chốt công</span>
                 </button>
 
                 <!-- Dropdown Thao tác khác ⋮ -->
@@ -6389,12 +6379,12 @@
                 <!-- Line 1-2 -->
                 <div id="step-line-1" class="flex-1 min-w-8 h-0.5 bg-blue-300 -mt-4 mx-2"></div>
 
-                <!-- Bước 2: Giờ quẹt thẻ -->
+                <!-- Bước 2: Thời gian chấm công -->
                 <div class="flex flex-col items-center group cursor-pointer shrink-0" onclick="switchAttendanceLockStep(2)">
                   <div id="step-circle-att-2" class="w-8 h-8 rounded-full border-2 border-dashed border-blue-400 bg-white text-blue-500 flex items-center justify-center text-xs font-bold transition">
                     ⏰
                   </div>
-                  <span id="step-text-att-2" class="text-[11px] font-medium text-slate-600 mt-1 text-center whitespace-nowrap">Bước 2: Giờ quẹt thẻ</span>
+                  <span id="step-text-att-2" class="text-[11px] font-medium text-slate-600 mt-1 text-center whitespace-nowrap">Bước 2: Thời gian chấm công</span>
                 </div>
 
                 <!-- Line 2-3 -->
@@ -6438,6 +6428,7 @@
 
             <!-- Toolbar lọc dữ liệu chuẩn Base -->
             <div class="pt-3.5 flex flex-wrap items-center justify-between gap-2.5">
+              <!-- Cụm bộ lọc bên trái -->
               <div class="flex flex-wrap items-center gap-2 text-xs">
                 <!-- Chuyển đổi Dạng lưới vs Bảng tổng hợp -->
                 <div class="flex items-center space-x-1 bg-slate-100 p-1 rounded-xl">
@@ -6450,7 +6441,7 @@
                 </div>
 
                 <!-- Lọc phòng ban -->
-                <select id="lock-filter-dept" onchange="renderLockWorkspace()" class="px-3 py-1.5 border border-slate-300 rounded-xl text-xs bg-white text-slate-700">
+                <select id="lock-filter-dept" onchange="renderLockWorkspace()" class="px-2.5 py-1.5 border border-slate-300 rounded-xl text-xs bg-white text-slate-700 max-w-[170px]">
                   <option value="ALL">Tất cả phòng ban</option>
                   <option value="CÔNG TY CP CẢNG PHƯỚC AN">Ban Giám đốc</option>
                   <option value="Phòng Phát triển Phần mềm">Phòng Phát triển Phần mềm</option>
@@ -6463,29 +6454,41 @@
                 </select>
 
                 <!-- Lọc lịch làm việc -->
-                <select id="lock-filter-schedule" onchange="renderLockWorkspace()" class="px-3 py-1.5 border border-slate-300 rounded-xl text-xs bg-white text-slate-700 font-medium">
+                <select id="lock-filter-schedule" onchange="renderLockWorkspace()" class="px-2.5 py-1.5 border border-slate-300 rounded-xl text-xs bg-white text-slate-700 font-medium">
                   <option value="ALL">Tất cả lịch làm việc</option>
                   <option value="FIXED">Hành chính</option>
                   <option value="SHIFT">Theo ca</option>
                 </select>
 
                 <!-- Lọc trạng thái chấm công -->
-                <select id="lock-filter-status" onchange="renderLockWorkspace()" class="px-3 py-1.5 border border-slate-300 rounded-xl text-xs bg-white text-slate-700">
+                <select id="lock-filter-status" onchange="renderLockWorkspace()" class="px-2.5 py-1.5 border border-slate-300 rounded-xl text-xs bg-white text-slate-700">
                   <option value="ALL">Tất cả trạng thái chấm công</option>
                   <option value="MISSING">⚠️ Có thiếu giờ In/Out (8)</option>
                   <option value="LATE">⏱️ Có đi muộn / về sớm</option>
                   <option value="LEAVE">🏖️ Có nghỉ phép / lễ</option>
                 </select>
+              </div>
 
+              <!-- Cụm bên phải: Ô tìm kiếm ngang hàng nút Xuất Excel -->
+              <div class="flex items-center space-x-2 text-xs shrink-0">
                 <!-- Ô tìm kiếm -->
-                <input type="text" id="lock-workspace-search" oninput="renderLockWorkspace()" placeholder="Tìm theo mã NV, họ tên..." class="px-3 py-1.5 border border-slate-300 rounded-xl text-xs w-48 bg-white">
-              </div>
+                <div class="relative">
+                  <input type="text" id="lock-workspace-search" oninput="renderLockWorkspace()" placeholder="Tìm theo mã NV, họ tên..." class="pl-8 pr-3 py-1.5 border border-slate-300 rounded-xl text-xs w-48 bg-white focus:outline-none focus:ring-1 focus:ring-blue-500">
+                  <span class="absolute left-2.5 top-1.5 text-slate-400 text-xs">🔍</span>
+                </div>
 
-              <div class="text-[11px] text-slate-500 font-medium flex items-center space-x-2">
-                <span id="lock-workspace-count">Hiển thị: <strong>13 nhân viên</strong></span>
-                <span>•</span>
-                <span class="italic text-slate-400" id="lock-workspace-hint">* Nhấp vào ô ngày để thực hiện thao tác tương ứng</span>
+                <!-- Nút Xuất Excel ngang hàng với ô tìm kiếm -->
+                <button type="button" onclick="exportAttendanceSummaryExcel()" class="px-3 py-1.5 bg-white border border-slate-300 hover:bg-slate-50 text-slate-700 font-semibold text-xs rounded-xl shadow-2xs transition inline-flex items-center gap-1.5 cursor-pointer shrink-0" title="Xuất dữ liệu Excel bảng công">
+                  <svg class="w-4 h-4 text-emerald-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="12" y1="18" x2="12" y2="12"/><line x2="9" y2="15" x1="12"/><line x2="15" y2="15" x1="12"/></svg>
+                  <span>Xuất Excel</span>
+                </button>
               </div>
+            </div>
+
+            <!-- Dòng phụ: Thống kê số lượng nhân viên & gợi ý thao tác -->
+            <div class="mt-2 flex items-center justify-between text-[11px] text-slate-500 font-medium">
+              <span id="lock-workspace-count">Hiển thị: <strong>13 nhân viên</strong></span>
+              <span class="italic text-slate-400" id="lock-workspace-hint">* Nhấp vào ô ngày để thực hiện thao tác tương ứng</span>
             </div>
 
             <!-- WORKSPACE CONTAINER 1: MA TRẬN 30 NGÀY (GRID DYNAMIC THEO 4 BƯỚC) -->
@@ -6539,7 +6542,7 @@
               </div>
 
               <button type="button" onclick="handleFooterNextAction()" id="btn-footer-next-step" class="px-4 py-2 bg-[#1877F2] hover:bg-[#166fe5] text-white text-xs font-bold rounded-xl shadow-xs transition cursor-pointer flex items-center space-x-1.5">
-                <span id="btn-footer-next-label">Tiếp tục: Bước 2 (Giờ vào/ra)</span>
+                <span id="btn-footer-next-label">Tiếp tục: Bước 2 (Thời gian chấm công)</span>
                 <span>→</span>
               </button>
             </div>
@@ -38249,7 +38252,7 @@
           bBadge.innerHTML = "<span>🟢</span><span>Đã chốt (v1.3)</span>";
         } else {
           bBadge.className = "px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-amber-100 text-amber-800 border border-amber-200";
-          const stepNames = { 1: 'Bước 1: Lịch làm việc', 2: 'Bước 2: Giờ quẹt thẻ', 3: 'Bước 3: Chạy tính công', 4: 'Bước 4: Bảng quy đổi' };
+          const stepNames = { 1: 'Bước 1: Lịch làm việc', 2: 'Bước 2: Thời gian chấm công', 3: 'Bước 3: Chạy tính công', 4: 'Bước 4: Bảng quy đổi' };
           bBadge.innerHTML = `<span>🟡</span><span>Đang rà soát (${stepNames[currentAttendanceLockStep] || 'Bước 1'})</span>`;
         }
       }
@@ -38382,7 +38385,7 @@
           `;
         } else {
           const step = period.currentStep || 1;
-          const stepNames = { 1: 'Lịch làm việc', 2: 'Giờ quẹt thẻ', 3: 'Chạy tính công', 4: 'Bảng quy đổi' };
+          const stepNames = { 1: 'Lịch làm việc', 2: 'Thời gian chấm công', 3: 'Chạy tính công', 4: 'Bảng quy đổi' };
           const stepColors = { 1: 'bg-blue-100 text-blue-800', 2: 'bg-cyan-100 text-cyan-800', 3: 'bg-amber-100 text-amber-800', 4: 'bg-indigo-100 text-indigo-800' };
           statusBadge = `
             <div>
@@ -38648,7 +38651,7 @@
           bBadge.innerHTML = "<span>🟢</span><span>Đã chốt (v1.3)</span>";
         } else {
           bBadge.className = "px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-amber-100 text-amber-800 border border-amber-200";
-          const stepNames = { 1: 'Bước 1: Lịch làm việc', 2: 'Bước 2: Giờ quẹt thẻ', 3: 'Bước 3: Chạy tính công', 4: 'Bước 4: Bảng quy đổi' };
+          const stepNames = { 1: 'Bước 1: Lịch làm việc', 2: 'Bước 2: Thời gian chấm công', 3: 'Bước 3: Chạy tính công', 4: 'Bước 4: Bảng quy đổi' };
           bBadge.innerHTML = `<span>🟡</span><span>Đang rà soát (${stepNames[currentAttendanceLockStep] || 'Bước 1'})</span>`;
         }
       }
@@ -38693,16 +38696,12 @@
       renderLockWorkspace();
     }
 
-    // Nút hành động Top (Chuẩn Base: Xong / Mở khóa)
+    // Nút hành động Top (Chuẩn Base: Chốt công / Mở khóa)
     function handleBaseLockTopAction() {
       const period = getCurrentAttendancePeriod();
       if (period.isLocked) {
         openAttUnlockModal();
-      } else if (currentAttendanceLockStep === 3) {
-        executeCalculateAttendanceFormula();
       } else if (currentAttendanceLockStep === 4) {
-        openAttLockModal();
-      } else {
         openAttLockModal();
       }
     }
@@ -38913,7 +38912,7 @@
           bBadge.innerHTML = "<span>🟢</span><span>Đã chốt (v1.3)</span>";
         } else {
           bBadge.className = "px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-amber-100 text-amber-800 border border-amber-200";
-          const stepNames = { 1: 'Bước 1: Lịch làm việc', 2: 'Bước 2: Giờ quẹt thẻ', 3: 'Bước 3: Chạy tính công', 4: 'Bước 4: Bảng quy đổi' };
+          const stepNames = { 1: 'Bước 1: Lịch làm việc', 2: 'Bước 2: Thời gian chấm công', 3: 'Bước 3: Chạy tính công', 4: 'Bước 4: Bảng quy đổi' };
           bBadge.innerHTML = `<span>🟡</span><span>Đang rà soát (${stepNames[currentAttendanceLockStep] || 'Bước 1'})</span>`;
         }
       }
@@ -38951,7 +38950,7 @@
       const stepIcons = { 1: '📅', 2: '⏰', 3: '🧮', 4: '🏁' };
       const stepLabels = {
         1: 'Lịch làm việc',
-        2: 'Giờ quẹt thẻ',
+        2: 'Thời gian chấm công',
         3: 'Chạy tính công',
         4: 'Bảng quy đổi'
       };
@@ -39003,29 +39002,24 @@
         btnNext.classList.toggle('opacity-40', currentAttendanceLockStep >= 4);
       }
 
-      // 4. Cập nhật Nút Top Action
+      // 4. Cập nhật Nút Top Action (Chỉ hiển thị ở Bước 4 hoặc khi đã khóa)
       const btnTopAction = document.getElementById('btn-top-lock-action');
       const btnTopIcon = document.getElementById('btn-top-lock-icon');
       const btnTopLabel = document.getElementById('btn-top-lock-label');
       if (btnTopAction && btnTopLabel && btnTopIcon) {
         if (period.isLocked) {
+          btnTopAction.classList.remove('hidden');
           btnTopAction.className = "px-4 py-2 bg-[#1877F2] hover:bg-[#166fe5] text-white text-xs font-bold rounded-xl shadow-xs transition cursor-pointer flex items-center space-x-1.5";
           btnTopIcon.innerText = "🔓";
           btnTopLabel.innerText = "Mở khóa";
+        } else if (currentAttendanceLockStep === 4) {
+          btnTopAction.classList.remove('hidden');
+          btnTopAction.className = "px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold rounded-xl shadow-xs transition cursor-pointer flex items-center space-x-1.5";
+          btnTopIcon.innerText = "🔒";
+          btnTopLabel.innerText = "Chốt công";
         } else {
-          if (currentAttendanceLockStep === 3) {
-            btnTopAction.className = "px-4 py-2 bg-[#2E3191] hover:bg-[#242775] text-white text-xs font-bold rounded-xl shadow-xs transition cursor-pointer flex items-center space-x-1.5";
-            btnTopIcon.innerText = "💾";
-            btnTopLabel.innerText = "Lưu lại";
-          } else if (currentAttendanceLockStep === 4) {
-            btnTopAction.className = "px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold rounded-xl shadow-xs transition cursor-pointer flex items-center space-x-1.5";
-            btnTopIcon.innerText = "✓";
-            btnTopLabel.innerText = "Xong";
-          } else {
-            btnTopAction.className = "px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-semibold rounded-xl transition cursor-pointer flex items-center space-x-1.5";
-            btnTopIcon.innerText = "🔒";
-            btnTopLabel.innerText = "Chốt công";
-          }
+          // Các bước 1, 2, 3: Ẩn nút Chốt công / Lưu lại
+          btnTopAction.classList.add('hidden');
         }
       }
 
@@ -39053,7 +39047,7 @@
           if (hint) hint.innerText = "* Nhấn Chạy tính công để cập nhật kết quả công của toàn bộ nhân sự";
         } else if (currentAttendanceLockStep === 4) {
           ctxIcon.innerText = "🏁";
-          ctxDesc.innerHTML = "<strong>Bước 4: Bảng công quy đổi</strong> - Đưa chuột vào số công để điều chỉnh ngoại lệ nếu cần. Nhấn [Gửi bảng công] để đối soát, sau đó nhấn [✓ Xong] để hoàn tất chốt bảng công.";
+          ctxDesc.innerHTML = "<strong>Bước 4: Bảng công quy đổi</strong> - Đưa chuột vào số công để điều chỉnh ngoại lệ nếu cần. Nhấn [Gửi bảng công] để đối soát, sau đó nhấn [🔒 Chốt công] để hoàn tất chốt bảng công.";
           ctxActionContainer.innerHTML = `<button type="button" onclick="openSendReviewConfirmModal()" class="px-3 py-1.5 bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold rounded-lg shadow-2xs transition cursor-pointer flex items-center space-x-1"><span>📤</span><span>Gửi đối soát 245 NV</span></button>`;
           if (hint) hint.innerText = "* Rê chuột vào số công để hiển thị menu [✏ Điều chỉnh]";
         }
@@ -39079,7 +39073,7 @@
           btnFootNextLabel.innerText = "🔓 Mở khóa bảng công";
         } else if (currentAttendanceLockStep === 4) {
           btnFootNext.className = "px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold rounded-xl shadow-xs transition cursor-pointer flex items-center space-x-1.5";
-          btnFootNextLabel.innerText = "✓ Xong: Hoàn thành & Chốt bảng công";
+          btnFootNextLabel.innerText = "🔒 Chốt công";
         } else {
           btnFootNext.className = "px-4 py-2 bg-[#1877F2] hover:bg-[#166fe5] text-white text-xs font-bold rounded-xl shadow-xs transition cursor-pointer flex items-center space-x-1.5";
           btnFootNextLabel.innerText = `Tiếp tục: Bước ${currentAttendanceLockStep + 1} (${stepLabels[currentAttendanceLockStep + 1]})`;
