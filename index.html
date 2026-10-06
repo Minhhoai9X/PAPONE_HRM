@@ -5462,28 +5462,34 @@
         </div>
 
         <!-- 3. NỘI DUNG TAB NHÓM ĐỀ XUẤT NGHỈ PHÉP & VẮNG MẶT (CHUẨN BASE TIMEOFF) -->
-        <div id="annual-leave-content-groups" class="space-y-3 hidden">
-          <!-- Header Nhóm đề xuất -->
+        <div id="annual-leave-content-groups" class="space-y-3.5 hidden">
+          <!-- Header Nhóm đề xuất chuẩn Base Timeoff -->
           <div class="bg-white p-4 rounded-2xl border border-slate-200 shadow-xs flex flex-col md:flex-row md:items-center md:justify-between gap-3">
             <div>
               <div class="flex items-center space-x-2 text-xs text-slate-700 font-medium mb-1">
                 <span>Quản lý nhân sự</span>
                 <span>/</span>
-                <span>Nghỉ phép (Base Timeoff)</span>
+                <span>Base Timeoff (M09)</span>
                 <span>/</span>
-                <span class="text-[#2E3191] font-semibold">Nhóm đề xuất nghỉ phép</span>
+                <span class="text-[#2E3191] font-bold">Cài đặt &gt;&gt; Nhóm đề xuất</span>
               </div>
               <h2 class="text-base font-bold text-slate-900 flex items-center space-x-2">
-                <span>⚙️</span>
-                <span>NHÓM ĐỀ XUẤT NGHỈ PHÉP & VẮNG MẶT (BASE TIMEOFF)</span>
+                <span class="w-7 h-7 rounded-lg bg-[#2E3191] text-white flex items-center justify-center text-sm shadow-xs">⚙️</span>
+                <span>CÀI ĐẶT NHÓM ĐỀ XUẤT NGHỈ PHÉP &amp; VẮNG MẶT (BASE TIMEOFF)</span>
               </h2>
-              <p class="text-xs text-slate-500 mt-0.5">Tự cấu hình quy trình phê duyệt riêng cho từng nhóm đề xuất (QLTT, Cố định, Linh động, Điều kiện > 3 ngày), thời hạn báo trước/hồi tố, và ưu tiên trừ quỹ phép tự động.</p>
+              <p class="text-xs text-slate-500 mt-1 max-w-3xl leading-relaxed">
+                Chuẩn hóa theo Base Timeoff: Cấu hình 9 loại phép chuẩn, thiết lập 4 khối người duyệt (Quản lý trực tiếp, Người duyệt cố định, Người duyệt linh động, Người duyệt theo điều kiện), hạn mức nộp đơn, thời hạn báo trước/hồi tố và thứ tự ưu tiên trừ Quỹ nghỉ bù / Quỹ nghỉ phép.
+              </p>
             </div>
 
             <div class="flex items-center flex-wrap gap-2">
+              <button type="button" onclick="openBaseTimeoffGuideModal()" class="px-3 py-2 bg-indigo-50 text-[#2E3191] border border-indigo-200 rounded-lg text-xs font-semibold hover:bg-indigo-100 transition cursor-pointer flex items-center space-x-1.5 shadow-2xs">
+                <span>📘</span>
+                <span>Hướng dẫn Base Timeoff</span>
+              </button>
               <button type="button" onclick="openCreateLeaveGroupModal()" class="px-3.5 py-2 pap-primary text-white rounded-lg text-xs font-semibold pap-primary-hover shadow-xs flex items-center space-x-1.5 transition cursor-pointer">
                 <span>➕</span>
-                <span>Tạo nhóm đề xuất mới</span>
+                <span>Tạo mới nhóm</span>
               </button>
             </div>
           </div>
@@ -5492,38 +5498,64 @@
           <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
             <div class="bg-white p-3.5 rounded-xl border border-slate-200 border-l-4 border-l-[#2E3191] shadow-xs">
               <div class="text-[11px] font-semibold text-slate-500 uppercase tracking-wider">Tổng nhóm đề xuất</div>
-              <div class="text-xl font-black text-[#2E3191] mt-0.5" id="kpi-leave-grp-total">6</div>
-              <div class="text-[10px] text-slate-400 mt-0.5">Phân loại theo tính chất & khối</div>
+              <div class="text-xl font-black text-[#2E3191] mt-0.5" id="kpi-leave-grp-total">8</div>
+              <div class="text-[10px] text-slate-400 mt-0.5">Phân theo 9 loại ngày nghỉ chuẩn Base</div>
             </div>
 
             <div class="bg-white p-3.5 rounded-xl border border-slate-200 border-l-4 border-l-emerald-500 shadow-xs">
               <div class="text-[11px] font-semibold text-emerald-700 uppercase tracking-wider">Đang áp dụng</div>
-              <div class="text-xl font-black text-emerald-600 mt-0.5" id="kpi-leave-grp-active">6</div>
-              <div class="text-[10px] text-emerald-600 font-medium mt-0.5">100% nhóm đã kích hoạt</div>
-            </div>
-
-            <div class="bg-white p-3.5 rounded-xl border border-slate-200 border-l-4 border-l-indigo-500 shadow-xs">
-              <div class="text-[11px] font-semibold text-indigo-700 uppercase tracking-wider">Duyệt theo điều kiện</div>
-              <div class="text-xl font-black text-indigo-600 mt-0.5">2 nhóm</div>
-              <div class="text-[10px] text-slate-500 mt-0.5">Nghỉ > 3 ngày qua Ban Giám đốc</div>
+              <div class="text-xl font-black text-emerald-600 mt-0.5" id="kpi-leave-grp-active">8</div>
+              <div class="text-[10px] text-emerald-600 font-medium mt-0.5">Có hiệu lực trong phân hệ chấm công</div>
             </div>
 
             <div class="bg-white p-3.5 rounded-xl border border-slate-200 border-l-4 border-l-amber-500 shadow-xs">
-              <div class="text-[11px] font-semibold text-amber-700 uppercase tracking-wider">Ràng buộc thời hạn</div>
-              <div class="text-xl font-black text-amber-600 mt-0.5">6 / 6 nhóm</div>
-              <div class="text-[10px] text-slate-500 mt-0.5">Có quy định báo trước / nộp bù</div>
+              <div class="text-[11px] font-semibold text-amber-700 uppercase tracking-wider">Duyệt theo điều kiện</div>
+              <div class="text-xl font-black text-amber-600 mt-0.5" id="kpi-leave-grp-cond">3 nhóm</div>
+              <div class="text-[10px] text-slate-500 mt-0.5">Nghỉ &gt; 3 ngày tự bổ sung Ban Giám đốc</div>
+            </div>
+
+            <div class="bg-white p-3.5 rounded-xl border border-slate-200 border-l-4 border-l-indigo-500 shadow-xs">
+              <div class="text-[11px] font-semibold text-indigo-700 uppercase tracking-wider">Kiểm soát SLA &amp; Hạn mức</div>
+              <div class="text-xl font-black text-indigo-600 mt-0.5" id="kpi-leave-grp-sla">8 / 8 nhóm</div>
+              <div class="text-[10px] text-slate-500 mt-0.5">Ràng buộc thời hạn báo trước &amp; xử lý SLA</div>
             </div>
           </div>
 
-          <!-- Bảng Danh mục Nhóm đề xuất nghỉ phép -->
+          <!-- Bộ lọc & Bảng Danh mục Nhóm đề xuất -->
           <div class="bg-white rounded-2xl border border-slate-200 shadow-xs overflow-hidden">
-            <div class="p-3.5 border-b border-slate-100 flex flex-wrap items-center justify-between gap-2">
-              <div class="font-bold text-slate-800 text-xs flex items-center space-x-2">
-                <span>Danh sách nhóm đề xuất đã cấu hình:</span>
-                <span id="table-leave-groups-count" class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-indigo-50 text-[#2E3191] border border-indigo-200">6 nhóm</span>
-              </div>
+            <div class="p-3.5 border-b border-slate-100 flex flex-wrap items-center justify-between gap-2.5">
               <div class="flex items-center space-x-2">
-                <input type="text" id="search-leave-groups" oninput="renderLeaveGroupsTable()" placeholder="Tìm theo tên nhóm, mã nhóm..." class="px-3 py-1.5 border border-slate-200 rounded-lg text-xs focus:ring-2 focus:ring-[#2E3191] w-64 bg-slate-50">
+                <span class="font-bold text-slate-800 text-xs">Danh sách nhóm đề xuất đã thiết lập:</span>
+                <span id="table-leave-groups-count" class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-indigo-50 text-[#2E3191] border border-indigo-200">8 nhóm</span>
+              </div>
+              <div class="flex items-center flex-wrap gap-2">
+                <select id="filter-leave-grp-type" onchange="renderLeaveGroupsTable()" class="px-2.5 py-1.5 border border-slate-200 rounded-lg text-xs bg-slate-50 text-slate-700 focus:ring-2 focus:ring-[#2E3191]">
+                  <option value="ALL">-- Tất cả loại phép Base (9 loại) --</option>
+                  <option value="AL">Nghỉ phép năm</option>
+                  <option value="PL">Nghỉ cá nhân</option>
+                  <option value="BT">Đi công tác</option>
+                  <option value="WFH">Làm việc ngoài văn phòng</option>
+                  <option value="UL">Nghỉ không lương</option>
+                  <option value="OTHER">Các loại khác</option>
+                  <option value="WFH_HOURLY">Làm việc ngoài văn phòng theo giờ</option>
+                  <option value="AL_HOURLY">Nghỉ phép năm theo giờ</option>
+                  <option value="UL_HOURLY">Nghỉ không lương theo giờ</option>
+                </select>
+
+                <select id="filter-leave-grp-workflow" onchange="renderLeaveGroupsTable()" class="px-2.5 py-1.5 border border-slate-200 rounded-lg text-xs bg-slate-50 text-slate-700 focus:ring-2 focus:ring-[#2E3191]">
+                  <option value="ALL">-- Tất cả quy trình duyệt --</option>
+                  <option value="SEQUENTIAL">Duyệt lần lượt</option>
+                  <option value="ALL_CONCURRENT">Duyệt đồng thời</option>
+                  <option value="ANY">Chỉ cần 1 người duyệt</option>
+                </select>
+
+                <select id="filter-leave-grp-status" onchange="renderLeaveGroupsTable()" class="px-2.5 py-1.5 border border-slate-200 rounded-lg text-xs bg-slate-50 text-slate-700 focus:ring-2 focus:ring-[#2E3191]">
+                  <option value="ALL">-- Tất cả trạng thái --</option>
+                  <option value="ACTIVE">Đang áp dụng</option>
+                  <option value="INACTIVE">Ngừng áp dụng</option>
+                </select>
+
+                <input type="text" id="search-leave-groups" oninput="renderLeaveGroupsTable()" placeholder="Tìm theo tên nhóm, mã nhóm..." class="px-3 py-1.5 border border-slate-200 rounded-lg text-xs focus:ring-2 focus:ring-[#2E3191] w-56 bg-slate-50">
               </div>
             </div>
 
@@ -5532,15 +5564,15 @@
                 <thead class="bg-[#2E3191] text-white select-none border-b border-[#2E3191] shadow-xs">
                   <tr class="text-xs font-bold divide-x divide-white/10">
                     <th class="py-2.5 px-3 text-center w-12">STT</th>
-                    <th class="py-2.5 px-3 text-center w-28">Mã nhóm</th>
-                    <th class="py-2.5 px-3.5 min-w-[210px]">Tên nhóm đề xuất</th>
-                    <th class="py-2.5 px-3 text-center min-w-[140px]">Loại ngày nghỉ</th>
-                    <th class="py-2.5 px-3.5 min-w-[220px]">Quy trình người duyệt Timeoff</th>
-                    <th class="py-2.5 px-3 text-center min-w-[140px]">Thời hạn nộp đơn</th>
-                    <th class="py-2.5 px-3 min-w-[180px]">Hạn mức & Trừ quỹ phép</th>
-                    <th class="py-2.5 px-3 min-w-[160px]">Có hiệu lực với</th>
-                    <th class="py-2.5 px-3 text-center w-24">Trạng thái</th>
-                    <th class="py-2.5 px-3 text-center w-24">Thao tác</th>
+                    <th class="py-2.5 px-3.5 min-w-[230px]">Tên nhóm &amp; Mã nhóm</th>
+                    <th class="py-2.5 px-3 text-center min-w-[150px]">Loại ngày nghỉ (Base)</th>
+                    <th class="py-2.5 px-3.5 min-w-[260px]">Thiết lập 4 khối người duyệt</th>
+                    <th class="py-2.5 px-3 text-center min-w-[130px]">Quy trình duyệt</th>
+                    <th class="py-2.5 px-3 min-w-[190px]">Ưu tiên trừ quỹ ngày nghỉ</th>
+                    <th class="py-2.5 px-3 text-center min-w-[150px]">Thời hạn &amp; SLA</th>
+                    <th class="py-2.5 px-3 min-w-[150px]">Có hiệu lực với</th>
+                    <th class="py-2.5 px-3 text-center w-28">Trạng thái</th>
+                    <th class="py-2.5 px-3 text-center w-28">Thao tác</th>
                   </tr>
                 </thead>
                 <tbody id="annual-leave-groups-tbody" class="divide-y divide-slate-100 bg-white">
@@ -34257,19 +34289,60 @@
 
       const ruleBox = document.getElementById('req-group-rule-box');
       if (ruleBox) {
+        const wfNames = {
+          'SEQUENTIAL': 'Duyệt lần lượt',
+          'ALL_CONCURRENT': 'Duyệt đồng thời',
+          'ANY': 'Chỉ cần 1 người duyệt'
+        };
+        const wfText = wfNames[group.workflowType] || 'Duyệt lần lượt';
+
         ruleBox.innerHTML = `
           <div class="font-bold flex items-center space-x-1.5 text-blue-950">
             <span>🛡️</span>
-            <span>Quy trình duyệt Timeoff: ${group.directMgr === 'YES' ? 'Bắt buộc Quản lý trực tiếp (QLTT) duyệt trước' : 'Không yêu cầu QLTT'} · ${group.mode === 'SEQUENTIAL' ? 'Duyệt lần lượt' : 'Chỉ cần 1 người duyệt'}</span>
+            <span>Quy trình duyệt: ${group.directMgr === 'YES' ? 'Bắt buộc Quản lý trực tiếp (QLTT) duyệt trước' : 'Không yêu cầu QLTT'} · ${wfText} · SLA: <strong>${group.slaHours}h</strong></span>
           </div>
           <div class="text-[10.5px] text-blue-800">
-            ${group.conditional ? `⚡ ${group.condRule} · ` : ''}Báo trước tối thiểu: <strong>${group.noticeDays} ngày</strong> · Tối đa: <strong>${group.maxDays} ngày/đơn</strong>
+            Báo trước tối thiểu: <strong>${group.noticeDays} ngày</strong> · Tối đa: <strong>${group.maxDays} ngày/đơn</strong> · ${group.deadlineStrict === 'STRICT' ? '<span class="text-rose-600 font-bold">Ràng buộc bắt buộc</span>' : '<span class="text-amber-700">Có cảnh báo</span>'}
           </div>
           <div class="text-[10px] text-blue-700 italic">
-            Thứ tự trừ: ${group.deductPriorityText} · Phạm vi: ${group.scope || 'Toàn bộ CBCNV'}
+            Thứ tự trừ: ${group.deductFundText} · Phạm vi: ${group.scope || 'Toàn bộ CBCNV'}
           </div>
+          ${group.blockFixedApprovers ? `<div class="text-[10.5px] text-emerald-800 font-medium">🔒 Người duyệt cố định: <strong>${group.blockFixedApprovers}</strong></div>` : ''}
+          ${group.blockDynamicApprovers && group.blockDynamicApprovers.enabled ? `<div class="text-[10.5px] text-indigo-800 font-medium">🔄 Khối duyệt linh động: <strong>${group.blockDynamicApprovers.title}</strong></div>` : ''}
+          ${group.blockConditionalApprovers && group.blockConditionalApprovers.enabled ? `<div class="text-[10.5px] text-amber-800 font-medium">⚡ Điều kiện duyệt cấp cao: Nghỉ &gt; ${group.blockConditionalApprovers.thresholdDays} ngày ➔ <strong>${group.blockConditionalApprovers.approverName}</strong></div>` : ''}
         `;
       }
+
+      // Render custom approvers block if applicable
+      const customAppContainer = document.getElementById('req-custom-approvers-container');
+      if (customAppContainer) {
+        let appHtml = '';
+        if (group.directMgr === 'YES') {
+          appHtml += `
+            <div>
+              <label class="block font-semibold text-slate-700 text-xs mb-1">Quản lý trực tiếp phê duyệt (QLTT bước 1) <span class="text-rose-500">*</span></label>
+              <input type="text" readonly value="Trưởng phòng / Quản lý trực tiếp trực thuộc (Sơ đồ tổ chức PAP)" class="w-full px-3 py-1.5 border border-slate-300 rounded-lg text-xs bg-slate-100 font-medium text-slate-700">
+            </div>
+          `;
+        }
+        if (group.blockDynamicApprovers && group.blockDynamicApprovers.enabled) {
+          appHtml += `
+            <div>
+              <label class="block font-semibold text-slate-700 text-xs mb-1">${group.blockDynamicApprovers.title} <span class="text-rose-500">*</span></label>
+              <input type="text" placeholder="Nhập @username hoặc họ tên người phụ trách chuyên môn..." value="@truongca.dieudo (Lê Cao Thắng)" class="w-full px-3 py-1.5 border border-slate-300 rounded-lg text-xs bg-white font-medium text-slate-800 focus:ring-2 focus:ring-[#2E3191]">
+            </div>
+          `;
+        }
+        if (appHtml) {
+          customAppContainer.innerHTML = appHtml;
+          customAppContainer.classList.remove('hidden');
+        } else {
+          customAppContainer.innerHTML = '';
+          customAppContainer.classList.add('hidden');
+        }
+      }
+
+      onLeaveRequestDurationChange();
     }
 
     function closeCreateLeaveRequestModal() {
@@ -34355,6 +34428,33 @@
         }
       } else {
         if (warnBox) warnBox.classList.add('hidden');
+      }
+
+      // Check conditional approver and deadline rules of selected leave group
+      const groupCode = document.getElementById('req-group-select')?.value;
+      const group = typeof leaveGroupsData !== 'undefined' ? leaveGroupsData.find(g => g.code === groupCode) : null;
+      const condNoticeEl = document.getElementById('req-group-cond-notice');
+      if (group && condNoticeEl) {
+        let notices = [];
+        const today = new Date();
+        today.setHours(0,0,0,0);
+        const start = new Date(fromVal);
+        start.setHours(0,0,0,0);
+        const daysAdvance = Math.round((start - today) / (1000 * 60 * 60 * 24));
+
+        if (group.blockConditionalApprovers && group.blockConditionalApprovers.enabled && calc > group.blockConditionalApprovers.thresholdDays) {
+          notices.push(`<div class="p-2 bg-amber-50 text-amber-900 border border-amber-200 rounded-lg text-xs font-semibold">⚡ Đơn nghỉ ${calc} ngày (&gt; ${group.blockConditionalApprovers.thresholdDays} ngày): Tự động kích hoạt thêm <strong>${group.blockConditionalApprovers.approverName}</strong> phê duyệt!</div>`);
+        }
+
+        if (group.noticeDays > 0 && daysAdvance < group.noticeDays) {
+          if (group.deadlineStrict === 'STRICT') {
+            notices.push(`<div class="p-2 bg-rose-50 text-rose-800 border border-rose-200 rounded-lg text-xs font-semibold">⛔ Vi phạm thời hạn: Nhóm quy định nộp trước tối thiểu <strong>${group.noticeDays} ngày</strong> (Hiện tại chỉ báo trước ${Math.max(0, daysAdvance)} ngày). Vui lòng điều chỉnh ngày bắt đầu!</div>`);
+          } else {
+            notices.push(`<div class="p-2 bg-amber-50 text-amber-800 border border-amber-200 rounded-lg text-xs font-semibold">⚠️ Cảnh báo thời hạn: Đơn nộp gấp trước ${Math.max(0, daysAdvance)} ngày (Quy định là ${group.noticeDays} ngày). Đơn vẫn được phép gửi nhưng sẽ được gắn cờ giải trình.</div>`);
+          }
+        }
+        condNoticeEl.innerHTML = notices.join('');
+        condNoticeEl.classList.toggle('hidden', notices.length === 0);
       }
     }
 
@@ -35906,9 +36006,22 @@
 
 
     // =========================================================================
-    // ĐIỀU HƯỚNG SUB-TAB VÀ QUẢN LÝ CHÍNH SÁCH NGHỈ PHÉP (M09)
+    // ĐIỀU HƯỚNG SUB-TAB VÀ QUẢN LÝ NHÓM ĐỀ XUẤT NGHỈ PHÉP (CHUẨN BASE TIMEOFF)
     // =========================================================================
     let currentAnnualLeaveSubTab = 'ledger';
+
+    // 9 Loại ngày nghỉ chuẩn theo Base Timeoff
+    const BASE_TIMEOFF_9_TYPES = [
+      { code: 'AL', name: 'Nghỉ phép năm', shortName: 'Phép năm', icon: '🏖️', unit: 'DAY', desc: 'Trừ vào quỹ ngày nghỉ phép hằng năm của nhân sự. Hưởng 100% lương theo HĐLĐ.' },
+      { code: 'PL', name: 'Nghỉ cá nhân', shortName: 'Việc riêng có lương', icon: '💍', unit: 'DAY', desc: 'Kết hôn, con kết hôn, tang chế (Điều 115 BLLĐ). Hưởng 100% lương, không trừ phép năm.' },
+      { code: 'BT', name: 'Đi công tác', shortName: 'Công tác', icon: '✈️', unit: 'DAY', desc: 'Đi công tác thị trường, đối tác hoặc cơ quan hữu quan. Không trừ quỹ phép.' },
+      { code: 'WFH', name: 'Làm việc ngoài văn phòng', shortName: 'Remote/WFH', icon: '💻', unit: 'DAY', desc: 'Làm việc từ xa hoặc ngoài hiện trường được cấp phép. Tính đủ công ngày.' },
+      { code: 'UL', name: 'Nghỉ không lương', shortName: 'Không lương', icon: '⏳', unit: 'DAY', desc: 'Nghỉ việc riêng không hưởng lương theo thỏa thuận giữa người lao động và công ty.' },
+      { code: 'OTHER', name: 'Các loại khác', shortName: 'Chế độ khác', icon: '📋', unit: 'DAY', desc: 'Chế độ BHXH ốm đau, thai sản, khám thai, dưỡng sức hoặc nghỉ bù giờ làm thêm.' },
+      { code: 'WFH_HOURLY', name: 'Làm việc ngoài văn phòng theo giờ', shortName: 'WFH theo giờ', icon: '⏱️', unit: 'HOUR', desc: 'Đăng ký làm việc bên ngoài trong khoảng thời gian xác định theo giờ (1-4h).' },
+      { code: 'AL_HOURLY', name: 'Nghỉ phép năm theo giờ', shortName: 'Phép năm theo giờ', icon: '⌛', unit: 'HOUR', desc: 'Khấu trừ quỹ phép năm quy đổi theo số giờ xin nghỉ của nhân sự.' },
+      { code: 'UL_HOURLY', name: 'Nghỉ không lương theo giờ', shortName: 'Không lương theo giờ', icon: '🕒', unit: 'HOUR', desc: 'Nghỉ không tính công theo số giờ đăng ký trong ngày làm việc.' }
+    ];
 
     let leaveGroupsData = [
       {
@@ -35916,126 +36029,255 @@
         code: 'GR-AL-OFFICE',
         name: 'Nghỉ phép năm (Khối Văn phòng)',
         typeCode: 'AL',
-        typeName: 'Nghỉ Phép năm (Annual Leave)',
-        desc: 'Áp dụng cho nhân viên khối hành chính, văn phòng, phòng ban nghiệp vụ cảng.',
+        typeName: 'Nghỉ phép năm',
+        typeIcon: '🏖️',
+        approversTag: '@lan.nt, @dung.pt',
         directMgr: 'YES',
-        mode: 'SEQUENTIAL',
-        allowDynamic: true,
-        conditional: true,
-        condRule: 'Nghỉ > 3 ngày tự động thêm Ban Giám đốc',
+        workflowType: 'SEQUENTIAL',
+        deductFund: 'LEAVE_FUND',
+        deductFundText: 'Quỹ nghỉ phép: Phép tồn ➔ Phép thâm niên ➔ Phép trong năm ➔ Nghỉ bù',
+        allowManagerCreate: true,
+        slaHours: 24,
+        deadlineStrict: 'WARNING',
         noticeDays: 2,
         graceDays: 0,
         maxDays: 12,
-        deductPriority: 'COMP_CARRY_SENIOR_ANNUAL',
-        deductPriorityText: 'Quỹ bù OT ➔ Phép tồn ➔ Thâm niên ➔ Phép năm',
-        watchers: 'Chuyên viên Tiền lương, Phòng HC-NS',
-        scope: 'Khối Văn phòng & Ban Giám đốc',
-        status: 'ACTIVE'
+        monthlyCreateLimit: null,
+        monthlyApproveLimit: null,
+        scope: 'Toàn bộ Khối Văn phòng PAP',
+        watchers: '@lan.nt, @tienluong.pap',
+        desc: 'Áp dụng cho nhân viên khối hành chính, văn phòng, phòng ban nghiệp vụ cảng.',
+        status: 'ACTIVE',
+        blockDirectManager: { enabled: true, note: 'Bắt buộc Quản lý trực tiếp duyệt trước tiên' },
+        blockFixedApprovers: 'Nguyễn Thị Lan (Trưởng phòng HC-NS)',
+        blockDynamicApprovers: {
+          enabled: false,
+          title: 'Người duyệt linh động',
+          mode: 'ANY_USER'
+        },
+        blockConditionalApprovers: {
+          enabled: true,
+          thresholdDays: 3,
+          approverName: 'Ban Giám đốc Cảng (Tổng Giám đốc)',
+          ruleText: 'Nếu số ngày nghỉ > 3 ngày, bổ sung Tổng Giám đốc duyệt'
+        }
       },
       {
         id: 2,
         code: 'GR-AL-OPERATIONS',
         name: 'Nghỉ phép năm (Khối Hiện trường Cảng)',
         typeCode: 'AL',
-        typeName: 'Nghỉ Phép năm (Annual Leave)',
-        desc: 'Áp dụng cho công nhân bến bãi, lái cẩu, cơ giới và nhân viên điều độ ca kíp cảng.',
+        typeName: 'Nghỉ phép năm',
+        typeIcon: '🏖️',
+        approversTag: '@thang.lc, @hung.dq',
         directMgr: 'YES',
-        mode: 'SEQUENTIAL',
-        allowDynamic: true,
-        conditional: true,
-        condRule: 'Nghỉ > 3 ngày thêm Trưởng phòng Khai thác cảng',
+        workflowType: 'SEQUENTIAL',
+        deductFund: 'COMP_FUND',
+        deductFundText: 'Quỹ nghỉ bù: Phép bù ➔ Phép tồn ➔ Phép thâm niên ➔ Phép trong năm',
+        allowManagerCreate: true,
+        slaHours: 24,
+        deadlineStrict: 'STRICT',
         noticeDays: 3,
         graceDays: 0,
         maxDays: 10,
-        deductPriority: 'COMP_CARRY_SENIOR_ANNUAL',
-        deductPriorityText: 'Quỹ bù OT ➔ Phép tồn ➔ Thâm niên ➔ Phép năm',
-        watchers: 'Đội trưởng điều độ bãi, Phòng HC-NS',
-        scope: 'Phòng Khai thác cảng & Kỹ thuật thiết bị',
-        status: 'ACTIVE'
+        monthlyCreateLimit: null,
+        monthlyApproveLimit: null,
+        scope: 'Phòng Khai thác cảng & Đội Cơ giới',
+        watchers: '@dieudo.pap, @nhansu.pap',
+        desc: 'Áp dụng cho công nhân bến bãi, lái cẩu QC/RTG, ca kíp vận hành cảng Phước An.',
+        status: 'ACTIVE',
+        blockDirectManager: { enabled: true, note: 'Bắt buộc Đội trưởng / QLTT ca duyệt trước' },
+        blockFixedApprovers: 'Lê Cao Thắng (Trưởng phòng Khai thác Cảng)',
+        blockDynamicApprovers: {
+          enabled: true,
+          title: 'Trưởng ca trực điều độ hiện trường',
+          mode: 'PRESET_LIST'
+        },
+        blockConditionalApprovers: {
+          enabled: true,
+          thresholdDays: 3,
+          approverName: 'Phó Tổng Giám đốc Khai thác',
+          ruleText: 'Nếu số ngày nghỉ > 3 ngày, bổ sung PTGĐ Khai thác cảng'
+        }
       },
       {
         id: 3,
         code: 'GR-COMP-LEAVE',
         name: 'Nghỉ bù làm thêm giờ (Compensatory Leave)',
-        typeCode: 'COMP',
-        typeName: 'Nghỉ bù làm thêm giờ (Comp)',
-        desc: 'Nghỉ bù từ quỹ giờ làm thêm ca đêm hoặc trực giải phóng tàu ngày nghỉ lễ.',
+        typeCode: 'OTHER',
+        typeName: 'Các loại khác (Nghỉ bù OT)',
+        typeIcon: '📋',
+        approversTag: '@quanly.tructiep',
         directMgr: 'YES',
-        mode: 'ANY',
-        allowDynamic: false,
-        conditional: false,
-        condRule: 'Không có',
+        workflowType: 'ANY',
+        deductFund: 'COMP_FUND',
+        deductFundText: 'Quỹ nghỉ bù: Trừ vào quỹ giờ làm thêm tích lũy của nhân sự',
+        allowManagerCreate: true,
+        slaHours: 12,
+        deadlineStrict: 'WARNING',
         noticeDays: 1,
         graceDays: 0,
         maxDays: 5,
-        deductPriority: 'OT_ONLY',
-        deductPriorityText: 'Chỉ trừ Quỹ nghỉ bù OT tích lũy',
-        watchers: 'Phòng HC-NS',
+        monthlyCreateLimit: null,
+        monthlyApproveLimit: null,
         scope: 'Toàn bộ nhân sự Cảng',
-        status: 'ACTIVE'
+        watchers: '@nhansu.pap',
+        desc: 'Nghỉ bù giải quyết từ quỹ giờ làm thêm ca đêm hoặc trực tàu giải phóng hàng ngày lễ.',
+        status: 'ACTIVE',
+        blockDirectManager: { enabled: true, note: 'QLTT xác nhận trừ quỹ OT' },
+        blockFixedApprovers: '',
+        blockDynamicApprovers: { enabled: false, title: '', mode: 'ANY_USER' },
+        blockConditionalApprovers: { enabled: false, thresholdDays: 0, approverName: '', ruleText: '' }
       },
       {
         id: 4,
-        code: 'GR-SICK-BHXH',
-        name: 'Nghỉ ốm đau bản thân (Chế độ BHXH)',
-        typeCode: 'SL',
-        typeName: 'Nghỉ Ốm đau (Sick Leave)',
-        desc: 'Có chỉ định điều trị nội/ngoại trú của cơ sở y tế theo chế độ BHXH.',
-        directMgr: 'NO',
-        mode: 'ANY',
-        allowDynamic: false,
-        conditional: false,
-        condRule: 'Không có',
-        noticeDays: 0,
-        graceDays: -3,
-        maxDays: 30,
-        deductPriority: 'NONE',
-        deductPriorityText: 'Không trừ quỹ phép (Hưởng trợ cấp BHXH)',
-        watchers: 'Chuyên viên BHXH & Tiền lương',
-        scope: 'Toàn bộ nhân sự Cảng',
-        status: 'ACTIVE'
+        code: 'GR-BUSINESS-TRIP',
+        name: 'Đi công tác / Ra ngoài làm việc đối tác',
+        typeCode: 'BT',
+        typeName: 'Đi công tác',
+        typeIcon: '✈️',
+        approversTag: '@lan.nt, @dung.pt',
+        directMgr: 'YES',
+        workflowType: 'SEQUENTIAL',
+        deductFund: 'NONE',
+        deductFundText: 'Không trừ quỹ phép (Hưởng nguyên lương & công tác phí)',
+        allowManagerCreate: true,
+        slaHours: 24,
+        deadlineStrict: 'WARNING',
+        noticeDays: 1,
+        graceDays: -1,
+        maxDays: 14,
+        monthlyCreateLimit: null,
+        monthlyApproveLimit: null,
+        scope: 'Toàn bộ CBCNV Cảng',
+        watchers: '@ketoan.pap, @hcns.pap',
+        desc: 'Đi công tác thị trường hàng hải, làm việc cơ quan hữu quan (Hải quan, Cảng vụ Đồng Nai).',
+        status: 'ACTIVE',
+        blockDirectManager: { enabled: true, note: 'QLTT duyệt phê duyệt lịch trình' },
+        blockFixedApprovers: 'Phạm Tiến Dũng (Tổng Giám đốc)',
+        blockDynamicApprovers: { enabled: false, title: '', mode: 'ANY_USER' },
+        blockConditionalApprovers: { enabled: false, thresholdDays: 0, approverName: '', ruleText: '' }
       },
       {
         id: 5,
-        code: 'GR-PERSONAL-PAID',
-        name: 'Nghỉ việc riêng có lương (Hiếu - Hỷ)',
-        typeCode: 'PL',
-        typeName: 'Nghỉ Việc riêng hưởng lương (Hiếu/Hỷ)',
-        desc: 'Kết hôn bản thân, con kết hôn, bố mẹ/vợ/chồng/con mất (Điều 115 BLLĐ).',
+        code: 'GR-REMOTE-WFH',
+        name: 'Làm việc ngoài văn phòng (Work from home)',
+        typeCode: 'WFH',
+        typeName: 'Làm việc ngoài văn phòng',
+        typeIcon: '💻',
+        approversTag: '@truongphong',
         directMgr: 'YES',
-        mode: 'SEQUENTIAL',
-        allowDynamic: true,
-        conditional: false,
-        condRule: 'Không có',
+        workflowType: 'ANY',
+        deductFund: 'NONE',
+        deductFundText: 'Không trừ quỹ phép (Hưởng đủ ngày công lao động)',
+        allowManagerCreate: false,
+        slaHours: 8,
+        deadlineStrict: 'STRICT',
         noticeDays: 1,
-        graceDays: -2,
-        maxDays: 3,
-        deductPriority: 'NONE',
-        deductPriorityText: 'Hưởng 100% lương, không trừ phép năm',
-        watchers: 'Phòng HC-NS',
-        scope: 'Toàn bộ nhân sự Cảng',
-        status: 'ACTIVE'
+        graceDays: 0,
+        maxDays: 2,
+        monthlyCreateLimit: 4,
+        monthlyApproveLimit: 4,
+        scope: 'Khối Văn phòng & Ban Công nghệ IT',
+        watchers: '@hcns.pap',
+        desc: 'Đăng ký làm việc từ xa, bảo đảm kết nối liên lạc và hoàn thành KPIs trong ngày.',
+        status: 'ACTIVE',
+        blockDirectManager: { enabled: true, note: 'Chỉ cần Trưởng bộ phận phê duyệt' },
+        blockFixedApprovers: '',
+        blockDynamicApprovers: { enabled: false, title: '', mode: 'ANY_USER' },
+        blockConditionalApprovers: { enabled: false, thresholdDays: 0, approverName: '', ruleText: '' }
       },
       {
         id: 6,
+        code: 'GR-PERSONAL-PAID',
+        name: 'Nghỉ cá nhân có lương (Hiếu - Hỷ)',
+        typeCode: 'PL',
+        typeName: 'Nghỉ cá nhân',
+        typeIcon: '💍',
+        approversTag: '@lan.nt',
+        directMgr: 'YES',
+        workflowType: 'SEQUENTIAL',
+        deductFund: 'NONE',
+        deductFundText: 'Hưởng 100% lương, không trừ phép năm (Theo Điều 115 BLLĐ)',
+        allowManagerCreate: true,
+        slaHours: 24,
+        deadlineStrict: 'WARNING',
+        noticeDays: 1,
+        graceDays: -2,
+        maxDays: 3,
+        monthlyCreateLimit: null,
+        monthlyApproveLimit: null,
+        scope: 'Toàn bộ CBCNV Cảng',
+        watchers: '@hcns.pap, @congdoan.pap',
+        desc: 'Kết hôn bản thân (3 ngày), con kết hôn (1 ngày), tang chế (3 ngày) - Điều 115 BLLĐ 2019.',
+        status: 'ACTIVE',
+        blockDirectManager: { enabled: true, note: 'QLTT xác nhận bước 1' },
+        blockFixedApprovers: 'Nguyễn Thị Lan (Trưởng phòng HC-NS)',
+        blockDynamicApprovers: { enabled: false, title: '', mode: 'ANY_USER' },
+        blockConditionalApprovers: { enabled: false, thresholdDays: 0, approverName: '', ruleText: '' }
+      },
+      {
+        id: 7,
         code: 'GR-UNPAID-LEAVE',
         name: 'Nghỉ không hưởng lương (Unpaid Leave)',
         typeCode: 'UL',
-        typeName: 'Nghỉ Không hưởng lương (Unpaid)',
-        desc: 'Giải quyết việc riêng cá nhân sau khi đã dùng hết hạn mức phép năm.',
+        typeName: 'Nghỉ không lương',
+        typeIcon: '⏳',
+        approversTag: '@lan.nt, @dung.pt',
         directMgr: 'YES',
-        mode: 'SEQUENTIAL',
-        allowDynamic: false,
-        conditional: true,
-        condRule: 'Nghỉ > 5 ngày tự động thêm Tổng Giám đốc',
+        workflowType: 'SEQUENTIAL',
+        deductFund: 'NONE',
+        deductFundText: 'Không hưởng lương, không trừ quỹ phép',
+        allowManagerCreate: false,
+        slaHours: 48,
+        deadlineStrict: 'WARNING',
         noticeDays: 3,
         graceDays: 0,
-        maxDays: 15,
-        deductPriority: 'NONE',
-        deductPriorityText: 'Không hưởng lương, không trừ quỹ phép',
-        watchers: 'Phòng HC-NS, Kế toán Tiền lương',
-        scope: 'Toàn bộ nhân sự Cảng',
-        status: 'ACTIVE'
+        maxDays: 30,
+        monthlyCreateLimit: null,
+        monthlyApproveLimit: null,
+        scope: 'Toàn bộ CBCNV Cảng',
+        watchers: '@hcns.pap, @tienluong.pap',
+        desc: 'Giải quyết việc riêng cá nhân sau khi hết phép năm hoặc lý do đột xuất.',
+        status: 'ACTIVE',
+        blockDirectManager: { enabled: true, note: 'QLTT phê duyệt bước 1' },
+        blockFixedApprovers: 'Nguyễn Thị Lan (Trưởng phòng HC-NS)',
+        blockDynamicApprovers: { enabled: false, title: '', mode: 'ANY_USER' },
+        blockConditionalApprovers: {
+          enabled: true,
+          thresholdDays: 5,
+          approverName: 'Tổng Giám đốc Cảng',
+          ruleText: 'Nếu số ngày nghỉ > 5 ngày, bắt buộc Tổng Giám đốc duyệt'
+        }
+      },
+      {
+        id: 8,
+        code: 'GR-HOURLY-OFFSITE',
+        name: 'Làm việc ngoài văn phòng theo giờ',
+        typeCode: 'WFH_HOURLY',
+        typeName: 'Làm việc ngoài văn phòng theo giờ',
+        typeIcon: '⏱️',
+        approversTag: '@quanly.tructiep',
+        directMgr: 'YES',
+        workflowType: 'ANY',
+        deductFund: 'NONE',
+        deductFundText: 'Không trừ quỹ phép (Hưởng nguyên giờ công làm việc)',
+        allowManagerCreate: true,
+        slaHours: 4,
+        deadlineStrict: 'WARNING',
+        noticeDays: 0,
+        graceDays: -1,
+        maxDays: 1,
+        monthlyCreateLimit: null,
+        monthlyApproveLimit: null,
+        scope: 'Toàn bộ CBCNV Cảng',
+        watchers: '@chamcong.pap',
+        desc: 'Ra ngoài xử lý công vụ khẩn cấp hoặc việc sự vụ theo giờ (1-4 giờ trong ca).',
+        status: 'ACTIVE',
+        blockDirectManager: { enabled: true, note: 'QLTT phê duyệt nhanh' },
+        blockFixedApprovers: '',
+        blockDynamicApprovers: { enabled: false, title: '', mode: 'ANY_USER' },
+        blockConditionalApprovers: { enabled: false, thresholdDays: 0, approverName: '', ruleText: '' }
       }
     ];
 
@@ -36045,87 +36287,140 @@
       const tableCount = document.getElementById('table-leave-groups-count');
       const kpiTotal = document.getElementById('kpi-leave-grp-total');
       const kpiActive = document.getElementById('kpi-leave-grp-active');
+      const kpiCond = document.getElementById('kpi-leave-grp-cond');
+      const kpiSla = document.getElementById('kpi-leave-grp-sla');
 
       const total = leaveGroupsData.length;
       const activeCount = leaveGroupsData.filter(g => g.status === 'ACTIVE').length;
+      const condCount = leaveGroupsData.filter(g => g.blockConditionalApprovers && g.blockConditionalApprovers.enabled).length;
 
       if (badgeSide) badgeSide.innerText = total;
       if (tableCount) tableCount.innerText = total + ' nhóm';
       if (kpiTotal) kpiTotal.innerText = total;
       if (kpiActive) kpiActive.innerText = activeCount;
+      if (kpiCond) kpiCond.innerText = condCount + ' nhóm';
+      if (kpiSla) kpiSla.innerText = total + ' / ' + total + ' nhóm';
 
       if (!tbody) return;
 
       const searchInput = (document.getElementById('search-leave-groups')?.value || '').trim().toLowerCase();
+      const typeFilter = document.getElementById('filter-leave-grp-type')?.value || 'ALL';
+      const workflowFilter = document.getElementById('filter-leave-grp-workflow')?.value || 'ALL';
+      const statusFilter = document.getElementById('filter-leave-grp-status')?.value || 'ALL';
+
       const filtered = leaveGroupsData.filter(g => {
+        if (typeFilter !== 'ALL' && g.typeCode !== typeFilter) return false;
+        if (workflowFilter !== 'ALL' && g.workflowType !== workflowFilter) return false;
+        if (statusFilter !== 'ALL' && g.status !== statusFilter) return false;
         if (!searchInput) return true;
         return g.code.toLowerCase().includes(searchInput) ||
                g.name.toLowerCase().includes(searchInput) ||
                g.typeName.toLowerCase().includes(searchInput) ||
-               (g.scope && g.scope.toLowerCase().includes(searchInput));
+               (g.scope && g.scope.toLowerCase().includes(searchInput)) ||
+               (g.desc && g.desc.toLowerCase().includes(searchInput));
       });
 
       if (filtered.length === 0) {
-        tbody.innerHTML = '<tr><td colspan="10" class="py-8 text-center text-slate-400">Không tìm thấy nhóm đề xuất nào phù hợp từ khóa tìm kiếm.</td></tr>';
+        tbody.innerHTML = '<tr><td colspan="10" class="py-8 text-center text-slate-400">Không tìm thấy nhóm đề xuất nào phù hợp với bộ lọc tìm kiếm.</td></tr>';
         return;
       }
 
       tbody.innerHTML = filtered.map((g, idx) => {
         const isActive = g.status === 'ACTIVE';
         const statusBadge = isActive
-          ? '<span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-50 text-emerald-700 border border-emerald-200">🟢 Hoạt động</span>'
-          : '<span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-slate-100 text-slate-600 border border-slate-200">⚪ Ngừng</span>';
+          ? '<span class="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-50 text-emerald-700 border border-emerald-200"><span class="w-1.5 h-1.5 rounded-full bg-emerald-500 mr-1.5 animate-pulse"></span>Đang áp dụng</span>'
+          : '<span class="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-bold bg-slate-100 text-slate-600 border border-slate-200"><span class="w-1.5 h-1.5 rounded-full bg-slate-400 mr-1.5"></span>Tạm dừng</span>';
 
-        let workflowSummary = '';
+        // 4 Khối người duyệt badges
+        let blocksHtml = '<div class="space-y-1 text-xs">';
         if (g.directMgr === 'YES') {
-          workflowSummary += '<span class="font-semibold text-slate-800">1. QLTT</span> ➔ ';
+          blocksHtml += '<div class="flex items-center space-x-1 text-slate-800"><span class="text-blue-600 font-bold">👤 QLTT:</span> <span class="text-[11px] text-slate-600 font-medium">Bắt buộc duyệt trước</span></div>';
         }
-        if (g.mode === 'SEQUENTIAL') {
-          workflowSummary += '<span class="text-indigo-700 font-semibold">Cấp phòng</span>';
+        if (g.blockFixedApprovers) {
+          blocksHtml += `<div class="flex items-center space-x-1 text-slate-800"><span class="text-emerald-600 font-bold">🔒 Cố định:</span> <span class="text-[11px] text-slate-600 line-clamp-1 font-medium">${g.blockFixedApprovers}</span></div>`;
+        }
+        if (g.blockDynamicApprovers && g.blockDynamicApprovers.enabled) {
+          blocksHtml += `<div class="flex items-center space-x-1 text-indigo-700"><span class="font-bold">🔄 Linh động:</span> <span class="text-[11px] line-clamp-1">${g.blockDynamicApprovers.title || 'Người duyệt tự tag'}</span></div>`;
+        }
+        if (g.blockConditionalApprovers && g.blockConditionalApprovers.enabled) {
+          blocksHtml += `<div class="text-[10px] text-amber-700 font-bold bg-amber-50 px-1.5 py-0.5 rounded border border-amber-200/80 inline-block mt-0.5">⚡ Nghỉ &gt; ${g.blockConditionalApprovers.thresholdDays}d ➔ ${g.blockConditionalApprovers.approverName}</div>`;
+        }
+        blocksHtml += '</div>';
+
+        // Quy trình duyệt badge
+        let workflowBadge = '';
+        if (g.workflowType === 'SEQUENTIAL') {
+          workflowBadge = '<span class="px-2 py-0.5 rounded-md text-[10.5px] font-bold bg-indigo-50 text-[#2E3191] border border-indigo-200">Duyệt lần lượt</span>';
+        } else if (g.workflowType === 'ALL_CONCURRENT') {
+          workflowBadge = '<span class="px-2 py-0.5 rounded-md text-[10.5px] font-bold bg-sky-50 text-sky-800 border border-sky-200">Duyệt đồng thời</span>';
         } else {
-          workflowSummary += '<span class="text-blue-700 font-semibold">Một người duyệt</span>';
-        }
-        if (g.conditional) {
-          workflowSummary += `<div class="text-[10px] text-amber-700 font-medium mt-0.5">⚡ ${g.condRule}</div>`;
+          workflowBadge = '<span class="px-2 py-0.5 rounded-md text-[10.5px] font-bold bg-blue-50 text-blue-700 border border-blue-200">Chỉ 1 người duyệt</span>';
         }
 
-        const deadlineText = `Báo trước: <strong>${g.noticeDays}d</strong>${g.graceDays < 0 ? ` · Hồi tố: <strong>${Math.abs(g.graceDays)}d</strong>` : ''}`;
+        // Ưu tiên trừ quỹ phép
+        let deductBadge = '';
+        if (g.deductFund === 'LEAVE_FUND') {
+          deductBadge = '<div class="text-[11px] font-bold text-emerald-800">Quỹ nghỉ phép</div><div class="text-[10px] text-slate-500 line-clamp-1">Phép tồn ➔ Thâm niên ➔ Trong năm ➔ Bù</div>';
+        } else if (g.deductFund === 'COMP_FUND') {
+          deductBadge = '<div class="text-[11px] font-bold text-indigo-800">Quỹ nghỉ bù</div><div class="text-[10px] text-slate-500 line-clamp-1">Phép bù ➔ Tồn ➔ Thâm niên ➔ Trong năm</div>';
+        } else {
+          deductBadge = '<div class="text-[11px] font-medium text-slate-600">Không trừ quỹ phép</div><div class="text-[10px] text-slate-400">Hưởng chế độ / Đi công tác</div>';
+        }
+
+        // Thời hạn & SLA
+        const deadlineHtml = `
+          <div class="text-xs font-semibold text-slate-800">Báo trước: <strong>${g.noticeDays}d</strong>${g.graceDays < 0 ? ` · Hồi tố: <strong>${Math.abs(g.graceDays)}d</strong>` : ''}</div>
+          <div class="text-[10px] text-slate-500 mt-0.5">SLA: <strong>${g.slaHours}h</strong> · ${g.deadlineStrict === 'STRICT' ? '<span class="text-rose-600 font-bold">Bắt buộc</span>' : '<span class="text-amber-600">Cảnh báo</span>'}</div>
+        `;
 
         return `
           <tr class="hover:bg-slate-50/80 transition border-b border-slate-100 text-xs">
             <td class="py-3 px-3 text-center text-slate-500 font-medium">${idx + 1}</td>
+            <td class="py-3 px-3.5">
+              <div class="flex items-center space-x-2">
+                <span class="text-base select-none shrink-0">${g.typeIcon || '🏖️'}</span>
+                <div>
+                  <a href="javascript:void(0)" onclick="openViewLeaveGroupDetail('${g.code}')" class="font-bold text-slate-900 hover:text-[#2E3191] hover:underline transition block">${g.name}</a>
+                  <div class="flex items-center space-x-1.5 mt-0.5">
+                    <span class="px-1.5 py-0.2 rounded text-[10px] font-bold bg-slate-100 text-slate-700 font-mono border border-slate-200">${g.code}</span>
+                    <span class="text-[10.5px] text-slate-400 line-clamp-1">${g.desc || ''}</span>
+                  </div>
+                </div>
+              </div>
+            </td>
             <td class="py-3 px-3 text-center">
-              <span class="px-2 py-0.5 rounded text-xs font-bold bg-indigo-50 text-[#2E3191] border border-indigo-200 font-mono">${g.code}</span>
+              <span class="px-2 py-0.5 rounded text-[11px] font-bold bg-blue-50 text-[#2E3191] border border-blue-200 inline-block">${g.typeName}</span>
             </td>
             <td class="py-3 px-3.5">
-              <div class="font-bold text-slate-900">${g.name}</div>
-              <div class="text-[11px] text-slate-400 line-clamp-1 mt-0.5">${g.desc || ''}</div>
+              ${blocksHtml}
             </td>
             <td class="py-3 px-3 text-center">
-              <span class="px-2 py-0.5 rounded text-[11px] font-bold bg-blue-50 text-[#2E3191] border border-blue-200">${g.typeName}</span>
+              ${workflowBadge}
             </td>
-            <td class="py-3 px-3.5 text-xs">
-              ${workflowSummary}
+            <td class="py-3 px-3">
+              ${deductBadge}
             </td>
-            <td class="py-3 px-3 text-center text-xs text-slate-700">
-              ${deadlineText}
+            <td class="py-3 px-3 text-center">
+              ${deadlineHtml}
             </td>
-            <td class="py-3 px-3 text-xs">
-              <div class="font-bold text-slate-800">Tối đa: ${g.maxDays} ngày/đơn</div>
-              <div class="text-[10.5px] text-slate-500 line-clamp-1">${g.deductPriorityText}</div>
-            </td>
-            <td class="py-3 px-3 text-xs text-slate-700">
-              <span class="px-2 py-0.5 rounded bg-slate-100 text-slate-700 text-[11px] font-medium">${g.scope || 'Toàn bộ'}</span>
+            <td class="py-3 px-3 text-slate-700">
+              <span class="px-2 py-0.5 rounded bg-slate-100 text-slate-700 text-[11px] font-medium block max-w-[150px] truncate" title="${g.scope || 'Toàn bộ'}">${g.scope || 'Toàn bộ'}</span>
             </td>
             <td class="py-3 px-3 text-center">
               ${statusBadge}
             </td>
             <td class="py-3 px-3 text-center">
-              <div class="flex items-center justify-center space-x-1.5">
-                <button type="button" onclick="openEditLeaveGroupModal('${g.code}')" class="p-1.5 text-slate-600 hover:text-[#2E3191] hover:bg-slate-100 rounded-lg transition cursor-pointer" title="Chỉnh sửa cấu hình">
+              <div class="flex items-center justify-center space-x-1">
+                <button type="button" onclick="openViewLeaveGroupDetail('${g.code}')" class="p-1.5 text-slate-600 hover:text-[#2E3191] hover:bg-indigo-50 rounded-lg transition cursor-pointer" title="Xem chi tiết & 4 khối người duyệt">
+                  <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
+                </button>
+                <button type="button" onclick="openEditLeaveGroupModal('${g.code}')" class="p-1.5 text-slate-600 hover:text-[#2E3191] hover:bg-slate-100 rounded-lg transition cursor-pointer" title="Chỉnh sửa nhóm">
                   <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" /></svg>
                 </button>
-                <button type="button" onclick="deleteLeaveGroup('${g.code}')" class="p-1.5 text-rose-500 hover:text-rose-700 hover:bg-rose-50 rounded-lg transition cursor-pointer" title="Xóa nhóm">
+                <button type="button" onclick="toggleLeaveGroupStatus('${g.code}')" class="p-1.5 ${isActive ? 'text-amber-600 hover:bg-amber-50' : 'text-emerald-600 hover:bg-emerald-50'} rounded-lg transition cursor-pointer" title="${isActive ? 'Tạm dừng nhóm' : 'Kích hoạt lại'}">
+                  <span class="text-xs">${isActive ? '⏸️' : '▶️'}</span>
+                </button>
+                <button type="button" onclick="deleteLeaveGroup('${g.code}')" class="p-1.5 text-rose-500 hover:text-rose-700 hover:bg-rose-50 rounded-lg transition cursor-pointer" title="Xóa nhóm đề xuất">
                   <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" /></svg>
                 </button>
               </div>
@@ -36135,35 +36430,85 @@
       }).join('');
     }
 
+    function toggleAdvancedSettings() {
+      const content = document.getElementById('adv-settings-content');
+      const icon = document.getElementById('adv-settings-icon');
+      if (!content) return;
+      const isHidden = content.classList.contains('hidden');
+      if (isHidden) {
+        content.classList.remove('hidden');
+        if (icon) icon.innerText = '▲';
+      } else {
+        content.classList.add('hidden');
+        if (icon) icon.innerText = '▼';
+      }
+    }
+
+    function onLeaveGroupTypeSelectChange() {
+      const typeCode = document.getElementById('leave-group-type')?.value;
+      const hintText = document.getElementById('leave-group-type-hint-text');
+      const matched = BASE_TIMEOFF_9_TYPES.find(t => t.code === typeCode);
+      if (hintText && matched) {
+        hintText.innerText = matched.desc;
+      }
+    }
+
     function openCreateLeaveGroupModal() {
       const modal = document.getElementById('modal-leave-group-config');
       if (!modal) return;
 
-      document.getElementById('modal-leave-group-title').innerText = 'Thiết lập Nhóm đề xuất Nghỉ phép / Vắng mặt (Base Timeoff)';
+      document.getElementById('modal-leave-group-title').innerText = 'Tạo mới Nhóm đề xuất Nghỉ phép / Vắng mặt (Base Timeoff)';
+      document.getElementById('btn-save-leave-group-text').innerText = 'Tạo nhóm đề xuất (Bước 3)';
       document.getElementById('leave-group-id').value = '';
+
       const codeInput = document.getElementById('leave-group-code');
       if (codeInput) {
         codeInput.value = 'GR-NEW-' + String(leaveGroupsData.length + 1).padStart(2, '0');
         codeInput.disabled = false;
       }
       document.getElementById('leave-group-name').value = '';
+      document.getElementById('leave-group-approvers-tag').value = '@lan.nt, @dung.pt';
+      document.getElementById('leave-group-type').value = 'AL';
+      onLeaveGroupTypeSelectChange();
+
+      // Radios
+      const directMgrRadio = document.querySelector('input[name="leave-group-direct-mgr-radio"][value="YES"]');
+      if (directMgrRadio) directMgrRadio.checked = true;
+
+      const wfRadio = document.querySelector('input[name="leave-group-workflow-radio"][value="SEQUENTIAL"]');
+      if (wfRadio) wfRadio.checked = true;
+
+      const deductRadio = document.querySelector('input[name="leave-group-deduct-fund-radio"][value="LEAVE_FUND"]');
+      if (deductRadio) deductRadio.checked = true;
+
+      // Approval blocks
+      document.getElementById('leave-group-block-direct-mgr').checked = true;
+      document.getElementById('leave-group-fixed-approvers').value = 'Nguyễn Thị Lan (Trưởng phòng HC-NS)';
+      document.getElementById('leave-group-dynamic-enabled').checked = false;
+      document.getElementById('leave-group-dynamic-box').classList.add('hidden');
+      document.getElementById('leave-group-dynamic-title').value = 'Trưởng ca trực điều độ hiện trường';
+      document.getElementById('leave-group-cond-enabled').checked = true;
+      document.getElementById('leave-group-cond-box').classList.remove('hidden');
+      document.getElementById('leave-group-cond-days').value = 3;
+      document.getElementById('leave-group-cond-approver').value = 'Ban Giám đốc Cảng (Tổng Giám đốc)';
+
+      // Advanced settings
+      document.getElementById('leave-group-allow-manager-create').checked = true;
+      document.getElementById('leave-group-sla-hours').value = 24;
+      document.getElementById('leave-group-deadline-strict').value = 'WARNING';
+      document.getElementById('leave-group-notice-days').value = 2;
+      document.getElementById('leave-group-max-days').value = 12;
+      document.getElementById('leave-group-monthly-create-limit').value = '';
+      document.getElementById('leave-group-monthly-approve-limit').value = '';
+      document.getElementById('leave-group-scope').value = 'Toàn bộ nhân sự Cảng Phước An';
+      document.getElementById('leave-group-watchers').value = '@lan.nt, @tienluong.pap';
       document.getElementById('leave-group-desc').value = '';
 
-      const typeSelect = document.getElementById('leave-group-type');
-      if (typeSelect && typeof leaveTypesData !== 'undefined') {
-        typeSelect.innerHTML = leaveTypesData.map(t => `<option value="${t.code}">${t.name} (${t.symbol})</option>`).join('');
-      }
-
-      document.getElementById('leave-group-direct-mgr').value = 'YES';
-      document.getElementById('leave-group-mode').value = 'SEQUENTIAL';
-      document.getElementById('leave-group-allow-dynamic').checked = true;
-      document.getElementById('leave-group-conditional-enabled').checked = true;
-      document.getElementById('leave-group-notice-days').value = 2;
-      document.getElementById('leave-group-grace-days').value = 0;
-      document.getElementById('leave-group-max-days').value = 12;
-      document.getElementById('leave-group-deduct-priority').value = 'COMP_CARRY_SENIOR_ANNUAL';
-      document.getElementById('leave-group-watchers').value = 'Chuyên viên Tiền lương, Phòng HC-NS';
-      document.getElementById('leave-group-scope').value = 'Toàn bộ nhân sự Cảng';
+      // Hide adv accordion by default
+      const advContent = document.getElementById('adv-settings-content');
+      const advIcon = document.getElementById('adv-settings-icon');
+      if (advContent) advContent.classList.add('hidden');
+      if (advIcon) advIcon.innerText = '▼';
 
       modal.classList.remove('hidden');
     }
@@ -36174,30 +36519,55 @@
       if (!modal || !group) return;
 
       document.getElementById('modal-leave-group-title').innerText = 'Chỉnh sửa Nhóm đề xuất: ' + group.name;
+      document.getElementById('btn-save-leave-group-text').innerText = 'Lưu cấu hình nhóm';
       document.getElementById('leave-group-id').value = group.id || group.code;
+
       const codeInput = document.getElementById('leave-group-code');
       if (codeInput) {
         codeInput.value = group.code;
         codeInput.disabled = true;
       }
       document.getElementById('leave-group-name').value = group.name;
-      document.getElementById('leave-group-desc').value = group.desc || '';
+      document.getElementById('leave-group-approvers-tag').value = group.approversTag || '';
+      document.getElementById('leave-group-type').value = group.typeCode || 'AL';
+      onLeaveGroupTypeSelectChange();
 
-      const typeSelect = document.getElementById('leave-group-type');
-      if (typeSelect && typeof leaveTypesData !== 'undefined') {
-        typeSelect.innerHTML = leaveTypesData.map(t => `<option value="${t.code}" ${t.code === group.typeCode ? 'selected' : ''}>${t.name} (${t.symbol})</option>`).join('');
-      }
+      // Radios
+      const directMgrRadio = document.querySelector(`input[name="leave-group-direct-mgr-radio"][value="${group.directMgr || 'YES'}"]`);
+      if (directMgrRadio) directMgrRadio.checked = true;
 
-      document.getElementById('leave-group-direct-mgr').value = group.directMgr || 'YES';
-      document.getElementById('leave-group-mode').value = group.mode || 'SEQUENTIAL';
-      document.getElementById('leave-group-allow-dynamic').checked = !!group.allowDynamic;
-      document.getElementById('leave-group-conditional-enabled').checked = !!group.conditional;
+      const wfRadio = document.querySelector(`input[name="leave-group-workflow-radio"][value="${group.workflowType || 'SEQUENTIAL'}"]`);
+      if (wfRadio) wfRadio.checked = true;
+
+      const deductRadio = document.querySelector(`input[name="leave-group-deduct-fund-radio"][value="${group.deductFund || 'LEAVE_FUND'}"]`);
+      if (deductRadio) deductRadio.checked = true;
+
+      // Approval blocks
+      document.getElementById('leave-group-block-direct-mgr').checked = group.directMgr === 'YES';
+      document.getElementById('leave-group-fixed-approvers').value = group.blockFixedApprovers || '';
+
+      const dynamicEnabled = !!(group.blockDynamicApprovers && group.blockDynamicApprovers.enabled);
+      document.getElementById('leave-group-dynamic-enabled').checked = dynamicEnabled;
+      document.getElementById('leave-group-dynamic-box').classList.toggle('hidden', !dynamicEnabled);
+      document.getElementById('leave-group-dynamic-title').value = group.blockDynamicApprovers?.title || 'Người phụ trách chuyên môn';
+
+      const condEnabled = !!(group.blockConditionalApprovers && group.blockConditionalApprovers.enabled);
+      document.getElementById('leave-group-cond-enabled').checked = condEnabled;
+      document.getElementById('leave-group-cond-box').classList.toggle('hidden', !condEnabled);
+      document.getElementById('leave-group-cond-days').value = group.blockConditionalApprovers?.thresholdDays || 3;
+      document.getElementById('leave-group-cond-approver').value = group.blockConditionalApprovers?.approverName || 'Ban Giám đốc Cảng';
+
+      // Advanced settings
+      document.getElementById('leave-group-allow-manager-create').checked = !!group.allowManagerCreate;
+      document.getElementById('leave-group-sla-hours').value = group.slaHours || 24;
+      document.getElementById('leave-group-deadline-strict').value = group.deadlineStrict || 'WARNING';
       document.getElementById('leave-group-notice-days').value = group.noticeDays ?? 2;
-      document.getElementById('leave-group-grace-days').value = group.graceDays ?? 0;
       document.getElementById('leave-group-max-days').value = group.maxDays ?? 12;
-      document.getElementById('leave-group-deduct-priority').value = group.deductPriority || 'COMP_CARRY_SENIOR_ANNUAL';
-      document.getElementById('leave-group-watchers').value = group.watchers || '';
+      document.getElementById('leave-group-monthly-create-limit').value = group.monthlyCreateLimit || '';
+      document.getElementById('leave-group-monthly-approve-limit').value = group.monthlyApproveLimit || '';
       document.getElementById('leave-group-scope').value = group.scope || 'Toàn bộ nhân sự Cảng';
+      document.getElementById('leave-group-watchers').value = group.watchers || '';
+      document.getElementById('leave-group-desc').value = group.desc || '';
 
       modal.classList.remove('hidden');
     }
@@ -36212,92 +36582,305 @@
       const code = document.getElementById('leave-group-code').value.trim();
       const name = document.getElementById('leave-group-name').value.trim();
       const typeCode = document.getElementById('leave-group-type').value;
-      const desc = document.getElementById('leave-group-desc').value.trim();
-      const directMgr = document.getElementById('leave-group-direct-mgr').value;
-      const mode = document.getElementById('leave-group-mode').value;
-      const allowDynamic = document.getElementById('leave-group-allow-dynamic').checked;
-      const conditional = document.getElementById('leave-group-conditional-enabled').checked;
+      const approversTag = document.getElementById('leave-group-approvers-tag').value.trim();
+
+      const directMgr = document.querySelector('input[name="leave-group-direct-mgr-radio"]:checked')?.value || 'YES';
+      const workflowType = document.querySelector('input[name="leave-group-workflow-radio"]:checked')?.value || 'SEQUENTIAL';
+      const deductFund = document.querySelector('input[name="leave-group-deduct-fund-radio"]:checked')?.value || 'LEAVE_FUND';
+
+      const allowManagerCreate = document.getElementById('leave-group-allow-manager-create').checked;
+      const slaHours = parseInt(document.getElementById('leave-group-sla-hours').value, 10) || 24;
+      const deadlineStrict = document.getElementById('leave-group-deadline-strict').value;
       const noticeDays = parseInt(document.getElementById('leave-group-notice-days').value, 10) || 0;
-      const graceDays = parseInt(document.getElementById('leave-group-grace-days').value, 10) || 0;
       const maxDays = parseInt(document.getElementById('leave-group-max-days').value, 10) || 12;
-      const deductPriority = document.getElementById('leave-group-deduct-priority').value;
-      const watchers = document.getElementById('leave-group-watchers').value.trim();
+      const monthlyCreateLimit = parseInt(document.getElementById('leave-group-monthly-create-limit').value, 10) || null;
+      const monthlyApproveLimit = parseInt(document.getElementById('leave-group-monthly-approve-limit').value, 10) || null;
       const scope = document.getElementById('leave-group-scope').value.trim();
+      const watchers = document.getElementById('leave-group-watchers').value.trim();
+      const desc = document.getElementById('leave-group-desc').value.trim();
+
+      // Approval blocks
+      const fixedApprovers = document.getElementById('leave-group-fixed-approvers').value.trim();
+      const dynamicEnabled = document.getElementById('leave-group-dynamic-enabled').checked;
+      const dynamicTitle = document.getElementById('leave-group-dynamic-title').value.trim();
+      const condEnabled = document.getElementById('leave-group-cond-enabled').checked;
+      const condDays = parseInt(document.getElementById('leave-group-cond-days').value, 10) || 3;
+      const condApprover = document.getElementById('leave-group-cond-approver').value.trim();
 
       if (!code || !name) {
         showToast('⚠️ Vui lòng nhập đầy đủ mã và tên nhóm đề xuất!');
         return;
       }
 
-      const deductPriorityMap = {
-        'COMP_CARRY_SENIOR_ANNUAL': 'Quỹ bù OT ➔ Phép tồn ➔ Thâm niên ➔ Phép năm',
-        'CARRY_FIRST': 'Ưu tiên phép tồn năm trước ➔ Phép năm hiện tại',
-        'OT_ONLY': 'Chỉ trừ Quỹ nghỉ bù OT tích lũy',
-        'NONE': 'Không trừ quỹ phép'
+      const matchedType = BASE_TIMEOFF_9_TYPES.find(t => t.code === typeCode) || { name: 'Nghỉ phép', icon: '🏖️' };
+      const deductFundMap = {
+        'LEAVE_FUND': 'Quỹ nghỉ phép: Phép tồn ➔ Phép thâm niên ➔ Phép trong năm ➔ Nghỉ bù',
+        'COMP_FUND': 'Quỹ nghỉ bù: Phép bù ➔ Phép tồn ➔ Phép thâm niên ➔ Phép trong năm',
+        'NONE': 'Không trừ quỹ phép (Đi công tác, Nghỉ không lương, Chế độ khác)'
       };
 
-      const matchedLt = typeof leaveTypesData !== 'undefined' ? leaveTypesData.find(t => t.code === typeCode) : null;
-      const typeName = matchedLt ? `${matchedLt.name} (${matchedLt.symbol})` : typeCode;
+      const groupPayload = {
+        code,
+        name,
+        typeCode,
+        typeName: matchedType.name,
+        typeIcon: matchedType.icon,
+        approversTag,
+        directMgr,
+        workflowType,
+        deductFund,
+        deductFundText: deductFundMap[deductFund] || 'Theo quy chế',
+        allowManagerCreate,
+        slaHours,
+        deadlineStrict,
+        noticeDays,
+        graceDays: noticeDays < 0 ? noticeDays : 0,
+        maxDays,
+        monthlyCreateLimit,
+        monthlyApproveLimit,
+        scope: scope || 'Toàn bộ nhân sự Cảng',
+        watchers,
+        desc,
+        blockDirectManager: { enabled: directMgr === 'YES', note: 'Bắt buộc Quản lý trực tiếp duyệt trước tiên' },
+        blockFixedApprovers: fixedApprovers,
+        blockDynamicApprovers: {
+          enabled: dynamicEnabled,
+          title: dynamicTitle || 'Người duyệt linh động',
+          mode: 'ANY_USER'
+        },
+        blockConditionalApprovers: {
+          enabled: condEnabled,
+          thresholdDays: condDays,
+          approverName: condApprover || 'Ban Giám đốc Cảng',
+          ruleText: `Nếu số ngày nghỉ > ${condDays} ngày, bổ sung ${condApprover || 'Ban Giám đốc'} duyệt`
+        }
+      };
 
       const existingIndex = leaveGroupsData.findIndex(g => g.code === code);
       if (existingIndex >= 0) {
         leaveGroupsData[existingIndex] = {
           ...leaveGroupsData[existingIndex],
-          name,
-          typeCode,
-          typeName,
-          desc,
-          directMgr,
-          mode,
-          allowDynamic,
-          conditional,
-          condRule: conditional ? (leaveGroupsData[existingIndex].condRule || 'Nghỉ > 3 ngày thêm Ban Giám đốc') : 'Không có',
-          noticeDays,
-          graceDays,
-          maxDays,
-          deductPriority,
-          deductPriorityText: deductPriorityMap[deductPriority] || 'Theo quy chế',
-          watchers,
-          scope
+          ...groupPayload
         };
-        showToast(`✓ Đã cập nhật cấu hình nhóm đề xuất [${code}]!`);
+        showToast(`✓ Đã cập nhật thành công cấu hình nhóm đề xuất [${code}]!`);
       } else {
         leaveGroupsData.push({
           id: Date.now(),
-          code,
-          name,
-          typeCode,
-          typeName,
-          desc,
-          directMgr,
-          mode,
-          allowDynamic,
-          conditional,
-          condRule: conditional ? 'Nghỉ > 3 ngày thêm Ban Giám đốc' : 'Không có',
-          noticeDays,
-          graceDays,
-          maxDays,
-          deductPriority,
-          deductPriorityText: deductPriorityMap[deductPriority] || 'Theo quy chế',
-          watchers,
-          scope,
+          ...groupPayload,
           status: 'ACTIVE'
         });
-        showToast(`✓ Đã tạo mới nhóm đề xuất [${code}] thành công!`);
+        showToast(`✓ Đã tạo mới nhóm đề xuất [${code}] thành công theo chuẩn Base Timeoff!`);
       }
 
       closeLeaveGroupConfigModal();
       renderLeaveGroupsTable();
     }
 
+    function toggleLeaveGroupStatus(code) {
+      const group = leaveGroupsData.find(g => g.code === code);
+      if (!group) return;
+      group.status = (group.status === 'ACTIVE') ? 'INACTIVE' : 'ACTIVE';
+      renderLeaveGroupsTable();
+      showToast(`${group.status === 'ACTIVE' ? '✓ Đã kích hoạt áp dụng' : '⏸️ Đã tạm dừng'} nhóm đề xuất [${group.name}]`);
+    }
+
     function deleteLeaveGroup(code) {
       const group = leaveGroupsData.find(g => g.code === code);
       if (!group) return;
-      if (!confirm(`Bạn có chắc chắn muốn xóa nhóm đề xuất [${group.name}] (${code}) không?`)) return;
+      if (!confirm(`Bạn có chắc chắn muốn xóa nhóm đề xuất [${group.name}] (${code}) khỏi Base Timeoff không?`)) return;
 
       leaveGroupsData = leaveGroupsData.filter(g => g.code !== code);
       renderLeaveGroupsTable();
       showToast(`✓ Đã xóa nhóm đề xuất [${code}].`);
+    }
+
+    // Modal View Detail Functions
+    function openViewLeaveGroupDetail(code) {
+      const group = leaveGroupsData.find(g => g.code === code);
+      if (!group) return;
+
+      const modal = document.getElementById('modal-leave-group-detail');
+      if (!modal) return;
+
+      document.getElementById('detail-group-name').innerText = 'Chi tiết Nhóm đề xuất: ' + group.name;
+      document.getElementById('detail-group-code').innerText = 'Mã: ' + group.code + ' · ' + group.typeName + ' (Base Timeoff PAP)';
+      document.getElementById('detail-group-icon').innerText = group.typeIcon || '🏖️';
+
+      // Tab 1 Info
+      document.getElementById('dt-group-type').innerText = group.typeName;
+      const wfNames = {
+        'SEQUENTIAL': 'Duyệt lần lượt',
+        'ALL_CONCURRENT': 'Duyệt đồng thời',
+        'ANY': 'Chỉ cần 1 người duyệt'
+      };
+      document.getElementById('dt-group-mode').innerText = wfNames[group.workflowType] || 'Duyệt lần lượt';
+      document.getElementById('dt-group-sla').innerText = (group.slaHours || 24) + ' giờ';
+      document.getElementById('dt-group-notice').innerText = 'Báo trước ' + group.noticeDays + ' ngày' + (group.graceDays < 0 ? ' (Hồi tố ' + Math.abs(group.graceDays) + 'd)' : '');
+      document.getElementById('dt-group-fund-priority').innerText = group.deductFundText || 'Theo quy chế';
+      document.getElementById('dt-group-max-days').innerText = (group.maxDays || 12) + ' ngày / đề xuất';
+      document.getElementById('dt-group-strict').innerText = (group.deadlineStrict === 'STRICT') ? 'Bắt buộc (chặn tạo ngoài khoảng)' : 'Không bắt buộc (có cảnh báo)';
+      document.getElementById('dt-group-allow-mgr').innerText = group.allowManagerCreate ? 'Có (Quản lý tạo hộ được)' : 'Không';
+      document.getElementById('dt-group-scope').innerText = group.scope || 'Toàn bộ nhân sự Cảng';
+      document.getElementById('dt-group-watchers').innerText = group.watchers || 'Không có';
+      document.getElementById('dt-group-status').innerHTML = group.status === 'ACTIVE'
+        ? '<span class="text-emerald-700 font-bold">🟢 Đang áp dụng</span>'
+        : '<span class="text-slate-500 font-bold">⚪ Ngừng áp dụng</span>';
+      document.getElementById('dt-group-desc').innerText = group.desc || 'Không có mô tả chi tiết.';
+
+      // Tab 2 Approval Blocks
+      renderLeaveGroupDetailBlocks(group);
+
+      // Button edit from detail
+      const btnEdit = document.getElementById('btn-edit-from-detail');
+      if (btnEdit) {
+        btnEdit.onclick = function() {
+          closeLeaveGroupDetailModal();
+          openEditLeaveGroupModal(group.code);
+        };
+      }
+
+      switchLeaveGroupDetailTab('info');
+      modal.classList.remove('hidden');
+    }
+
+    function renderLeaveGroupDetailBlocks(group) {
+      const container = document.getElementById('dt-approval-blocks-container');
+      if (!container) return;
+
+      let html = '';
+
+      // Block a: QLTT
+      html += `
+        <div class="p-3 bg-white rounded-xl border border-slate-200 shadow-2xs">
+          <div class="flex items-center justify-between">
+            <div class="font-bold text-xs text-slate-800 flex items-center space-x-2">
+              <span class="w-6 h-6 rounded bg-blue-50 text-blue-700 flex items-center justify-center font-bold">a</span>
+              <span>Khối Quản lý trực tiếp (Direct Manager)</span>
+            </div>
+            <span class="px-2 py-0.5 rounded text-[10px] font-bold ${group.directMgr === 'YES' ? 'bg-emerald-50 text-emerald-700 border border-emerald-200' : 'bg-slate-100 text-slate-500'}">
+              ${group.directMgr === 'YES' ? '✓ Đang kích hoạt' : 'Không yêu cầu'}
+            </span>
+          </div>
+          <p class="text-[11px] text-slate-600 mt-1 pl-8">
+            ${group.directMgr === 'YES' ? 'Mọi đề xuất thuộc nhóm này đều bắt buộc phải có Quản lý trực tiếp của nhân sự duyệt đầu tiên trước khi chuyển các cấp tiếp theo.' : 'Bỏ qua bước phê duyệt từ Quản lý trực tiếp.'}
+          </p>
+        </div>
+      `;
+
+      // Block b: Cố định
+      html += `
+        <div class="p-3 bg-white rounded-xl border border-slate-200 shadow-2xs">
+          <div class="flex items-center justify-between">
+            <div class="font-bold text-xs text-slate-800 flex items-center space-x-2">
+              <span class="w-6 h-6 rounded bg-emerald-50 text-emerald-700 flex items-center justify-center font-bold">b</span>
+              <span>Khối Người duyệt cố định (Fixed Approvers)</span>
+            </div>
+            <span class="px-2 py-0.5 rounded text-[10px] font-bold ${group.blockFixedApprovers ? 'bg-emerald-50 text-emerald-700 border border-emerald-200' : 'bg-slate-100 text-slate-500'}">
+              ${group.blockFixedApprovers ? '✓ Đang kích hoạt' : 'Không có'}
+            </span>
+          </div>
+          <div class="mt-1 pl-8">
+            ${group.blockFixedApprovers ? `
+              <div class="text-[11px] font-semibold text-slate-800 bg-emerald-50/70 p-2 rounded-lg border border-emerald-100">
+                🔒 Người duyệt cố định: <strong>${group.blockFixedApprovers}</strong>
+              </div>
+              <p class="text-[10px] text-slate-500 mt-0.5">Tất cả đề xuất thuộc nhóm này bắt buộc có sự tham gia phê duyệt của người duyệt cố định.</p>
+            ` : '<p class="text-[11px] text-slate-500 italic">Không thiết lập người duyệt cố định.</p>'}
+          </div>
+        </div>
+      `;
+
+      // Block c: Linh động
+      const dynamicActive = group.blockDynamicApprovers && group.blockDynamicApprovers.enabled;
+      html += `
+        <div class="p-3 bg-white rounded-xl border border-slate-200 shadow-2xs">
+          <div class="flex items-center justify-between">
+            <div class="font-bold text-xs text-slate-800 flex items-center space-x-2">
+              <span class="w-6 h-6 rounded bg-indigo-50 text-indigo-700 flex items-center justify-center font-bold">c</span>
+              <span>Khối Người duyệt linh động (Dynamic Approvers)</span>
+            </div>
+            <span class="px-2 py-0.5 rounded text-[10px] font-bold ${dynamicActive ? 'bg-indigo-50 text-indigo-700 border border-indigo-200' : 'bg-slate-100 text-slate-500'}">
+              ${dynamicActive ? '✓ Đang kích hoạt' : 'Không sử dụng'}
+            </span>
+          </div>
+          <div class="mt-1 pl-8">
+            ${dynamicActive ? `
+              <div class="text-[11px] font-semibold text-indigo-900 bg-indigo-50/70 p-2 rounded-lg border border-indigo-100">
+                🔄 Tên khối hiển thị trên form: <strong>"${group.blockDynamicApprovers.title || 'Người duyệt linh động'}"</strong>
+              </div>
+              <p class="text-[10px] text-slate-500 mt-0.5">Khi tạo đơn, người nộp có quyền tự @tag hoặc chọn người phụ trách tương ứng với vị trí này.</p>
+            ` : '<p class="text-[11px] text-slate-500 italic">Chưa kích hoạt khối người duyệt linh động.</p>'}
+          </div>
+        </div>
+      `;
+
+      // Block d: Điều kiện
+      const condActive = group.blockConditionalApprovers && group.blockConditionalApprovers.enabled;
+      html += `
+        <div class="p-3 bg-white rounded-xl border border-slate-200 shadow-2xs">
+          <div class="flex items-center justify-between">
+            <div class="font-bold text-xs text-slate-800 flex items-center space-x-2">
+              <span class="w-6 h-6 rounded bg-amber-50 text-amber-700 flex items-center justify-center font-bold">d</span>
+              <span>Khối Người duyệt theo điều kiện (Conditional Approvers)</span>
+            </div>
+            <span class="px-2 py-0.5 rounded text-[10px] font-bold ${condActive ? 'bg-amber-50 text-amber-700 border border-amber-200' : 'bg-slate-100 text-slate-500'}">
+              ${condActive ? '⚡ Có điều kiện' : 'Không có'}
+            </span>
+          </div>
+          <div class="mt-1 pl-8">
+            ${condActive ? `
+              <div class="text-[11px] font-semibold text-amber-900 bg-amber-50/70 p-2 rounded-lg border border-amber-200/80">
+                ⚡ Quy tắc: <strong>Nếu số ngày nghỉ &gt; ${group.blockConditionalApprovers.thresholdDays} ngày</strong> ➔ Tự động bổ sung <strong>${group.blockConditionalApprovers.approverName}</strong> phê duyệt.
+              </div>
+              <p class="text-[10px] text-slate-500 mt-0.5">Hệ thống tự động kích hoạt cấp duyệt cao hơn khi nhân sự đăng ký thời gian nghỉ dài ngày.</p>
+            ` : '<p class="text-[11px] text-slate-500 italic">Không có điều kiện bổ sung người duyệt cấp cao.</p>'}
+          </div>
+        </div>
+      `;
+
+      container.innerHTML = html;
+    }
+
+    function closeLeaveGroupDetailModal() {
+      const modal = document.getElementById('modal-leave-group-detail');
+      if (modal) modal.classList.add('hidden');
+    }
+
+    function switchLeaveGroupDetailTab(tab) {
+      const btnInfo = document.getElementById('tab-btn-group-detail-info');
+      const btnBlocks = document.getElementById('tab-btn-group-detail-blocks');
+      const paneInfo = document.getElementById('group-detail-pane-info');
+      const paneBlocks = document.getElementById('group-detail-pane-blocks');
+
+      if (tab === 'info') {
+        if (btnInfo) {
+          btnInfo.className = 'px-4 py-2 text-xs font-bold border-b-2 border-[#2E3191] text-[#2E3191] transition cursor-pointer';
+        }
+        if (btnBlocks) {
+          btnBlocks.className = 'px-4 py-2 text-xs font-semibold text-slate-600 hover:text-[#2E3191] border-b-2 border-transparent transition cursor-pointer';
+        }
+        if (paneInfo) paneInfo.classList.remove('hidden');
+        if (paneBlocks) paneBlocks.classList.add('hidden');
+      } else {
+        if (btnInfo) {
+          btnInfo.className = 'px-4 py-2 text-xs font-semibold text-slate-600 hover:text-[#2E3191] border-b-2 border-transparent transition cursor-pointer';
+        }
+        if (btnBlocks) {
+          btnBlocks.className = 'px-4 py-2 text-xs font-bold border-b-2 border-[#2E3191] text-[#2E3191] transition cursor-pointer';
+        }
+        if (paneInfo) paneInfo.classList.add('hidden');
+        if (paneBlocks) paneBlocks.classList.remove('hidden');
+      }
+    }
+
+    function openBaseTimeoffGuideModal() {
+      const modal = document.getElementById('modal-base-timeoff-guide');
+      if (modal) modal.classList.remove('hidden');
+    }
+
+    function closeBaseTimeoffGuideModal() {
+      const modal = document.getElementById('modal-base-timeoff-guide');
+      if (modal) modal.classList.add('hidden');
     }
 
     function switchAnnualLeaveSubTab(subTab) {
@@ -41258,143 +41841,550 @@
 
   <!-- ================= MODAL: THIẾT LẬP NHÓM ĐỀ XUẤT NGHỈ PHÉP (CHUẨN BASE TIMEOFF) ================= -->
   <div id="modal-leave-group-config" class="fixed inset-0 bg-slate-900/60 backdrop-blur-xs z-50 flex items-center justify-center p-3 sm:p-5 hidden">
-    <div class="bg-white rounded-2xl max-w-2xl w-full shadow-2xl border border-slate-200 overflow-hidden flex flex-col max-h-[92vh] animate-in fade-in duration-200">
+    <div class="bg-white rounded-2xl max-w-3xl w-full shadow-2xl border border-slate-200 overflow-hidden flex flex-col max-h-[94vh] animate-in fade-in duration-200">
+      <!-- Modal Header -->
       <div class="pap-primary text-white px-5 py-3.5 flex items-center justify-between shrink-0 shadow-xs">
         <div class="flex items-center space-x-2.5">
-          <span class="text-xl">⚙️</span>
+          <span class="w-8 h-8 rounded-lg bg-white/10 flex items-center justify-center text-lg">⚙️</span>
           <div>
             <h3 class="text-sm font-bold" id="modal-leave-group-title">Thiết lập Nhóm đề xuất Nghỉ phép / Vắng mặt (Base Timeoff)</h3>
-            <p class="text-[11px] text-white/80">Cấu hình luồng duyệt riêng, thời hạn báo trước/hồi tố và ưu tiên trừ quỹ phép</p>
+            <p class="text-[11px] text-white/80">Cấu hình 9 loại phép chuẩn, 4 khối người duyệt và ưu tiên trừ quỹ nghỉ bù / nghỉ phép</p>
           </div>
         </div>
         <button type="button" onclick="closeLeaveGroupConfigModal()" class="text-white/70 hover:text-white text-2xl leading-none cursor-pointer p-1 transition">&times;</button>
       </div>
 
+      <!-- Modal Body -->
       <form onsubmit="handleSaveLeaveGroup(event)" class="p-5 overflow-y-auto space-y-4 text-xs">
         <input type="hidden" id="leave-group-id" value="">
 
-        <!-- Khối 1: Thông tin cơ bản -->
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
-          <div>
-            <label class="block font-semibold text-slate-700 mb-1">Mã nhóm đề xuất <span class="text-rose-500">*</span></label>
-            <input type="text" id="leave-group-code" required placeholder="VD: GR-AL-OFFICE" class="w-full px-3 py-2 border border-slate-300 rounded-lg text-xs font-semibold focus:ring-2 focus:ring-[#2E3191]">
-          </div>
-          <div>
-            <label class="block font-semibold text-slate-700 mb-1">Tên nhóm đề xuất <span class="text-rose-500">*</span></label>
-            <input type="text" id="leave-group-name" required placeholder="VD: Nghỉ phép năm (Khối Văn phòng)" class="w-full px-3 py-2 border border-slate-300 rounded-lg text-xs font-semibold focus:ring-2 focus:ring-[#2E3191]">
-          </div>
-        </div>
-
-        <div>
-          <label class="block font-semibold text-slate-700 mb-1">Loại phép tương ứng <span class="text-rose-500">*</span></label>
-          <select id="leave-group-type" required class="w-full px-3 py-2 border border-slate-300 rounded-lg text-xs bg-white focus:ring-2 focus:ring-[#2E3191]">
-            <!-- Dynamically populated from leaveTypesData -->
-          </select>
-        </div>
-
-        <div>
-          <label class="block font-semibold text-slate-700 mb-1">Mô tả nhóm</label>
-          <textarea id="leave-group-desc" rows="2" placeholder="Mô tả phạm vi và hướng dẫn áp dụng cho nhóm đề xuất..." class="w-full px-3 py-2 border border-slate-300 rounded-lg text-xs focus:ring-2 focus:ring-[#2E3191]"></textarea>
-        </div>
-
-        <!-- Khối 2: Thiết lập quy trình & Người duyệt Timeoff -->
-        <div class="p-3.5 bg-slate-50 rounded-xl border border-slate-200 space-y-3">
-          <div class="font-bold text-slate-800 text-xs flex items-center justify-between">
-            <span class="flex items-center space-x-1.5 text-[#2E3191]">
-              <span>👥</span>
-              <span>Quy trình & Khối người duyệt riêng của Timeoff</span>
-            </span>
+        <!-- BƯỚC 2: THIẾT LẬP THÔNG TIN 1 NHÓM ĐỀ XUẤT (CHUẨN BASE TIMEOFF) -->
+        <div class="p-3.5 bg-blue-50/50 rounded-xl border border-blue-100 space-y-3">
+          <div class="font-bold text-[#2E3191] text-xs flex items-center space-x-1.5 uppercase tracking-wide">
+            <span>📝</span>
+            <span>Bước 2: Thiết lập thông tin nhóm đề xuất cơ bản</span>
           </div>
 
           <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
             <div>
-              <label class="block font-semibold text-slate-700 mb-1">Yêu cầu Quản lý trực tiếp duyệt?</label>
-              <select id="leave-group-direct-mgr" class="w-full px-3 py-1.5 border border-slate-300 rounded-lg text-xs bg-white">
-                <option value="YES">Bắt buộc QLTT duyệt trước tiên</option>
-                <option value="NO">Không yêu cầu QLTT</option>
-              </select>
+              <label class="block font-bold text-slate-800 mb-1">Tên nhóm đề xuất <span class="text-rose-500">*</span></label>
+              <input type="text" id="leave-group-name" required placeholder="VD: Nghỉ phép năm (Khối Văn phòng)" class="w-full px-3 py-2 border border-slate-300 rounded-lg text-xs font-semibold focus:ring-2 focus:ring-[#2E3191] bg-white">
+              <span class="text-[10.5px] text-slate-500 mt-0.5 block">Trường thông tin bắt buộc hiển thị trên biểu mẫu đề xuất</span>
             </div>
+
             <div>
-              <label class="block font-semibold text-slate-700 mb-1">Hình thức phê duyệt</label>
-              <select id="leave-group-mode" class="w-full px-3 py-1.5 border border-slate-300 rounded-lg text-xs bg-white">
-                <option value="SEQUENTIAL">Duyệt lần lượt (Theo thứ tự các cấp)</option>
-                <option value="ANY">Chỉ cần 1 người duyệt (Hoàn tất ngay)</option>
-                <option value="ALL">Duyệt đồng thời (Tất cả đồng ý)</option>
-              </select>
+              <label class="block font-bold text-slate-800 mb-1">Mã nhóm đề xuất <span class="text-rose-500">*</span></label>
+              <input type="text" id="leave-group-code" required placeholder="VD: GR-AL-OFFICE" class="w-full px-3 py-2 border border-slate-300 rounded-lg text-xs font-mono font-bold focus:ring-2 focus:ring-[#2E3191] bg-white">
+              <span class="text-[10.5px] text-slate-500 mt-0.5 block">Mã định danh duy nhất trong hệ thống Base Timeoff</span>
             </div>
           </div>
 
-          <div class="space-y-2 pt-1 border-t border-slate-200/80">
-            <label class="flex items-center space-x-2 cursor-pointer">
-              <input type="checkbox" id="leave-group-allow-dynamic" checked class="rounded text-[#2E3191] focus:ring-0">
-              <span class="text-xs font-semibold text-slate-800">Cho phép người tạo tự @tag người duyệt linh động</span>
-            </label>
-            <label class="flex items-center space-x-2 cursor-pointer">
-              <input type="checkbox" id="leave-group-conditional-enabled" checked class="rounded text-[#2E3191] focus:ring-0">
-              <span class="text-xs font-semibold text-slate-800">Người duyệt theo điều kiện: Nghỉ > 3 ngày tự động thêm Ban Giám đốc</span>
-            </label>
-          </div>
-        </div>
-
-        <!-- Khối 3: Ràng buộc thời hạn & Hạn mức -->
-        <div class="p-3.5 bg-amber-50/60 rounded-xl border border-amber-200/80 space-y-3">
-          <div class="font-bold text-amber-900 text-xs flex items-center space-x-1.5">
-            <span>⏱️</span>
-            <span>Ràng buộc thời hạn nộp đơn & Giới hạn số ngày</span>
-          </div>
-
-          <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
-            <div>
-              <label class="block font-semibold text-slate-700 mb-1">Báo trước tối thiểu</label>
-              <div class="flex items-center space-x-1">
-                <input type="number" id="leave-group-notice-days" value="2" min="0" max="30" class="w-20 px-2.5 py-1.5 border border-slate-300 rounded-lg text-xs font-bold text-center bg-white">
-                <span class="text-slate-600 font-medium">ngày</span>
-              </div>
-            </div>
-            <div>
-              <label class="block font-semibold text-slate-700 mb-1">Nộp trễ tối đa (hồi tố)</label>
-              <div class="flex items-center space-x-1">
-                <input type="number" id="leave-group-grace-days" value="0" min="-10" max="0" class="w-20 px-2.5 py-1.5 border border-slate-300 rounded-lg text-xs font-bold text-center bg-white">
-                <span class="text-slate-600 font-medium">ngày</span>
-              </div>
-            </div>
-            <div>
-              <label class="block font-semibold text-slate-700 mb-1">Giới hạn số ngày/đơn</label>
-              <div class="flex items-center space-x-1">
-                <input type="number" id="leave-group-max-days" value="12" min="1" max="30" class="w-20 px-2.5 py-1.5 border border-slate-300 rounded-lg text-xs font-bold text-center bg-white">
-                <span class="text-slate-600 font-medium">ngày</span>
-              </div>
-            </div>
-          </div>
-
+          <!-- Loại phép (1 trong 9 loại chuẩn Base Timeoff) -->
           <div>
-            <label class="block font-semibold text-slate-700 mb-1">Thứ tự ưu tiên trừ quỹ ngày nghỉ</label>
-            <select id="leave-group-deduct-priority" class="w-full px-3 py-1.5 border border-slate-300 rounded-lg text-xs bg-white">
-              <option value="COMP_CARRY_SENIOR_ANNUAL">Quỹ nghỉ bù OT ➔ Phép tồn năm trước ➔ Phép thâm niên ➔ Phép năm</option>
-              <option value="CARRY_FIRST">Ưu tiên phép tồn năm trước ➔ Phép năm hiện tại</option>
-              <option value="OT_ONLY">Chỉ trừ Quỹ nghỉ bù OT tích lũy</option>
-              <option value="NONE">Không trừ quỹ phép (Hưởng BHXH / Đi công tác / Không lương)</option>
+            <label class="block font-bold text-slate-800 mb-1">Loại phép (Lựa chọn 1 trong 9 loại theo chuẩn Base Timeoff) <span class="text-rose-500">*</span></label>
+            <select id="leave-group-type" required onchange="onLeaveGroupTypeSelectChange()" class="w-full px-3 py-2 border border-slate-300 rounded-lg text-xs font-bold bg-white focus:ring-2 focus:ring-[#2E3191]">
+              <option value="AL">1. Nghỉ phép năm (Annual Leave - Trừ quỹ phép năm)</option>
+              <option value="PL">2. Nghỉ cá nhân (Personal Leave - Hiếu/Hỷ 100% lương)</option>
+              <option value="BT">3. Đi công tác (Business Trip - Ra ngoài làm việc)</option>
+              <option value="WFH">4. Làm việc ngoài văn phòng (Remote / Off-site cả ngày)</option>
+              <option value="UL">5. Nghỉ không lương (Unpaid Leave - Thỏa thuận cá nhân)</option>
+              <option value="OTHER">6. Các loại khác (Chế độ BHXH, Thai sản, Dưỡng sức, Nghỉ bù OT)</option>
+              <option value="WFH_HOURLY">7. Làm việc ngoài văn phòng theo giờ (Remote theo giờ)</option>
+              <option value="AL_HOURLY">8. Nghỉ phép năm theo giờ (Trừ quỹ phép năm theo giờ)</option>
+              <option value="UL_HOURLY">9. Nghỉ không lương theo giờ (Không hưởng lương theo giờ)</option>
             </select>
+            <div id="leave-group-type-hint" class="text-[11px] text-indigo-700 bg-indigo-50/70 p-2 rounded-lg mt-1 border border-indigo-100 flex items-center space-x-1.5">
+              <span>💡</span>
+              <span id="leave-group-type-hint-text">Nghỉ phép hằng năm hưởng 100% lương, khấu trừ trực tiếp vào Quỹ ngày nghỉ phép của nhân sự.</span>
+            </div>
+          </div>
+
+          <!-- Người phê duyệt (@tag username) -->
+          <div>
+            <label class="block font-bold text-slate-800 mb-1">Người phê duyệt mặc định (@tag username)</label>
+            <input type="text" id="leave-group-approvers-tag" placeholder="VD: @lan.nt, @dung.pt (username người có quyền duyệt đề xuất)" class="w-full px-3 py-2 border border-slate-300 rounded-lg text-xs bg-white focus:ring-2 focus:ring-[#2E3191]">
+            <span class="text-[10.5px] text-slate-500 mt-0.5 block">Nhập @username của người có quyền duyệt đề xuất thuộc nhóm này</span>
+          </div>
+
+          <!-- Yêu cầu phê duyệt từ Quản lý trực tiếp -->
+          <div class="p-3 bg-white rounded-lg border border-slate-200">
+            <label class="block font-bold text-slate-800 mb-1.5">Yêu cầu phê duyệt từ quản lý trực tiếp:</label>
+            <div class="flex items-center space-x-6">
+              <label class="flex items-center space-x-2 cursor-pointer">
+                <input type="radio" name="leave-group-direct-mgr-radio" value="YES" checked class="text-[#2E3191] focus:ring-[#2E3191]">
+                <span class="text-xs font-bold text-slate-800">Có (Bắt buộc)</span>
+              </label>
+              <label class="flex items-center space-x-2 cursor-pointer">
+                <input type="radio" name="leave-group-direct-mgr-radio" value="NO" class="text-[#2E3191] focus:ring-[#2E3191]">
+                <span class="text-xs font-medium text-slate-700">Không yêu cầu</span>
+              </label>
+            </div>
+            <p class="text-[10.5px] text-slate-500 mt-1 italic">
+              ℹ️ Khi bạn chọn <strong>Có</strong>, đề xuất này cần tag quản lý trực tiếp trước (hoặc tự động chỉ định theo sơ đồ tổ chức).
+            </p>
+          </div>
+
+          <!-- Quy trình phê duyệt (3 loại chuẩn Base Timeoff) -->
+          <div class="p-3 bg-white rounded-lg border border-slate-200 space-y-2">
+            <label class="block font-bold text-slate-800">Quy trình phê duyệt (3 loại theo chuẩn Base Timeoff):</label>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-2">
+              <label class="p-2.5 rounded-lg border border-slate-200 hover:border-[#2E3191] transition cursor-pointer flex items-start space-x-2 bg-slate-50/50">
+                <input type="radio" name="leave-group-workflow-radio" value="SEQUENTIAL" checked class="mt-0.5 text-[#2E3191] focus:ring-[#2E3191]">
+                <div>
+                  <div class="text-xs font-bold text-slate-800">Duyệt lần lượt</div>
+                  <div class="text-[10px] text-slate-500 mt-0.5">Sắp xếp theo thứ tự, QLTT duyệt đầu tiên nếu có. Đến lượt ai mới hiện nút duyệt.</div>
+                </div>
+              </label>
+
+              <label class="p-2.5 rounded-lg border border-slate-200 hover:border-[#2E3191] transition cursor-pointer flex items-start space-x-2 bg-slate-50/50">
+                <input type="radio" name="leave-group-workflow-radio" value="ALL_CONCURRENT" class="mt-0.5 text-[#2E3191] focus:ring-[#2E3191]">
+                <div>
+                  <div class="text-xs font-bold text-slate-800">Duyệt đồng thời</div>
+                  <div class="text-[10px] text-slate-500 mt-0.5">Không phân biệt thứ tự, tất cả người xét duyệt đồng ý hết là thông qua.</div>
+                </div>
+              </label>
+
+              <label class="p-2.5 rounded-lg border border-slate-200 hover:border-[#2E3191] transition cursor-pointer flex items-start space-x-2 bg-slate-50/50">
+                <input type="radio" name="leave-group-workflow-radio" value="ANY" class="mt-0.5 text-[#2E3191] focus:ring-[#2E3191]">
+                <div>
+                  <div class="text-xs font-bold text-slate-800">Chỉ cần 1 người duyệt</div>
+                  <div class="text-[10px] text-slate-500 mt-0.5">Chỉ cần 1 người trong danh sách xét duyệt đồng ý là đề xuất được thông qua.</div>
+                </div>
+              </label>
+            </div>
+          </div>
+
+          <!-- Ưu tiên sử dụng quỹ ngày nghỉ (2 loại chuẩn Base Timeoff) -->
+          <div class="p-3 bg-white rounded-lg border border-slate-200 space-y-2">
+            <label class="block font-bold text-slate-800">Ưu tiên sử dụng quỹ ngày nghỉ:</label>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-2">
+              <label class="p-2.5 rounded-lg border border-slate-200 hover:border-[#2E3191] transition cursor-pointer flex items-start space-x-2 bg-slate-50/50">
+                <input type="radio" name="leave-group-deduct-fund-radio" value="LEAVE_FUND" checked class="mt-0.5 text-[#2E3191] focus:ring-[#2E3191]">
+                <div>
+                  <div class="text-xs font-bold text-slate-800">Quỹ nghỉ phép</div>
+                  <div class="text-[10px] text-slate-600 mt-0.5">Hệ thống ưu tiên trừ theo thứ tự: <strong>Phép tồn ➔ Phép thâm niên ➔ Phép trong năm ➔ Nghỉ bù</strong></div>
+                </div>
+              </label>
+
+              <label class="p-2.5 rounded-lg border border-slate-200 hover:border-[#2E3191] transition cursor-pointer flex items-start space-x-2 bg-slate-50/50">
+                <input type="radio" name="leave-group-deduct-fund-radio" value="COMP_FUND" class="mt-0.5 text-[#2E3191] focus:ring-[#2E3191]">
+                <div>
+                  <div class="text-xs font-bold text-slate-800">Quỹ nghỉ bù</div>
+                  <div class="text-[10px] text-slate-600 mt-0.5">Hệ thống ưu tiên trừ theo thứ tự: <strong>Phép bù ➔ Phép tồn ➔ Phép thâm niên ➔ Phép trong năm</strong></div>
+                </div>
+              </label>
+            </div>
+
+            <label class="p-2 rounded-lg border border-slate-200 hover:border-slate-300 transition cursor-pointer flex items-center space-x-2 bg-slate-50/30">
+              <input type="radio" name="leave-group-deduct-fund-radio" value="NONE" class="text-[#2E3191] focus:ring-[#2E3191]">
+              <span class="text-xs font-medium text-slate-700">Không trừ quỹ phép (Đi công tác, Nghỉ không lương, Chế độ BHXH...)</span>
+            </label>
+
+            <div class="p-2 bg-rose-50 border border-rose-200 rounded-lg text-[11px] text-rose-700 flex items-center space-x-1.5 font-medium">
+              <span>⚠️</span>
+              <span><strong>Lưu ý:</strong> Khi hủy timeoff thì mặc định trả bù phép vào <strong>Phép tồn</strong>.</span>
+            </div>
           </div>
         </div>
 
-        <!-- Khối 4: Người theo dõi & Phạm vi -->
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
-          <div>
-            <label class="block font-semibold text-slate-700 mb-1">Người theo dõi mặc định (Watchers)</label>
-            <input type="text" id="leave-group-watchers" placeholder="VD: Chuyên viên Tiền lương, Phòng HC-NS" value="Chuyên viên Tiền lương, Phòng HC-NS" class="w-full px-3 py-2 border border-slate-300 rounded-lg text-xs bg-white">
+        <!-- BƯỚC 4: THIẾT LẬP 4 LOẠI NGƯỜI DUYỆT (APPROVAL BLOCKS CHUẨN BASE) -->
+        <div class="p-3.5 bg-slate-50 rounded-xl border border-slate-200 space-y-3">
+          <div class="font-bold text-slate-900 text-xs flex items-center justify-between">
+            <span class="flex items-center space-x-1.5 text-[#2E3191]">
+              <span>🛡️</span>
+              <span>Bước 4: Thiết lập 4 khối người duyệt cho đề xuất (Chuẩn Base Timeoff)</span>
+            </span>
           </div>
-          <div>
-            <label class="block font-semibold text-slate-700 mb-1">Có hiệu lực với (Phòng ban)</label>
-            <input type="text" id="leave-group-scope" placeholder="VD: Toàn bộ nhân sự hoặc Phòng ban..." value="Toàn bộ nhân sự Cảng" class="w-full px-3 py-2 border border-slate-300 rounded-lg text-xs bg-white">
+
+          <div class="space-y-2.5">
+            <!-- Khối a: Quản lý trực tiếp -->
+            <div class="p-2.5 bg-white rounded-lg border border-slate-200 flex items-start justify-between">
+              <div>
+                <div class="font-bold text-xs text-slate-800 flex items-center space-x-1.5">
+                  <span class="text-blue-600">👤</span>
+                  <span>a. Khối Quản lý trực tiếp</span>
+                </div>
+                <div class="text-[10.5px] text-slate-500 mt-0.5">Bắt buộc có quản lý trực tiếp duyệt với mọi đề xuất thuộc Nhóm. Trong form tạo đề xuất sẽ có trường "Chọn quản lý trực tiếp phê duyệt".</div>
+              </div>
+              <input type="checkbox" id="leave-group-block-direct-mgr" checked class="w-4 h-4 rounded text-[#2E3191] focus:ring-0 mt-0.5 cursor-pointer">
+            </div>
+
+            <!-- Khối b: Người duyệt cố định -->
+            <div class="p-2.5 bg-white rounded-lg border border-slate-200 space-y-1.5">
+              <div class="flex items-center justify-between">
+                <div class="font-bold text-xs text-slate-800 flex items-center space-x-1.5">
+                  <span class="text-emerald-600">🔒</span>
+                  <span>b. Khối Người duyệt cố định</span>
+                </div>
+                <span class="text-[10px] text-emerald-700 font-semibold bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200">Mọi đơn đều cần người này duyệt</span>
+              </div>
+              <input type="text" id="leave-group-fixed-approvers" placeholder="Nhập tên/username người duyệt cố định (VD: Nguyễn Thị Lan - TP.HC-NS, Phạm Tiến Dũng - TGĐ)" class="w-full px-2.5 py-1.5 border border-slate-300 rounded-lg text-xs bg-white">
+            </div>
+
+            <!-- Khối c: Người duyệt linh động -->
+            <div class="p-2.5 bg-white rounded-lg border border-slate-200 space-y-1.5">
+              <div class="flex items-center justify-between">
+                <div class="font-bold text-xs text-slate-800 flex items-center space-x-1.5">
+                  <span class="text-indigo-600">🔄</span>
+                  <span>c. Khối Người duyệt linh động</span>
+                </div>
+                <label class="flex items-center space-x-1.5 cursor-pointer">
+                  <input type="checkbox" id="leave-group-dynamic-enabled" onchange="document.getElementById('leave-group-dynamic-box').classList.toggle('hidden', !this.checked)" checked class="w-4 h-4 rounded text-[#2E3191] focus:ring-0 cursor-pointer">
+                  <span class="text-[11px] font-semibold text-slate-700">Kích hoạt</span>
+                </label>
+              </div>
+              <div id="leave-group-dynamic-box" class="space-y-1.5 pt-1">
+                <div class="text-[10.5px] text-slate-500">Trong form tạo đề xuất xuất hiện trường Người duyệt linh động theo tên khối đã cài. Người tạo có thể tag 1 người bất kỳ hoặc chọn theo danh sách.</div>
+                <input type="text" id="leave-group-dynamic-title" value="Người phụ trách chuyên môn / Trưởng ca trực" placeholder="Tên khối hiển thị trên form đơn (VD: Trưởng ca trực bến bãi, Quản lý kiêm nhiệm)" class="w-full px-2.5 py-1.5 border border-slate-300 rounded-lg text-xs bg-white font-medium">
+              </div>
+            </div>
+
+            <!-- Khối d: Người duyệt theo điều kiện -->
+            <div class="p-2.5 bg-white rounded-lg border border-slate-200 space-y-1.5">
+              <div class="flex items-center justify-between">
+                <div class="font-bold text-xs text-slate-800 flex items-center space-x-1.5">
+                  <span class="text-amber-600">⚡</span>
+                  <span>d. Khối Người duyệt theo điều kiện</span>
+                </div>
+                <label class="flex items-center space-x-1.5 cursor-pointer">
+                  <input type="checkbox" id="leave-group-cond-enabled" onchange="document.getElementById('leave-group-cond-box').classList.toggle('hidden', !this.checked)" checked class="w-4 h-4 rounded text-[#2E3191] focus:ring-0 cursor-pointer">
+                  <span class="text-[11px] font-semibold text-slate-700">Kích hoạt</span>
+                </label>
+              </div>
+              <div id="leave-group-cond-box" class="space-y-2 pt-1">
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                  <div>
+                    <label class="block text-[11px] font-semibold text-slate-700 mb-0.5">Khi số ngày nghỉ vượt quá:</label>
+                    <div class="flex items-center space-x-1">
+                      <span class="text-xs text-slate-600">&gt;</span>
+                      <input type="number" id="leave-group-cond-days" value="3" min="1" max="30" class="w-16 px-2 py-1 border border-slate-300 rounded text-xs text-center font-bold">
+                      <span class="text-xs text-slate-600">ngày</span>
+                    </div>
+                  </div>
+                  <div>
+                    <label class="block text-[11px] font-semibold text-slate-700 mb-0.5">Bổ sung người phê duyệt cấp cao:</label>
+                    <input type="text" id="leave-group-cond-approver" value="Ban Giám đốc Cảng (Tổng Giám đốc)" placeholder="VD: Tổng Giám đốc Cảng" class="w-full px-2.5 py-1 border border-slate-300 rounded text-xs bg-white font-medium">
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
 
+        <!-- CÀI ĐẶT NÂNG CAO (COLLAPSIBLE ACCORDION CHUẨN BASE) -->
+        <div class="border border-slate-200 rounded-xl overflow-hidden">
+          <button type="button" onclick="toggleAdvancedSettings()" class="w-full px-4 py-3 bg-slate-100 hover:bg-slate-200/80 font-bold text-slate-800 text-xs flex items-center justify-between transition cursor-pointer">
+            <span class="flex items-center space-x-1.5">
+              <span>⚙️</span>
+              <span>Cài đặt nâng cao (SLA, Hạn mức, Khoảng số ngày giới hạn...)</span>
+            </span>
+            <span id="adv-settings-icon" class="text-slate-500 font-mono text-sm">▼</span>
+          </button>
+
+          <div id="adv-settings-content" class="p-4 space-y-3 bg-white hidden border-t border-slate-200">
+            <!-- Cho phép quản lý và người phân ca tạo đề xuất hộ -->
+            <label class="flex items-center space-x-2.5 cursor-pointer p-2 rounded-lg bg-slate-50 border border-slate-200">
+              <input type="checkbox" id="leave-group-allow-manager-create" checked class="w-4 h-4 rounded text-[#2E3191] focus:ring-0 cursor-pointer">
+              <span class="text-xs font-semibold text-slate-800">Cho phép quản lý và người phân ca lịch làm việc tạo đề xuất nghỉ cho nhân viên</span>
+            </label>
+
+            <!-- SLA & Ràng buộc thời hạn -->
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+              <div>
+                <label class="block font-bold text-slate-700 mb-1">SLA xử lý toàn bộ:</label>
+                <div class="flex items-center space-x-1">
+                  <input type="number" id="leave-group-sla-hours" value="24" min="1" max="168" class="w-20 px-2.5 py-1.5 border border-slate-300 rounded-lg text-xs font-bold text-center">
+                  <span class="text-slate-600 font-medium">giờ</span>
+                </div>
+              </div>
+
+              <div>
+                <label class="block font-bold text-slate-700 mb-1">Bắt buộc theo khoảng thời hạn:</label>
+                <select id="leave-group-deadline-strict" class="w-full px-2.5 py-1.5 border border-slate-300 rounded-lg text-xs bg-white">
+                  <option value="WARNING">Không bắt buộc (có cảnh báo)</option>
+                  <option value="STRICT">Bắt buộc (chặn không cho tạo)</option>
+                </select>
+              </div>
+
+              <div>
+                <label class="block font-bold text-slate-700 mb-1">Khoảng số ngày giới hạn:</label>
+                <div class="flex items-center space-x-1">
+                  <input type="number" id="leave-group-notice-days" value="2" min="-10" max="30" class="w-20 px-2.5 py-1.5 border border-slate-300 rounded-lg text-xs font-bold text-center">
+                  <span class="text-slate-600 font-medium">ngày</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="text-[10.5px] text-slate-500 bg-slate-50 p-2 rounded-lg">
+              💡 <em>Giải thích khoảng số ngày:</em> Số ngày là <strong>2</strong>: cần tạo trước 2 ngày. Số ngày là <strong>-2</strong>: cho phép tạo muộn/hồi tố tối đa 2 ngày.
+            </div>
+
+            <!-- Giới hạn số ngày & số đề xuất -->
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+              <div>
+                <label class="block font-bold text-slate-700 mb-1">Giới hạn số ngày nghỉ/đơn:</label>
+                <div class="flex items-center space-x-1">
+                  <input type="number" id="leave-group-max-days" value="12" min="1" max="30" class="w-20 px-2.5 py-1.5 border border-slate-300 rounded-lg text-xs font-bold text-center">
+                  <span class="text-slate-600 font-medium">ngày (tối đa 30)</span>
+                </div>
+              </div>
+
+              <div>
+                <label class="block font-bold text-slate-700 mb-1">Giới hạn đề xuất tạo/tháng:</label>
+                <input type="number" id="leave-group-monthly-create-limit" placeholder="Không giới hạn" class="w-full px-2.5 py-1.5 border border-slate-300 rounded-lg text-xs">
+              </div>
+
+              <div>
+                <label class="block font-bold text-slate-700 mb-1">Giới hạn đề xuất duyệt/tháng:</label>
+                <input type="number" id="leave-group-monthly-approve-limit" placeholder="Không giới hạn" class="w-full px-2.5 py-1.5 border border-slate-300 rounded-lg text-xs">
+              </div>
+            </div>
+
+            <!-- Có hiệu lực với & Người theo dõi -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+              <div>
+                <label class="block font-bold text-slate-700 mb-1">Có hiệu lực với (@tag nhóm/phòng ban):</label>
+                <input type="text" id="leave-group-scope" value="Toàn bộ nhân sự Cảng Phước An" class="w-full px-3 py-1.5 border border-slate-300 rounded-lg text-xs bg-white">
+              </div>
+              <div>
+                <label class="block font-bold text-slate-700 mb-1">Người theo dõi mặc định (@username):</label>
+                <input type="text" id="leave-group-watchers" value="@lan.nt, @tienluong.pap" class="w-full px-3 py-1.5 border border-slate-300 rounded-lg text-xs bg-white">
+              </div>
+            </div>
+
+            <!-- Miêu tả -->
+            <div>
+              <label class="block font-bold text-slate-700 mb-1">Miêu tả nhóm đề xuất:</label>
+              <textarea id="leave-group-desc" rows="2" placeholder="Nhập nội dung mô tả, quy định và hướng dẫn của nhóm đề xuất..." class="w-full px-3 py-1.5 border border-slate-300 rounded-lg text-xs bg-white"></textarea>
+            </div>
+          </div>
+        </div>
+
+        <!-- Modal Actions (Bước 3: Tạo nhóm) -->
         <div class="pt-3 flex items-center justify-end space-x-2 border-t border-slate-200">
           <button type="button" onclick="closeLeaveGroupConfigModal()" class="px-4 py-2 border border-slate-300 rounded-lg text-slate-700 hover:bg-slate-50 transition cursor-pointer font-medium">Hủy bỏ</button>
-          <button type="submit" class="px-5 py-2 pap-primary text-white font-bold rounded-lg shadow-xs transition cursor-pointer hover:bg-[#242775]">Lưu cấu hình nhóm</button>
+          <button type="submit" class="px-5 py-2 pap-primary text-white font-bold rounded-lg shadow-xs transition cursor-pointer hover:bg-[#242775] flex items-center space-x-1.5">
+            <span>💾</span>
+            <span id="btn-save-leave-group-text">Tạo nhóm đề xuất (Bước 3)</span>
+          </button>
         </div>
       </form>
+    </div>
+  </div>
+
+  <!-- ================= MODAL: XEM CHI TIẾT & 4 KHỐI NGƯỜI DUYỆT (BASE TIMEOFF DETAIL) ================= -->
+  <div id="modal-leave-group-detail" class="fixed inset-0 bg-slate-900/60 backdrop-blur-xs z-50 flex items-center justify-center p-3 sm:p-5 hidden">
+    <div class="bg-white rounded-2xl max-w-3xl w-full shadow-2xl border border-slate-200 overflow-hidden flex flex-col max-h-[92vh] animate-in fade-in duration-200">
+      <div class="pap-primary text-white px-5 py-3.5 flex items-center justify-between shrink-0 shadow-xs">
+        <div class="flex items-center space-x-2.5">
+          <span class="w-8 h-8 rounded-lg bg-white/10 flex items-center justify-center text-lg" id="detail-group-icon">🏖️</span>
+          <div>
+            <h3 class="text-sm font-bold" id="detail-group-name">Chi tiết Nhóm đề xuất: Nghỉ phép năm</h3>
+            <p class="text-[11px] text-white/80" id="detail-group-code">Mã: GR-AL-OFFICE · Base Timeoff PAP</p>
+          </div>
+        </div>
+        <button type="button" onclick="closeLeaveGroupDetailModal()" class="text-white/70 hover:text-white text-2xl leading-none cursor-pointer p-1 transition">&times;</button>
+      </div>
+
+      <!-- Navigation Tabs in Detail Modal -->
+      <div class="flex items-center border-b border-slate-200 bg-slate-50 px-5 pt-2">
+        <button type="button" id="tab-btn-group-detail-info" onclick="switchLeaveGroupDetailTab('info')" class="px-4 py-2 text-xs font-bold border-b-2 border-[#2E3191] text-[#2E3191] transition cursor-pointer">
+          1. Thông tin chung &amp; Cài đặt
+        </button>
+        <button type="button" id="tab-btn-group-detail-blocks" onclick="switchLeaveGroupDetailTab('blocks')" class="px-4 py-2 text-xs font-semibold text-slate-600 hover:text-[#2E3191] border-b-2 border-transparent transition cursor-pointer">
+          2. Khối người duyệt đề xuất (Bước 4)
+        </button>
+      </div>
+
+      <!-- Detail Body Content -->
+      <div class="p-5 overflow-y-auto space-y-4 text-xs">
+        <!-- Tab 1: General Info -->
+        <div id="group-detail-pane-info" class="space-y-3">
+          <div class="grid grid-cols-2 sm:grid-cols-4 gap-2.5">
+            <div class="bg-slate-50 p-2.5 rounded-xl border border-slate-200">
+              <span class="text-[10px] text-slate-500 font-medium block">Loại phép (9 loại Base)</span>
+              <span class="text-xs font-bold text-slate-800 mt-0.5 block" id="dt-group-type">Nghỉ phép năm</span>
+            </div>
+            <div class="bg-slate-50 p-2.5 rounded-xl border border-slate-200">
+              <span class="text-[10px] text-slate-500 font-medium block">Quy trình duyệt</span>
+              <span class="text-xs font-bold text-indigo-700 mt-0.5 block" id="dt-group-mode">Duyệt lần lượt</span>
+            </div>
+            <div class="bg-slate-50 p-2.5 rounded-xl border border-slate-200">
+              <span class="text-[10px] text-slate-500 font-medium block">SLA xử lý</span>
+              <span class="text-xs font-bold text-emerald-700 mt-0.5 block" id="dt-group-sla">24 giờ</span>
+            </div>
+            <div class="bg-slate-50 p-2.5 rounded-xl border border-slate-200">
+              <span class="text-[10px] text-slate-500 font-medium block">Thời hạn báo trước</span>
+              <span class="text-xs font-bold text-amber-700 mt-0.5 block" id="dt-group-notice">Trước 2 ngày</span>
+            </div>
+          </div>
+
+          <div class="p-3 bg-blue-50/70 rounded-xl border border-blue-200 space-y-1">
+            <div class="font-bold text-blue-950 text-xs flex items-center space-x-1.5">
+              <span>💳</span>
+              <span>Thứ tự ưu tiên trừ quỹ ngày nghỉ:</span>
+            </div>
+            <p class="text-xs font-semibold text-blue-900" id="dt-group-fund-priority">Quỹ nghỉ phép: Phép tồn ➔ Phép thâm niên ➔ Phép trong năm ➔ Nghỉ bù</p>
+            <div class="text-[10px] text-rose-700 italic">⚠️ Lưu ý: khi hủy timeoff thì mặc định trả bù phép vào Phép tồn.</div>
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <div class="p-3 bg-slate-50 rounded-xl border border-slate-200">
+              <span class="font-bold text-slate-800 text-xs block mb-1">Ràng buộc &amp; Hạn mức đề xuất:</span>
+              <ul class="text-[11px] text-slate-600 space-y-1 list-disc list-inside">
+                <li>Giới hạn số ngày nghỉ: <strong id="dt-group-max-days">12 ngày/đơn</strong></li>
+                <li>Bắt buộc theo thời hạn: <strong id="dt-group-strict">Không bắt buộc (có cảnh báo)</strong></li>
+                <li>Cho phép quản lý tạo hộ: <strong id="dt-group-allow-mgr">Có</strong></li>
+              </ul>
+            </div>
+
+            <div class="p-3 bg-slate-50 rounded-xl border border-slate-200">
+              <span class="font-bold text-slate-800 text-xs block mb-1">Phạm vi áp dụng &amp; Theo dõi:</span>
+              <ul class="text-[11px] text-slate-600 space-y-1 list-disc list-inside">
+                <li>Có hiệu lực với: <strong id="dt-group-scope">Toàn bộ nhân sự Cảng</strong></li>
+                <li>Người theo dõi: <strong id="dt-group-watchers">@lan.nt, @tienluong.pap</strong></li>
+                <li>Trạng thái: <strong id="dt-group-status" class="text-emerald-700 font-bold">🟢 Đang áp dụng</strong></li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="p-3 bg-slate-50 rounded-xl border border-slate-200">
+            <span class="font-bold text-slate-800 text-xs block mb-1">Mô tả nhóm đề xuất:</span>
+            <p class="text-xs text-slate-600 italic" id="dt-group-desc">Áp dụng cho nhân viên khối hành chính, văn phòng, phòng ban nghiệp vụ cảng.</p>
+          </div>
+        </div>
+
+        <!-- Tab 2: Approval Blocks (Step 4 Base Timeoff) -->
+        <div id="group-detail-pane-blocks" class="space-y-3 hidden">
+          <div class="p-3 bg-indigo-50/70 rounded-xl border border-indigo-200 flex items-center space-x-2">
+            <span class="text-lg">🛡️</span>
+            <div>
+              <div class="font-bold text-[#2E3191] text-xs">Bước 4: Cấu hình 4 khối người duyệt cho nhóm đề xuất</div>
+              <div class="text-[11px] text-slate-600">Được tự động áp dụng khi nhân sự nộp đơn thuộc nhóm đề xuất này</div>
+            </div>
+          </div>
+
+          <!-- 4 Khối người duyệt dạng Cards -->
+          <div class="space-y-2.5" id="dt-approval-blocks-container">
+            <!-- Dynamically populated by renderLeaveGroupDetailBlocks() -->
+          </div>
+        </div>
+      </div>
+
+      <!-- Detail Modal Footer -->
+      <div class="px-5 py-3 border-t border-slate-200 bg-slate-50 flex items-center justify-between">
+        <span class="text-[11px] text-slate-500 italic">Dữ liệu cấu hình chuẩn Base Timeoff PAP</span>
+        <div class="flex items-center space-x-2">
+          <button type="button" onclick="closeLeaveGroupDetailModal()" class="px-4 py-1.5 border border-slate-300 rounded-lg text-slate-700 font-semibold hover:bg-slate-100 transition cursor-pointer">Đóng</button>
+          <button type="button" id="btn-edit-from-detail" class="px-4 py-1.5 pap-primary text-white rounded-lg font-bold shadow-xs hover:bg-[#242775] transition cursor-pointer flex items-center space-x-1">
+            <span>✏️</span>
+            <span>Chỉnh sửa cấu hình</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ================= MODAL: HƯỚNG DẪN TẠO NHÓM ĐỀ XUẤT (CHUẨN HELP.BASE.VN) ================= -->
+  <div id="modal-base-timeoff-guide" class="fixed inset-0 bg-slate-900/60 backdrop-blur-xs z-50 flex items-center justify-center p-3 sm:p-5 hidden">
+    <div class="bg-white rounded-2xl max-w-3xl w-full shadow-2xl border border-slate-200 overflow-hidden flex flex-col max-h-[92vh] animate-in fade-in duration-200">
+      <div class="pap-primary text-white px-5 py-3.5 flex items-center justify-between shrink-0 shadow-xs">
+        <div class="flex items-center space-x-2.5">
+          <span class="text-xl">📘</span>
+          <div>
+            <h3 class="text-sm font-bold">Hướng dẫn Base Timeoff: Cách tạo nhóm đề xuất nghỉ phép / vắng mặt</h3>
+            <p class="text-[11px] text-white/80">Tham chiếu tài liệu chuẩn Base Enterprise: help.base.vn</p>
+          </div>
+        </div>
+        <button type="button" onclick="closeBaseTimeoffGuideModal()" class="text-white/70 hover:text-white text-2xl leading-none cursor-pointer p-1 transition">&times;</button>
+      </div>
+
+      <div class="p-5 overflow-y-auto space-y-4 text-xs leading-relaxed text-slate-700">
+        <!-- Bước 1 -->
+        <div class="p-3.5 bg-slate-50 rounded-xl border border-slate-200">
+          <div class="font-bold text-[#2E3191] text-xs mb-1 flex items-center space-x-1.5">
+            <span class="w-5 h-5 rounded-full bg-[#2E3191] text-white text-[10px] flex items-center justify-center font-bold">1</span>
+            <span>Bước 1: Truy cập và Tạo mới nhóm</span>
+          </div>
+          <p class="text-slate-600">
+            Tại màn hình chính của Base Timeoff, chọn <strong>Cài đặt &gt;&gt; Tạo mới &gt;&gt; Tạo mới nhóm</strong> (hoặc nhấn nút <em>Tạo mới nhóm</em> trên thanh công cụ).
+          </p>
+        </div>
+
+        <!-- Bước 2 -->
+        <div class="p-3.5 bg-blue-50/60 rounded-xl border border-blue-200">
+          <div class="font-bold text-[#2E3191] text-xs mb-1 flex items-center space-x-1.5">
+            <span class="w-5 h-5 rounded-full bg-[#2E3191] text-white text-[10px] flex items-center justify-center font-bold">2</span>
+            <span>Bước 2: Thiết lập thông tin 1 nhóm đề xuất</span>
+          </div>
+          <ul class="space-y-1.5 text-slate-700 list-disc list-inside mt-2">
+            <li><strong>Tên nhóm:</strong> Tên nhóm đề xuất (trường bắt buộc).</li>
+            <li><strong>Người phê duyệt:</strong> @tag username người có quyền duyệt đề xuất.</li>
+            <li><strong>Loại phép:</strong> Lựa chọn 1 trong 9 loại chuẩn: <em>Nghỉ phép năm, Nghỉ cá nhân, Đi công tác, Làm việc ngoài VP, Nghỉ không lương, Các loại khác, Làm việc ngoài VP theo giờ, Phép năm theo giờ, Không lương theo giờ</em>.</li>
+            <li><strong>Yêu cầu phê duyệt từ quản lý trực tiếp:</strong> Khi chọn Có, đề xuất cần tag quản lý trực tiếp trước.</li>
+            <li><strong>Quy trình phê duyệt (3 loại):</strong>
+              <div class="pl-4 mt-1 space-y-0.5 text-slate-600">
+                • <em>Duyệt đồng thời:</em> Không phân biệt thứ tự, tất cả người duyệt duyệt hết là thông qua.<br>
+                • <em>Duyệt lần lượt:</em> Thứ tự người duyệt, ai được tag trước duyệt trước (QLTT duyệt đầu tiên). Đến lượt ai mới hiện nút duyệt.<br>
+                • <em>Chỉ cần 1 người duyệt:</em> Chỉ cần 1 người đồng ý là thông qua.
+              </div>
+            </li>
+            <li><strong>Ưu tiên sử dụng quỹ ngày nghỉ:</strong>
+              <div class="pl-4 mt-1 space-y-0.5 text-slate-600">
+                • <em>Quỹ nghỉ bù:</em> Phép bù ➔ Phép tồn ➔ Phép thâm niên ➔ Phép trong năm.<br>
+                • <em>Quỹ nghỉ phép:</em> Phép tồn ➔ Phép thâm niên ➔ Phép trong năm ➔ Nghỉ bù.<br>
+                <span class="text-rose-600 font-semibold">• Lưu ý: khi hủy timeoff thì mặc định trả bù phép vào Phép tồn.</span>
+              </div>
+            </li>
+            <li><strong>Cài đặt nâng cao:</strong> Cho phép quản lý tạo hộ, SLA thời hạn xử lý, Bắt buộc/Không bắt buộc theo khoảng thời hạn, Khoảng số ngày giới hạn (2: trước 2 ngày; -2: muộn tối đa 2 ngày), Giới hạn số ngày nghỉ/đơn, Giới hạn đề xuất tạo/duyệt trong tháng, Có hiệu lực với, Người theo dõi.</li>
+          </ul>
+        </div>
+
+        <!-- Bước 3 -->
+        <div class="p-3.5 bg-slate-50 rounded-xl border border-slate-200">
+          <div class="font-bold text-[#2E3191] text-xs mb-1 flex items-center space-x-1.5">
+            <span class="w-5 h-5 rounded-full bg-[#2E3191] text-white text-[10px] flex items-center justify-center font-bold">3</span>
+            <span>Bước 3: Nhấn Tạo nhóm</span>
+          </div>
+          <p class="text-slate-600">
+            Click <strong>Tạo nhóm</strong> để hoàn tất lưu thông tin nhóm đề xuất vào cơ sở dữ liệu hệ thống.
+          </p>
+        </div>
+
+        <!-- Bước 4 -->
+        <div class="p-3.5 bg-indigo-50/60 rounded-xl border border-indigo-200">
+          <div class="font-bold text-[#2E3191] text-xs mb-1 flex items-center space-x-1.5">
+            <span class="w-5 h-5 rounded-full bg-[#2E3191] text-white text-[10px] flex items-center justify-center font-bold">4</span>
+            <span>Bước 4: Thiết lập 4 loại người duyệt cho đề xuất</span>
+          </div>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 mt-2">
+            <div class="bg-white p-2.5 rounded-lg border border-slate-200">
+              <strong class="text-blue-800 block mb-0.5">a. Quản lý trực tiếp</strong>
+              <span class="text-slate-600 text-[11px]">Bắt buộc QLTT duyệt trước tiên. Form đơn xuất hiện ô "Chọn quản lý trực tiếp phê duyệt".</span>
+            </div>
+            <div class="bg-white p-2.5 rounded-lg border border-slate-200">
+              <strong class="text-emerald-800 block mb-0.5">b. Người duyệt cố định</strong>
+              <span class="text-slate-600 text-[11px]">Mọi đơn thuộc nhóm đề xuất đều cần người duyệt cố định này xét duyệt.</span>
+            </div>
+            <div class="bg-white p-2.5 rounded-lg border border-slate-200">
+              <strong class="text-indigo-800 block mb-0.5">c. Người duyệt linh động</strong>
+              <span class="text-slate-600 text-[11px]">Xuất hiện trường chọn trên form đơn theo tên khối duyệt đã cài. Người tạo tự tag hoặc chọn theo danh sách.</span>
+            </div>
+            <div class="bg-white p-2.5 rounded-lg border border-slate-200">
+              <strong class="text-amber-800 block mb-0.5">d. Người duyệt theo điều kiện</strong>
+              <span class="text-slate-600 text-[11px]">Tự động thêm người duyệt khi thỏa mãn điều kiện (Ví dụ: số ngày nghỉ &gt; 3 ngày thêm Ban Giám đốc).</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="px-5 py-3 border-t border-slate-200 bg-slate-50 flex items-center justify-between">
+        <a href="https://help.base.vn/support/solutions/articles/63000268547-base-timeoff-c%C3%A1ch-t%E1%BA%A1o-nh%C3%B3m-%C4%91%E1%BB%81-xu%E1%BA%A5t-ngh%E1%BB%89-ph%C3%A9p-v%E1%BA%AFng-m%E1%BA%B7t" target="_blank" rel="noopener" class="text-[#2E3191] hover:underline font-semibold flex items-center space-x-1">
+          <span>🔗</span>
+          <span>Xem bài viết gốc trên help.base.vn</span>
+        </a>
+        <button type="button" onclick="closeBaseTimeoffGuideModal()" class="px-4 py-1.5 pap-primary text-white rounded-lg font-bold shadow-xs hover:bg-[#242775] transition cursor-pointer">Đã hiểu</button>
+      </div>
     </div>
   </div>
 
@@ -41452,6 +42442,14 @@
           <div id="req-group-rule-box" class="mt-1.5 p-2.5 bg-blue-50/80 rounded-lg border border-blue-200 text-[11px] text-blue-900 space-y-1">
             <!-- Dynamic policy preview rendered by onLeaveRequestGroupChange() -->
           </div>
+          <div id="req-group-cond-notice" class="hidden mt-1.5 space-y-1">
+            <!-- Dynamic conditional & deadline notices rendered by onLeaveRequestDurationChange() -->
+          </div>
+        </div>
+
+        <!-- Khối người duyệt động theo cấu hình nhóm Base Timeoff -->
+        <div id="req-custom-approvers-container" class="space-y-2 p-2.5 bg-slate-50/80 rounded-xl border border-slate-200 hidden">
+          <!-- Dynamically populated if group requires QLTT or dynamic approvers -->
         </div>
 
         <!-- 3. Chọn Loại nghỉ phép -->
