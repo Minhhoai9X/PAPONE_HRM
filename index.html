@@ -605,12 +605,12 @@
             </div>
           </div>
 
-          <!-- Quản lý nghỉ phép (Base Timeoff - Accordion Dropdown M09) -->
+          <!-- Quản lý nghỉ phép (M09) -->
           <div class="space-y-0.5">
-            <button onclick="switchSidebarModule('annual-leave')" id="side-item-annual-leave" class="sidebar-btn hover:bg-slate-100 hover:text-slate-900 w-full text-left px-3 py-2 rounded-lg flex items-center justify-between cursor-pointer transition text-slate-800 font-medium" title="Quản lý nghỉ phép & vắng mặt (Base Timeoff M09)">
+            <button onclick="switchSidebarModule('annual-leave')" id="side-item-annual-leave" class="sidebar-btn hover:bg-slate-100 hover:text-slate-900 w-full text-left px-3 py-2 rounded-lg flex items-center justify-between cursor-pointer transition text-slate-800 font-medium" title="Quản lý nghỉ phép & vắng mặt (M09)">
               <div class="flex items-center space-x-2.5 overflow-hidden truncate">
                 <span class="text-sm shrink-0">🏖️</span>
-                <span class="sidebar-label truncate font-medium">Nghỉ phép (Timeoff)</span>
+                <span class="sidebar-label truncate font-medium">Nghỉ phép (M09)</span>
               </div>
               <div class="flex items-center space-x-1.5">
                 <span class="sidebar-badge text-[10px] bg-indigo-50 text-[#2E3191] border border-indigo-200 px-1.5 py-0.2 rounded font-semibold">M09</span>
@@ -631,10 +631,10 @@
                 </div>
                 <span class="text-[9px] px-1 rounded bg-amber-50 text-amber-700 border border-amber-200 font-bold" id="sidebar-leave-requests-count">4</span>
               </button>
-              <button onclick="openAnnualLeaveSub('groups')" id="sub-item-leave-groups" class="sidebar-sub-item w-full text-left px-2 py-1.5 rounded flex items-center justify-between cursor-pointer transition text-[11px] text-slate-700 font-medium hover:text-[#2E3191] hover:bg-slate-50 group" title="Nhóm đề xuất nghỉ phép & Luồng duyệt riêng Base Timeoff">
+              <button onclick="openAnnualLeaveSub('groups')" id="sub-item-leave-groups" class="sidebar-sub-item w-full text-left px-2 py-1.5 rounded flex items-center justify-between cursor-pointer transition text-[11px] text-slate-700 font-medium hover:text-[#2E3191] hover:bg-slate-50 group" title="Quy trình nghỉ phép">
                 <div class="flex items-center space-x-1.5 truncate">
                   <span class="w-1.5 h-1.5 rounded-full bg-slate-300 group-hover:bg-[#2E3191]"></span>
-                  <span class="truncate">Nhóm đề xuất nghỉ phép</span>
+                  <span class="truncate">Quy trình nghỉ phép</span>
                 </div>
                 <span class="text-[9px] px-1 rounded bg-indigo-50 text-[#2E3191] font-bold" id="sidebar-leave-groups-count">6</span>
               </button>
@@ -657,9 +657,9 @@
         </div>
       </div>
 
-      <!-- Group 5: Phê duyệt đề xuất (Base Request) -->
+      <!-- Group 5: Phê duyệt đề xuất (Quy trình PAP) -->
       <div>
-        <div class="sidebar-section-header px-3 mb-1.5 text-[10px] font-bold uppercase tracking-wider text-slate-400">Phê duyệt đề xuất (Base Request)</div>
+        <div class="sidebar-section-header px-3 mb-1.5 text-[10px] font-bold uppercase tracking-wider text-slate-400">Phê duyệt đề xuất (Quy trình PAP)</div>
         <div class="space-y-0.5">
           <!-- 1. Hộp thư phê duyệt (M14) -->
           <button onclick="switchSidebarModule('approval')" id="side-item-approval" class="sidebar-btn hover:bg-slate-100 hover:text-slate-900 w-full text-left px-3 py-2 rounded-lg flex items-center justify-between cursor-pointer transition text-slate-800 font-medium text-xs" title="Hộp thư phê duyệt chung các đề xuất">
@@ -4859,37 +4859,9 @@
       </section>
 
       <!-- ========================================================================= -->
-      <!-- VIEW 10: QUẢN LÝ PHÉP Năm NHÂN VIÊN (ANNUAL LEAVE LEDGER)                 -->
+      <!-- VIEW 10: QUẢN LÝ PHÉP NĂM NHÂN VIÊN (ANNUAL LEAVE LEDGER)                 -->
       <!-- ========================================================================= -->
       <section id="view-annual-leave" class="space-y-3 hidden">
-        <!-- Thanh Tab Chuyển đổi: Sổ theo dõi phép / Đơn nghỉ phép / Nhóm đề xuất / Chính sách / Loại nghỉ -->
-        <div class="bg-white p-1.5 rounded-2xl border border-slate-200 shadow-xs flex items-center space-x-1.5 text-xs font-semibold overflow-x-auto shrink-0">
-          <button type="button" onclick="switchAnnualLeaveSubTab('ledger')" id="tab-btn-annual-leave-ledger" class="sub-tab-active px-4 py-2 rounded-xl flex items-center space-x-2 transition cursor-pointer shrink-0">
-            <span>📊</span>
-            <span>Sổ theo dõi phép năm</span>
-          </button>
-          <button type="button" onclick="switchAnnualLeaveSubTab('requests')" id="tab-btn-annual-leave-requests" class="px-4 py-2 rounded-xl text-slate-700 hover:text-[#2E3191] hover:bg-slate-50 flex items-center space-x-2 transition cursor-pointer shrink-0">
-            <span>📝</span>
-            <span>Đơn nghỉ phép</span>
-            <span id="badge-annual-leave-requests" class="ml-1 px-1.5 py-0.2 rounded-full text-[10px] font-bold bg-amber-50 text-amber-700 border border-amber-200">4</span>
-          </button>
-          <button type="button" onclick="switchAnnualLeaveSubTab('groups')" id="tab-btn-annual-leave-groups" class="px-4 py-2 rounded-xl text-slate-700 hover:text-[#2E3191] hover:bg-slate-50 flex items-center space-x-2 transition cursor-pointer shrink-0">
-            <span>⚙️</span>
-            <span>Nhóm đề xuất nghỉ phép</span>
-            <span id="badge-annual-leave-groups" class="ml-1 px-1.5 py-0.2 rounded-full text-[10px] font-bold bg-indigo-50 text-[#2E3191] border border-indigo-200">6</span>
-          </button>
-          <button type="button" onclick="switchAnnualLeaveSubTab('policies')" id="tab-btn-annual-leave-policies" class="px-4 py-2 rounded-xl text-slate-700 hover:text-[#2E3191] hover:bg-slate-50 flex items-center space-x-2 transition cursor-pointer shrink-0">
-            <span>📋</span>
-            <span>Chính sách nghỉ phép</span>
-            <span id="badge-annual-leave-policies" class="ml-1 px-1.5 py-0.2 rounded-full text-[10px] font-bold bg-indigo-50 text-[#2E3191] border border-indigo-200">3</span>
-          </button>
-          <button type="button" onclick="switchAnnualLeaveSubTab('types')" id="tab-btn-annual-leave-types" class="px-4 py-2 rounded-xl text-slate-700 hover:text-[#2E3191] hover:bg-slate-50 flex items-center space-x-2 transition cursor-pointer shrink-0">
-            <span>📑</span>
-            <span>Loại nghỉ phép</span>
-            <span id="badge-annual-leave-types" class="ml-1 px-1.5 py-0.2 rounded-full text-[10px] font-bold bg-indigo-50 text-[#2E3191] border border-indigo-200">13</span>
-          </button>
-        </div>
-
         <!-- 1. NỘI DUNG TAB SỔ THEO DÕI PHÉP NĂM -->
         <div id="annual-leave-content-ledger" class="space-y-3">
           
@@ -5461,45 +5433,41 @@
           </div>
         </div>
 
-        <!-- 3. NỘI DUNG TAB NHÓM ĐỀ XUẤT NGHỈ PHÉP & VẮNG MẶT (CHUẨN BASE TIMEOFF) -->
+        <!-- 3. NỘI DUNG TAB NHÓM ĐỀ XUẤT NGHỈ PHÉP & VẮNG MẶT -->
         <div id="annual-leave-content-groups" class="space-y-3.5 hidden">
-          <!-- Header Nhóm đề xuất chuẩn Base Timeoff -->
+          <!-- Header Nhóm đề xuất -->
           <div class="bg-white p-4 rounded-2xl border border-slate-200 shadow-xs flex flex-col md:flex-row md:items-center md:justify-between gap-3">
             <div>
               <div class="flex items-center space-x-2 text-xs text-slate-700 font-medium mb-1">
                 <span>Quản lý nhân sự</span>
                 <span>/</span>
-                <span>Base Timeoff (M09)</span>
+                <span>Nghỉ phép &amp; Vắng mặt (M09)</span>
                 <span>/</span>
-                <span class="text-[#2E3191] font-bold">Cài đặt &gt;&gt; Nhóm đề xuất</span>
+                <span class="text-[#2E3191] font-bold">Cài đặt &gt;&gt; Quy trình nghỉ phép</span>
               </div>
               <h2 class="text-base font-bold text-slate-900 flex items-center space-x-2">
                 <span class="w-7 h-7 rounded-lg bg-[#2E3191] text-white flex items-center justify-center text-sm shadow-xs">⚙️</span>
-                <span>CÀI ĐẶT NHÓM ĐỀ XUẤT NGHỈ PHÉP &amp; VẮNG MẶT (BASE TIMEOFF)</span>
+                <span>CÀI ĐẶT QUY TRÌNH NGHỈ PHÉP &amp; VẮNG MẶT</span>
               </h2>
               <p class="text-xs text-slate-500 mt-1 max-w-3xl leading-relaxed">
-                Chuẩn hóa theo Base Timeoff: Cấu hình 9 loại phép chuẩn, thiết lập 4 khối người duyệt (Quản lý trực tiếp, Người duyệt cố định, Người duyệt linh động, Người duyệt theo điều kiện), hạn mức nộp đơn, thời hạn báo trước/hồi tố và thứ tự ưu tiên trừ Quỹ nghỉ bù / Quỹ nghỉ phép.
+                Cấu hình các loại ngày nghỉ, quy trình phê duyệt, hạn mức nộp đơn, thời hạn báo trước/hồi tố và thứ tự ưu tiên trừ Quỹ nghỉ bù / Quỹ nghỉ phép.
               </p>
             </div>
 
             <div class="flex items-center flex-wrap gap-2">
-              <button type="button" onclick="openBaseTimeoffGuideModal()" class="px-3 py-2 bg-indigo-50 text-[#2E3191] border border-indigo-200 rounded-lg text-xs font-semibold hover:bg-indigo-100 transition cursor-pointer flex items-center space-x-1.5 shadow-2xs">
-                <span>📘</span>
-                <span>Hướng dẫn Base Timeoff</span>
-              </button>
               <button type="button" onclick="openCreateLeaveGroupModal()" class="px-3.5 py-2 pap-primary text-white rounded-lg text-xs font-semibold pap-primary-hover shadow-xs flex items-center space-x-1.5 transition cursor-pointer">
                 <span>➕</span>
-                <span>Tạo mới nhóm</span>
+                <span>Tạo mới quy trình</span>
               </button>
             </div>
           </div>
 
-          <!-- KPI Cards Nhóm đề xuất Base Timeoff -->
+          <!-- KPI Cards Nhóm đề xuất -->
           <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
             <div class="bg-white p-3.5 rounded-xl border border-slate-200 border-l-4 border-l-[#2E3191] shadow-xs">
-              <div class="text-[11px] font-semibold text-slate-500 uppercase tracking-wider">Tổng nhóm đề xuất</div>
+              <div class="text-[11px] font-semibold text-slate-500 uppercase tracking-wider">Tổng quy trình</div>
               <div class="text-xl font-black text-[#2E3191] mt-0.5" id="kpi-leave-grp-total">8</div>
-              <div class="text-[10px] text-slate-400 mt-0.5">Phân theo 9 loại ngày nghỉ chuẩn Base</div>
+              <div class="text-[10px] text-slate-400 mt-0.5">Phân theo danh mục loại ngày nghỉ</div>
             </div>
 
             <div class="bg-white p-3.5 rounded-xl border border-slate-200 border-l-4 border-l-emerald-500 shadow-xs">
@@ -5525,12 +5493,12 @@
           <div class="bg-white rounded-2xl border border-slate-200 shadow-xs overflow-hidden">
             <div class="p-3.5 border-b border-slate-100 flex flex-wrap items-center justify-between gap-2.5">
               <div class="flex items-center space-x-2">
-                <span class="font-bold text-slate-800 text-xs">Danh sách nhóm đề xuất đã thiết lập:</span>
-                <span id="table-leave-groups-count" class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-indigo-50 text-[#2E3191] border border-indigo-200">8 nhóm</span>
+                <span class="font-bold text-slate-800 text-xs">Danh sách quy trình nghỉ phép đã thiết lập:</span>
+                <span id="table-leave-groups-count" class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-indigo-50 text-[#2E3191] border border-indigo-200">8 quy trình</span>
               </div>
               <div class="flex items-center flex-wrap gap-2">
                 <select id="filter-leave-grp-type" onchange="renderLeaveGroupsTable()" class="px-2.5 py-1.5 border border-slate-200 rounded-lg text-xs bg-slate-50 text-slate-700 focus:ring-2 focus:ring-[#2E3191]">
-                  <option value="ALL">-- Tất cả loại phép Base (9 loại) --</option>
+                  <option value="ALL">-- Tất cả loại ngày nghỉ --</option>
                   <option value="AL">Nghỉ phép năm</option>
                   <option value="PL">Nghỉ cá nhân</option>
                   <option value="BT">Đi công tác</option>
@@ -5555,7 +5523,7 @@
                   <option value="INACTIVE">Ngừng áp dụng</option>
                 </select>
 
-                <input type="text" id="search-leave-groups" oninput="renderLeaveGroupsTable()" placeholder="Tìm theo tên nhóm, mã nhóm..." class="px-3 py-1.5 border border-slate-200 rounded-lg text-xs focus:ring-2 focus:ring-[#2E3191] w-56 bg-slate-50">
+                <input type="text" id="search-leave-groups" oninput="renderLeaveGroupsTable()" placeholder="Tìm theo tên quy trình, mã quy trình..." class="px-3 py-1.5 border border-slate-200 rounded-lg text-xs focus:ring-2 focus:ring-[#2E3191] w-56 bg-slate-50">
               </div>
             </div>
 
@@ -5564,12 +5532,12 @@
                 <thead class="bg-[#2E3191] text-white select-none border-b border-[#2E3191] shadow-xs">
                   <tr class="text-xs font-bold divide-x divide-white/10">
                     <th class="py-2.5 px-3 text-center w-12">STT</th>
-                    <th class="py-2.5 px-3.5 min-w-[230px]">Tên nhóm &amp; Mã nhóm</th>
-                    <th class="py-2.5 px-3 text-center min-w-[150px]">Loại ngày nghỉ (Base)</th>
-                    <th class="py-2.5 px-3.5 min-w-[260px]">Thiết lập 4 khối người duyệt</th>
+                    <th class="py-2.5 px-3.5 min-w-[200px]">Tên quy trình nghỉ phép</th>
+                    <th class="py-2.5 px-3 text-center min-w-[130px]">Mã quy trình</th>
+                    <th class="py-2.5 px-3 text-center min-w-[140px]">Loại ngày nghỉ</th>
                     <th class="py-2.5 px-3 text-center min-w-[130px]">Quy trình duyệt</th>
                     <th class="py-2.5 px-3 min-w-[190px]">Ưu tiên trừ quỹ ngày nghỉ</th>
-                    <th class="py-2.5 px-3 text-center min-w-[150px]">Thời hạn &amp; SLA</th>
+                    <th class="py-2.5 px-3 text-center min-w-[140px]">Thời hạn &amp; SLA</th>
                     <th class="py-2.5 px-3 min-w-[150px]">Có hiệu lực với</th>
                     <th class="py-2.5 px-3 text-center w-28">Trạng thái</th>
                     <th class="py-2.5 px-2 text-center w-20 sticky right-0 top-0 bg-[#2E3191] z-20 shadow-[-6px_0_10px_-4px_rgba(0,0,0,0.25)] sticky-action font-semibold text-xs">Thao tác</th>
@@ -6252,7 +6220,7 @@
           </div>
         </div>
 
-                        <!-- ================= PANEL 5: CHỐT BẢNG CÔNG Ở SCHEDULE VÀO CUỐI CHU KỲ (CHUẨN BASE SCHEDULE) ================= -->
+                        <!-- ================= PANEL 5: CHỐT BẢNG CÔNG VÀO CUỐI CHU KỲ (PAP TIMESHEET PIPELINE) ================= -->
         <div id="att-panel-lock" class="space-y-3.5 hidden relative">
           
           <!-- Thanh Tab 2 Cấp Quản Lý Kỳ Công (Tab 1: Danh sách kỳ công | Tab 2: Chi tiết kỳ công hiện hành) -->
@@ -6405,9 +6373,9 @@
 
           <!-- ================= SUB-VIEW 2: CHI TIẾT KỲ CÔNG & 4 BƯỚC RÀ SOÁT (DETAIL VIEW) ================= -->
           <div id="att-lock-detail-view" class="space-y-3.5 hidden">
-            <!-- Base Schedule Timesheet Header Card -->
+            <!-- PAP Timesheet Header Card -->
             <div class="bg-white rounded-2xl border border-slate-200 shadow-xs p-4 sm:p-5 relative overflow-hidden">
-            <!-- Ribbon XONG chuẩn Base (hiện khi bảng công đã chốt và khóa) -->
+            <!-- Ribbon XONG (hiện khi bảng công đã chốt và khóa) -->
             <div id="att-lock-corner-ribbon" class="absolute -top-7 -left-7 w-24 h-24 pointer-events-none hidden z-20">
               <div class="absolute transform -rotate-45 bg-emerald-600 text-white font-black text-[10px] tracking-wider text-center py-1 w-32 top-7 -left-3 shadow-md uppercase">
                 XONG
@@ -6439,7 +6407,7 @@
                 </div>
               </div>
 
-              <!-- Khối bên phải: Nút Hành động Top (Chuẩn Base) -->
+              <!-- Khối bên phải: Nút Hành động Top -->
               <div class="flex items-center space-x-2 shrink-0">
                 <!-- Nút Chốt công (Chỉ hiện ở Bước 4) / Mở khóa (khi đã khóa) -->
                 <button type="button" id="btn-top-lock-action" onclick="handleBaseLockTopAction()" class="hidden px-4 py-1.5 bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold rounded-xl shadow-xs transition cursor-pointer flex items-center space-x-1.5">
@@ -6470,7 +6438,7 @@
               </div>
             </div>
 
-            <!-- Row 2: Thanh Stepper 4 bước chuẩn Base Schedule (Rõ ràng từ Trước đến Sau) -->
+            <!-- Row 2: Thanh Stepper 4 bước quy trình (Rõ ràng từ Trước đến Sau) -->
             <div class="mt-3.5 py-2.5 px-3 bg-slate-50/80 rounded-xl border border-slate-200/80 flex items-center justify-between gap-2 overflow-x-auto">
               <button type="button" onclick="navigateLockStep(-1)" id="btn-prev-lock-step" class="text-xs font-bold text-slate-700 hover:text-slate-900 bg-white border border-slate-200 hover:bg-slate-100 px-3 py-1.5 rounded-lg shadow-2xs transition cursor-pointer flex items-center space-x-1 shrink-0" title="Bước trước">
                 <span>← Trước</span>
@@ -6536,7 +6504,7 @@
               </div>
             </div>
 
-            <!-- Toolbar lọc dữ liệu chuẩn Base -->
+            <!-- Toolbar lọc dữ liệu -->
             <div class="pt-3.5 flex flex-wrap items-center justify-between gap-2.5">
               <!-- Cụm bộ lọc bên trái -->
               <div class="flex flex-wrap items-center gap-2 text-xs">
@@ -6648,7 +6616,7 @@
               </button>
 
               <div class="text-xs text-slate-500 font-medium">
-                Quy trình chốt bảng công chuẩn Base Schedule • Kỳ <span id="footer-period-name" class="font-bold text-slate-800">Tháng 09/2026</span>
+                Quy trình chốt bảng công PAP Timesheet • Kỳ <span id="footer-period-name" class="font-bold text-slate-800">Tháng 09/2026</span>
               </div>
 
               <button type="button" onclick="handleFooterNextAction()" id="btn-footer-next-step" class="px-4 py-2 bg-[#1877F2] hover:bg-[#166fe5] text-white text-xs font-bold rounded-xl shadow-xs transition cursor-pointer flex items-center space-x-1.5">
@@ -7634,7 +7602,7 @@
                 </div>
                 <!-- Filter Type -->
                 <select id="inbox-filter-type" onchange="filterApprovalInbox()" class="text-xs border border-slate-300 rounded-lg px-2.5 py-1.5 bg-white text-slate-700 font-medium">
-                  <option value="ALL">Tất cả đề xuất Base Request</option>
+                  <option value="ALL">Tất cả loại đề xuất</option>
                   <option value="PURCHASE">🛒 Mua sắm trang thiết bị & CCDC</option>
                   <option value="PAYMENT">💰 Thanh toán & Tạm ứng kinh phí</option>
                   <option value="RECRUIT">👥 Tuyển dụng nhân sự</option>
@@ -12695,7 +12663,7 @@
 
       <form onsubmit="handleQuickRequestSubmit(event)" class="p-5 space-y-3.5 text-xs">
         <div>
-          <label class="block font-semibold text-slate-700 mb-1">Loại đề xuất (Base Request) <span class="text-rose-500">*</span></label>
+          <label class="block font-semibold text-slate-700 mb-1">Loại quy trình đề xuất <span class="text-rose-500">*</span></label>
           <select id="quick-req-type" onchange="onQuickReqTypeChange()" class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-[#2E3191] bg-white font-bold text-[#2E3191]">
             <option value="PURCHASE">🛒 Đề xuất Mua sắm trang thiết bị & CCDC</option>
             <option value="PAYMENT">💰 Đề nghị Thanh toán & Tạm ứng kinh phí</option>
@@ -31618,10 +31586,10 @@
       }
     ];
 
-    // 5. Cấu hình Luồng duyệt Đa cấp (SCR-APR-01 Visual Workflow Builder Data - Chuẩn Base Request)
+    // 5. Cấu hình Luồng duyệt Đa cấp (SCR-APR-01 Visual Workflow Builder Data - PAP Approval Engine)
     const workflowDefinitionsData = {
       'PURCHASE': {
-        type: 'PURCHASE', code: 'PURCHASE', name: 'Mua sắm thiết bị & CCDC', category: 'Mua sắm', description: 'Đề xuất mua sắm bổ sung công cụ dụng cụ, thiết bị phục vụ khai thác cảng và văn phòng.', integration: 'Phê duyệt chung Base Request · Lưu hồ sơ & trigger cấp phát thiết bị', status: 'ACTIVE', version: 1, requestSlaHours: 48, reminderLeadHours: 8,
+        type: 'PURCHASE', code: 'PURCHASE', name: 'Mua sắm thiết bị & CCDC', category: 'Mua sắm', description: 'Đề xuất mua sắm bổ sung công cụ dụng cụ, thiết bị phục vụ khai thác cảng và văn phòng.', integration: 'Phê duyệt quy trình PAP · Lưu hồ sơ & trigger cấp phát thiết bị', status: 'ACTIVE', version: 1, requestSlaHours: 48, reminderLeadHours: 8,
         processType: 'BLOCK_BASED', blockNotification: 'YES',
         creators: ['Toàn bộ nhân viên'], watchers: ['Phòng Kỹ thuật & Thiết bị Cảng', 'Phòng Kế toán - Tài chính'],
         formFields: [
@@ -31638,7 +31606,7 @@
         ]
       },
       'PAYMENT': {
-        type: 'PAYMENT', code: 'PAYMENT', name: 'Thanh toán & Tạm ứng kinh phí', category: 'Tài chính', description: 'Đề nghị thanh toán chi phí công tác, tạm ứng kinh phí sửa chữa phương tiện, mua nhiên liệu.', integration: 'Phê duyệt chung Base Request · Lưu hồ sơ chứng từ tài chính', status: 'ACTIVE', version: 1, requestSlaHours: 36, reminderLeadHours: 6,
+        type: 'PAYMENT', code: 'PAYMENT', name: 'Thanh toán & Tạm ứng kinh phí', category: 'Tài chính', description: 'Đề nghị thanh toán chi phí công tác, tạm ứng kinh phí sửa chữa phương tiện, mua nhiên liệu.', integration: 'Phê duyệt quy trình PAP · Lưu hồ sơ chứng từ tài chính', status: 'ACTIVE', version: 1, requestSlaHours: 36, reminderLeadHours: 6,
         processType: 'BLOCK_BASED', blockNotification: 'YES',
         creators: ['Toàn bộ nhân viên'], watchers: ['Kế toán trưởng', 'Kế toán thanh toán'],
         formFields: [
@@ -31655,7 +31623,7 @@
         ]
       },
       'RECRUIT': {
-        type: 'RECRUIT', code: 'RECRUIT', name: 'Tuyển dụng nhân sự bổ sung', category: 'Nhân sự', description: 'Đề xuất tuyển thêm vị trí chuyên môn, công nhân vận hành cảng phục vụ mở rộng sản xuất.', integration: 'Phê duyệt chung Base Request · Kích hoạt quy trình tuyển dụng M01', status: 'ACTIVE', version: 1, requestSlaHours: 72, reminderLeadHours: 12,
+        type: 'RECRUIT', code: 'RECRUIT', name: 'Tuyển dụng nhân sự bổ sung', category: 'Nhân sự', description: 'Đề xuất tuyển thêm vị trí chuyên môn, công nhân vận hành cảng phục vụ mở rộng sản xuất.', integration: 'Phê duyệt quy trình PAP · Kích hoạt quy trình tuyển dụng M01', status: 'ACTIVE', version: 1, requestSlaHours: 72, reminderLeadHours: 12,
         processType: 'BLOCK_BASED', blockNotification: 'YES',
         creators: ['Cán bộ quản lý'], watchers: ['Phòng HC-NS', 'Ban Tổng Giám đốc'],
         formFields: [
@@ -32011,8 +31979,8 @@
         auditTrail: item.auditTrail
       });
 
-      // Kiến trúc chuẩn Base: M09 (Base Timeoff) tự sở hữu Sổ cái phép & luồng duyệt riêng biệt.
-      // M14 (Base Request) là động cơ phê duyệt chung cho Đề xuất hành chính, Mua sắm, Thanh toán, Tuyển dụng...
+      // Kiến trúc phân hệ: M09 (Nghỉ phép & Vắng mặt) tự sở hữu Sổ cái phép & luồng duyệt riêng biệt.
+      // M14 (Phê duyệt) là động cơ phê duyệt chung cho Đề xuất hành chính, Mua sắm, Thanh toán, Tuyển dụng...
 
 
       approvalInboxData.splice(index, 1);
@@ -32814,7 +32782,7 @@
     // PHÂN HỆ QUẢN TRỊ QUY TRÌNH PHÊ DUYỆT (HR ADMIN - M14)
     // ==========================================
     // ==========================================
-    // PHÂN HỆ QUẢN TRỊ QUY TRÌNH PHÊ DUYỆT (M14 ENGINE - CHUẨN BASE REQUEST)
+    // PHÂN HỆ QUẢN TRỊ QUY TRÌNH PHÊ DUYỆT (M14 ENGINE - PAP APPROVAL ENGINE)
     // ==========================================
     let currentWorkflowActiveGroupCode = 'PURCHASE';
     let currentWorkflowDetailTabKey = 'general'; // 1 of 8 tabs: general | form | print | forward | permissions | esign | counter | notifications
@@ -34243,7 +34211,7 @@
           employeesData.map(e => `<option value="${e.pap}">${e.name} (${e.pap} - ${e.dept})</option>`).join('');
       }
 
-      // Populate leave request groups dropdown (Base Timeoff)
+      // Populate leave request groups dropdown
       if (groupSelect && typeof leaveGroupsData !== 'undefined') {
         groupSelect.innerHTML = leaveGroupsData.map(g => `<option value="${g.code}">${g.name} (${g.code})</option>`).join('');
       }
@@ -34512,14 +34480,14 @@
         status: 'PENDING',
         approver: 'Trưởng phòng / Quản lý trực tiếp',
         approvedAt: null,
-        note: 'Đơn mới tạo, chờ Quản lý trực tiếp phê duyệt (Base Timeoff)'
+        note: 'Đơn mới tạo, chờ Quản lý trực tiếp phê duyệt'
       };
 
       leaveRequestsData.unshift(newReq);
 
       closeCreateLeaveRequestModal();
       renderLeaveRequestsTable();
-      showToast(`✓ Đã gửi đơn nghỉ phép [${nextId}] thành công (Quy trình duyệt độc lập M09 - Base Timeoff)!`);
+      showToast(`✓ Đã gửi đơn nghỉ phép [${nextId}] thành công (Quy trình duyệt độc lập M09)!`);
     }
 
     function openViewLeaveRequestModal(id) {
@@ -34571,7 +34539,7 @@
         if (attRow) attRow.classList.add('hidden');
       }
 
-      // Render tiến trình duyệt Base Timeoff (M09)
+      // Render tiến trình duyệt (M09)
       const timelineEl = document.getElementById('detail-req-timeline');
       if (timelineEl) {
         timelineEl.innerHTML = `
@@ -36006,12 +35974,12 @@
 
 
     // =========================================================================
-    // ĐIỀU HƯỚNG SUB-TAB VÀ QUẢN LÝ NHÓM ĐỀ XUẤT NGHỈ PHÉP (CHUẨN BASE TIMEOFF)
+    // ĐIỀU HƯỚNG SUB-TAB VÀ QUẢN LÝ NHÓM ĐỀ XUẤT NGHỈ PHÉP
     // =========================================================================
     let currentAnnualLeaveSubTab = 'ledger';
 
-    // 9 Loại ngày nghỉ chuẩn theo Base Timeoff
-    const BASE_TIMEOFF_9_TYPES = [
+    // 9 Loại ngày nghỉ chuẩn theo phân hệ Nghỉ phép PAP
+    const LEAVE_9_STANDARD_TYPES = [
       { code: 'AL', name: 'Nghỉ phép năm', shortName: 'Phép năm', icon: '🏖️', unit: 'DAY', desc: 'Trừ vào quỹ ngày nghỉ phép hằng năm của nhân sự. Hưởng 100% lương theo HĐLĐ.' },
       { code: 'PL', name: 'Nghỉ cá nhân', shortName: 'Việc riêng có lương', icon: '💍', unit: 'DAY', desc: 'Kết hôn, con kết hôn, tang chế (Điều 115 BLLĐ). Hưởng 100% lương, không trừ phép năm.' },
       { code: 'BT', name: 'Đi công tác', shortName: 'Công tác', icon: '✈️', unit: 'DAY', desc: 'Đi công tác thị trường, đối tác hoặc cơ quan hữu quan. Không trừ quỹ phép.' },
@@ -36022,6 +35990,7 @@
       { code: 'AL_HOURLY', name: 'Nghỉ phép năm theo giờ', shortName: 'Phép năm theo giờ', icon: '⌛', unit: 'HOUR', desc: 'Khấu trừ quỹ phép năm quy đổi theo số giờ xin nghỉ của nhân sự.' },
       { code: 'UL_HOURLY', name: 'Nghỉ không lương theo giờ', shortName: 'Không lương theo giờ', icon: '🕒', unit: 'HOUR', desc: 'Nghỉ không tính công theo số giờ đăng ký trong ngày làm việc.' }
     ];
+    const BASE_TIMEOFF_9_TYPES = LEAVE_9_STANDARD_TYPES;
 
     let leaveGroupsData = [
       {
@@ -36291,11 +36260,11 @@
       const condCount = leaveGroupsData.filter(g => g.blockConditionalApprovers && g.blockConditionalApprovers.enabled).length;
 
       if (badgeSide) badgeSide.innerText = total;
-      if (tableCount) tableCount.innerText = total + ' nhóm';
+      if (tableCount) tableCount.innerText = total + ' quy trình';
       if (kpiTotal) kpiTotal.innerText = total;
       if (kpiActive) kpiActive.innerText = activeCount;
       if (kpiCond) kpiCond.innerText = condCount + ' nhóm';
-      if (kpiSla) kpiSla.innerText = total + ' / ' + total + ' nhóm';
+      if (kpiSla) kpiSla.innerText = total + ' / ' + total + ' quy trình';
 
       if (!tbody) return;
 
@@ -36317,101 +36286,82 @@
       });
 
       if (filtered.length === 0) {
-        tbody.innerHTML = '<tr><td colspan="10" class="py-8 text-center text-slate-400">Không tìm thấy nhóm đề xuất nào phù hợp với bộ lọc tìm kiếm.</td></tr>';
+        tbody.innerHTML = '<tr><td colspan="10" class="py-8 text-center text-slate-400">Không tìm thấy quy trình nghỉ phép nào phù hợp với bộ lọc tìm kiếm.</td></tr>';
         return;
       }
 
       tbody.innerHTML = filtered.map((g, idx) => {
         const isActive = g.status === 'ACTIVE';
         const statusBadge = isActive
-          ? '<span class="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-50 text-emerald-700 border border-emerald-200"><span class="w-1.5 h-1.5 rounded-full bg-emerald-500 mr-1.5 animate-pulse"></span>Đang áp dụng</span>'
-          : '<span class="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-bold bg-slate-100 text-slate-600 border border-slate-200"><span class="w-1.5 h-1.5 rounded-full bg-slate-400 mr-1.5"></span>Tạm dừng</span>';
+          ? '<span class="inline-flex items-center px-2 py-0.5 rounded text-[11px] font-medium text-emerald-700 bg-emerald-50 border border-emerald-200"><span class="w-1.5 h-1.5 rounded-full bg-emerald-500 mr-1.5"></span>Đang áp dụng</span>'
+          : '<span class="inline-flex items-center px-2 py-0.5 rounded text-[11px] font-medium text-slate-500 bg-slate-100 border border-slate-200"><span class="w-1.5 h-1.5 rounded-full bg-slate-400 mr-1.5"></span>Tạm dừng</span>';
 
-        // 4 Khối người duyệt badges
-        let blocksHtml = '<div class="space-y-1 text-xs">';
-        if (g.directMgr === 'YES') {
-          blocksHtml += '<div class="flex items-center space-x-1 text-slate-800"><span class="text-blue-600 font-bold">👤 QLTT:</span> <span class="text-[11px] text-slate-600 font-medium">Bắt buộc duyệt trước</span></div>';
-        }
-        if (g.blockFixedApprovers) {
-          blocksHtml += `<div class="flex items-center space-x-1 text-slate-800"><span class="text-emerald-600 font-bold">🔒 Cố định:</span> <span class="text-[11px] text-slate-600 line-clamp-1 font-medium">${g.blockFixedApprovers}</span></div>`;
-        }
-        if (g.blockDynamicApprovers && g.blockDynamicApprovers.enabled) {
-          blocksHtml += `<div class="flex items-center space-x-1 text-indigo-700"><span class="font-bold">🔄 Linh động:</span> <span class="text-[11px] line-clamp-1">${g.blockDynamicApprovers.title || 'Người duyệt tự tag'}</span></div>`;
-        }
-        if (g.blockConditionalApprovers && g.blockConditionalApprovers.enabled) {
-          blocksHtml += `<div class="text-[10px] text-amber-700 font-bold bg-amber-50 px-1.5 py-0.5 rounded border border-amber-200/80 inline-block mt-0.5">⚡ Nghỉ &gt; ${g.blockConditionalApprovers.thresholdDays}d ➔ ${g.blockConditionalApprovers.approverName}</div>`;
-        }
-        blocksHtml += '</div>';
-
-        // Quy trình duyệt badge
-        let workflowBadge = '';
+        // Quy trình duyệt text tinh gọn
+        let workflowText = '';
         if (g.workflowType === 'SEQUENTIAL') {
-          workflowBadge = '<span class="px-2 py-0.5 rounded-md text-[10.5px] font-bold bg-indigo-50 text-[#2E3191] border border-indigo-200">Duyệt lần lượt</span>';
+          workflowText = '<span class="text-xs font-medium text-slate-700">Duyệt lần lượt</span>';
         } else if (g.workflowType === 'ALL_CONCURRENT') {
-          workflowBadge = '<span class="px-2 py-0.5 rounded-md text-[10.5px] font-bold bg-sky-50 text-sky-800 border border-sky-200">Duyệt đồng thời</span>';
+          workflowText = '<span class="text-xs font-medium text-slate-700">Duyệt đồng thời</span>';
         } else {
-          workflowBadge = '<span class="px-2 py-0.5 rounded-md text-[10.5px] font-bold bg-blue-50 text-blue-700 border border-blue-200">Chỉ 1 người duyệt</span>';
+          workflowText = '<span class="text-xs font-medium text-slate-700">Chỉ 1 người duyệt</span>';
         }
 
-        // Ưu tiên trừ quỹ phép
+        // Ưu tiên trừ quỹ phép trung tính
         let deductBadge = '';
         if (g.deductFund === 'LEAVE_FUND') {
-          deductBadge = '<div class="text-[11px] font-bold text-emerald-800">Quỹ nghỉ phép</div><div class="text-[10px] text-slate-500 line-clamp-1">Phép tồn ➔ Thâm niên ➔ Trong năm ➔ Bù</div>';
+          deductBadge = '<div class="text-xs font-medium text-slate-800">Quỹ nghỉ phép</div><div class="text-[10px] text-slate-400 line-clamp-1">Phép tồn ➔ Thâm niên ➔ Trong năm ➔ Bù</div>';
         } else if (g.deductFund === 'COMP_FUND') {
-          deductBadge = '<div class="text-[11px] font-bold text-indigo-800">Quỹ nghỉ bù</div><div class="text-[10px] text-slate-500 line-clamp-1">Phép bù ➔ Tồn ➔ Thâm niên ➔ Trong năm</div>';
+          deductBadge = '<div class="text-xs font-medium text-slate-800">Quỹ nghỉ bù</div><div class="text-[10px] text-slate-400 line-clamp-1">Phép bù ➔ Tồn ➔ Thâm niên ➔ Trong năm</div>';
         } else {
-          deductBadge = '<div class="text-[11px] font-medium text-slate-600">Không trừ quỹ phép</div><div class="text-[10px] text-slate-400">Hưởng chế độ / Đi công tác</div>';
+          deductBadge = '<div class="text-xs font-medium text-slate-600">Không trừ quỹ phép</div><div class="text-[10px] text-slate-400">Hưởng chế độ / Đi công tác</div>';
         }
 
         // Thời hạn & SLA
         const deadlineHtml = `
-          <div class="text-xs font-semibold text-slate-800">Báo trước: <strong>${g.noticeDays}d</strong>${g.graceDays < 0 ? ` · Hồi tố: <strong>${Math.abs(g.graceDays)}d</strong>` : ''}</div>
-          <div class="text-[10px] text-slate-500 mt-0.5">SLA: <strong>${g.slaHours}h</strong> · ${g.deadlineStrict === 'STRICT' ? '<span class="text-rose-600 font-bold">Bắt buộc</span>' : '<span class="text-amber-600">Cảnh báo</span>'}</div>
+          <div class="text-xs text-slate-700">Báo trước: <strong class="text-slate-800">${g.noticeDays}d</strong>${g.graceDays < 0 ? ` · Hồi tố: <strong class="text-slate-800">${Math.abs(g.graceDays)}d</strong>` : ''}</div>
+          <div class="text-[10px] text-slate-500 mt-0.5">SLA: <strong>${g.slaHours}h</strong> · ${g.deadlineStrict === 'STRICT' ? '<span class="text-slate-700 font-semibold">Bắt buộc</span>' : '<span class="text-slate-500">Cảnh báo</span>'}</div>
         `;
 
         return `
           <tr class="group hover:bg-slate-50/80 transition border-b border-slate-100 text-xs">
-            <td class="py-3 px-3 text-center text-slate-500 font-medium">${idx + 1}</td>
-            <td class="py-3 px-3.5">
+            <td class="py-2.5 px-3 text-center text-slate-500 font-medium">${idx + 1}</td>
+            <td class="py-2.5 px-3.5">
               <div class="flex items-center space-x-2">
                 <span class="text-base select-none shrink-0">${g.typeIcon || '🏖️'}</span>
                 <div>
                   <a href="javascript:void(0)" onclick="openViewLeaveGroupDetail('${g.code}')" class="font-bold text-slate-900 hover:text-[#2E3191] hover:underline transition block">${g.name}</a>
-                  <div class="flex items-center space-x-1.5 mt-0.5">
-                    <span class="px-1.5 py-0.2 rounded text-[10px] font-bold bg-slate-100 text-slate-700 font-mono border border-slate-200">${g.code}</span>
-                    <span class="text-[10.5px] text-slate-400 line-clamp-1">${g.desc || ''}</span>
-                  </div>
+                  <span class="text-[10.5px] text-slate-400 line-clamp-1">${g.desc || ''}</span>
                 </div>
               </div>
             </td>
-            <td class="py-3 px-3 text-center">
-              <span class="px-2 py-0.5 rounded text-[11px] font-bold bg-blue-50 text-[#2E3191] border border-blue-200 inline-block">${g.typeName}</span>
+            <td class="py-2.5 px-3 text-center">
+              <span class="px-2 py-0.5 rounded text-xs font-mono font-medium text-slate-700 bg-slate-100 border border-slate-200">${g.code}</span>
             </td>
-            <td class="py-3 px-3.5">
-              ${blocksHtml}
+            <td class="py-2.5 px-3 text-center">
+              <span class="text-xs font-medium text-slate-700">${g.typeName}</span>
             </td>
-            <td class="py-3 px-3 text-center">
-              ${workflowBadge}
+            <td class="py-2.5 px-3 text-center">
+              ${workflowText}
             </td>
-            <td class="py-3 px-3">
+            <td class="py-2.5 px-3">
               ${deductBadge}
             </td>
-            <td class="py-3 px-3 text-center">
+            <td class="py-2.5 px-3 text-center">
               ${deadlineHtml}
             </td>
-            <td class="py-3 px-3 text-slate-700">
+            <td class="py-2.5 px-3 text-slate-700">
               <span class="px-2 py-0.5 rounded bg-slate-100 text-slate-700 text-[11px] font-medium block max-w-[150px] truncate" title="${g.scope || 'Toàn bộ'}">${g.scope || 'Toàn bộ'}</span>
             </td>
-            <td class="py-3 px-3 text-center">
+            <td class="py-2.5 px-3 text-center">
               ${statusBadge}
             </td>
-            <td class="py-3 px-1 text-center w-20 sticky right-0 bg-white group-hover:bg-slate-50 transition z-10 shadow-[-6px_0_10px_-4px_rgba(0,0,0,0.12)]">
+            <td class="py-2.5 px-1 text-center w-20 sticky right-0 bg-white group-hover:bg-slate-50 transition z-10 shadow-[-6px_0_10px_-4px_rgba(0,0,0,0.12)]">
               <div class="flex items-center justify-center space-x-0.5">
-                <button type="button" onclick="openViewLeaveGroupDetail('${g.code}')" class="p-1 text-slate-500 hover:text-[#2E3191] hover:bg-indigo-50 rounded transition cursor-pointer" title="Xem chi tiết & 4 khối người duyệt">
+                <button type="button" onclick="openViewLeaveGroupDetail('${g.code}')" class="p-1 text-slate-500 hover:text-[#2E3191] hover:bg-slate-100 rounded transition cursor-pointer" title="Xem chi tiết & 4 khối người duyệt">
                   <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
                 </button>
                 <button type="button" onclick="openEditLeaveGroupModal('${g.code}')" class="p-1 text-slate-500 hover:text-[#2E3191] hover:bg-slate-100 rounded transition cursor-pointer" title="Chỉnh sửa nhóm">
-                  <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" /></svg>
+                  <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 0 0-2 2v11a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" /></svg>
                 </button>
                 <button type="button" onclick="deleteLeaveGroup('${g.code}')" class="p-1 text-rose-500 hover:text-rose-700 hover:bg-rose-50 rounded transition cursor-pointer" title="Xóa nhóm đề xuất">
                   <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" /></svg>
@@ -36450,8 +36400,8 @@
       const modal = document.getElementById('modal-leave-group-config');
       if (!modal) return;
 
-      document.getElementById('modal-leave-group-title').innerText = 'Tạo mới Nhóm đề xuất Nghỉ phép / Vắng mặt (Base Timeoff)';
-      document.getElementById('btn-save-leave-group-text').innerText = 'Tạo nhóm đề xuất (Bước 3)';
+      document.getElementById('modal-leave-group-title').innerText = 'Tạo mới Quy trình Nghỉ phép / Vắng mặt';
+      document.getElementById('btn-save-leave-group-text').innerText = 'Tạo quy trình';
       document.getElementById('leave-group-id').value = '';
 
       const codeInput = document.getElementById('leave-group-code');
@@ -36513,8 +36463,8 @@
       const group = leaveGroupsData.find(g => g.code === code);
       if (!modal || !group) return;
 
-      document.getElementById('modal-leave-group-title').innerText = 'Chỉnh sửa Nhóm đề xuất: ' + group.name;
-      document.getElementById('btn-save-leave-group-text').innerText = 'Lưu cấu hình nhóm';
+      document.getElementById('modal-leave-group-title').innerText = 'Chỉnh sửa Quy trình: ' + group.name;
+      document.getElementById('btn-save-leave-group-text').innerText = 'Lưu quy trình';
       document.getElementById('leave-group-id').value = group.id || group.code;
 
       const codeInput = document.getElementById('leave-group-code');
@@ -36606,7 +36556,7 @@
       const condApprover = document.getElementById('leave-group-cond-approver').value.trim();
 
       if (!code || !name) {
-        showToast('⚠️ Vui lòng nhập đầy đủ mã và tên nhóm đề xuất!');
+        showToast('⚠️ Vui lòng nhập đầy đủ mã và tên quy trình nghỉ phép!');
         return;
       }
 
@@ -36661,13 +36611,13 @@
           ...leaveGroupsData[existingIndex],
           ...groupPayload
         };
-        showToast(`✓ Đã cập nhật thành công cấu hình nhóm đề xuất [${code}]!`);
+        showToast(`✓ Đã cập nhật thành công cấu hình quy trình [${code}]!`);
       } else {
         leaveGroupsData.push({
           id: Date.now(),
           ...groupPayload
         });
-        showToast(`✓ Đã tạo mới nhóm đề xuất [${code}] thành công theo chuẩn Base Timeoff!`);
+        showToast(`✓ Đã tạo mới quy trình [${code}] thành công!`);
       }
 
       closeLeaveGroupConfigModal();
@@ -36679,17 +36629,17 @@
       if (!group) return;
       group.status = (group.status === 'ACTIVE') ? 'INACTIVE' : 'ACTIVE';
       renderLeaveGroupsTable();
-      showToast(`${group.status === 'ACTIVE' ? '✓ Đã kích hoạt áp dụng' : '⏸️ Đã tạm dừng'} nhóm đề xuất [${group.name}]`);
+      showToast(`${group.status === 'ACTIVE' ? '✓ Đã kích hoạt áp dụng' : '⏸️ Đã tạm dừng'} quy trình [${group.name}]`);
     }
 
     function deleteLeaveGroup(code) {
       const group = leaveGroupsData.find(g => g.code === code);
       if (!group) return;
-      if (!confirm(`Bạn có chắc chắn muốn xóa nhóm đề xuất [${group.name}] (${code}) khỏi Base Timeoff không?`)) return;
+      if (!confirm(`Bạn có chắc chắn muốn xóa quy trình [${group.name}] (${code}) không?`)) return;
 
       leaveGroupsData = leaveGroupsData.filter(g => g.code !== code);
       renderLeaveGroupsTable();
-      showToast(`✓ Đã xóa nhóm đề xuất [${code}].`);
+      showToast(`✓ Đã xóa quy trình [${code}].`);
     }
 
     // Modal View Detail Functions
@@ -36700,8 +36650,8 @@
       const modal = document.getElementById('modal-leave-group-detail');
       if (!modal) return;
 
-      document.getElementById('detail-group-name').innerText = 'Chi tiết Nhóm đề xuất: ' + group.name;
-      document.getElementById('detail-group-code').innerText = 'Mã: ' + group.code + ' · ' + group.typeName + ' (Base Timeoff PAP)';
+      document.getElementById('detail-group-name').innerText = 'Chi tiết Quy trình: ' + group.name;
+      document.getElementById('detail-group-code').innerText = 'Mã: ' + group.code + ' · ' + group.typeName;
       document.getElementById('detail-group-icon').innerText = group.typeIcon || '🏖️';
 
       // Tab 1 Info
@@ -36871,16 +36821,6 @@
       }
     }
 
-    function openBaseTimeoffGuideModal() {
-      const modal = document.getElementById('modal-base-timeoff-guide');
-      if (modal) modal.classList.remove('hidden');
-    }
-
-    function closeBaseTimeoffGuideModal() {
-      const modal = document.getElementById('modal-base-timeoff-guide');
-      if (modal) modal.classList.add('hidden');
-    }
-
     function switchAnnualLeaveSubTab(subTab) {
       const btnLedger = document.getElementById('tab-btn-annual-leave-ledger');
       const btnRequests = document.getElementById('tab-btn-annual-leave-requests');
@@ -36928,7 +36868,7 @@
       const titles = {
         'ledger': 'Sổ theo dõi phép',
         'requests': 'Quản lý đơn nghỉ phép',
-        'groups': 'Nhóm đề xuất nghỉ phép (Base Timeoff)',
+        'groups': 'Quy trình nghỉ phép',
         'policies': 'Chính sách nghỉ phép',
         'types': 'Danh mục loại nghỉ phép'
       };
@@ -39321,7 +39261,7 @@
     }
 
     // =========================================================================
-    // BASE SCHEDULE UNIFIED WORKSPACE LOGIC (4 BƯỚC + CHỐT CÔNG CHUẨN BASE)
+    // PAP TIMESHEET UNIFIED WORKSPACE LOGIC (4 BƯỚC + CHỐT CÔNG PAP TIMESHEET)
     // =========================================================================
     let currentLockWorkspaceMode = 'grid'; // 'grid' | 'summary'
     let lockMissingFilterOnly = false;
@@ -39833,13 +39773,13 @@
       showToast(`Đã chuyển sang ${period.name}`);
     }
 
-    // Chuyển bước trong Stepper chuẩn Base Schedule (1..4)
+    // Chuyển bước trong Stepper quy trình chấm công (1..4)
     function switchAttendanceLockStep(stepNum) {
       currentAttendanceLockStep = Math.max(1, Math.min(4, stepNum));
       renderAttendanceLockStatus();
     }
 
-    // Điều hướng bước trước / sau chuẩn Base Pipeline
+    // Điều hướng bước trước / sau trong quy trình chấm công
     function navigateLockStep(delta) {
       const targetStep = Math.max(1, Math.min(4, currentAttendanceLockStep + delta));
       if (targetStep !== currentAttendanceLockStep) {
@@ -39869,7 +39809,7 @@
       renderLockWorkspace();
     }
 
-    // Nút hành động Top (Chuẩn Base: Chốt công / Mở khóa)
+    // Nút hành động Top: Chốt công / Mở khóa
     function handleBaseLockTopAction() {
       const period = getCurrentAttendancePeriod();
       if (period.isLocked) {
@@ -40053,7 +39993,7 @@
       renderAttendanceLockStatus();
     }
 
-    // Render chính phân hệ Chốt bảng công (Chuẩn Base Schedule)
+    // Render chính phân hệ Chốt bảng công (PAP Timesheet)
     function renderAttendanceLockStatus() {
       if (typeof currentAttendanceTabKey !== 'undefined' && currentAttendanceTabKey === 'lock') {
         const topBanner = document.getElementById('att-top-header-banner');
@@ -40119,7 +40059,7 @@
       const footerPeriodName = document.getElementById('footer-period-name');
       if (footerPeriodName) footerPeriodName.innerText = period.name;
 
-      // 3. Cập nhật Stepper 4 bước chuẩn Base Schedule
+      // 3. Cập nhật Stepper 4 bước quy trình
       const stepIcons = { 1: '📅', 2: '⏰', 3: '🧮', 4: '🏁' };
       const stepLabels = {
         1: 'Lịch làm việc',
@@ -40337,7 +40277,7 @@
         }).join('');
 
       } else {
-        // RENDER LƯỚI MA TRẬN 30 NGÀY (GRID) - ĐỒNG BỘ THEO 4 BƯỚC BASE SCHEDULE
+        // RENDER LƯỚI MA TRẬN 30 NGÀY (GRID) - ĐỒNG BỘ THEO 4 BƯỚC QUY TRÌNH CHẤM CÔNG
         const thead = document.getElementById('lock-grid-thead');
         const tbody = document.getElementById('lock-grid-tbody');
         if (!thead || !tbody) return;
@@ -40440,7 +40380,7 @@
             } else if (currentAttendanceLockStep === 2) {
               // BƯỚC 2: CHỈNH SỬA THỜI GIAN CHẤM CÔNG (Hiển thị Giờ Vào/Ra & Ô đỏ thiếu punch)
               if (missPunch) {
-                // Ô THIẾU CHẤM CÔNG: ĐÓNG KHUNG ĐỎ ĐẬM CHUẨN BASE (step2.png)
+                // Ô THIẾU CHẤM CÔNG: ĐÓNG KHUNG ĐỎ ĐẬM (step2.png)
                 cellContent = `
                   <div onclick="openQuickFixPunchModal('${missPunch.id}')" class="p-1 rounded bg-rose-50 border-2 border-rose-500 text-rose-700 cursor-pointer hover:bg-rose-100 shadow-2xs text-center transition animate-pulse" title="Thiếu chấm công! Nhấp để bổ sung giờ">
                     <div class="text-[9px] font-bold font-mono leading-tight">${missPunch.inTime}</div>
@@ -40498,7 +40438,7 @@
               }
 
             } else {
-              // BƯỚC 4: BẢNG CÔNG QUY ĐỔI (Hiển thị số công quy đổi tổng kết + Hover Popup Base "Điều chỉnh")
+              // BƯỚC 4: BẢNG CÔNG QUY ĐỔI (Hiển thị số công quy đổi tổng kết + Hover Popup "Điều chỉnh")
               if (['X', 'S1', 'S2', 'S1L', 'S2L', 'L', 'P'].includes(dayRec.symbol)) {
                 let val = missPunch ? '0.0' : '1.0';
                 cellContent = `
@@ -40507,7 +40447,7 @@
                       ${val}
                     </span>
                     
-                    <!-- Tooltip Popup chuẩn Base Schedule khi rê chuột -->
+                    <!-- Tooltip Popup khi rê chuột -->
                     <div class="hidden group-hover/cell:block absolute left-1/2 -translate-x-1/2 bottom-full mb-1 z-30 w-36 bg-white border border-slate-200 rounded-xl shadow-xl p-2 text-left text-[10px] text-slate-700 pointer-events-auto">
                       <div class="font-bold text-slate-900 border-b border-slate-100 pb-1 mb-1 flex items-center justify-between">
                         <span>Ngày ${dayRec.day}/09</span>
@@ -41837,7 +41777,7 @@
   </div>
 
 
-  <!-- ================= MODAL: THIẾT LẬP NHÓM ĐỀ XUẤT NGHỈ PHÉP (CHUẨN BASE TIMEOFF) ================= -->
+  <!-- ================= MODAL: THIẾT LẬP NHÓM ĐỀ XUẤT NGHỈ PHÉP ================= -->
   <div id="modal-leave-group-config" class="fixed inset-0 bg-slate-900/60 backdrop-blur-xs z-50 flex items-center justify-center p-3 sm:p-5 hidden">
     <div class="bg-white rounded-2xl max-w-3xl w-full shadow-2xl border border-slate-200 overflow-hidden flex flex-col max-h-[94vh] animate-in fade-in duration-200">
       <!-- Modal Header -->
@@ -41845,8 +41785,8 @@
         <div class="flex items-center space-x-2.5">
           <span class="w-8 h-8 rounded-lg bg-white/10 flex items-center justify-center text-lg">⚙️</span>
           <div>
-            <h3 class="text-sm font-bold" id="modal-leave-group-title">Thiết lập Nhóm đề xuất Nghỉ phép / Vắng mặt (Base Timeoff)</h3>
-            <p class="text-[11px] text-white/80">Cấu hình 9 loại phép chuẩn, 4 khối người duyệt và ưu tiên trừ quỹ nghỉ bù / nghỉ phép</p>
+            <h3 class="text-sm font-bold" id="modal-leave-group-title">Thiết lập Quy trình Nghỉ phép / Vắng mặt</h3>
+            <p class="text-[11px] text-white/80">Cấu hình loại ngày nghỉ, quy trình duyệt và ưu tiên trừ quỹ nghỉ bù / nghỉ phép</p>
           </div>
         </div>
         <button type="button" onclick="closeLeaveGroupConfigModal()" class="text-white/70 hover:text-white text-2xl leading-none cursor-pointer p-1 transition">&times;</button>
@@ -41856,22 +41796,22 @@
       <form onsubmit="handleSaveLeaveGroup(event)" class="p-5 overflow-y-auto space-y-4 text-xs">
         <input type="hidden" id="leave-group-id" value="">
 
-        <!-- BƯỚC 2: THIẾT LẬP THÔNG TIN 1 NHÓM ĐỀ XUẤT (CHUẨN BASE TIMEOFF) -->
+        <!-- 1. THIẾT LẬP THÔNG TIN 1 NHÓM ĐỀ XUẤT -->
         <div class="p-3.5 bg-blue-50/50 rounded-xl border border-blue-100 space-y-3">
           <div class="font-bold text-[#2E3191] text-xs flex items-center space-x-1.5 uppercase tracking-wide">
             <span>📝</span>
-            <span>Bước 2: Thiết lập thông tin nhóm đề xuất cơ bản</span>
+            <span>1. Thiết lập thông tin quy trình cơ bản</span>
           </div>
 
           <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
             <div>
-              <label class="block font-bold text-slate-800 mb-1">Tên nhóm đề xuất <span class="text-rose-500">*</span></label>
+              <label class="block font-bold text-slate-800 mb-1">Tên quy trình <span class="text-rose-500">*</span></label>
               <input type="text" id="leave-group-name" required placeholder="VD: Nghỉ phép năm" class="w-full px-3 py-2 border border-slate-300 rounded-lg text-xs font-semibold focus:ring-2 focus:ring-[#2E3191] bg-white">
               <span class="text-[10.5px] text-slate-500 mt-0.5 block">Hiển thị trên biểu mẫu đề xuất</span>
             </div>
 
             <div>
-              <label class="block font-bold text-slate-800 mb-1">Mã nhóm đề xuất <span class="text-rose-500">*</span></label>
+              <label class="block font-bold text-slate-800 mb-1">Mã quy trình <span class="text-rose-500">*</span></label>
               <input type="text" id="leave-group-code" required placeholder="VD: GR-ANNUAL-LEAVE" class="w-full px-3 py-2 border border-slate-300 rounded-lg text-xs font-mono font-bold focus:ring-2 focus:ring-[#2E3191] bg-white">
               <span class="text-[10.5px] text-slate-500 mt-0.5 block">Mã định danh duy nhất</span>
             </div>
@@ -41882,13 +41822,13 @@
                 <option value="ACTIVE">🟢 Đang áp dụng</option>
                 <option value="INACTIVE">⚪ Tạm ngừng áp dụng</option>
               </select>
-              <span class="text-[10.5px] text-slate-500 mt-0.5 block">Bật / Tắt hiệu lực nhóm đề xuất</span>
+              <span class="text-[10.5px] text-slate-500 mt-0.5 block">Bật / Tắt hiệu lực quy trình</span>
             </div>
           </div>
 
-          <!-- Loại phép (1 trong 9 loại chuẩn Base Timeoff) -->
+          <!-- Loại phép (1 trong 9 loại) -->
           <div>
-            <label class="block font-bold text-slate-800 mb-1">Loại phép (Lựa chọn 1 trong 9 loại theo chuẩn Base Timeoff) <span class="text-rose-500">*</span></label>
+            <label class="block font-bold text-slate-800 mb-1">Loại ngày nghỉ (Lựa chọn 1 trong 9 loại) <span class="text-rose-500">*</span></label>
             <select id="leave-group-type" required onchange="onLeaveGroupTypeSelectChange()" class="w-full px-3 py-2 border border-slate-300 rounded-lg text-xs font-bold bg-white focus:ring-2 focus:ring-[#2E3191]">
               <option value="AL">1. Nghỉ phép năm (Annual Leave - Trừ quỹ phép năm)</option>
               <option value="PL">2. Nghỉ cá nhân (Personal Leave - Hiếu/Hỷ 100% lương)</option>
@@ -41931,9 +41871,9 @@
             </p>
           </div>
 
-          <!-- Quy trình phê duyệt (3 loại chuẩn Base Timeoff) -->
+          <!-- Quy trình phê duyệt -->
           <div class="p-3 bg-white rounded-lg border border-slate-200 space-y-2">
-            <label class="block font-bold text-slate-800">Quy trình phê duyệt (3 loại theo chuẩn Base Timeoff):</label>
+            <label class="block font-bold text-slate-800">Quy trình phê duyệt:</label>
             <div class="grid grid-cols-1 md:grid-cols-3 gap-2">
               <label class="p-2.5 rounded-lg border border-slate-200 hover:border-[#2E3191] transition cursor-pointer flex items-start space-x-2 bg-slate-50/50">
                 <input type="radio" name="leave-group-workflow-radio" value="SEQUENTIAL" checked class="mt-0.5 text-[#2E3191] focus:ring-[#2E3191]">
@@ -41961,7 +41901,7 @@
             </div>
           </div>
 
-          <!-- Ưu tiên sử dụng quỹ ngày nghỉ (2 loại chuẩn Base Timeoff) -->
+          <!-- Ưu tiên sử dụng quỹ ngày nghỉ -->
           <div class="p-3 bg-white rounded-lg border border-slate-200 space-y-2">
             <label class="block font-bold text-slate-800">Ưu tiên sử dụng quỹ ngày nghỉ:</label>
             <div class="grid grid-cols-1 md:grid-cols-2 gap-2">
@@ -41989,17 +41929,17 @@
 
             <div class="p-2 bg-rose-50 border border-rose-200 rounded-lg text-[11px] text-rose-700 flex items-center space-x-1.5 font-medium">
               <span>⚠️</span>
-              <span><strong>Lưu ý:</strong> Khi hủy timeoff thì mặc định trả bù phép vào <strong>Phép tồn</strong>.</span>
+              <span><strong>Lưu ý:</strong> Khi hủy đơn thì mặc định trả bù phép vào <strong>Phép tồn</strong>.</span>
             </div>
           </div>
         </div>
 
-        <!-- BƯỚC 4: THIẾT LẬP 4 LOẠI NGƯỜI DUYỆT (APPROVAL BLOCKS CHUẨN BASE) -->
+        <!-- 2. THIẾT LẬP 4 KHỐI NGƯỜI DUYỆT -->
         <div class="p-3.5 bg-slate-50 rounded-xl border border-slate-200 space-y-3">
           <div class="font-bold text-slate-900 text-xs flex items-center justify-between">
             <span class="flex items-center space-x-1.5 text-[#2E3191]">
               <span>🛡️</span>
-              <span>Bước 4: Thiết lập 4 khối người duyệt cho đề xuất (Chuẩn Base Timeoff)</span>
+              <span>2. Thiết lập 4 khối người duyệt cho đề xuất</span>
             </span>
           </div>
 
@@ -42078,7 +42018,7 @@
           </div>
         </div>
 
-        <!-- CÀI ĐẶT NÂNG CAO (COLLAPSIBLE ACCORDION CHUẨN BASE) -->
+        <!-- CÀI ĐẶT NÂNG CAO (COLLAPSIBLE ACCORDION) -->
         <div class="border border-slate-200 rounded-xl overflow-hidden">
           <button type="button" onclick="toggleAdvancedSettings()" class="w-full px-4 py-3 bg-slate-100 hover:bg-slate-200/80 font-bold text-slate-800 text-xs flex items-center justify-between transition cursor-pointer">
             <span class="flex items-center space-x-1.5">
@@ -42161,33 +42101,33 @@
 
             <!-- Miêu tả -->
             <div>
-              <label class="block font-bold text-slate-700 mb-1">Miêu tả nhóm đề xuất:</label>
-              <textarea id="leave-group-desc" rows="2" placeholder="Nhập nội dung mô tả, quy định và hướng dẫn của nhóm đề xuất..." class="w-full px-3 py-1.5 border border-slate-300 rounded-lg text-xs bg-white"></textarea>
+              <label class="block font-bold text-slate-700 mb-1">Miêu tả quy trình:</label>
+              <textarea id="leave-group-desc" rows="2" placeholder="Nhập nội dung mô tả, quy định và hướng dẫn của quy trình nghỉ phép..." class="w-full px-3 py-1.5 border border-slate-300 rounded-lg text-xs bg-white"></textarea>
             </div>
           </div>
         </div>
 
-        <!-- Modal Actions (Bước 3: Tạo nhóm) -->
+        <!-- Modal Actions -->
         <div class="pt-3 flex items-center justify-end space-x-2 border-t border-slate-200">
           <button type="button" onclick="closeLeaveGroupConfigModal()" class="px-4 py-2 border border-slate-300 rounded-lg text-slate-700 hover:bg-slate-50 transition cursor-pointer font-medium">Hủy bỏ</button>
           <button type="submit" class="px-5 py-2 pap-primary text-white font-bold rounded-lg shadow-xs transition cursor-pointer hover:bg-[#242775] flex items-center space-x-1.5">
             <span>💾</span>
-            <span id="btn-save-leave-group-text">Tạo nhóm đề xuất (Bước 3)</span>
+            <span id="btn-save-leave-group-text">Tạo quy trình</span>
           </button>
         </div>
       </form>
     </div>
   </div>
 
-  <!-- ================= MODAL: XEM CHI TIẾT & 4 KHỐI NGƯỜI DUYỆT (BASE TIMEOFF DETAIL) ================= -->
+  <!-- ================= MODAL: XEM CHI TIẾT & 4 KHỐI NGƯỜI DUYỆT ================= -->
   <div id="modal-leave-group-detail" class="fixed inset-0 bg-slate-900/60 backdrop-blur-xs z-50 flex items-center justify-center p-3 sm:p-5 hidden">
     <div class="bg-white rounded-2xl max-w-3xl w-full shadow-2xl border border-slate-200 overflow-hidden flex flex-col max-h-[92vh] animate-in fade-in duration-200">
       <div class="pap-primary text-white px-5 py-3.5 flex items-center justify-between shrink-0 shadow-xs">
         <div class="flex items-center space-x-2.5">
           <span class="w-8 h-8 rounded-lg bg-white/10 flex items-center justify-center text-lg" id="detail-group-icon">🏖️</span>
           <div>
-            <h3 class="text-sm font-bold" id="detail-group-name">Chi tiết Nhóm đề xuất: Nghỉ phép năm</h3>
-            <p class="text-[11px] text-white/80" id="detail-group-code">Mã: GR-ANNUAL-LEAVE · Base Timeoff PAP</p>
+            <h3 class="text-sm font-bold" id="detail-group-name">Chi tiết Quy trình: Nghỉ phép năm</h3>
+            <p class="text-[11px] text-white/80" id="detail-group-code">Mã: GR-ANNUAL-LEAVE · PAP HRM</p>
           </div>
         </div>
         <button type="button" onclick="closeLeaveGroupDetailModal()" class="text-white/70 hover:text-white text-2xl leading-none cursor-pointer p-1 transition">&times;</button>
@@ -42199,7 +42139,7 @@
           1. Thông tin chung &amp; Cài đặt
         </button>
         <button type="button" id="tab-btn-group-detail-blocks" onclick="switchLeaveGroupDetailTab('blocks')" class="px-4 py-2 text-xs font-semibold text-slate-600 hover:text-[#2E3191] border-b-2 border-transparent transition cursor-pointer">
-          2. Khối người duyệt đề xuất (Bước 4)
+          2. Khối người duyệt đề xuất
         </button>
       </div>
 
@@ -42209,7 +42149,7 @@
         <div id="group-detail-pane-info" class="space-y-3">
           <div class="grid grid-cols-2 sm:grid-cols-4 gap-2.5">
             <div class="bg-slate-50 p-2.5 rounded-xl border border-slate-200">
-              <span class="text-[10px] text-slate-500 font-medium block">Loại phép (9 loại Base)</span>
+              <span class="text-[10px] text-slate-500 font-medium block">Loại ngày nghỉ</span>
               <span class="text-xs font-bold text-slate-800 mt-0.5 block" id="dt-group-type">Nghỉ phép năm</span>
             </div>
             <div class="bg-slate-50 p-2.5 rounded-xl border border-slate-200">
@@ -42232,7 +42172,7 @@
               <span>Thứ tự ưu tiên trừ quỹ ngày nghỉ:</span>
             </div>
             <p class="text-xs font-semibold text-blue-900" id="dt-group-fund-priority">Quỹ nghỉ phép: Phép tồn ➔ Phép thâm niên ➔ Phép trong năm ➔ Nghỉ bù</p>
-            <div class="text-[10px] text-rose-700 italic">⚠️ Lưu ý: khi hủy timeoff thì mặc định trả bù phép vào Phép tồn.</div>
+            <div class="text-[10px] text-rose-700 italic">⚠️ Lưu ý: khi hủy đơn thì mặc định trả bù phép vào Phép tồn.</div>
           </div>
 
           <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
@@ -42256,18 +42196,18 @@
           </div>
 
           <div class="p-3 bg-slate-50 rounded-xl border border-slate-200">
-            <span class="font-bold text-slate-800 text-xs block mb-1">Mô tả nhóm đề xuất:</span>
+            <span class="font-bold text-slate-800 text-xs block mb-1">Mô tả quy trình:</span>
             <p class="text-xs text-slate-600 italic" id="dt-group-desc">Áp dụng cho nhân viên khối hành chính, văn phòng, phòng ban nghiệp vụ cảng.</p>
           </div>
         </div>
 
-        <!-- Tab 2: Approval Blocks (Step 4 Base Timeoff) -->
+        <!-- Tab 2: Approval Blocks -->
         <div id="group-detail-pane-blocks" class="space-y-3 hidden">
           <div class="p-3 bg-indigo-50/70 rounded-xl border border-indigo-200 flex items-center space-x-2">
             <span class="text-lg">🛡️</span>
             <div>
-              <div class="font-bold text-[#2E3191] text-xs">Bước 4: Cấu hình 4 khối người duyệt cho nhóm đề xuất</div>
-              <div class="text-[11px] text-slate-600">Được tự động áp dụng khi nhân sự nộp đơn thuộc nhóm đề xuất này</div>
+              <div class="font-bold text-[#2E3191] text-xs">Cấu hình 4 khối người duyệt cho quy trình</div>
+              <div class="text-[11px] text-slate-600">Được tự động áp dụng khi nhân sự nộp đơn thuộc quy trình này</div>
             </div>
           </div>
 
@@ -42280,7 +42220,7 @@
 
       <!-- Detail Modal Footer -->
       <div class="px-5 py-3 border-t border-slate-200 bg-slate-50 flex items-center justify-between">
-        <span class="text-[11px] text-slate-500 italic">Dữ liệu cấu hình chuẩn Base Timeoff PAP</span>
+        <span class="text-[11px] text-slate-500 italic">Dữ liệu cấu hình phân hệ Nghỉ phép PAP</span>
         <div class="flex items-center space-x-2">
           <button type="button" onclick="closeLeaveGroupDetailModal()" class="px-4 py-1.5 border border-slate-300 rounded-lg text-slate-700 font-semibold hover:bg-slate-100 transition cursor-pointer">Đóng</button>
           <button type="button" id="btn-edit-from-detail" class="px-4 py-1.5 pap-primary text-white rounded-lg font-bold shadow-xs hover:bg-[#242775] transition cursor-pointer flex items-center space-x-1">
@@ -42292,118 +42232,15 @@
     </div>
   </div>
 
-  <!-- ================= MODAL: HƯỚNG DẪN TẠO NHÓM ĐỀ XUẤT (CHUẨN HELP.BASE.VN) ================= -->
-  <div id="modal-base-timeoff-guide" class="fixed inset-0 bg-slate-900/60 backdrop-blur-xs z-50 flex items-center justify-center p-3 sm:p-5 hidden">
-    <div class="bg-white rounded-2xl max-w-3xl w-full shadow-2xl border border-slate-200 overflow-hidden flex flex-col max-h-[92vh] animate-in fade-in duration-200">
-      <div class="pap-primary text-white px-5 py-3.5 flex items-center justify-between shrink-0 shadow-xs">
-        <div class="flex items-center space-x-2.5">
-          <span class="text-xl">📘</span>
-          <div>
-            <h3 class="text-sm font-bold">Hướng dẫn Base Timeoff: Cách tạo nhóm đề xuất nghỉ phép / vắng mặt</h3>
-            <p class="text-[11px] text-white/80">Tham chiếu tài liệu chuẩn Base Enterprise: help.base.vn</p>
-          </div>
-        </div>
-        <button type="button" onclick="closeBaseTimeoffGuideModal()" class="text-white/70 hover:text-white text-2xl leading-none cursor-pointer p-1 transition">&times;</button>
-      </div>
-
-      <div class="p-5 overflow-y-auto space-y-4 text-xs leading-relaxed text-slate-700">
-        <!-- Bước 1 -->
-        <div class="p-3.5 bg-slate-50 rounded-xl border border-slate-200">
-          <div class="font-bold text-[#2E3191] text-xs mb-1 flex items-center space-x-1.5">
-            <span class="w-5 h-5 rounded-full bg-[#2E3191] text-white text-[10px] flex items-center justify-center font-bold">1</span>
-            <span>Bước 1: Truy cập và Tạo mới nhóm</span>
-          </div>
-          <p class="text-slate-600">
-            Tại màn hình chính của Base Timeoff, chọn <strong>Cài đặt &gt;&gt; Tạo mới &gt;&gt; Tạo mới nhóm</strong> (hoặc nhấn nút <em>Tạo mới nhóm</em> trên thanh công cụ).
-          </p>
-        </div>
-
-        <!-- Bước 2 -->
-        <div class="p-3.5 bg-blue-50/60 rounded-xl border border-blue-200">
-          <div class="font-bold text-[#2E3191] text-xs mb-1 flex items-center space-x-1.5">
-            <span class="w-5 h-5 rounded-full bg-[#2E3191] text-white text-[10px] flex items-center justify-center font-bold">2</span>
-            <span>Bước 2: Thiết lập thông tin 1 nhóm đề xuất</span>
-          </div>
-          <ul class="space-y-1.5 text-slate-700 list-disc list-inside mt-2">
-            <li><strong>Tên nhóm:</strong> Tên nhóm đề xuất (trường bắt buộc).</li>
-            <li><strong>Người phê duyệt:</strong> @tag username người có quyền duyệt đề xuất.</li>
-            <li><strong>Loại phép:</strong> Lựa chọn 1 trong 9 loại chuẩn: <em>Nghỉ phép năm, Nghỉ cá nhân, Đi công tác, Làm việc ngoài VP, Nghỉ không lương, Các loại khác, Làm việc ngoài VP theo giờ, Phép năm theo giờ, Không lương theo giờ</em>.</li>
-            <li><strong>Yêu cầu phê duyệt từ quản lý trực tiếp:</strong> Khi chọn Có, đề xuất cần tag quản lý trực tiếp trước.</li>
-            <li><strong>Quy trình phê duyệt (3 loại):</strong>
-              <div class="pl-4 mt-1 space-y-0.5 text-slate-600">
-                • <em>Duyệt đồng thời:</em> Không phân biệt thứ tự, tất cả người duyệt duyệt hết là thông qua.<br>
-                • <em>Duyệt lần lượt:</em> Thứ tự người duyệt, ai được tag trước duyệt trước (QLTT duyệt đầu tiên). Đến lượt ai mới hiện nút duyệt.<br>
-                • <em>Chỉ cần 1 người duyệt:</em> Chỉ cần 1 người đồng ý là thông qua.
-              </div>
-            </li>
-            <li><strong>Ưu tiên sử dụng quỹ ngày nghỉ:</strong>
-              <div class="pl-4 mt-1 space-y-0.5 text-slate-600">
-                • <em>Quỹ nghỉ bù:</em> Phép bù ➔ Phép tồn ➔ Phép thâm niên ➔ Phép trong năm.<br>
-                • <em>Quỹ nghỉ phép:</em> Phép tồn ➔ Phép thâm niên ➔ Phép trong năm ➔ Nghỉ bù.<br>
-                <span class="text-rose-600 font-semibold">• Lưu ý: khi hủy timeoff thì mặc định trả bù phép vào Phép tồn.</span>
-              </div>
-            </li>
-            <li><strong>Cài đặt nâng cao:</strong> Cho phép quản lý tạo hộ, SLA thời hạn xử lý, Bắt buộc/Không bắt buộc theo khoảng thời hạn, Khoảng số ngày giới hạn (2: trước 2 ngày; -2: muộn tối đa 2 ngày), Giới hạn số ngày nghỉ/đơn, Giới hạn đề xuất tạo/duyệt trong tháng, Có hiệu lực với, Người theo dõi.</li>
-          </ul>
-        </div>
-
-        <!-- Bước 3 -->
-        <div class="p-3.5 bg-slate-50 rounded-xl border border-slate-200">
-          <div class="font-bold text-[#2E3191] text-xs mb-1 flex items-center space-x-1.5">
-            <span class="w-5 h-5 rounded-full bg-[#2E3191] text-white text-[10px] flex items-center justify-center font-bold">3</span>
-            <span>Bước 3: Nhấn Tạo nhóm</span>
-          </div>
-          <p class="text-slate-600">
-            Click <strong>Tạo nhóm</strong> để hoàn tất lưu thông tin nhóm đề xuất vào cơ sở dữ liệu hệ thống.
-          </p>
-        </div>
-
-        <!-- Bước 4 -->
-        <div class="p-3.5 bg-indigo-50/60 rounded-xl border border-indigo-200">
-          <div class="font-bold text-[#2E3191] text-xs mb-1 flex items-center space-x-1.5">
-            <span class="w-5 h-5 rounded-full bg-[#2E3191] text-white text-[10px] flex items-center justify-center font-bold">4</span>
-            <span>Bước 4: Thiết lập 4 loại người duyệt cho đề xuất</span>
-          </div>
-          <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 mt-2">
-            <div class="bg-white p-2.5 rounded-lg border border-slate-200">
-              <strong class="text-blue-800 block mb-0.5">a. Quản lý trực tiếp</strong>
-              <span class="text-slate-600 text-[11px]">Bắt buộc QLTT duyệt trước tiên. Form đơn xuất hiện ô "Chọn quản lý trực tiếp phê duyệt".</span>
-            </div>
-            <div class="bg-white p-2.5 rounded-lg border border-slate-200">
-              <strong class="text-emerald-800 block mb-0.5">b. Người duyệt cố định</strong>
-              <span class="text-slate-600 text-[11px]">Mọi đơn thuộc nhóm đề xuất đều cần người duyệt cố định này xét duyệt.</span>
-            </div>
-            <div class="bg-white p-2.5 rounded-lg border border-slate-200">
-              <strong class="text-indigo-800 block mb-0.5">c. Người duyệt linh động</strong>
-              <span class="text-slate-600 text-[11px]">Xuất hiện trường chọn trên form đơn theo tên khối duyệt đã cài. Người tạo tự tag hoặc chọn theo danh sách.</span>
-            </div>
-            <div class="bg-white p-2.5 rounded-lg border border-slate-200">
-              <strong class="text-amber-800 block mb-0.5">d. Người duyệt theo điều kiện</strong>
-              <span class="text-slate-600 text-[11px]">Tự động thêm người duyệt khi thỏa mãn điều kiện (Ví dụ: số ngày nghỉ &gt; 3 ngày thêm Ban Giám đốc).</span>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="px-5 py-3 border-t border-slate-200 bg-slate-50 flex items-center justify-between">
-        <a href="https://help.base.vn/support/solutions/articles/63000268547-base-timeoff-c%C3%A1ch-t%E1%BA%A1o-nh%C3%B3m-%C4%91%E1%BB%81-xu%E1%BA%A5t-ngh%E1%BB%89-ph%C3%A9p-v%E1%BA%AFng-m%E1%BA%B7t" target="_blank" rel="noopener" class="text-[#2E3191] hover:underline font-semibold flex items-center space-x-1">
-          <span>🔗</span>
-          <span>Xem bài viết gốc trên help.base.vn</span>
-        </a>
-        <button type="button" onclick="closeBaseTimeoffGuideModal()" class="px-4 py-1.5 pap-primary text-white rounded-lg font-bold shadow-xs hover:bg-[#242775] transition cursor-pointer">Đã hiểu</button>
-      </div>
-    </div>
-  </div>
-
-  <!-- ================= MODAL: TẠO ĐƠN NGHỈ PHÉP (M09.3 / BASE TIMEOFF) ================= -->
+  <!-- ================= MODAL: TẠO ĐƠN NGHỈ PHÉP (M09.3) ================= -->
   <div id="modal-create-leave-request" class="fixed inset-0 bg-slate-900/60 backdrop-blur-xs z-50 flex items-center justify-center p-3 sm:p-5 hidden">
     <div class="bg-white rounded-2xl max-w-xl w-full shadow-2xl border border-slate-200 overflow-hidden flex flex-col max-h-[92vh] animate-in fade-in duration-200">
       <div class="bg-[#2E3191] text-white px-5 py-3.5 flex items-center justify-between shrink-0 shadow-xs">
         <div class="flex items-center space-x-2.5">
           <span class="text-xl">📝</span>
           <div>
-            <h3 class="text-sm font-bold">Đăng ký Đơn xin nghỉ phép (Base Timeoff M09)</h3>
-            <p class="text-[11px] text-white/80">Kiểm tra số dư quỹ phép và định tuyến phê duyệt theo Nhóm đề xuất</p>
+            <h3 class="text-sm font-bold">Đăng ký Đơn xin nghỉ phép (M09)</h3>
+            <p class="text-[11px] text-white/80">Kiểm tra số dư quỹ phép và định tuyến phê duyệt theo Quy trình</p>
           </div>
         </div>
         <button type="button" onclick="closeCreateLeaveRequestModal()" class="text-white/70 hover:text-white text-2xl leading-none cursor-pointer p-1 transition">&times;</button>
@@ -42414,7 +42251,7 @@
         <div>
           <label class="block font-semibold text-slate-700 text-xs mb-1">Nhân viên làm đơn <span class="text-rose-500">*</span></label>
           <select id="req-emp-select" onchange="onLeaveRequestEmpChange()" required class="w-full px-3 py-2 border border-slate-300 rounded-lg text-xs font-semibold bg-white focus:ring-2 focus:ring-[#2E3191]">
-            <!-- Dynamically populated from employeesData -->
+            <!-- Dynamically populated from leaveGroupsData -->
           </select>
         </div>
 
@@ -42440,9 +42277,9 @@
           </div>
         </div>
 
-        <!-- 2.5. Chọn Nhóm đề xuất nghỉ phép (Chuẩn Base Timeoff) -->
+        <!-- 2.5. Chọn Quy trình nghỉ phép -->
         <div>
-          <label class="block font-semibold text-slate-700 text-xs mb-1">Nhóm đề xuất nghỉ phép / vắng mặt <span class="text-rose-500">*</span></label>
+          <label class="block font-semibold text-slate-700 text-xs mb-1">Quy trình nghỉ phép / vắng mặt <span class="text-rose-500">*</span></label>
           <select id="req-group-select" onchange="onLeaveRequestGroupChange()" required class="w-full px-3 py-2 border border-slate-300 rounded-lg text-xs font-semibold bg-white focus:ring-2 focus:ring-[#2E3191]">
             <!-- Dynamically populated from leaveGroupsData -->
           </select>
@@ -42454,7 +42291,7 @@
           </div>
         </div>
 
-        <!-- Khối người duyệt động theo cấu hình nhóm Base Timeoff -->
+        <!-- Khối người duyệt động theo cấu hình quy trình -->
         <div id="req-custom-approvers-container" class="space-y-2 p-2.5 bg-slate-50/80 rounded-xl border border-slate-200 hidden">
           <!-- Dynamically populated if group requires QLTT or dynamic approvers -->
         </div>
