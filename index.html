@@ -6307,7 +6307,7 @@
             <!-- Row 1: Chu kỳ & Lịch làm việc (Trái) | Nút Thao tác (Phải) -->
             <div class="flex flex-wrap items-center justify-between gap-3 pb-3 border-b border-slate-100">
               
-              <!-- Khối bên trái: Chu kỳ & Lịch làm việc -->
+              <!-- Khối bên trái: Chu kỳ & Trạng thái -->
               <div class="flex items-center space-x-3">
                 <div class="w-10 h-10 rounded-2xl bg-blue-50 border border-blue-200 text-[#1877F2] flex items-center justify-center font-bold text-xl shrink-0 shadow-2xs">
                   📅
@@ -6325,18 +6325,6 @@
                     <span id="att-period-lock-badge" class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-amber-100 text-amber-800 border border-amber-200">
                       🔓 Đang mở
                     </span>
-                  </div>
-                  <!-- Dropdown Lịch làm việc trong chu kỳ (Đặc trưng Base Schedule) -->
-                  <div class="flex items-center space-x-2 text-xs text-slate-500 font-medium mt-1">
-                    <span>Lịch làm việc:</span>
-                    <select id="select-lock-work-schedule" onchange="renderLockWorkspace()" class="text-xs font-bold text-[#1877F2] border-0 bg-transparent p-0 hover:underline cursor-pointer focus:ring-0">
-                      <option value="ALL" selected>Tất cả lịch làm việc (245 NV)</option>
-                      <option value="HC">Khối Văn phòng (Hành chính HC)</option>
-                      <option value="PORT">Khối Vận hành Cầu bến (Ca kíp C1/C2)</option>
-                      <option value="OPS">Khối Khai thác Cảng & Cơ giới</option>
-                    </select>
-                    <span>•</span>
-                    <span id="att-period-daterange-text" class="text-slate-600 font-semibold">01/09 - 30/09/2026</span>
                   </div>
                 </div>
               </div>
