@@ -42633,12 +42633,7 @@
       const paneSummary = document.getElementById('lock-summary-container');
       const paginationBar = document.getElementById('lock-pagination-bar');
 
-      // Cập nhật ẩn/hiện nút Bảng tổng hợp số công: Chỉ xuất hiện ở Bước 4
-      if (btnSummary) {
-        btnSummary.classList.toggle('hidden', !isStep4OrLocked);
-      }
-
-      // Cập nhật trạng thái Active/Inactive cho 3 nút chuyển chế độ
+      // Cập nhật trạng thái Active/Inactive cho 3 nút chuyển chế độ & đảm bảo Bảng tổng hợp chỉ hiện ở Bước 4 hoặc kỳ đã khóa
       if (btnGrid) {
         btnGrid.className = currentLockWorkspaceMode === 'grid'
           ? "px-2.5 py-1 rounded-lg text-xs font-bold bg-white text-[#1877F2] shadow-2xs transition cursor-pointer"
@@ -42650,9 +42645,11 @@
           : "px-2.5 py-1 rounded-lg text-xs font-semibold text-slate-600 hover:text-slate-900 transition cursor-pointer flex items-center space-x-1.5";
       }
       if (btnSummary) {
-        btnSummary.className = currentLockWorkspaceMode === 'summary'
+        const isSumActive = (currentLockWorkspaceMode === 'summary');
+        const sumBaseCls = isSumActive
           ? "px-2.5 py-1 rounded-lg text-xs font-bold bg-white text-[#1877F2] shadow-2xs transition cursor-pointer"
           : "px-2.5 py-1 rounded-lg text-xs font-semibold text-slate-600 hover:text-slate-900 transition cursor-pointer";
+        btnSummary.className = isStep4OrLocked ? sumBaseCls : `${sumBaseCls} hidden`;
       }
 
       // Ẩn/Hiện vùng chứa tương ứng
@@ -45039,7 +45036,11 @@
       const btnLockSummary = document.getElementById('btn-lock-view-summary');
       const isStep4OrLocked = (currentAttendanceLockStep === 4 || period.isLocked);
       if (btnLockSummary) {
-        btnLockSummary.classList.toggle('hidden', !isStep4OrLocked);
+        const isSumActive = (currentLockWorkspaceMode === 'summary');
+        const sumBaseCls = isSumActive
+          ? "px-2.5 py-1 rounded-lg text-xs font-bold bg-white text-[#1877F2] shadow-2xs transition cursor-pointer"
+          : "px-2.5 py-1 rounded-lg text-xs font-semibold text-slate-600 hover:text-slate-900 transition cursor-pointer";
+        btnLockSummary.className = isStep4OrLocked ? sumBaseCls : `${sumBaseCls} hidden`;
       }
       // Nếu đang ở Bước 1, 2, 3 mà chế độ hiện tại đang là summary, tự động chuyển về 'grid' (Bảng công chi tiết)
       if (!isStep4OrLocked && currentLockWorkspaceMode === 'summary') {
