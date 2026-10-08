@@ -6804,7 +6804,7 @@
                     <option value="SHIFT_AFTER_RESIGNED">🚨 Sau ngày thôi việc (2)</option>
                     <option value="CONFLICT_APPROVED_LEAVE">⚠️ Trùng phép M14 (2)</option>
                     <option value="WORKING_DAY_UNASSIGNED">⚠️ Chưa phân ca (2)</option>
-                    <option value="SHIFT_COUNT">⚠️ Lệch chuẩn định biên &lt;22 hoặc &gt;22 ca (2)</option>
+                    <option value="SHIFT_COUNT">⚠️ Lệch chuẩn định biên &lt;17 hoặc &gt;17 ca (2)</option>
                   </select>
 
                   <!-- Nút duyệt các mục đã chọn -->
@@ -39896,7 +39896,7 @@
         endDate: '2026-10-31',
         targetGroup: 'Toàn bộ công ty (100 NV)',
         standardAdminDays: 22,
-        standardShiftDays: 22,
+        standardShiftDays: 17,
         standardDays: 22,
         isLocked: false,
         lockedAt: null,
@@ -39922,7 +39922,7 @@
         endDate: '2026-09-30',
         targetGroup: 'Toàn bộ công ty (100 NV)',
         standardAdminDays: 22,
-        standardShiftDays: 22,
+        standardShiftDays: 17,
         standardDays: 22,
         isLocked: false,
         lockedAt: null,
@@ -39948,7 +39948,7 @@
         endDate: '2026-08-31',
         targetGroup: 'Toàn bộ công ty (100 NV)',
         standardAdminDays: 22,
-        standardShiftDays: 22,
+        standardShiftDays: 17,
         standardDays: 22,
         isLocked: true,
         isPayrollLocked: false,
@@ -39975,7 +39975,7 @@
         endDate: '2026-07-31',
         targetGroup: 'Toàn bộ công ty (100 NV)',
         standardAdminDays: 23,
-        standardShiftDays: 23,
+        standardShiftDays: 17,
         standardDays: 23,
         isLocked: true,
         isPayrollLocked: true,
@@ -40236,16 +40236,16 @@
           dept: 'Phòng Khai thác Cảng',
           day: null,
           date: 'Kỳ T09/2026',
-          currentShift: '14 ca',
+          currentShift: '12 ca',
           type: 'SHIFT_COUNT_TOO_LOW',
           severity: 'warning',
-          title: 'Tổng số ca quá ít so với công chuẩn (14/22 ca)',
-          desc: 'Tháng chuẩn 22 ngày công: Nhân viên ca kíp bị xếp chỉ có 14 ca (8 ca S1, 6 ca S2). Thiếu 8 ca định biên dẫn đến hụt lương người lao động và thiếu nhân sự vận hành cảng.',
-          currentShifts: 14,
-          standardShifts: 22,
-          diffShifts: -8,
-          suggestShift: 'BALANCE_ADD_8',
-          suggestLabel: 'Bổ sung 8 ca làm việc vào các ngày trống để đủ chuẩn 22 ca'
+          title: 'Tổng số ca quá ít so với công chuẩn (12/17 ca)',
+          desc: 'Tháng chuẩn 17 ngày ca: Nhân viên ca kíp bị xếp chỉ có 12 ca (7 ca S1, 5 ca S2). Thiếu 5 ca định biên dẫn đến hụt lương người lao động và thiếu nhân sự vận hành cảng.',
+          currentShifts: 12,
+          standardShifts: 17,
+          diffShifts: -5,
+          suggestShift: 'BALANCE_ADD_5',
+          suggestLabel: 'Bổ sung 5 ca làm việc vào các ngày trống để đủ chuẩn 17 ca'
         },
         {
           id: 'ANOM_10',
@@ -40254,16 +40254,16 @@
           dept: 'Phòng Vận hành Cầu bến',
           day: null,
           date: 'Kỳ T09/2026',
-          currentShift: '27 ca',
+          currentShift: '22 ca',
           type: 'SHIFT_COUNT_TOO_HIGH',
           severity: 'danger',
-          title: 'Tổng số ca quá nhiều vượt trần làm thêm (27/22 ca)',
-          desc: 'Tháng chuẩn 22 ngày công: Nhân viên ca kíp bị xếp lên tới 27 ca (15 ca S1, 12 ca S2). Vượt trần 5 ca làm thêm (> 40 giờ OT/tháng), vi phạm quy định làm thêm giờ theo Điều 107 BLLĐ 2019 và nguy cơ kiệt sức lao động.',
-          currentShifts: 27,
-          standardShifts: 22,
+          title: 'Tổng số ca quá nhiều vượt trần làm thêm (22/17 ca)',
+          desc: 'Tháng chuẩn 17 ngày ca: Nhân viên ca kíp bị xếp lên tới 22 ca (12 ca S1, 10 ca S2). Vượt trần 5 ca làm thêm (> 40 giờ OT/tháng), vi phạm quy định làm thêm giờ theo Điều 107 BLLĐ 2019 và nguy cơ kiệt sức lao động.',
+          currentShifts: 22,
+          standardShifts: 17,
           diffShifts: 5,
           suggestShift: 'BALANCE_REMOVE_5',
-          suggestLabel: 'Giảm 5 ca làm dồn, chuyển sang Nghỉ ca [OFF] để về chuẩn 22 ca'
+          suggestLabel: 'Giảm 5 ca làm dồn, chuyển sang Nghỉ ca [OFF] để về chuẩn 17 ca'
         }
       ];
 
@@ -40369,15 +40369,15 @@
               } else if (emp.pap === 'PAP0154') {
                 if (d === 15) symbol = ''; // Lỗi 8: Thứ Ba ca kíp bị trống chưa phân ca
               } else if (emp.pap === 'PAP0089') {
-                // Lỗi 9: Xếp ca quá ít (14 ca so với công chuẩn 22 ca) - Thiếu định biên, thiếu lương
-                if (d <= 14) {
+                // Lỗi 9: Xếp ca quá ít (12 ca so với công chuẩn 17 ca) - Thiếu định biên, thiếu lương
+                if (d <= 12) {
                   symbol = (d % 2 === 1) ? 'S1' : 'S2';
                 } else {
                   symbol = '';
                 }
               } else if (emp.pap === 'PAP0205') {
-                // Lỗi 10: Xếp ca quá nhiều (27 ca so với công chuẩn 22 ca) - Vượt trần giờ làm thêm
-                if (d === 7 || d === 14 || d === 21) {
+                // Lỗi 10: Xếp ca quá nhiều (22 ca so với công chuẩn 17 ca) - Vượt trần giờ làm thêm
+                if (d === 6 || d === 13 || d === 20 || d === 24 || d === 25 || d === 26 || d === 27 || d === 28) {
                   symbol = '';
                 } else {
                   symbol = (d % 2 === 1) ? 'S1' : 'S2';
@@ -40400,15 +40400,15 @@
           const totalPaid = actualDays + daysL + (emp.type === 'HC' ? (emp.daysP || 0) : (emp.p || 0));
 
           const stdAdmin = pObj ? (pObj.standardAdminDays || pObj.standardDays || 22) : 22;
-          const stdShift = pObj ? (pObj.standardShiftDays || pObj.standardDays || 22) : 22;
+          const stdShift = pObj ? (pObj.standardShiftDays || 17) : 17;
           const isShiftWorker = emp.type === 'SHIFT' || (shiftsS1 > 0 || shiftsS2 > 0);
           const empStdDays = isShiftWorker ? stdShift : stdAdmin;
 
           if (isExempt) note = 'Miễn chấm công (Lãnh đạo HĐQT / C-Level)';
           else if (isMaternity) note = 'Chế độ thai sản Ro (BHXH chi trả, không tính lương cty)';
           else if (isResigned) note = 'Nghỉ việc từ 25/09 (16 công X + 2 ngày L)';
-          else if (emp.pap === 'PAP0089' && pId === '2026-09') note = '⚠️ Thiếu định biên: Xếp 14/22 ca (Thiếu 8 ca so với chuẩn)';
-          else if (emp.pap === 'PAP0205' && pId === '2026-09') note = '⚠️ Vượt trần làm thêm: Xếp 27/22 ca (Vượt trần 5 ca)';
+          else if (emp.pap === 'PAP0089' && pId === '2026-09') note = '⚠️ Thiếu định biên: Xếp 12/17 ca (Thiếu 5 ca so với chuẩn)';
+          else if (emp.pap === 'PAP0205' && pId === '2026-09') note = '⚠️ Vượt trần làm thêm: Xếp 22/17 ca (Vượt trần 5 ca)';
           else if (emp.type === 'HC') note = (emp.daysP > 0) ? `Nghỉ phép năm ${emp.daysP} ngày đã duyệt` : 'Đủ công hành chính tiêu chuẩn';
           else note = `Ca kíp Cảng (${shiftsS1} ca ngày S1, ${shiftsS2} ca đêm S2)`;
 
@@ -40826,7 +40826,7 @@
       const shiftInput = document.getElementById('new-period-shift-days');
       if (adminInput) adminInput.value = workdays;
       if (shiftInput && (!shiftInput.value || shiftInput.value === '22')) {
-        shiftInput.value = workdays > 0 ? workdays : 22;
+        shiftInput.value = '17';
       }
     }
 
@@ -40851,7 +40851,7 @@
 
       autoCalculatePeriodAdminDays();
       if (adminInput && !adminInput.value) adminInput.value = '21';
-      if (shiftInput) shiftInput.value = '22';
+      if (shiftInput) shiftInput.value = '17';
 
       modal.classList.remove('hidden');
     }
@@ -40867,7 +40867,7 @@
       const startDate = document.getElementById('new-period-start')?.value;
       const endDate = document.getElementById('new-period-end')?.value;
       const adminDays = parseInt(document.getElementById('new-period-admin-days')?.value) || 22;
-      const shiftDays = parseInt(document.getElementById('new-period-shift-days')?.value) || 22;
+      const shiftDays = parseInt(document.getElementById('new-period-shift-days')?.value) || 17;
       const targetGroup = document.getElementById('new-period-target-group')?.value || 'Toàn bộ công ty (245 NV)';
       const note = document.getElementById('new-period-note')?.value.trim() || '';
 
@@ -40925,7 +40925,7 @@
     function initPeriodDataStoresForNewPeriod(pId, adminDays, shiftDays) {
       const lockEmployees100 = getAttendanceLock100Employees();
       const stdAdmin = adminDays || 22;
-      const stdShift = shiftDays || 22;
+      const stdShift = shiftDays || 17;
 
       if (!attendancePeriodSummaryStore[pId]) {
         attendancePeriodSummaryStore[pId] = lockEmployees100.map(emp => {
@@ -41340,7 +41340,7 @@
           if (a.type === 'SHIFT_AFTER_RESIGNED') basisText = 'QĐ thôi việc 188/QĐ-PAP';
           else if (a.type === 'CONFLICT_APPROVED_LEAVE') basisText = 'Đơn phép đã duyệt M14';
           else if (a.type === 'WORKING_DAY_UNASSIGNED') basisText = 'Hợp đồng lao động PAP';
-          else if (a.type === 'SHIFT_COUNT_TOO_LOW' || a.type === 'SHIFT_COUNT_TOO_HIGH') basisText = 'Định biên 22 ca chuẩn';
+          else if (a.type === 'SHIFT_COUNT_TOO_LOW' || a.type === 'SHIFT_COUNT_TOO_HIGH') basisText = 'Định biên 17 ca chuẩn';
 
           return `
             <tr class="hover:bg-amber-50/40 transition border-b border-slate-200 group">
@@ -41515,12 +41515,12 @@
 
         if (anom.type === 'SHIFT_COUNT_TOO_LOW' || anom.type === 'SHIFT_COUNT_TOO_HIGH') {
           const period = getCurrentAttendancePeriod();
-          const standardCount = period.standardShiftDays || 22;
+          const standardCount = period.standardShiftDays || 17;
           const matrixData = attendanceDailyMatrixStore[currentAttendancePeriodId] || [];
           const empM = matrixData.find(m => m.pap === anom.pap);
           if (empM && empM.days) {
             if (anom.type === 'SHIFT_COUNT_TOO_LOW') {
-              let needed = standardCount - (anom.currentShifts || 14);
+              let needed = standardCount - (anom.currentShifts || 12);
               for (const d of empM.days) {
                 if (needed <= 0) break;
                 const dayOfWeek = new Date(2026, 8, d.day).getDay();
@@ -41531,7 +41531,7 @@
                 }
               }
             } else if (anom.type === 'SHIFT_COUNT_TOO_HIGH') {
-              let excess = (anom.currentShifts || 27) - standardCount;
+              let excess = (anom.currentShifts || 22) - standardCount;
               for (let i = empM.days.length - 1; i >= 0; i--) {
                 if (excess <= 0) break;
                 const d = empM.days[i];
@@ -41919,7 +41919,7 @@
       if (daterangeText) {
         const d1 = period.startDate.split('-');
         const d2 = period.endDate.split('-');
-        daterangeText.innerText = `${d1[2]}/${d1[1]} - ${d2[2]}/${d2[1]}/${d2[0]} • Chuẩn ${period.standardAdminDays || period.standardDays || 22} công HC / ${period.standardShiftDays || period.standardDays || 22} ca`;
+        daterangeText.innerText = `${d1[2]}/${d1[1]} - ${d2[2]}/${d2[1]}/${d2[0]} • Chuẩn ${period.standardAdminDays || period.standardDays || 22} công HC / ${period.standardShiftDays || period.standardDays || 17} ca`;
       }
 
       const footerPeriodName = document.getElementById('footer-period-name');
@@ -42043,8 +42043,8 @@
               <span class="px-1.5 py-0.5 rounded bg-rose-50 text-rose-700 border border-rose-300 font-bold text-[10px] animate-pulse" title="Sau ngày thôi việc">⚠️ Sau thôi việc</span>
               <span class="px-1.5 py-0.5 rounded bg-amber-50 text-amber-800 border border-amber-300 font-bold text-[10px]" title="Trùng đơn phép đã duyệt M09/M14">⚠️ Trùng phép M14</span>
               <span class="px-1.5 py-0.5 rounded bg-amber-50 text-amber-800 border border-amber-300 font-bold text-[10px]" title="Chưa phân ca">⚠️ Chưa phân ca</span>
-              <span class="px-1.5 py-0.5 rounded bg-amber-100 text-amber-900 border border-amber-400 font-bold text-[10px] animate-pulse cursor-pointer" onclick="toggleStep1AnomalyFilter()" title="Tổng số ca xếp trong tháng quá ít so với công chuẩn định biên">⚠️ Ca quá ít (&lt;22 ca)</span>
-              <span class="px-1.5 py-0.5 rounded bg-rose-100 text-rose-800 border border-rose-400 font-bold text-[10px] animate-pulse cursor-pointer" onclick="toggleStep1AnomalyFilter()" title="Tổng số ca xếp trong tháng vượt trần công chuẩn định biên">⚠️ Ca quá nhiều (&gt;22 ca)</span>
+              <span class="px-1.5 py-0.5 rounded bg-amber-100 text-amber-900 border border-amber-400 font-bold text-[10px] animate-pulse cursor-pointer" onclick="toggleStep1AnomalyFilter()" title="Tổng số ca xếp trong tháng quá ít so với công chuẩn định biên">⚠️ Ca quá ít (&lt;17 ca)</span>
+              <span class="px-1.5 py-0.5 rounded bg-rose-100 text-rose-800 border border-rose-400 font-bold text-[10px] animate-pulse cursor-pointer" onclick="toggleStep1AnomalyFilter()" title="Tổng số ca xếp trong tháng vượt trần công chuẩn định biên">⚠️ Ca quá nhiều (&gt;17 ca)</span>
             `;
           }
         } else if (currentAttendanceLockStep === 2) {
@@ -42358,7 +42358,7 @@
                     <div class="mt-0.5">
                       <button type="button" onclick="openQuickFixShiftCountAnomalyModal('${shiftCountAnom.id}')" class="inline-flex items-center space-x-1 px-1.5 py-0.5 rounded text-[10px] font-bold ${shiftCountAnom.severity === 'danger' ? 'bg-rose-100 text-rose-700 border border-rose-300' : 'bg-amber-100 text-amber-800 border border-amber-300'} animate-pulse hover:shadow-xs cursor-pointer" title="Cảnh báo tổng số ca: ${shiftCountAnom.desc}. Nhấp để xử lý!">
                         <span>⚠️</span>
-                        <span>${shiftCountAnom.type === 'SHIFT_COUNT_TOO_LOW' ? 'Thiếu ca (' + (shiftCountAnom.actualCount || 14) + '/' + (shiftCountAnom.standardCount || 22) + ' ca)' : 'Vượt trần ca (' + (shiftCountAnom.actualCount || 27) + '/' + (shiftCountAnom.standardCount || 22) + ' ca)'}</span>
+                        <span>${shiftCountAnom.type === 'SHIFT_COUNT_TOO_LOW' ? 'Thiếu ca (' + (shiftCountAnom.actualCount || 12) + '/' + (shiftCountAnom.standardCount || 17) + ' ca)' : 'Vượt trần ca (' + (shiftCountAnom.actualCount || 22) + '/' + (shiftCountAnom.standardCount || 17) + ' ca)'}</span>
                       </button>
                     </div>
                   ` : ''}
@@ -43106,7 +43106,7 @@
         actualCount = (empSum.shiftsS1 || 0) + (empSum.shiftsS2 || 0);
       }
 
-      const standardCount = period.standardShiftDays || 22;
+      const standardCount = period.standardShiftDays || 17;
       const diff = actualCount - standardCount;
       const isTooLow = diff < 0;
 
@@ -43198,7 +43198,7 @@
       if (!pap) return;
 
       const period = getCurrentAttendancePeriod();
-      const standardCount = period.standardShiftDays || 22;
+      const standardCount = period.standardShiftDays || 17;
       const matrix = attendanceMatrixStore[period.id] || [];
       const empM = matrix.find(m => m.pap === pap);
 
@@ -44305,9 +44305,9 @@
             <tbody class="divide-y divide-slate-100 font-medium">
               <tr>
                 <td class="py-2.5 px-3 text-left font-semibold text-slate-800">Tổng ca làm việc (S1 + S2)</td>
-                <td class="py-2.5 px-3 font-bold text-slate-700" id="fix-shift-count-std-val">22 ca</td>
-                <td class="py-2.5 px-3 font-extrabold text-sm font-mono" id="fix-shift-count-actual-val">14 ca</td>
-                <td class="py-2.5 px-3 font-bold" id="fix-shift-count-diff-val">-8 ca</td>
+                <td class="py-2.5 px-3 font-bold text-slate-700" id="fix-shift-count-std-val">17 ca</td>
+                <td class="py-2.5 px-3 font-extrabold text-sm font-mono" id="fix-shift-count-actual-val">12 ca</td>
+                <td class="py-2.5 px-3 font-bold" id="fix-shift-count-diff-val">-5 ca</td>
               </tr>
             </tbody>
           </table>
@@ -44340,7 +44340,7 @@
           </div>
           <button type="button" id="btn-apply-shift-count-fix" onclick="applyQuickFixShiftCountSuggestion()" class="w-full py-2 bg-[#2E3191] hover:bg-[#242775] text-white font-bold rounded-xl shadow-xs transition cursor-pointer flex items-center justify-center space-x-2">
             <span>⚡</span>
-            <span id="btn-apply-shift-count-label">Áp dụng cân bằng ca tự động (Về 22 ca chuẩn)</span>
+            <span id="btn-apply-shift-count-label">Áp dụng cân bằng ca tự động (Về 17 ca chuẩn)</span>
           </button>
         </div>
 
