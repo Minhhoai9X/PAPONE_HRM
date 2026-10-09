@@ -44395,7 +44395,37 @@
     // =====================================================================
     // CORE: CÁC HÀM XỬ LÝ MODAL CHI TIẾT CHẤM CÔNG NGÀY (DAILY CELL DETAIL)
     // =====================================================================
-    function openDailyAttendanceCellDetailModal(pap, day, step = 3) {
+    let currentCellDetailTab = 'punches';
+
+    function switchCellDetailTab(tab) {
+      currentCellDetailTab = tab;
+      const btnPunches = document.getElementById('cell-tab-btn-punches');
+      const btnRequests = document.getElementById('cell-tab-btn-requests');
+      const panePunches = document.getElementById('cell-tab-pane-punches');
+      const paneRequests = document.getElementById('cell-tab-pane-requests');
+
+      if (tab === 'requests') {
+        if (btnPunches) {
+          btnPunches.className = 'px-3 py-1.5 text-xs font-semibold border-b-2 border-transparent text-slate-500 hover:text-slate-800 flex items-center space-x-1.5 transition cursor-pointer';
+        }
+        if (btnRequests) {
+          btnRequests.className = 'px-3 py-1.5 text-xs font-bold border-b-2 border-[#2E3191] text-[#2E3191] flex items-center space-x-1.5 transition cursor-pointer';
+        }
+        if (panePunches) panePunches.classList.add('hidden');
+        if (paneRequests) paneRequests.classList.remove('hidden');
+      } else {
+        if (btnPunches) {
+          btnPunches.className = 'px-3 py-1.5 text-xs font-bold border-b-2 border-[#2E3191] text-[#2E3191] flex items-center space-x-1.5 transition cursor-pointer';
+        }
+        if (btnRequests) {
+          btnRequests.className = 'px-3 py-1.5 text-xs font-semibold border-b-2 border-transparent text-slate-500 hover:text-slate-800 flex items-center space-x-1.5 transition cursor-pointer';
+        }
+        if (panePunches) panePunches.classList.remove('hidden');
+        if (paneRequests) paneRequests.classList.add('hidden');
+      }
+    }
+
+    function openDailyAttendanceCellDetailModal(pap, day, step = 3, preferTab = null) {
       day = parseInt(day, 10);
       if (!day || day < 1 || day > 31) return;
 
@@ -44539,11 +44569,11 @@
       }
 
       document.getElementById('cell-detail-ci-val').innerText = actualIn;
-      document.getElementById('cell-detail-ci-val').className = `text-base font-extrabold font-mono mt-0.5 ${isMissIn ? 'text-rose-600' : 'text-slate-900'}`;
+      document.getElementById('cell-detail-ci-val').className = `text-sm font-extrabold font-mono mt-0.5 leading-tight ${isMissIn ? 'text-rose-600' : 'text-slate-900'}`;
       document.getElementById('cell-detail-ci-loc').innerText = inLoc;
 
       document.getElementById('cell-detail-co-val').innerText = actualOut;
-      document.getElementById('cell-detail-co-val').className = `text-base font-extrabold font-mono mt-0.5 ${isMissOut ? 'text-rose-600' : 'text-slate-900'}`;
+      document.getElementById('cell-detail-co-val').className = `text-sm font-extrabold font-mono mt-0.5 leading-tight ${isMissOut ? 'text-rose-600' : 'text-slate-900'}`;
       document.getElementById('cell-detail-co-loc').innerText = outLoc;
 
       document.getElementById('cell-detail-late-val').innerText = lateMin > 0 ? `${lateMin} phút` : '0 phút';
@@ -44551,11 +44581,11 @@
       if (lateStatusEl) {
         if (lateMin > 0) {
           if (cfItem && cfItem.issueType === 'LATE_WITH_REASON') {
-            lateStatusEl.innerHTML = `<span class="text-amber-700 font-bold bg-amber-50 px-1.5 py-0.5 rounded border border-amber-200"><i class="fa-solid fa-file-circle-check mr-1 text-amber-600"></i>Có Đơn M14</span>`;
+            lateStatusEl.innerHTML = `<span class="text-amber-700 font-bold bg-amber-50 px-1 py-0.2 rounded border border-amber-200"><i class="fa-solid fa-file-circle-check mr-1 text-amber-600"></i>Có Đơn M14</span>`;
           } else if (lateMin <= 15) {
-            lateStatusEl.innerHTML = `<span class="text-emerald-700 font-bold bg-emerald-50 px-1.5 py-0.5 rounded border border-emerald-200"><i class="fa-solid fa-circle-check mr-1 text-emerald-600"></i>Ân hạn (≤15p)</span>`;
+            lateStatusEl.innerHTML = `<span class="text-emerald-700 font-bold bg-emerald-50 px-1.5 py-0.2 rounded border border-emerald-200"><i class="fa-solid fa-circle-check mr-1 text-emerald-600"></i>Ân hạn (≤15p)</span>`;
           } else {
-            lateStatusEl.innerHTML = `<span class="text-rose-700 font-bold bg-rose-50 px-1.5 py-0.5 rounded border border-rose-200"><i class="fa-solid fa-circle-exclamation mr-1 text-rose-600"></i>Trừ công</span>`;
+            lateStatusEl.innerHTML = `<span class="text-rose-700 font-bold bg-rose-50 px-1.5 py-0.2 rounded border border-rose-200"><i class="fa-solid fa-circle-exclamation mr-1 text-rose-600"></i>Trừ công</span>`;
           }
         } else {
           lateStatusEl.innerHTML = `<span class="text-emerald-600">Đúng giờ</span>`;
@@ -44567,9 +44597,9 @@
       if (earlyStatusEl) {
         if (earlyMin > 0) {
           if (cfItem && cfItem.issueType === 'EARLY_WITH_LEAVE') {
-            earlyStatusEl.innerHTML = `<span class="text-indigo-700 font-bold bg-indigo-50 px-1.5 py-0.5 rounded border border-indigo-200"><i class="fa-solid fa-calendar-day mr-1 text-indigo-600"></i>Bù phép M14</span>`;
+            earlyStatusEl.innerHTML = `<span class="text-indigo-700 font-bold bg-indigo-50 px-1.5 py-0.2 rounded border border-indigo-200"><i class="fa-solid fa-calendar-day mr-1 text-indigo-600"></i>Bù phép M14</span>`;
           } else {
-            earlyStatusEl.innerHTML = `<span class="text-rose-700 font-bold bg-rose-50 px-1.5 py-0.5 rounded border border-rose-200"><i class="fa-solid fa-circle-exclamation mr-1 text-rose-600"></i>Vi phạm</span>`;
+            earlyStatusEl.innerHTML = `<span class="text-rose-700 font-bold bg-rose-50 px-1.5 py-0.2 rounded border border-rose-200"><i class="fa-solid fa-circle-exclamation mr-1 text-rose-600"></i>Vi phạm</span>`;
           }
         } else {
           earlyStatusEl.innerHTML = `<span class="text-emerald-600">Đúng giờ</span>`;
@@ -44629,14 +44659,14 @@
       if (quickActionArea) {
         if (cfItem) {
           quickActionArea.innerHTML = `
-            <button type="button" onclick="quickApproveCellFromDetailModal('${cfItem.id}')" class="px-3.5 py-2 bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs rounded-xl shadow-xs transition cursor-pointer flex items-center space-x-1.5">
+            <button type="button" onclick="quickApproveCellFromDetailModal('${cfItem.id}')" class="px-3.5 py-1.5 bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs rounded-xl shadow-xs transition cursor-pointer flex items-center space-x-1.5">
               <i class="fa-solid fa-check text-xs"></i>
               <span>Duyệt áp dụng phương án (Theo M14)</span>
             </button>
           `;
         } else if (missPunch) {
           quickActionArea.innerHTML = `
-            <button type="button" onclick="openQuickFixPunchModal('${missPunch.id}'); closeDailyAttendanceCellDetailModal();" class="px-3 py-2 bg-amber-500 hover:bg-amber-600 text-white font-bold text-xs rounded-xl shadow-xs transition cursor-pointer flex items-center space-x-1.5">
+            <button type="button" onclick="openQuickFixPunchModal('${missPunch.id}'); closeDailyAttendanceCellDetailModal();" class="px-3 py-1.5 bg-amber-500 hover:bg-amber-600 text-white font-bold text-xs rounded-xl shadow-xs transition cursor-pointer flex items-center space-x-1.5">
               <i class="fa-solid fa-clock-rotate-left mr-1.5 text-xs"></i>
               <span>Bổ sung giờ thiếu</span>
             </button>
@@ -44646,6 +44676,15 @@
             <span class="text-slate-500 text-[11px] italic">Dữ liệu ngày chuẩn, có thể ghi đè nếu cần can thiệp kiểm toán.</span>
           `;
         }
+      }
+
+      // Xử lý Active Tab theo trạng thái
+      if (preferTab) {
+        switchCellDetailTab(preferTab);
+      } else if (cfItem) {
+        switchCellDetailTab('requests');
+      } else {
+        switchCellDetailTab('punches');
       }
 
       const modal = document.getElementById('modal-daily-attendance-cell');
@@ -44719,7 +44758,7 @@
       if (actBar) {
         actBar.style.left = `${actLeft}%`;
         actBar.style.width = `${actWidth}%`;
-        actBar.className = 'absolute top-0 bottom-0 bg-indigo-600 text-white flex items-center justify-center font-mono font-bold text-[10px] rounded shadow-xs';
+        actBar.className = 'absolute top-0 bottom-0 bg-indigo-600 text-white flex items-center justify-center font-mono font-bold text-[9px] rounded shadow-2xs';
       }
       if (actLbl) actLbl.innerText = `Thực tế: ${actualIn} - ${actualOut}`;
 
@@ -44757,6 +44796,7 @@
     function renderCellRawPunchesLog(actualIn, actualOut, inLoc, outLoc, dateStr, isMissIn, isMissOut) {
       const tbody = document.getElementById('cell-detail-punches-tbody');
       const countEl = document.getElementById('cell-detail-punch-count');
+      const badgePunches = document.getElementById('cell-tab-badge-punches');
       if (!tbody) return;
 
       if (actualIn === '—' && actualOut === '—') {
@@ -44766,6 +44806,7 @@
           </tr>
         `;
         if (countEl) countEl.innerText = '0 lượt ghi nhận';
+        if (badgePunches) badgePunches.innerText = '0';
         return;
       }
 
@@ -44777,9 +44818,9 @@
           type: 'IN',
           typeLabel: 'Vào ca (Check-in)',
           badgeCls: 'bg-emerald-50 text-emerald-800 border-emerald-300',
-          device: inLoc.includes('C1') ? 'Máy chấm công PAP-C1-02' : (inLoc.includes('STS') ? 'Máy chấm công Trạm cẩu STS-01' : 'Máy chấm công Trụ sở PAP #01'),
+          device: inLoc.includes('C1') ? 'Máy PAP-C1-02' : (inLoc.includes('STS') ? 'Trạm cẩu STS-01' : 'Máy PAP #01'),
           location: inLoc,
-          auth: 'Xác thực chuẩn 99.4%'
+          auth: 'Chuẩn 99.4%'
         });
       }
       if (!isMissOut && actualOut && actualOut !== '--:--') {
@@ -44789,24 +44830,25 @@
           type: 'OUT',
           typeLabel: 'Ra ca (Check-out)',
           badgeCls: 'bg-blue-50 text-blue-800 border-blue-300',
-          device: outLoc.includes('C1') ? 'Máy chấm công PAP-C1-02' : (outLoc.includes('STS') ? 'Máy chấm công Trạm cẩu STS-01' : 'Máy chấm công Trụ sở PAP #01'),
+          device: outLoc.includes('C1') ? 'Máy PAP-C1-02' : (outLoc.includes('STS') ? 'Trạm cẩu STS-01' : 'Máy PAP #01'),
           location: outLoc,
-          auth: 'Xác thực chuẩn 98.9%'
+          auth: 'Chuẩn 98.9%'
         });
       }
 
       if (countEl) countEl.innerText = `${punches.length} lượt ghi nhận hợp lệ`;
+      if (badgePunches) badgePunches.innerText = `${punches.length}`;
 
       tbody.innerHTML = punches.map(p => `
         <tr class="hover:bg-slate-50 transition border-b border-slate-100">
-          <td class="py-2 px-2 text-center text-slate-400 font-mono text-[11px]">${p.idx}</td>
-          <td class="py-2 px-2 font-mono font-bold text-slate-900">${p.time}</td>
-          <td class="py-2 px-2 text-center">
-            <span class="px-2 py-0.5 rounded font-bold text-[10px] border ${p.badgeCls}">${p.type}</span>
+          <td class="py-1.5 px-2 text-center text-slate-400 font-mono text-[11px]">${p.idx}</td>
+          <td class="py-1.5 px-2 font-mono font-bold text-slate-900">${p.time}</td>
+          <td class="py-1.5 px-2 text-center">
+            <span class="px-2 py-0.2 rounded font-bold text-[10px] border ${p.badgeCls}">${p.type}</span>
           </td>
-          <td class="py-2 px-2 font-medium text-slate-700">${p.device}</td>
-          <td class="py-2 px-2 text-slate-600">${p.location}</td>
-          <td class="py-2 px-2 text-center">
+          <td class="py-1.5 px-2 font-medium text-slate-700">${p.device}</td>
+          <td class="py-1.5 px-2 text-slate-600">${p.location}</td>
+          <td class="py-1.5 px-2 text-center">
             <span class="inline-flex items-center space-x-1 text-emerald-700 font-semibold text-[10px]">
               <i class="fa-solid fa-check text-xs"></i>
               <span>${p.auth}</span>
@@ -44818,46 +44860,58 @@
 
     function renderCellRequestContainer(cfItem, missPunch, lateMin, earlyMin, pap, day) {
       const container = document.getElementById('cell-detail-request-container');
+      const badgeRequests = document.getElementById('cell-tab-badge-requests');
       if (!container) return;
 
       if (cfItem) {
+        if (badgeRequests) {
+          badgeRequests.className = 'px-1.5 py-0.2 rounded-full text-[10px] bg-purple-100 text-purple-700 font-bold';
+          badgeRequests.innerText = '1 đơn M14';
+        }
         container.innerHTML = `
-          <div class="flex items-center justify-between border-b border-slate-100 pb-2">
-            <span class="font-bold text-slate-800 text-xs flex items-center space-x-1.5">
-              <i class="fa-solid fa-file-contract text-purple-700 mr-1.5"></i>
-              <span>ĐƠN TỪ & CHỨNG TỪ GIẢI TRÌNH LIÊN KẾT (M14 / M09)</span>
+          <div class="flex items-center justify-between border-b border-purple-100 pb-1.5">
+            <span class="font-bold text-purple-950 text-xs flex items-center space-x-1.5">
+              <i class="fa-solid fa-file-contract text-purple-700"></i>
+              <span>ĐƠN GIẢI TRÌNH CÔNG LIÊN KẾT (M14)</span>
             </span>
             <span class="px-2 py-0.5 rounded-full font-bold text-[10px] bg-purple-100 text-purple-900 border border-purple-300">
-              Có chứng từ M14
+              M14: #${cfItem.id}
             </span>
           </div>
-          <div class="p-3 rounded-xl bg-purple-50/70 border border-purple-200 text-slate-800 space-y-1.5">
+          <div class="p-2.5 rounded-lg bg-purple-50/70 border border-purple-200 text-slate-800 space-y-1.5">
             <div class="flex items-center justify-between">
-              <strong class="text-purple-950 font-bold">${cfItem.issueTitle}</strong>
-              <span class="text-[10px] font-mono text-purple-700 font-bold">Mã M14: #${cfItem.id}</span>
+              <strong class="text-purple-950 font-bold text-xs">${cfItem.issueTitle}</strong>
+              <span class="text-emerald-700 font-bold text-[11px] flex items-center space-x-1">
+                <i class="fa-solid fa-circle-check text-emerald-600 text-xs"></i>
+                <span>TBP Đã phê duyệt</span>
+              </span>
             </div>
-            <div class="text-[11px] text-slate-700"><strong>Lý do giải trình:</strong> ${cfItem.reason || cfItem.rootCause}</div>
-            <div class="text-[11px] text-emerald-800 font-medium"><strong>Phương án giải quyết:</strong> ${cfItem.proposal}</div>
+            <div class="text-[11px] text-slate-700"><span class="font-semibold text-slate-600">Lý do giải trình:</span> ${cfItem.reason || cfItem.rootCause}</div>
+            <div class="text-[11px] text-emerald-800 font-medium"><span class="font-semibold text-emerald-900">Phương án đề xuất:</span> ${cfItem.proposal}</div>
             <div class="text-[10px] text-slate-500 pt-1 border-t border-purple-200/60 flex items-center justify-between">
               <span>Căn cứ: <strong class="text-indigo-900">${cfItem.basisTitle || 'Quy chế PAP'}</strong> - ${cfItem.basisDetail || ''}</span>
-              <span class="text-emerald-700 font-bold"><i class="fa-solid fa-circle-check mr-1 text-emerald-600"></i>Đã được Phụ trách Đội/TBP phê duyệt</span>
+              <span class="text-slate-400 font-mono text-[9px]">Hệ thống phê duyệt M14</span>
             </div>
           </div>
         `;
       } else if (lateMin > 15 || earlyMin > 0) {
+        if (badgeRequests) {
+          badgeRequests.className = 'px-1.5 py-0.2 rounded-full text-[10px] bg-amber-100 text-amber-800 font-bold';
+          badgeRequests.innerText = 'Chưa nộp';
+        }
         container.innerHTML = `
-          <div class="flex items-center justify-between border-b border-slate-100 pb-2">
-            <span class="font-bold text-slate-800 text-xs flex items-center space-x-1.5">
-              <i class="fa-solid fa-file-circle-exclamation text-amber-600 mr-1.5"></i>
-              <span>ĐƠN TỪ & CHỨNG TỪ GIẢI TRÌNH LIÊN KẾT (M14)</span>
+          <div class="flex items-center justify-between border-b border-amber-100 pb-1.5">
+            <span class="font-bold text-amber-950 text-xs flex items-center space-x-1.5">
+              <i class="fa-solid fa-file-circle-exclamation text-amber-600"></i>
+              <span>CẢNH BÁO THIẾU ĐƠN GIẢI TRÌNH (M14)</span>
             </span>
             <span class="px-2 py-0.5 rounded-full font-bold text-[10px] bg-amber-100 text-amber-900 border border-amber-300">
-              Chưa có đơn M14
+              Chưa có đơn
             </span>
           </div>
-          <div class="p-3 rounded-xl bg-amber-50/70 border border-amber-300 text-amber-950 space-y-2">
+          <div class="p-2.5 rounded-lg bg-amber-50/70 border border-amber-300 text-amber-950 space-y-2">
             <div class="flex items-start space-x-2">
-              <i class="fa-solid fa-triangle-exclamation text-amber-600 text-sm mt-0.5"></i>
+              <i class="fa-solid fa-triangle-exclamation text-amber-600 text-sm mt-0.5 shrink-0"></i>
               <div>
                 <div class="font-bold text-xs">Phát hiện ${lateMin > 0 ? `Đi muộn ${lateMin} phút` : ''} ${earlyMin > 0 ? `Về sớm ${earlyMin} phút` : ''} chưa gửi đơn giải trình!</div>
                 <div class="text-[11px] text-amber-900 mt-0.5 leading-relaxed">
@@ -44865,30 +44919,35 @@
                 </div>
               </div>
             </div>
-            <div class="pt-2 border-t border-amber-200 flex items-center justify-between">
-              <span class="text-[10px] text-slate-500">HR Admin có thể hỗ trợ tạo đơn hoặc gửi cảnh báo nhắc nhở:</span>
+            <div class="pt-1.5 border-t border-amber-200 flex flex-wrap items-center justify-between gap-1.5">
+              <span class="text-[10px] text-slate-500">Hỗ trợ thao tác nhanh cho HR Admin:</span>
               <div class="flex items-center space-x-2">
                 <button type="button" onclick="sendAttendanceReminderApp('${pap}', ${day})" class="px-2.5 py-1 bg-white hover:bg-slate-100 text-slate-700 border border-slate-300 font-semibold text-[11px] rounded-lg shadow-2xs transition cursor-pointer flex items-center">
-                  <i class="fa-solid fa-mobile-screen mr-1.5 text-slate-500"></i>Nhắc gửi đơn qua App
+                  <i class="fa-solid fa-mobile-screen mr-1 text-slate-500"></i>Nhắc gửi đơn qua App
                 </button>
                 <button type="button" onclick="openAttNewRequestModal('${pap}', '2026-09-${String(day).padStart(2, '0')}')" class="px-2.5 py-1 bg-amber-600 hover:bg-amber-700 text-white font-bold text-[11px] rounded-lg shadow-2xs transition cursor-pointer flex items-center">
-                  <i class="fa-solid fa-pen-nib mr-1.5 text-white"></i>Tạo giải trình hộ
+                  <i class="fa-solid fa-pen-nib mr-1 text-white"></i>Tạo giải trình hộ
                 </button>
               </div>
             </div>
           </div>
         `;
       } else {
+        if (badgeRequests) {
+          badgeRequests.className = 'px-1.5 py-0.2 rounded-full text-[10px] bg-slate-100 text-slate-500 font-medium';
+          badgeRequests.innerText = '0 đơn';
+        }
         container.innerHTML = `
-          <div class="flex items-center justify-between border-b border-slate-100 pb-2">
+          <div class="flex items-center justify-between border-b border-slate-100 pb-1.5">
             <span class="font-bold text-slate-800 text-xs flex items-center space-x-1.5">
-              <i class="fa-solid fa-file-lines text-slate-400 mr-1.5"></i>
+              <i class="fa-solid fa-file-circle-check text-slate-400"></i>
               <span>ĐƠN TỪ & CHỨNG TỪ LIÊN QUAN (M14 / M09)</span>
             </span>
-            <span class="text-slate-400 text-[11px]">Không có phát sinh</span>
+            <span class="text-slate-400 text-[10px]">Tiêu chuẩn</span>
           </div>
-          <div class="py-3 text-center text-slate-400 italic text-[11px]">
-            Ngày làm việc đúng giờ tiêu chuẩn, không có đơn xin nghỉ phép hoặc giải trình bổ sung.
+          <div class="py-4 text-center text-slate-400 italic text-[11px] flex flex-col items-center justify-center space-y-1">
+            <i class="fa-solid fa-clipboard-check text-slate-300 text-xl"></i>
+            <span>Ngày làm việc đúng giờ tiêu chuẩn, không phát sinh đơn xin nghỉ phép hoặc đơn giải trình.</span>
           </div>
         `;
       }
@@ -44906,7 +44965,7 @@
       let nextDay = curDay + delta;
       if (nextDay < 1) nextDay = 30;
       if (nextDay > 30) nextDay = 1;
-      openDailyAttendanceCellDetailModal(pap, nextDay, step);
+      openDailyAttendanceCellDetailModal(pap, nextDay, step, currentCellDetailTab);
     }
 
     function saveDailyAttendanceCellOverride() {
@@ -44958,6 +45017,7 @@
     window.saveDailyAttendanceCellOverride = saveDailyAttendanceCellOverride;
     window.quickApproveCellFromDetailModal = quickApproveCellFromDetailModal;
     window.sendAttendanceReminderApp = sendAttendanceReminderApp;
+    window.switchCellDetailTab = switchCellDetailTab;
 
     // Render chính phân hệ Chốt bảng công (PAP Timesheet)
     function renderAttendanceLockStatus() {
@@ -48447,78 +48507,81 @@
   <!-- ===================================================================== -->
   <!-- MODAL: CHI TIẾT CHẤM CÔNG NGÀY (DAILY ATTENDANCE CELL DETAIL MODAL) -->
   <!-- ===================================================================== -->
-  <div id="modal-daily-attendance-cell" class="fixed inset-0 bg-slate-900/60 backdrop-blur-xs z-[85] flex items-center justify-center p-4 hidden" onclick="if (event.target === this) closeDailyAttendanceCellDetailModal()">
+  <div id="modal-daily-attendance-cell" class="fixed inset-0 bg-slate-900/60 backdrop-blur-xs z-[85] flex items-center justify-center p-3 sm:p-4 hidden" onclick="if (event.target === this) closeDailyAttendanceCellDetailModal()">
     <div class="bg-white rounded-2xl max-w-3xl w-full shadow-2xl border border-slate-200 overflow-hidden transform transition-all max-h-[92vh] flex flex-col">
-      <!-- Modal Header -->
-      <div class="pap-primary text-white px-6 py-4 flex items-center justify-between shrink-0 shadow-sm">
-        <div class="flex items-center space-x-3.5">
-          <div class="w-10 h-10 rounded-xl bg-white/10 flex items-center justify-center backdrop-blur-xs text-white shadow-inner">
-            <i class="fa-solid fa-calendar-day text-white text-lg"></i>
+      <!-- Modal Header: Tinh gọn, giảm chiều cao -->
+      <div class="pap-primary text-white px-4 py-2.5 sm:px-5 sm:py-2.5 flex items-center justify-between shrink-0 shadow-xs">
+        <div class="flex items-center space-x-2.5">
+          <div class="w-8 h-8 rounded-lg bg-white/10 flex items-center justify-center backdrop-blur-xs text-white shrink-0">
+            <i class="fa-solid fa-calendar-day text-white text-sm"></i>
           </div>
           <div>
-            <h3 class="text-base font-bold flex items-center space-x-2">
-              <span>Chi tiết Chấm công Ngày:</span>
+            <h3 class="text-sm font-bold flex items-center space-x-2 leading-tight">
+              <span>Chi tiết Chấm công:</span>
               <span id="cell-detail-date-title" class="tracking-wide text-amber-200 font-mono">--</span>
             </h3>
-            <p class="text-xs text-indigo-100 mt-0.5">Đối soát ca làm việc, dữ liệu chấm công máy/GPS, đơn giải trình M14 & kết quả quy đổi</p>
+            <p class="text-[11px] text-indigo-100 leading-none mt-0.5">Đối soát ca làm việc, lịch sử quẹt thẻ & xử lý đơn giải trình M14</p>
           </div>
         </div>
         <div class="flex items-center space-x-2">
-          <span class="px-2.5 py-0.5 rounded-full text-[11px] bg-white/20 text-white font-semibold hidden sm:inline-block">Quy chuẩn Cảng Phước An</span>
-          <button type="button" onclick="closeDailyAttendanceCellDetailModal()" class="text-white/80 hover:text-white text-2xl leading-none cursor-pointer p-1 rounded-lg hover:bg-white/10 transition">&times;</button>
+          <span class="px-2 py-0.5 rounded-full text-[10px] bg-white/15 text-white font-medium hidden sm:inline-block">PAP Timesheet</span>
+          <button type="button" onclick="closeDailyAttendanceCellDetailModal()" class="text-white/80 hover:text-white text-xl leading-none cursor-pointer p-1 rounded-lg hover:bg-white/10 transition">&times;</button>
         </div>
       </div>
 
-      <!-- Modal Body -->
-      <div class="p-6 space-y-4 text-xs overflow-y-auto">
+      <!-- Modal Body: Tinh gọn khoảng trống phía trên (p-3 space-y-2.5) -->
+      <div class="p-3 sm:p-3.5 space-y-2.5 text-xs overflow-y-auto">
         <input type="hidden" id="cell-detail-pap" value="">
         <input type="hidden" id="cell-detail-day" value="">
         <input type="hidden" id="cell-detail-step" value="">
 
-        <!-- Card 1: Thông tin Nhân sự & Ca quy định -->
-        <div class="flex flex-col sm:flex-row sm:items-center justify-between bg-slate-50 p-4 rounded-2xl border border-slate-200 gap-3 shadow-2xs">
-          <div class="flex items-center space-x-3.5 min-w-0">
-            <div id="cell-detail-emp-avatar" class="w-12 h-12 rounded-xl bg-[#2E3191] text-white font-bold flex items-center justify-center text-sm shrink-0 shadow-xs">
+        <!-- Card 1: Thông tin Nhân sự & Ca quy định: Bỏ khoảng trống thừa, avatar gọn gàng -->
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between bg-slate-50/90 px-3 py-2 rounded-xl border border-slate-200 gap-2 shadow-2xs">
+          <div class="flex items-center space-x-2.5 min-w-0">
+            <div id="cell-detail-emp-avatar" class="shrink-0">
               NV
             </div>
             <div class="min-w-0">
               <div class="flex items-center space-x-2">
-                <span id="cell-detail-emp-name" class="font-bold text-slate-900 text-sm sm:text-base truncate">--</span>
-                <span id="cell-detail-emp-code" class="text-xs font-bold text-[#2E3191] bg-indigo-50 px-2 py-0.5 rounded-md border border-indigo-100 font-mono">--</span>
+                <span id="cell-detail-emp-name" class="font-bold text-slate-900 text-sm truncate">--</span>
+                <span id="cell-detail-emp-code" class="text-[11px] font-bold text-[#2E3191] bg-indigo-50 px-1.5 py-0.2 rounded border border-indigo-100 font-mono">--</span>
               </div>
-              <div id="cell-detail-emp-dept" class="text-xs text-slate-500 font-medium truncate mt-0.5">--</div>
-              <div id="cell-detail-emp-title" class="text-[11px] text-slate-400 font-medium truncate">--</div>
+              <div class="text-[11px] text-slate-500 font-medium truncate flex items-center space-x-1.5 mt-0.5">
+                <span id="cell-detail-emp-dept">--</span>
+                <span class="text-slate-300">•</span>
+                <span id="cell-detail-emp-title" class="text-slate-400">--</span>
+              </div>
             </div>
           </div>
-          <div class="border-t sm:border-t-0 sm:border-l border-slate-200 pt-2 sm:pt-0 sm:pl-4 text-left sm:text-right shrink-0 space-y-1">
-            <div class="flex items-center sm:justify-end space-x-1.5">
-              <span class="text-slate-400 font-semibold uppercase tracking-wider text-[10px]">Ca quy định:</span>
-              <span id="cell-detail-shift-badge" class="px-2 py-0.5 rounded text-[11px] font-bold bg-blue-50 text-[#2E3191] border border-blue-200">--</span>
+          <div class="border-t sm:border-t-0 sm:border-l border-slate-200 pt-1.5 sm:pt-0 sm:pl-3 text-left sm:text-right shrink-0 flex sm:flex-col justify-between sm:justify-center items-center sm:items-end gap-1">
+            <div class="flex items-center space-x-1.5">
+              <span class="text-slate-400 font-semibold uppercase tracking-wider text-[10px]">Ca:</span>
+              <span id="cell-detail-shift-badge" class="px-2 py-0.2 rounded text-[11px] font-bold bg-blue-50 text-[#2E3191] border border-blue-200">--</span>
+              <strong id="cell-detail-shift-hours" class="font-mono text-slate-800 text-xs">--</strong>
             </div>
-            <div class="text-slate-700 font-medium">Khung giờ: <strong id="cell-detail-shift-hours" class="font-mono text-slate-900">--</strong></div>
-            <div class="text-slate-500 text-[11px]">Nghỉ giữa ca: <span id="cell-detail-shift-break">--</span> • Chuẩn: <strong id="cell-detail-std-work" class="text-emerald-700">1.0 công</strong></div>
+            <div class="text-slate-500 text-[10px]">Nghỉ giữa ca: <span id="cell-detail-shift-break">--</span> • Chuẩn: <strong id="cell-detail-std-work" class="text-emerald-700 font-bold">1.0 công</strong></div>
           </div>
         </div>
 
-        <!-- Card 2: Visual Timeline Bar (Trục thời gian trực quan) -->
-        <div class="p-4 rounded-2xl border border-slate-200 bg-white space-y-3 shadow-2xs">
-          <div class="flex items-center justify-between border-b border-slate-100 pb-2">
-            <div class="font-bold text-slate-800 text-xs flex items-center space-x-1.5">
-              <i class="fa-solid fa-chart-gantt text-[#2E3191]"></i>
-              <span>TRỤC THỜI GIAN CHẤM CÔNG THỰC TẾ (TIMELINE VISUALIZATION)</span>
+        <!-- Card 2: Visual Timeline Bar (Trục thời gian trực quan tinh gọn) -->
+        <div class="p-2.5 sm:px-3 sm:py-2 rounded-xl border border-slate-200 bg-white space-y-1.5 shadow-2xs">
+          <div class="flex items-center justify-between border-b border-slate-100 pb-1.5">
+            <div class="font-bold text-slate-800 text-[11px] flex items-center space-x-1.5">
+              <i class="fa-solid fa-chart-gantt text-[#2E3191] text-xs"></i>
+              <span>TRỤC THỜI GIAN CHẤM CÔNG THỰC TẾ (TIMELINE)</span>
             </div>
-            <div class="flex items-center space-x-2 text-[10px] text-slate-500">
-              <span class="inline-flex items-center space-x-1"><span class="w-2.5 h-2.5 rounded bg-[#2E3191]"></span><span>Ca chuẩn</span></span>
-              <span class="inline-flex items-center space-x-1"><span class="w-2.5 h-2.5 rounded bg-indigo-600"></span><span>Thực tế</span></span>
-              <span class="inline-flex items-center space-x-1"><span class="w-2.5 h-2.5 rounded bg-amber-500"></span><span>Trễ/Sớm</span></span>
-              <span class="inline-flex items-center space-x-1"><span class="w-2.5 h-2.5 rounded bg-emerald-500"></span><span>Làm thêm OT</span></span>
+            <div class="flex items-center space-x-2 text-[9px] text-slate-500">
+              <span class="inline-flex items-center space-x-1"><span class="w-2 h-2 rounded bg-[#2E3191]"></span><span>Ca chuẩn</span></span>
+              <span class="inline-flex items-center space-x-1"><span class="w-2 h-2 rounded bg-indigo-600"></span><span>Thực tế</span></span>
+              <span class="inline-flex items-center space-x-1"><span class="w-2 h-2 rounded bg-amber-500"></span><span>Trễ/Sớm</span></span>
+              <span class="inline-flex items-center space-x-1"><span class="w-2 h-2 rounded bg-emerald-500"></span><span>OT</span></span>
             </div>
           </div>
 
           <!-- Timeline Container -->
-          <div class="space-y-2 pt-1">
+          <div class="space-y-1">
             <!-- Thước đo giờ -->
-            <div class="flex justify-between text-[10px] text-slate-400 font-mono px-1 select-none">
+            <div class="flex justify-between text-[9px] text-slate-400 font-mono px-1 select-none">
               <span>05:00</span>
               <span>07:00</span>
               <span>09:00</span>
@@ -48530,20 +48593,20 @@
             </div>
 
             <!-- Thanh 1: Ca chuẩn -->
-            <div class="relative h-6 bg-slate-100 rounded-lg overflow-hidden border border-slate-200 flex items-center">
-              <div id="cell-timeline-plan-bar" class="absolute top-0 bottom-0 bg-[#2E3191] text-white flex items-center justify-center font-mono font-bold text-[10px] rounded shadow-xs" style="left: 21.4%; width: 64.3%;">
+            <div class="relative h-5 bg-slate-100 rounded overflow-hidden border border-slate-200 flex items-center">
+              <div id="cell-timeline-plan-bar" class="absolute top-0 bottom-0 bg-[#2E3191] text-white flex items-center justify-center font-mono font-bold text-[9px] rounded shadow-2xs" style="left: 21.4%; width: 64.3%;">
                 <span id="cell-timeline-plan-label">Ca chuẩn: 08:00 - 17:00 (8h)</span>
               </div>
             </div>
 
             <!-- Thanh 2: Thực tế chấm công -->
-            <div class="relative h-7 bg-slate-100 rounded-lg overflow-hidden border border-slate-200 flex items-center">
+            <div class="relative h-5.5 bg-slate-100 rounded overflow-hidden border border-slate-200 flex items-center">
               <!-- Đoạn trễ (nếu có) -->
               <div id="cell-timeline-late-bar" class="absolute top-0 bottom-0 bg-amber-100 border border-amber-400 border-dashed text-amber-900 font-bold text-[9px] flex items-center justify-center hidden" style="left: 21.4%; width: 5%;">
                 <span id="cell-timeline-late-label">Trễ</span>
               </div>
               <!-- Đoạn làm việc thực tế -->
-              <div id="cell-timeline-actual-bar" class="absolute top-0 bottom-0 bg-indigo-600 text-white flex items-center justify-center font-mono font-bold text-[10px] rounded shadow-xs" style="left: 21.4%; width: 64.3%;">
+              <div id="cell-timeline-actual-bar" class="absolute top-0 bottom-0 bg-indigo-600 text-white flex items-center justify-center font-mono font-bold text-[9px] rounded shadow-2xs" style="left: 21.4%; width: 64.3%;">
                 <span id="cell-timeline-actual-label">Thực tế: 07:55 - 17:05</span>
               </div>
               <!-- Đoạn về sớm (nếu có) -->
@@ -48559,83 +48622,107 @@
         </div>
 
         <!-- Card 3: 5 Thẻ Tóm tắt chỉ số Đối soát trong ngày -->
-        <div class="grid grid-cols-2 sm:grid-cols-5 gap-2.5">
+        <div class="grid grid-cols-2 sm:grid-cols-5 gap-2">
           <!-- Chỉ số 1: Giờ vào -->
-          <div class="p-3 bg-white border border-slate-200 rounded-xl shadow-2xs">
-            <div class="text-[10px] font-bold text-slate-500 uppercase tracking-wider">Vào thực tế (In)</div>
-            <div class="text-base font-extrabold font-mono text-slate-900 mt-0.5" id="cell-detail-ci-val">07:55</div>
-            <div class="text-[10px] text-slate-400 truncate mt-0.5" id="cell-detail-ci-loc">Trụ sở Cảng Phước An</div>
+          <div class="p-2 bg-slate-50/70 border border-slate-200 rounded-lg shadow-2xs">
+            <div class="text-[9px] font-bold text-slate-400 uppercase tracking-wider">Vào (Check-in)</div>
+            <div class="text-sm font-extrabold font-mono text-slate-900 mt-0.5 leading-tight" id="cell-detail-ci-val">07:55</div>
+            <div class="text-[9px] text-slate-400 truncate mt-0.5" id="cell-detail-ci-loc">Trụ sở PAP</div>
           </div>
 
           <!-- Chỉ số 2: Giờ ra -->
-          <div class="p-3 bg-white border border-slate-200 rounded-xl shadow-2xs">
-            <div class="text-[10px] font-bold text-slate-500 uppercase tracking-wider">Ra thực tế (Out)</div>
-            <div class="text-base font-extrabold font-mono text-slate-900 mt-0.5" id="cell-detail-co-val">17:06</div>
-            <div class="text-[10px] text-slate-400 truncate mt-0.5" id="cell-detail-co-loc">Trụ sở Cảng Phước An</div>
+          <div class="p-2 bg-slate-50/70 border border-slate-200 rounded-lg shadow-2xs">
+            <div class="text-[9px] font-bold text-slate-400 uppercase tracking-wider">Ra (Check-out)</div>
+            <div class="text-sm font-extrabold font-mono text-slate-900 mt-0.5 leading-tight" id="cell-detail-co-val">17:06</div>
+            <div class="text-[9px] text-slate-400 truncate mt-0.5" id="cell-detail-co-loc">Trụ sở PAP</div>
           </div>
 
           <!-- Chỉ số 3: Đi muộn -->
-          <div class="p-3 bg-white border border-slate-200 rounded-xl shadow-2xs">
-            <div class="text-[10px] font-bold text-slate-500 uppercase tracking-wider">Đi muộn</div>
-            <div class="text-base font-extrabold font-mono text-slate-900 mt-0.5" id="cell-detail-late-val">0 phút</div>
-            <div class="text-[10px] font-semibold mt-0.5" id="cell-detail-late-status">
+          <div class="p-2 bg-slate-50/70 border border-slate-200 rounded-lg shadow-2xs">
+            <div class="text-[9px] font-bold text-slate-400 uppercase tracking-wider">Đi muộn</div>
+            <div class="text-sm font-extrabold font-mono text-slate-900 mt-0.5 leading-tight" id="cell-detail-late-val">0 phút</div>
+            <div class="text-[9px] font-semibold mt-0.5" id="cell-detail-late-status">
               <span class="text-emerald-600">Đúng giờ</span>
             </div>
           </div>
 
           <!-- Chỉ số 4: Về sớm -->
-          <div class="p-3 bg-white border border-slate-200 rounded-xl shadow-2xs">
-            <div class="text-[10px] font-bold text-slate-500 uppercase tracking-wider">Về sớm</div>
-            <div class="text-base font-extrabold font-mono text-slate-900 mt-0.5" id="cell-detail-early-val">0 phút</div>
-            <div class="text-[10px] font-semibold mt-0.5" id="cell-detail-early-status">
+          <div class="p-2 bg-slate-50/70 border border-slate-200 rounded-lg shadow-2xs">
+            <div class="text-[9px] font-bold text-slate-400 uppercase tracking-wider">Về sớm</div>
+            <div class="text-sm font-extrabold font-mono text-slate-900 mt-0.5 leading-tight" id="cell-detail-early-val">0 phút</div>
+            <div class="text-[9px] font-semibold mt-0.5" id="cell-detail-early-status">
               <span class="text-emerald-600">Đúng giờ</span>
             </div>
           </div>
 
           <!-- Chỉ số 5: Thời gian làm việc -->
-          <div class="p-3 bg-indigo-50/60 border border-indigo-200 rounded-xl shadow-2xs col-span-2 sm:col-span-1">
-            <div class="text-[10px] font-bold text-indigo-900 uppercase tracking-wider">Làm việc thực tế</div>
-            <div class="text-base font-extrabold font-mono text-indigo-950 mt-0.5" id="cell-detail-work-duration">8h 11p</div>
-            <div class="text-[10px] text-indigo-700 font-bold mt-0.5" id="cell-detail-temp-work">Tạm tính: 1.0 công</div>
+          <div class="p-2 bg-indigo-50/70 border border-indigo-200 rounded-lg shadow-2xs col-span-2 sm:col-span-1">
+            <div class="text-[9px] font-bold text-indigo-900 uppercase tracking-wider">Làm việc thực tế</div>
+            <div class="text-sm font-extrabold font-mono text-indigo-950 mt-0.5 leading-tight" id="cell-detail-work-duration">8h 11p</div>
+            <div class="text-[9px] text-indigo-700 font-bold mt-0.5" id="cell-detail-temp-work">Tạm tính: 1.0 công</div>
           </div>
         </div>
 
-        <!-- Card 4: Lịch sử Chấm công chi tiết (Raw Attendance Logs) -->
-        <div class="p-4 rounded-2xl border border-slate-200 bg-white space-y-2.5 shadow-2xs">
-          <div class="flex items-center justify-between border-b border-slate-100 pb-2">
-            <span class="font-bold text-slate-800 text-xs flex items-center space-x-1.5">
-              <i class="fa-solid fa-clock-rotate-left text-slate-700"></i>
-              <span>LỊCH SỬ DỮ LIỆU CHẤM CÔNG (RAW ATTENDANCE LOGS)</span>
-            </span>
-            <span class="text-[11px] text-slate-500" id="cell-detail-punch-count">2 lượt ghi nhận</span>
+        <!-- CỤM TAB: PHÂN TÁCH LỊCH SỬ CHẤM CÔNG VÀ ĐƠN ĐỀ XUẤT (M14) RA TAB RIÊNG -->
+        <div class="border-b border-slate-200 flex items-center justify-between pt-0.5">
+          <div class="flex space-x-1.5">
+            <!-- Tab 1 Button: Lịch sử chấm công -->
+            <button type="button" id="cell-tab-btn-punches" onclick="switchCellDetailTab('punches')" class="px-3 py-1.5 text-xs font-bold border-b-2 border-[#2E3191] text-[#2E3191] flex items-center space-x-1.5 transition cursor-pointer">
+              <i class="fa-solid fa-clock-rotate-left text-xs"></i>
+              <span>Lịch sử chấm công (Raw Logs)</span>
+              <span id="cell-tab-badge-punches" class="px-1.5 py-0.2 rounded-full text-[10px] bg-indigo-100 text-[#2E3191] font-mono font-bold">2</span>
+            </button>
+            <!-- Tab 2 Button: Đơn đề xuất & Giải trình M14 -->
+            <button type="button" id="cell-tab-btn-requests" onclick="switchCellDetailTab('requests')" class="px-3 py-1.5 text-xs font-semibold border-b-2 border-transparent text-slate-500 hover:text-slate-800 flex items-center space-x-1.5 transition cursor-pointer">
+              <i class="fa-solid fa-file-signature text-xs"></i>
+              <span>Đơn đề xuất & Giải trình (M14)</span>
+              <span id="cell-tab-badge-requests" class="px-1.5 py-0.2 rounded-full text-[10px] bg-slate-100 text-slate-600 font-semibold">0</span>
+            </button>
           </div>
-          <div class="overflow-x-auto">
-            <table class="w-full text-left text-xs">
-              <thead class="bg-slate-50 text-slate-600 text-[10px] font-bold uppercase border-b border-slate-200">
-                <tr>
-                  <th class="py-1.5 px-2 text-center w-12">Lượt</th>
-                  <th class="py-1.5 px-2">Thời gian</th>
-                  <th class="py-1.5 px-2 text-center">Sự kiện</th>
-                  <th class="py-1.5 px-2">Thiết bị chấm công</th>
-                  <th class="py-1.5 px-2">Vị trí GPS / Địa điểm</th>
-                  <th class="py-1.5 px-2 text-center">Xác thực</th>
-                </tr>
-              </thead>
-              <tbody id="cell-detail-punches-tbody" class="divide-y divide-slate-100 font-medium">
-                <!-- Rendered dynamically -->
-              </tbody>
-            </table>
-          </div>
+          <span class="text-[10px] text-slate-400 italic hidden sm:inline-block">Dữ liệu đối soát máy quẹt thẻ PAP & Đơn M14</span>
         </div>
 
-        <!-- Card 5: Chứng từ & Đơn từ liên quan (M14 / M09) -->
-        <div id="cell-detail-request-container" class="p-4 rounded-2xl border border-slate-200 bg-white space-y-2.5 shadow-2xs">
-          <!-- Rendered dynamically -->
+        <!-- CỤM NỘI DUNG THEO TAB (HIỂN THỊ ĐỘC LẬP TỪNG TAB, KHÔNG XẾP CHỒNG) -->
+        <div>
+          <!-- Tab Pane 1: Lịch sử Chấm công chi tiết (Raw Attendance Logs) -->
+          <div id="cell-tab-pane-punches" class="p-2.5 sm:p-3 rounded-xl border border-slate-200 bg-white space-y-2 shadow-2xs">
+            <div class="flex items-center justify-between text-slate-500 text-[11px] pb-1 border-b border-slate-100">
+              <span class="font-semibold text-slate-700 flex items-center space-x-1">
+                <i class="fa-solid fa-server text-slate-400 text-[10px]"></i>
+                <span>Ghi nhận từ máy chấm công vân tay / khuôn mặt & GPS</span>
+              </span>
+              <span class="text-[11px] text-slate-500 font-mono" id="cell-detail-punch-count">2 lượt ghi nhận</span>
+            </div>
+            <div class="overflow-x-auto max-h-40 overflow-y-auto">
+              <table class="w-full text-left text-xs">
+                <thead class="bg-slate-50 text-slate-600 text-[10px] font-bold uppercase border-b border-slate-200 sticky top-0">
+                  <tr>
+                    <th class="py-1.5 px-2 text-center w-10">Lượt</th>
+                    <th class="py-1.5 px-2">Thời gian quẹt</th>
+                    <th class="py-1.5 px-2 text-center">Sự kiện</th>
+                    <th class="py-1.5 px-2">Thiết bị chấm công</th>
+                    <th class="py-1.5 px-2">Vị trí GPS / Địa điểm</th>
+                    <th class="py-1.5 px-2 text-center">Xác thực</th>
+                  </tr>
+                </thead>
+                <tbody id="cell-detail-punches-tbody" class="divide-y divide-slate-100 font-medium">
+                  <!-- Rendered dynamically -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- Tab Pane 2: Chứng từ & Đơn đề xuất / Giải trình liên quan (M14 / M09) -->
+          <div id="cell-tab-pane-requests" class="hidden">
+            <div id="cell-detail-request-container" class="p-2.5 sm:p-3 rounded-xl border border-slate-200 bg-white space-y-2 shadow-2xs">
+              <!-- Rendered dynamically -->
+            </div>
+          </div>
         </div>
 
         <!-- Card 6: Kết quả Tính công & Khu vực Thao tác của HR Admin (Override) -->
-        <div class="p-4 rounded-2xl border border-indigo-200 bg-indigo-50/50 space-y-3 shadow-2xs">
-          <div class="flex items-center justify-between border-b border-indigo-200/80 pb-2">
+        <div class="p-2.5 sm:p-3 rounded-xl border border-indigo-200 bg-indigo-50/50 space-y-2 shadow-2xs">
+          <div class="flex items-center justify-between border-b border-indigo-200/80 pb-1.5">
             <div class="font-bold text-indigo-950 text-xs flex items-center space-x-1.5">
               <i class="fa-solid fa-sliders text-indigo-900"></i>
               <span>ĐỐI SOÁT & ĐIỀU CHỈNH CÔNG (HR ADMIN OVERRIDE)</span>
@@ -48645,10 +48732,10 @@
             </span>
           </div>
 
-          <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-2.5">
             <div>
-              <label class="block font-bold text-slate-700 mb-1">Ký hiệu công áp dụng:</label>
-              <select id="cell-override-symbol" class="w-full px-2.5 py-1.5 border border-slate-300 rounded-lg text-xs font-bold text-[#2E3191] bg-white outline-none">
+              <label class="block font-bold text-slate-700 mb-1 text-[11px]">Ký hiệu công áp dụng:</label>
+              <select id="cell-override-symbol" class="w-full px-2 py-1.5 border border-slate-300 rounded-lg text-xs font-bold text-[#2E3191] bg-white outline-none">
                 <option value="X">[X] 1.0 công Hành chính (08:00 - 17:00)</option>
                 <option value="0.75X">[0.75X] 0.75 công (Đi muộn > 30p không đơn)</option>
                 <option value="0.5X">[0.5X] 0.5 công nửa ngày</option>
@@ -48667,22 +48754,22 @@
             </div>
 
             <div>
-              <label class="block font-bold text-slate-700 mb-1">Số công hưởng lương:</label>
-              <input type="number" id="cell-override-days" step="0.25" min="0" max="1" value="1.0" class="w-full px-2.5 py-1.5 border border-slate-300 rounded-lg text-xs font-bold font-mono text-emerald-800 bg-white outline-none">
+              <label class="block font-bold text-slate-700 mb-1 text-[11px]">Số công hưởng lương:</label>
+              <input type="number" id="cell-override-days" step="0.25" min="0" max="1" value="1.0" class="w-full px-2 py-1.5 border border-slate-300 rounded-lg text-xs font-bold font-mono text-emerald-800 bg-white outline-none">
             </div>
 
             <div>
-              <label class="block font-bold text-slate-700 mb-1">Lý do điều chỉnh / Ghi chú kiểm toán:</label>
-              <input type="text" id="cell-override-note" placeholder="Nhập lý do điều chỉnh..." class="w-full px-2.5 py-1.5 border border-slate-300 rounded-lg text-xs bg-white text-slate-800 outline-none">
+              <label class="block font-bold text-slate-700 mb-1 text-[11px]">Lý do điều chỉnh / Ghi chú kiểm toán:</label>
+              <input type="text" id="cell-override-note" placeholder="Nhập lý do điều chỉnh..." class="w-full px-2 py-1.5 border border-slate-300 rounded-lg text-xs bg-white text-slate-800 outline-none">
             </div>
           </div>
 
-          <div class="pt-2 flex flex-wrap items-center justify-between gap-2 border-t border-indigo-200/80">
+          <div class="pt-1.5 flex flex-wrap items-center justify-between gap-2 border-t border-indigo-200/80">
             <div id="cell-detail-quick-action-area" class="flex items-center space-x-2">
-              <!-- Rendered dynamically (Ví dụ: Nút Duyệt M14) -->
+              <!-- Rendered dynamically -->
             </div>
             <div class="flex items-center space-x-2">
-              <button type="button" onclick="saveDailyAttendanceCellOverride()" class="px-4 py-2 bg-[#2E3191] hover:bg-[#252876] text-white font-bold text-xs rounded-xl shadow-xs transition cursor-pointer flex items-center space-x-1.5">
+              <button type="button" onclick="saveDailyAttendanceCellOverride()" class="px-3.5 py-1.5 bg-[#2E3191] hover:bg-[#252876] text-white font-bold text-xs rounded-xl shadow-2xs transition cursor-pointer flex items-center space-x-1.5">
                 <i class="fa-solid fa-floppy-disk text-xs"></i>
                 <span>Lưu điều chỉnh HR Override</span>
               </button>
@@ -48692,7 +48779,7 @@
       </div>
 
       <!-- Modal Footer -->
-      <div class="px-6 py-3.5 bg-slate-50 border-t border-slate-200 flex items-center justify-between shrink-0">
+      <div class="px-4 py-2.5 bg-slate-50 border-t border-slate-200 flex items-center justify-between shrink-0">
         <div class="flex items-center space-x-1.5 text-xs text-slate-600">
           <button type="button" onclick="navigateDailyCellModal(-1)" class="px-2.5 py-1.5 bg-white border border-slate-300 hover:bg-slate-100 rounded-lg text-xs font-bold transition cursor-pointer shadow-2xs flex items-center space-x-1" title="Xem ngày trước">
             <i class="fa-solid fa-chevron-left text-[10px]"></i>
@@ -48703,7 +48790,7 @@
             <i class="fa-solid fa-chevron-right text-[10px]"></i>
           </button>
         </div>
-        <button type="button" onclick="closeDailyAttendanceCellDetailModal()" class="px-4 py-2 bg-white border border-slate-300 hover:bg-slate-100 text-slate-700 rounded-xl text-xs font-bold transition cursor-pointer shadow-2xs">
+        <button type="button" onclick="closeDailyAttendanceCellDetailModal()" class="px-4 py-1.5 bg-white border border-slate-300 hover:bg-slate-100 text-slate-700 rounded-xl text-xs font-bold transition cursor-pointer shadow-2xs">
           Đóng
         </button>
       </div>
