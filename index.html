@@ -34990,6 +34990,33 @@
     let currentLeaveRequestTab = 'sent';
 
     let leaveRequestsData = [
+      // Đơn xin nghỉ phép năm đã phê duyệt của Nguyễn Văn An (PAP0009) ngày 18/09/2026 (Kỳ công Tháng 09/2026)
+      {
+        id: 'DON-2026-09-018',
+        scopeType: 'SENT',
+        empCode: 'PAP0009',
+        empName: 'Nguyễn Văn An',
+        empDept: 'Phòng Phát triển Phần mềm',
+        empAvatar: '',
+        empInitials: 'NA',
+        empColor: 'bg-indigo-700',
+        typeCode: 'AL',
+        typeName: 'Nghỉ Phép năm (Annual Leave)',
+        session: 'FULL',
+        fromDate: '2026-09-18',
+        toDate: '2026-09-18',
+        days: 1.0,
+        handoverCode: 'PAP0108',
+        handoverName: 'Trần Văn B',
+        watchers: ['Lê Văn C (PAP0245)'],
+        reason: 'Nghỉ giải quyết việc gia đình cá nhân theo kế hoạch',
+        attachment: '',
+        createdAt: '15/09/2026',
+        status: 'APPROVED',
+        approver: 'Ban Giám Đốc (TGĐ Phạm Quốc Tuấn)',
+        approvedAt: '16/09/2026 14:15',
+        note: 'Đã duyệt: Trừ 1.0 ngày quỹ phép năm 2026; Đã bàn giao công việc kỹ thuật'
+      },
       // 1. ĐƠN GỬI ĐI (SENT) - Do Trần Thị Mai Phương (PAP0009) gửi đi
       {
         id: 'DON-2026-S01',
@@ -44748,7 +44775,7 @@
 
       renderVisualTimelineBar(shiftCode, actualIn, actualOut, lateMin, earlyMin, otMin, isMissIn, isMissOut);
       renderCellRawPunchesLog(actualIn, actualOut, inLoc, outLoc, dateStr, isMissIn, isMissOut, shiftCode);
-      renderCellRequestContainer(cfItem, missPunch, lateMin, earlyMin, pap, day);
+      renderCellRequestContainer(cfItem, missPunch, lateMin, earlyMin, pap, day, shiftCode, activeSym, empName, empDept, dateStr);
 
       const overrideSel = document.getElementById('cell-override-symbol');
       const overrideDays = document.getElementById('cell-override-days');
@@ -44810,7 +44837,10 @@
       // Xử lý Active Tab theo trạng thái
       if (preferTab) {
         switchCellDetailTab(preferTab);
-      } else if (cfItem) {
+      } else if (cfItem || shiftCode === 'P' || (activeSym && activeSym.includes('P')) || shiftCode === 'Ro' || activeSym === 'CT') {
+        // Đối với ngày Nghỉ phép (P), Thai sản (Ro), Công tác (CT), Ngoại lệ (cfItem):
+        // Chứng từ / Đơn từ phê duyệt (M14 / M09) là căn cứ pháp lý & tính công cốt lõi, không có log chấm công quẹt thẻ.
+        // Tự động ưu tiên hiển thị ngay tab "Đơn đề xuất & Giải trình (M14 / M09)" để người dùng đối soát chứng từ!
         switchCellDetailTab('requests');
       } else {
         switchCellDetailTab('punches');
@@ -45018,11 +45048,18 @@
       `).join('');
     }
 
-    function renderCellRequestContainer(cfItem, missPunch, lateMin, earlyMin, pap, day) {
+    function renderCellRequestContainer(cfItem, missPunch, lateMin, earlyMin, pap, day, shiftCode, activeSym, empName, empDept, dateStr) {
       const container = document.getElementById('cell-detail-request-container');
       const badgeRequests = document.getElementById('cell-tab-badge-requests');
       if (!container) return;
 
+      const isoDay = String(day).padStart(2, '0');
+      const isoDate = `2026-09-${isoDay}`;
+      const displayDateStr = dateStr || `${isoDay}/09/2026`;
+      const empDisplayName = empName || 'Nhân sự';
+      const empDisplayDept = empDept || 'Phòng Phát triển Phần mềm';
+
+      // 1. TRƯỜNG HỢP CÓ CFITEM (NGOẠI LỆ / BẤT THƯỜNG ĐÃ ĐƯỢC ĐỊNH DANH M14)
       if (cfItem) {
         if (badgeRequests) {
           badgeRequests.className = 'px-1.5 py-0.2 rounded-full text-[10px] bg-purple-100 text-purple-700 font-bold';
@@ -45054,7 +45091,277 @@
             </div>
           </div>
         `;
-      } else if (lateMin > 15 || earlyMin > 0) {
+        return;
+      }
+
+      // 2. TRƯỜNG HỢP NGHỈ PHÉP NĂM (P / 0.5P / P0.5 / 0.25P)
+      if (shiftCode === 'P' || (activeSym && activeSym.includes('P'))) {
+        const leaveDays = (activeSym === '0.5P' ? 0.5 : (activeSym === '0.25P' ? 0.25 : 1.0));
+        const leaveId = `DON-2026-09-${isoDay}`;
+        
+        // Đảm bảo đơn nghỉ phép tồn tại trong leaveRequestsData để có thể bấm xem chi tiết popup modal M09
+        if (typeof leaveRequestsData !== 'undefined') {
+          let reqObj = leaveRequestsData.find(r => r.id === leaveId || (r.empCode === pap && r.fromDate === isoDate));
+          if (!reqObj) {
+            reqObj = {
+              id: leaveId,
+              scopeType: 'SENT',
+              empCode: pap,
+              empName: empDisplayName,
+              empDept: empDisplayDept,
+              empAvatar: '',
+              empInitials: empDisplayName.slice(0, 2).toUpperCase(),
+              empColor: 'bg-indigo-700',
+              typeCode: 'AL',
+              typeName: 'Nghỉ Phép năm (Annual Leave)',
+              session: leaveDays === 0.5 ? 'MORNING' : 'FULL',
+              fromDate: isoDate,
+              toDate: isoDate,
+              days: leaveDays,
+              handoverCode: 'PAP0108',
+              handoverName: 'Trần Văn B',
+              watchers: ['Lê Văn C (PAP0245)'],
+              reason: 'Nghỉ giải quyết việc gia đình cá nhân theo kế hoạch',
+              attachment: '',
+              createdAt: `${String(Math.max(1, day - 3)).padStart(2, '0')}/09/2026`,
+              status: 'APPROVED',
+              approver: 'Ban Giám Đốc (TGĐ Phạm Quốc Tuấn)',
+              approvedAt: `${String(Math.max(1, day - 2)).padStart(2, '0')}/09/2026 14:15`,
+              note: `Đã duyệt: Trừ ${leaveDays} ngày quỹ phép năm 2026; Đã bàn giao công việc kỹ thuật`
+            };
+            leaveRequestsData.push(reqObj);
+          }
+        }
+
+        if (badgeRequests) {
+          badgeRequests.className = 'px-1.5 py-0.2 rounded-full text-[10px] bg-emerald-100 text-emerald-800 font-bold';
+          badgeRequests.innerText = '1 đơn đã duyệt';
+        }
+
+        const createdDayStr = `${String(Math.max(1, day - 3)).padStart(2, '0')}/09/2026 14:30`;
+        const approvedDay1Str = `${String(Math.max(1, day - 2)).padStart(2, '0')}/09/2026 09:15`;
+        const approvedDay2Str = `${String(Math.max(1, day - 1)).padStart(2, '0')}/09/2026 11:20`;
+
+        container.innerHTML = `
+          <div class="flex items-center justify-between border-b border-emerald-100 pb-1.5">
+            <span class="font-bold text-emerald-950 text-xs flex items-center space-x-1.5">
+              <i class="fa-solid fa-calendar-check text-emerald-600"></i>
+              <span>ĐƠN NGHỈ PHÉP NĂM ĐÃ PHÊ DUYỆT (M09 / QUY TRÌNH DUYỆT M14)</span>
+            </span>
+            <span class="px-2 py-0.5 rounded-full font-bold text-[10px] bg-emerald-100 text-emerald-800 border border-emerald-300">
+              Mã đơn: #${leaveId}
+            </span>
+          </div>
+          <div class="p-3 rounded-xl bg-gradient-to-br from-emerald-50/80 to-teal-50/50 border border-emerald-200 text-slate-800 space-y-2.5">
+            <div class="flex items-center justify-between">
+              <div class="font-bold text-emerald-950 text-xs flex items-center space-x-1.5">
+                <i class="fa-solid fa-umbrella-beach text-emerald-600"></i>
+                <span>Đơn xin nghỉ phép năm (P) - Hưởng 100% lương</span>
+              </div>
+              <span class="text-emerald-700 font-bold text-[10px] sm:text-[11px] flex items-center space-x-1 bg-emerald-100/90 px-2 py-0.5 rounded-full border border-emerald-300">
+                <i class="fa-solid fa-circle-check text-emerald-600 text-xs"></i>
+                <span>Đã phê duyệt (Hoàn tất)</span>
+              </span>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-[11px] bg-white/80 p-2.5 rounded-lg border border-emerald-100">
+              <div><span class="text-slate-500">Thời gian nghỉ:</span> <strong class="text-slate-800">${displayDateStr} (${leaveDays === 0.5 ? 'Nửa ca - 0.5 ngày' : 'Cả ngày - 1.0 công'})</strong></div>
+              <div><span class="text-slate-500">Loại phép:</span> <strong class="text-indigo-900">Phép năm thường niên (AL)</strong></div>
+              <div class="sm:col-span-2"><span class="text-slate-500">Lý do nghỉ:</span> <span class="text-slate-800 font-medium">Giải quyết công việc cá nhân gia đình theo kế hoạch</span></div>
+              <div><span class="text-slate-500">Khấu trừ Quỹ phép M09:</span> <span class="text-emerald-700 font-bold">Đã trừ ${leaveDays} ngày (Còn lại: 7.5 / 14 ngày)</span></div>
+              <div><span class="text-slate-500">Người nhận bàn giao:</span> <span class="text-slate-700 font-medium">Trần Văn B (PAP0108 - Kỹ sư PM)</span></div>
+            </div>
+
+            <!-- Mini-Audit Trail: Quy trình duyệt M14 liên thông -->
+            <div class="pt-1 border-t border-emerald-200/60">
+              <div class="text-[10px] font-bold text-slate-600 mb-1 flex items-center space-x-1">
+                <i class="fa-solid fa-route text-emerald-700"></i>
+                <span>LỊCH SỬ PHÊ DUYỆT LIÊN THÔNG (M14 AUDIT TRAIL):</span>
+              </div>
+              <div class="grid grid-cols-1 sm:grid-cols-3 gap-1.5 text-[10px]">
+                <div class="p-1.5 bg-slate-50 rounded border border-slate-200">
+                  <div class="text-slate-400 font-mono">1. Khởi tạo đơn</div>
+                  <div class="font-semibold text-slate-800">${empDisplayName}</div>
+                  <div class="text-slate-500 text-[9px]">${createdDayStr} (App PAP Mobile)</div>
+                </div>
+                <div class="p-1.5 bg-emerald-50/70 rounded border border-emerald-200">
+                  <div class="text-emerald-700 font-mono font-bold">2. TBP Phê duyệt</div>
+                  <div class="font-semibold text-emerald-950">Lê Hoàng Long (Quản lý)</div>
+                  <div class="text-emerald-700 text-[9px]">${approvedDay1Str} • Đã duyệt</div>
+                </div>
+                <div class="p-1.5 bg-indigo-50/70 rounded border border-indigo-200">
+                  <div class="text-indigo-700 font-mono font-bold">3. Nhân sự Đối soát</div>
+                  <div class="font-semibold text-indigo-950">Phòng HC-NS PAP</div>
+                  <div class="text-indigo-700 text-[9px]">${approvedDay2Str} • Đã trừ quỹ M09 & đồng bộ</div>
+                </div>
+              </div>
+            </div>
+
+            <div class="pt-1.5 border-t border-emerald-200 flex flex-wrap items-center justify-between gap-1.5">
+              <span class="text-[10px] text-slate-500 italic">Căn cứ: Điều 113 Bộ luật Lao động 2019 & Quy chế Quản lý Nghỉ phép PAP-QC03</span>
+              <div class="flex items-center space-x-2">
+                <button type="button" onclick="openViewLeaveRequestModal('${leaveId}')" class="px-2.5 py-1 bg-emerald-700 hover:bg-emerald-800 text-white font-bold text-[11px] rounded-lg shadow-2xs transition cursor-pointer flex items-center space-x-1">
+                  <i class="fa-solid fa-file-lines text-xs mr-1"></i>
+                  <span>Xem chi tiết đơn M09</span>
+                </button>
+                <button type="button" onclick="showToast('Đơn #${leaveId} đã hoàn tất 100% quy trình duyệt M14 và đồng bộ Bảng công!', 'success')" class="px-2.5 py-1 bg-white hover:bg-slate-50 text-slate-700 border border-slate-300 font-semibold text-[11px] rounded-lg shadow-2xs transition cursor-pointer flex items-center space-x-1">
+                  <i class="fa-solid fa-circle-info text-[#2E3191] text-xs mr-1"></i>
+                  <span>Xác nhận hợp lệ</span>
+                </button>
+              </div>
+            </div>
+          </div>
+        `;
+        return;
+      }
+
+      // 3. TRƯỜNG HỢP NGHỈ THAI SẢN (Ro)
+      if (shiftCode === 'Ro' || activeSym === 'Ro') {
+        if (badgeRequests) {
+          badgeRequests.className = 'px-1.5 py-0.2 rounded-full text-[10px] bg-pink-100 text-pink-800 font-bold';
+          badgeRequests.innerText = '1 quyết định đã duyệt';
+        }
+        container.innerHTML = `
+          <div class="flex items-center justify-between border-b border-pink-100 pb-1.5">
+            <span class="font-bold text-pink-950 text-xs flex items-center space-x-1.5">
+              <i class="fa-solid fa-baby-carriage text-pink-600"></i>
+              <span>QUYẾT ĐỊNH NGHỈ CHẾ ĐỘ THAI SẢN (BHXH / M09)</span>
+            </span>
+            <span class="px-2 py-0.5 rounded-full font-bold text-[10px] bg-pink-100 text-pink-800 border border-pink-300">
+              #QĐ-TS-2026-088
+            </span>
+          </div>
+          <div class="p-3 rounded-xl bg-pink-50/60 border border-pink-200 text-slate-800 space-y-2">
+            <div class="flex items-center justify-between">
+              <div class="font-bold text-pink-950 text-xs">Chế độ thai sản 6 tháng theo Luật BHXH</div>
+              <span class="text-pink-700 font-bold text-[11px] flex items-center space-x-1 bg-white px-2 py-0.5 rounded-full border border-pink-200">
+                <i class="fa-solid fa-circle-check text-pink-600"></i>
+                <span>Đã thẩm định & nộp BHXH</span>
+              </span>
+            </div>
+            <div class="text-[11px] text-slate-700 leading-relaxed">
+              Nhân sự hưởng chế độ thai sản theo Luật BHXH 2014. Thời gian nghỉ từ ngày 01/08/2026 đến 31/01/2027. Cơ quan BHXH tỉnh Đồng Nai chi trả 100% trợ cấp thai sản theo lương đóng bảo hiểm.
+            </div>
+            <div class="text-[10px] text-slate-500 pt-1 border-t border-pink-200/60 flex items-center justify-between">
+              <span>Căn cứ: Quyết định 156/QĐ-PAP & Hồ sơ BHXH hợp lệ</span>
+              <span class="text-slate-400 font-mono text-[9px]">Đồng bộ tự động M03/M09</span>
+            </div>
+          </div>
+        `;
+        return;
+      }
+
+      // 4. TRƯỜNG HỢP NGHỈ LỄ QUỐC KHÁNH (L)
+      if (shiftCode === 'L' || activeSym === 'L') {
+        if (badgeRequests) {
+          badgeRequests.className = 'px-1.5 py-0.2 rounded-full text-[10px] bg-amber-100 text-amber-900 font-bold';
+          badgeRequests.innerText = 'Quyết định Lễ';
+        }
+        container.innerHTML = `
+          <div class="flex items-center justify-between border-b border-amber-100 pb-1.5">
+            <span class="font-bold text-amber-950 text-xs flex items-center space-x-1.5">
+              <i class="fa-solid fa-flag text-rose-600"></i>
+              <span>LỊCH NGHỈ LỄ QUỐC GIA THEO QUY ĐỊNH (M09 / QUYẾT ĐỊNH CẢNG PAP)</span>
+            </span>
+            <span class="px-2 py-0.5 rounded-full font-bold text-[10px] bg-amber-100 text-amber-900 border border-amber-300">
+              #188/QĐ-PAP-2026
+            </span>
+          </div>
+          <div class="p-3 rounded-xl bg-amber-50/60 border border-amber-200 text-slate-800 space-y-2">
+            <div class="flex items-center justify-between">
+              <div class="font-bold text-amber-950 text-xs">Nghỉ Lễ Quốc khánh 02/09 (Hưởng 100% nguyên lương)</div>
+              <span class="text-emerald-700 font-bold text-[11px] flex items-center space-x-1 bg-white px-2 py-0.5 rounded-full border border-emerald-300">
+                <i class="fa-solid fa-circle-check text-emerald-600"></i>
+                <span>Hiệu lực toàn Cảng</span>
+              </span>
+            </div>
+            <div class="text-[11px] text-slate-700 leading-relaxed">
+              Áp dụng cho toàn thể Cán bộ nhân viên Cảng Quốc tế Phước An theo thông báo của Bộ Lao động - Thương binh & Xã hội và Quyết định của Tổng Giám đốc. Không cần nộp đơn nghỉ phép cá nhân.
+            </div>
+            <div class="text-[10px] text-slate-500 pt-1 border-t border-amber-200/60 flex items-center justify-between">
+              <span>Căn cứ: Điểm đ Khoản 1 Điều 112 Bộ luật Lao động 2019</span>
+              <span class="text-slate-400 font-mono text-[9px]">Lịch công ty M09</span>
+            </div>
+          </div>
+        `;
+        return;
+      }
+
+      // 5. TRƯỜNG HỢP CÔNG TÁC NGOÀI CẢNG (CT)
+      if (activeSym === 'CT') {
+        if (badgeRequests) {
+          badgeRequests.className = 'px-1.5 py-0.2 rounded-full text-[10px] bg-blue-100 text-[#2E3191] font-bold';
+          badgeRequests.innerText = '1 lệnh công tác';
+        }
+        container.innerHTML = `
+          <div class="flex items-center justify-between border-b border-blue-100 pb-1.5">
+            <span class="font-bold text-blue-950 text-xs flex items-center space-x-1.5">
+              <i class="fa-solid fa-briefcase text-[#2E3191]"></i>
+              <span>LỆNH ĐIỀU ĐỘNG CÔNG TÁC NGOÀI VĂN PHÒNG (M14)</span>
+            </span>
+            <span class="px-2 py-0.5 rounded-full font-bold text-[10px] bg-blue-100 text-[#2E3191] border border-blue-300">
+              #LĐĐ-2026-09-${isoDay}
+            </span>
+          </div>
+          <div class="p-3 rounded-xl bg-blue-50/60 border border-blue-200 text-slate-800 space-y-2">
+            <div class="flex items-center justify-between">
+              <div class="font-bold text-[#2E3191] text-xs">Công tác chuyên môn ngoài Cảng (Tính đủ 1.0 công)</div>
+              <span class="text-emerald-700 font-bold text-[11px] flex items-center space-x-1 bg-white px-2 py-0.5 rounded-full border border-emerald-300">
+                <i class="fa-solid fa-circle-check text-emerald-600"></i>
+                <span>Ban Giám đốc đã duyệt</span>
+              </span>
+            </div>
+            <div class="text-[11px] text-slate-700 leading-relaxed">
+              Làm việc với Cục Hàng hải Việt Nam và Chi cục Hải quan giải phóng hàng hóa cho tàu container quốc tế. Nhân sự được tính đủ 1.0 công và thanh toán công tác phí.
+            </div>
+            <div class="text-[10px] text-slate-500 pt-1 border-t border-blue-200/60 flex items-center justify-between">
+              <span>Căn cứ: Quyết định điều động số 45/LĐĐ-KT & Quy chế công tác PAP</span>
+              <span class="text-slate-400 font-mono text-[9px]">M14 Luồng điều động</span>
+            </div>
+          </div>
+        `;
+        return;
+      }
+
+      // 6. TRƯỜNG HỢP QUÊN CHẤM CÔNG (MISS PUNCH)
+      if (missPunch) {
+        if (badgeRequests) {
+          badgeRequests.className = 'px-1.5 py-0.2 rounded-full text-[10px] bg-purple-100 text-purple-700 font-bold';
+          badgeRequests.innerText = '1 đơn M14';
+        }
+        container.innerHTML = `
+          <div class="flex items-center justify-between border-b border-purple-100 pb-1.5">
+            <span class="font-bold text-purple-950 text-xs flex items-center space-x-1.5">
+              <i class="fa-solid fa-file-pen text-purple-700"></i>
+              <span>ĐƠN GIẢI TRÌNH BỔ SUNG CHẤM CÔNG (M14)</span>
+            </span>
+            <span class="px-2 py-0.5 rounded-full font-bold text-[10px] bg-purple-100 text-purple-900 border border-purple-300">
+              #GT-${missPunch.id}
+            </span>
+          </div>
+          <div class="p-2.5 rounded-lg bg-purple-50/70 border border-purple-200 text-slate-800 space-y-1.5">
+            <div class="flex items-center justify-between">
+              <strong class="text-purple-950 font-bold text-xs">${missPunch.type} (${missPunch.shift})</strong>
+              <span class="text-amber-700 font-bold text-[11px] flex items-center space-x-1 bg-amber-50 px-2 py-0.5 rounded-full border border-amber-200">
+                <i class="fa-solid fa-clock text-amber-600 text-xs"></i>
+                <span>Đã gửi - Chờ đối soát</span>
+              </span>
+            </div>
+            <div class="text-[11px] text-slate-700"><span class="font-semibold text-slate-600">Lý do quên chấm công:</span> ${missPunch.reason}</div>
+            <div class="text-[11px] text-indigo-900 font-medium"><span class="font-semibold text-indigo-950">Đề xuất bổ sung:</span> ${missPunch.actionPlan}</div>
+            <div class="text-[10px] text-slate-500 pt-1 border-t border-purple-200/60 flex items-center justify-between">
+              <span>Căn cứ: <strong class="text-indigo-900">${missPunch.basisTitle || 'Khoản 3 Điều 8 PAP-QC01'}</strong> - ${missPunch.basisDetail || ''}</span>
+              <button type="button" onclick="openQuickFixPunchModal('${missPunch.id}'); closeDailyAttendanceCellDetailModal();" class="text-purple-700 hover:text-purple-900 font-bold underline cursor-pointer text-[10px]">
+                Duyệt bổ sung ngay
+              </button>
+            </div>
+          </div>
+        `;
+        return;
+      }
+
+      // 7. TRƯỜNG HỢP VI PHẠM ĐI MUỘN / VỀ SỚM CHƯA NỘP ĐƠN
+      if (lateMin > 15 || earlyMin > 0) {
         if (badgeRequests) {
           badgeRequests.className = 'px-1.5 py-0.2 rounded-full text-[10px] bg-amber-100 text-amber-800 font-bold';
           badgeRequests.innerText = 'Chưa nộp';
@@ -45085,14 +45392,18 @@
                 <button type="button" onclick="sendAttendanceReminderApp('${pap}', ${day})" class="px-2.5 py-1 bg-white hover:bg-slate-100 text-slate-700 border border-slate-300 font-semibold text-[11px] rounded-lg shadow-2xs transition cursor-pointer flex items-center">
                   <i class="fa-solid fa-mobile-screen mr-1 text-slate-500"></i>Nhắc gửi đơn qua App
                 </button>
-                <button type="button" onclick="openAttNewRequestModal('${pap}', '2026-09-${String(day).padStart(2, '0')}')" class="px-2.5 py-1 bg-amber-600 hover:bg-amber-700 text-white font-bold text-[11px] rounded-lg shadow-2xs transition cursor-pointer flex items-center">
+                <button type="button" onclick="openAttNewRequestModal('${pap}', '${isoDate}')" class="px-2.5 py-1 bg-amber-600 hover:bg-amber-700 text-white font-bold text-[11px] rounded-lg shadow-2xs transition cursor-pointer flex items-center">
                   <i class="fa-solid fa-pen-nib mr-1 text-white"></i>Tạo giải trình hộ
                 </button>
               </div>
             </div>
           </div>
         `;
-      } else {
+        return;
+      }
+
+      // 8. TRƯỜNG HỢP NGHỈ TUẦN / NGÀY NGHỈ OFF
+      if (shiftCode === 'OFF') {
         if (badgeRequests) {
           badgeRequests.className = 'px-1.5 py-0.2 rounded-full text-[10px] bg-slate-100 text-slate-500 font-medium';
           badgeRequests.innerText = '0 đơn';
@@ -45100,17 +45411,37 @@
         container.innerHTML = `
           <div class="flex items-center justify-between border-b border-slate-100 pb-1.5">
             <span class="font-bold text-slate-800 text-xs flex items-center space-x-1.5">
-              <i class="fa-solid fa-file-circle-check text-slate-400"></i>
-              <span>ĐƠN TỪ & CHỨNG TỪ LIÊN QUAN (M14 / M09)</span>
+              <i class="fa-solid fa-calendar-day text-slate-400"></i>
+              <span>NGÀY NGHỈ TUẦN / NGHỈ THEO LỊCH PHÂN CÔNG (OFF)</span>
             </span>
             <span class="text-slate-400 text-[10px]">Tiêu chuẩn</span>
           </div>
           <div class="py-4 text-center text-slate-400 italic text-[11px] flex flex-col items-center justify-center space-y-1">
-            <i class="fa-solid fa-clipboard-check text-slate-300 text-xl"></i>
-            <span>Ngày làm việc đúng giờ tiêu chuẩn, không phát sinh đơn xin nghỉ phép hoặc đơn giải trình.</span>
+            <i class="fa-solid fa-bed text-slate-300 text-xl"></i>
+            <span>Ngày nghỉ tuần hoặc ngày không xếp ca theo lịch phân công, không phát sinh đơn xin phép hoặc giải trình.</span>
           </div>
         `;
+        return;
       }
+
+      // 9. TRƯỜNG HỢP NGÀY LÀM VIỆC TIÊU CHUẨN ĐÚNG GIỜ
+      if (badgeRequests) {
+        badgeRequests.className = 'px-1.5 py-0.2 rounded-full text-[10px] bg-slate-100 text-slate-500 font-medium';
+        badgeRequests.innerText = '0 đơn';
+      }
+      container.innerHTML = `
+        <div class="flex items-center justify-between border-b border-slate-100 pb-1.5">
+          <span class="font-bold text-slate-800 text-xs flex items-center space-x-1.5">
+            <i class="fa-solid fa-file-circle-check text-slate-400"></i>
+            <span>ĐƠN TỪ & CHỨNG TỪ LIÊN QUAN (M14 / M09)</span>
+          </span>
+          <span class="text-slate-400 text-[10px]">Tiêu chuẩn</span>
+        </div>
+        <div class="py-4 text-center text-slate-400 italic text-[11px] flex flex-col items-center justify-center space-y-1">
+          <i class="fa-solid fa-clipboard-check text-slate-300 text-xl"></i>
+          <span>Ngày làm việc đúng giờ tiêu chuẩn, không phát sinh đơn xin nghỉ phép hoặc đơn giải trình.</span>
+        </div>
+      `;
     }
 
     function closeDailyAttendanceCellDetailModal() {
@@ -48847,14 +49178,14 @@
               <span>Lịch sử chấm công (Raw Logs)</span>
               <span id="cell-tab-badge-punches" class="px-1.5 py-0.2 rounded-full text-[10px] bg-indigo-100 text-[#2E3191] font-mono font-bold">2</span>
             </button>
-            <!-- Tab 2 Button: Đơn đề xuất & Giải trình M14 -->
+            <!-- Tab 2 Button: Đơn đề xuất & Giải trình M14 / M09 -->
             <button type="button" id="cell-tab-btn-requests" onclick="switchCellDetailTab('requests')" class="px-3 py-1.5 text-xs font-semibold border-b-2 border-transparent text-slate-500 hover:text-slate-800 flex items-center space-x-1.5 transition cursor-pointer">
               <i class="fa-solid fa-file-signature text-xs"></i>
-              <span>Đơn đề xuất & Giải trình (M14)</span>
+              <span>Đơn đề xuất & Giải trình (M14 / M09)</span>
               <span id="cell-tab-badge-requests" class="px-1.5 py-0.2 rounded-full text-[10px] bg-slate-100 text-slate-600 font-semibold">0</span>
             </button>
           </div>
-          <span class="text-[10px] text-slate-400 italic hidden sm:inline-block">Dữ liệu chấm công Mobile GPS + Selfie & Đơn M14</span>
+          <span class="text-[10px] text-slate-400 italic hidden sm:inline-block">Dữ liệu chấm công Mobile GPS + Selfie & Đơn M14 / M09</span>
         </div>
 
         <!-- CỤM NỘI DUNG THEO TAB (HIỂN THỊ ĐỘC LẬP TỪNG TAB, KHÔNG XẾP CHỒNG) -->
@@ -49641,7 +49972,7 @@
   </div>
 
   <!-- ================= MODAL: CHI TIẾT & PHÊ DUYỆT ĐƠN NGHỈ PHÉP (M09.3 / M14) ================= -->
-  <div id="modal-detail-leave-request" class="fixed inset-0 bg-slate-900/60 backdrop-blur-xs z-50 flex items-center justify-center p-3 sm:p-5 hidden">
+  <div id="modal-detail-leave-request" class="fixed inset-0 bg-slate-900/60 backdrop-blur-xs z-[95] flex items-center justify-center p-3 sm:p-5 hidden">
     <div class="bg-white rounded-2xl max-w-lg w-full shadow-2xl border border-slate-200 overflow-hidden flex flex-col max-h-[92vh] animate-in fade-in duration-200">
       <div class="bg-[#2E3191] text-white px-5 py-3.5 flex items-center justify-between shrink-0 shadow-xs">
         <div class="flex items-center space-x-2.5">
