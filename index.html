@@ -6840,12 +6840,6 @@
                     <span>⚡</span>
                     <span>Duyệt các mục đã chọn</span>
                   </button>
-
-                  <!-- Nút duyệt nhanh toàn bộ cảnh báo -->
-                  <button id="btn-bulk-approve-all" type="button" onclick="bulkApproveAllAnomalies()" class="px-3.5 py-1.5 bg-[#2E3191] hover:bg-[#242775] text-white font-bold rounded-lg shadow-xs transition cursor-pointer flex items-center space-x-1.5">
-                    <span>⚡</span>
-                    <span>Duyệt tất cả cảnh báo (1-Chạm)</span>
-                  </button>
                 </div>
               </div>
 
@@ -43013,7 +43007,6 @@
       const bulkLeft = document.getElementById('lock-anomalies-bulk-left');
       const step4Notice = document.getElementById('lock-anomalies-step4-notice');
       const btnBulkApproveSelected = document.getElementById('btn-bulk-approve-selected');
-      const btnBulkApproveAll = document.getElementById('btn-bulk-approve-all');
       const theadEl = document.getElementById('lock-anomalies-thead');
 
       if (currentAttendanceLockStep === 4) {
@@ -43023,7 +43016,6 @@
           step4Notice.classList.add('flex');
         }
         if (btnBulkApproveSelected) btnBulkApproveSelected.classList.add('hidden');
-        if (btnBulkApproveAll) btnBulkApproveAll.classList.add('hidden');
 
         if (theadEl) {
           theadEl.innerHTML = `
@@ -43068,18 +43060,6 @@
             btnBulkApproveSelected.disabled = false;
             btnBulkApproveSelected.classList.remove('opacity-50', 'cursor-not-allowed');
             btnBulkApproveSelected.title = '';
-          }
-        }
-        if (btnBulkApproveAll) {
-          btnBulkApproveAll.classList.remove('hidden');
-          if (period.isLocked) {
-            btnBulkApproveAll.disabled = true;
-            btnBulkApproveAll.classList.add('opacity-50', 'cursor-not-allowed');
-            btnBulkApproveAll.title = 'Kỳ công đã khóa';
-          } else {
-            btnBulkApproveAll.disabled = false;
-            btnBulkApproveAll.classList.remove('opacity-50', 'cursor-not-allowed');
-            btnBulkApproveAll.title = '';
           }
         }
 
