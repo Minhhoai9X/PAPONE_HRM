@@ -4,6 +4,19 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>HRM PAPONE - Cảng Phước An</title>
+  <!-- Font Awesome 6.5.2 Pro / Free CDN for System Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <script>
+    // Fallback CDN nếu CDN chính gặp sự cố mạng
+    window.addEventListener('error', function(e) {
+      if (e.target && e.target.tagName === 'LINK' && (e.target.href || '').includes('font-awesome')) {
+        var fb = document.createElement('link');
+        fb.rel = 'stylesheet';
+        fb.href = 'https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.5.2/css/all.min.css';
+        document.head.appendChild(fb);
+      }
+    }, true);
+  </script>
   <script src="https://cdn.sheetjs.com/xlsx-0.20.3/package/dist/xlsx.full.min.js"></script>
   <!-- Tailwind CSS via Google Gstatic CDN -->
   <script src="https://www.gstatic.com/antigravity/web/dev/tailwindcss.min.js"></script>
@@ -25,15 +38,39 @@
     
     /* ĐỒNG NHẤT 100% FONT CHỮ TOÀN BỘ HỆ THỐNG THEO 'INTER' (CHUẨN PAP ENTERPRISE) */
     *, *::before, *::after {
-      font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif !important;
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
       font-variant-numeric: normal;
       font-feature-settings: "zero" 0 !important; /* Tuyệt đối không dùng số 0 gạch chéo */
     }
 
     body, button, input, select, textarea, table, th, td, span, div, p, a, h1, h2, h3, h4, h5, h6, label {
-      font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif !important;
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
       font-variant-numeric: normal;
       font-feature-settings: "zero" 0 !important;
+    }
+
+    /* BẢO ĐẢM TOÀN BỘ ICON FONT AWESOME HIỂN THỊ ĐẦY ĐỦ 100% (KHÔNG BỊ FONT INTER GHI ĐÈ) */
+    .fa, .fas, .far, .fab, .fa-solid, .fa-regular, .fa-brands, [class*="fa-"], [class^="fa-"] {
+      font-family: "Font Awesome 6 Free", "FontAwesome" !important;
+      font-style: normal !important;
+      font-variant-numeric: normal !important;
+      font-feature-settings: normal !important;
+      display: inline-block;
+      text-rendering: auto;
+      -webkit-font-smoothing: antialiased;
+    }
+    .fa::before, .fas::before, .far::before, .fab::before, .fa-solid::before, .fa-regular::before, .fa-brands::before, [class*="fa-"]::before, [class^="fa-"]::before {
+      font-family: "Font Awesome 6 Free", "FontAwesome" !important;
+      font-style: normal !important;
+    }
+    .fa-brands, .fab, .fa-brands::before, .fab::before {
+      font-family: "Font Awesome 6 Brands" !important;
+    }
+    .fa-solid, .fas, .fa-solid::before, .fas::before {
+      font-weight: 900 !important;
+    }
+    .fa-regular, .far, .fa-regular::before, .far::before {
+      font-weight: 400 !important;
     }
 
     /* Trạng thái focus thống nhất cho các trường nhập liệu trên toàn prototype */
