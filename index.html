@@ -21339,7 +21339,7 @@
             <div>
               <span class="text-slate-400 block text-[10px] uppercase font-bold">Phương thức chấm công:</span>
               <span class="font-semibold text-[#2E3191] flex items-center gap-1.5"><i class="fa-solid fa-mobile-screen text-[#2E3191]"></i>Mobile App (GPS + Selfie)</span>
-              <span class="text-slate-700 font-medium block text-[10px]">Xác thực GPS & Ảnh chụp Selfie AI</span>
+              <span class="text-slate-700 font-medium block text-[10px]">Xác thực vị trí GPS & Ảnh chụp Selfie</span>
             </div>
           </div>
         `;
@@ -44473,14 +44473,16 @@
       const empDept = empM?.dept || empInfo?.dept || 'Phòng ban';
       const empTitle = empInfo?.position || empInfo?.title || 'Chuyên viên';
 
-      const dayRec = empM?.days?.find(d => d.day === day) || { day: day, symbol: 'X' };
-      const currentSymbol = dayRec.symbol || 'X';
+      // 1. Lấy bản ghi ngày chính xác của nhân viên từ matrix store
+      const dayRec = empM?.days?.find(d => d.day === day) || { day: day, symbol: '' };
+      const rawSymbol = (dayRec && typeof dayRec.symbol === 'string') ? dayRec.symbol : '';
 
       const curPeriod = getCurrentAttendancePeriod() || { id: '2026-09', name: 'Tháng 09/2026' };
       const [pYear, pMonth] = (curPeriod.id || '2026-09').split('-').map(Number);
       const dateObj = new Date(pYear, pMonth - 1, day);
       const dayNames = ['Chủ nhật', 'Thứ Hai', 'Thứ Ba', 'Thứ Tư', 'Thứ Năm', 'Thứ Sáu', 'Thứ Bảy'];
       const dowName = dayNames[dateObj.getDay()];
+      const isWeekend = (dateObj.getDay() === 0 || dateObj.getDay() === 6);
       const dateStr = `${String(day).padStart(2, '0')}/${String(pMonth).padStart(2, '0')}/${pYear}`;
       const fullDateTitle = `${dowName}, ${dateStr}`;
 
@@ -44498,6 +44500,27 @@
       document.getElementById('cell-detail-emp-dept').innerText = empDept;
       document.getElementById('cell-detail-emp-title').innerText = empTitle;
 
+      // 2. Tìm các trường hợp bất thường / ngoại lệ / thiếu punch
+      const cfItem = attendanceCalculationConfirmations.find(c => c.pap === pap && (c.day === day || (!c.day && day === 1 && c.issueType === 'EXEMPT_ATTENDANCE_CONFIRM')));
+      const missPunch = attendanceMissingPunches.find(p => p.pap === pap && parseInt((p.date || '').split('/')[0]) === day);
+      const schedAnom = attendanceScheduleAnomaliesStore.find(a => a.pap === pap && a.day === day);
+
+      // 3. Phân định chính xác Ca làm việc áp dụng (Tránh mặc định nhầm sang Hành chính)
+      let explicitShift = '';
+      if (cfItem && cfItem.shift) {
+        if (cfItem.shift.includes('S1')) explicitShift = 'S1';
+        else if (cfItem.shift.includes('S2')) explicitShift = 'S2';
+        else if (cfItem.shift.includes('HC')) explicitShift = 'HC';
+      } else if (missPunch && missPunch.shift) {
+        if (missPunch.shift.includes('S1')) explicitShift = 'S1';
+        else if (missPunch.shift.includes('S2')) explicitShift = 'S2';
+        else if (missPunch.shift.includes('HC')) explicitShift = 'HC';
+      } else if (schedAnom && schedAnom.currentShift) {
+        explicitShift = schedAnom.currentShift;
+      }
+
+      const activeSym = explicitShift || rawSymbol;
+
       let shiftName = 'Hành chính (HC)';
       let shiftCode = 'HC';
       let shiftHours = '08:00 - 17:00';
@@ -44505,37 +44528,69 @@
       let shiftBadgeCls = 'bg-blue-50 text-[#2E3191] border-blue-200';
       let stdVal = 1.0;
 
-      if (currentSymbol === 'S1' || currentSymbol === '0.5S1' || currentSymbol === 'S1L') {
+      if (activeSym === 'S1' || activeSym === '0.5S1') {
         shiftCode = 'S1';
-        shiftName = 'Ca ngày Cảng (S1)';
+        shiftName = (activeSym === '0.5S1') ? 'Nửa ca ngày (0.5 S1)' : 'Ca ngày Cảng (S1)';
         shiftHours = '06:00 - 14:00';
         shiftBreak = '30 phút (11:30 - 12:00)';
         shiftBadgeCls = 'bg-indigo-50 text-indigo-800 border-indigo-200';
-      } else if (currentSymbol === 'S2' || currentSymbol === '0.5S2' || currentSymbol === 'S2L') {
+        stdVal = (activeSym === '0.5S1') ? 0.5 : 1.0;
+      } else if (activeSym === 'S2' || activeSym === '0.5S2') {
         shiftCode = 'S2';
-        shiftName = 'Ca đêm Cảng (S2)';
+        shiftName = (activeSym === '0.5S2') ? 'Nửa ca đêm (0.5 S2)' : 'Ca đêm Cảng (S2)';
         shiftHours = '22:00 - 06:00';
         shiftBreak = '45 phút (02:00 - 02:45)';
         shiftBadgeCls = 'bg-purple-50 text-purple-800 border-purple-200';
-      } else if (currentSymbol === 'P' || currentSymbol === '0.5P' || currentSymbol === '0.25P') {
+        stdVal = (activeSym === '0.5S2') ? 0.5 : 1.0;
+      } else if (activeSym === 'S1L') {
+        shiftCode = 'S1L';
+        shiftName = 'Ca ngày làm Lễ (S1L)';
+        shiftHours = '06:00 - 14:00';
+        shiftBreak = '30 phút (11:30 - 12:00)';
+        shiftBadgeCls = 'bg-rose-50 text-rose-800 border-rose-200';
+        stdVal = 1.0;
+      } else if (activeSym === 'S2L') {
+        shiftCode = 'S2L';
+        shiftName = 'Ca đêm làm Lễ (S2L)';
+        shiftHours = '22:00 - 06:00';
+        shiftBreak = '45 phút (02:00 - 02:45)';
+        shiftBadgeCls = 'bg-rose-50 text-rose-800 border-rose-200';
+        stdVal = 1.0;
+      } else if (activeSym === 'P' || activeSym === '0.5P' || activeSym === '0.25P') {
         shiftCode = 'P';
-        shiftName = 'Phép năm (P)';
-        shiftHours = '08:00 - 17:00';
-        shiftBreak = 'Theo quy chế';
+        shiftName = 'Nghỉ phép năm (P)';
+        shiftHours = 'Nghỉ hưởng nguyên lương';
+        shiftBreak = 'Theo quy chế PAP';
         shiftBadgeCls = 'bg-purple-100 text-purple-900 border-purple-300';
-      } else if (currentSymbol === 'L') {
+        stdVal = 1.0;
+      } else if (activeSym === 'L') {
         shiftCode = 'L';
-        shiftName = 'Nghỉ Lễ Quốc khánh';
+        shiftName = 'Nghỉ Lễ Quốc khánh (L)';
         shiftHours = 'Nghỉ nguyên ngày';
         shiftBreak = 'Hưởng 100% lương';
         shiftBadgeCls = 'bg-amber-100 text-amber-900 border-amber-300';
-      } else if (currentSymbol === 'OFF') {
+        stdVal = 1.0;
+      } else if (activeSym === 'Ro') {
+        shiftCode = 'Ro';
+        shiftName = 'Nghỉ thai sản (Ro)';
+        shiftHours = 'Chế độ thai sản BHXH';
+        shiftBreak = '—';
+        shiftBadgeCls = 'bg-slate-200 text-slate-700 border-slate-300';
+        stdVal = 0;
+      } else if (!activeSym || activeSym === '-' || activeSym === 'OFF') {
         shiftCode = 'OFF';
-        shiftName = 'Nghỉ tuần (OFF)';
+        shiftName = isWeekend ? 'Nghỉ cuối tuần (OFF)' : 'Nghỉ tuần / Không có ca (OFF)';
         shiftHours = 'Không có ca';
         shiftBreak = '—';
-        stdVal = 0;
         shiftBadgeCls = 'bg-slate-100 text-slate-600 border-slate-300';
+        stdVal = 0;
+      } else if (activeSym === 'X' || activeSym === '0.75X' || activeSym === '0.5X') {
+        shiftCode = 'HC';
+        shiftName = (activeSym === '0.75X') ? 'Hành chính trễ (0.75X)' : ((activeSym === '0.5X') ? 'Nửa ca hành chính (0.5X)' : 'Hành chính (HC)');
+        shiftHours = '08:00 - 17:00';
+        shiftBreak = '60 phút (12:00 - 13:00)';
+        shiftBadgeCls = 'bg-blue-50 text-[#2E3191] border-blue-200';
+        stdVal = (activeSym === '0.75X') ? 0.75 : ((activeSym === '0.5X') ? 0.5 : 1.0);
       }
 
       const shiftBadgeEl = document.getElementById('cell-detail-shift-badge');
@@ -44547,9 +44602,7 @@
       document.getElementById('cell-detail-shift-break').innerText = shiftBreak;
       document.getElementById('cell-detail-std-work').innerText = `${stdVal.toFixed(1)} công`;
 
-      const cfItem = attendanceCalculationConfirmations.find(c => c.pap === pap && (c.day === day || (!c.day && day === 1 && c.issueType === 'EXEMPT_ATTENDANCE_CONFIRM')));
-      const missPunch = attendanceMissingPunches.find(p => p.pap === pap && parseInt((p.date || '').split('/')[0]) === day);
-
+      // 4. Giả lập dữ liệu chấm công thực tế tương ứng từng ca
       let actualIn = '07:55';
       let actualOut = '17:06';
       let lateMin = 0;
@@ -44560,24 +44613,36 @@
       let inLoc = 'Trụ sở Cảng Phước An';
       let outLoc = 'Trụ sở Cảng Phước An';
 
-      if (shiftCode === 'S1') {
-        actualIn = '05:52';
-        actualOut = '14:05';
-        otMin = 5;
-        inLoc = 'Trụ sở Cảng Phước An';
-        outLoc = 'Trụ sở Cảng Phước An';
-      } else if (shiftCode === 'S2') {
-        actualIn = '21:54';
-        actualOut = '06:04';
-        otMin = 4;
-        inLoc = 'Trụ sở Cảng Phước An';
-        outLoc = 'Trụ sở Cảng Phước An';
-      } else if (shiftCode === 'P' || shiftCode === 'L' || shiftCode === 'OFF') {
+      if (shiftCode === 'OFF') {
         actualIn = '—';
         actualOut = '—';
+        lateMin = 0; earlyMin = 0; otMin = 0;
+        inLoc = 'Không có ca làm việc';
+        outLoc = 'Không có ca làm việc';
+      } else if (shiftCode === 'P' || shiftCode === 'L' || shiftCode === 'Ro') {
+        actualIn = '—';
+        actualOut = '—';
+        lateMin = 0; earlyMin = 0; otMin = 0;
         inLoc = 'Không có dữ liệu chấm công';
         outLoc = 'Không có dữ liệu chấm công';
-        otMin = 0;
+      } else if (shiftCode === 'S1' || shiftCode === 'S1L') {
+        actualIn = '05:52';
+        actualOut = '14:05';
+        lateMin = 0; earlyMin = 0; otMin = 5;
+        inLoc = 'Trụ sở Cảng Phước An';
+        outLoc = 'Trụ sở Cảng Phước An';
+      } else if (shiftCode === 'S2' || shiftCode === 'S2L') {
+        actualIn = '21:54';
+        actualOut = '06:04';
+        lateMin = 0; earlyMin = 0; otMin = 4;
+        inLoc = 'Trụ sở Cảng Phước An';
+        outLoc = 'Trụ sở Cảng Phước An';
+      } else if (shiftCode === 'HC') {
+        actualIn = '07:55';
+        actualOut = '17:06';
+        lateMin = 0; earlyMin = 0; otMin = 6;
+        inLoc = 'Trụ sở Cảng Phước An';
+        outLoc = 'Trụ sở Cảng Phước An';
       }
 
       if (cfItem) {
@@ -44594,7 +44659,13 @@
         } else if (cfItem.issueType === 'CONFLICT_LEAVE_WORK') {
           actualIn = '05:58'; actualOut = '14:02'; inLoc = 'Trụ sở Cảng Phước An'; outLoc = 'Trụ sở Cảng Phước An';
         } else if (cfItem.issueType === 'HOLIDAY_OVERTIME_WORK') {
-          actualIn = '07:55'; actualOut = '17:05'; inLoc = 'Trụ sở Cảng Phước An'; outLoc = 'Trụ sở Cảng Phước An';
+          actualIn = '05:55'; actualOut = '14:08'; inLoc = 'Trụ sở Cảng Phước An'; outLoc = 'Trụ sở Cảng Phước An';
+        } else if (cfItem.issueType === 'SHIFT_MISMATCH_WORKED') {
+          actualIn = '21:50'; actualOut = '06:10'; inLoc = 'Trụ sở Cảng Phước An'; outLoc = 'Trụ sở Cảng Phước An';
+        } else if (cfItem.issueType === 'PENDING_APPROVAL_OVERRIDE') {
+          actualIn = '21:55'; actualOut = '06:05'; inLoc = 'Trụ sở Cảng Phước An'; outLoc = 'Trụ sở Cảng Phước An';
+        } else if (cfItem.issueType === 'EXEMPT_ATTENDANCE_CONFIRM') {
+          actualIn = '—'; actualOut = '—'; inLoc = 'Miễn chấm công'; outLoc = 'Miễn chấm công';
         }
       } else if (missPunch) {
         actualIn = missPunch.inTime;
@@ -44606,17 +44677,21 @@
       }
 
       document.getElementById('cell-detail-ci-val').innerText = actualIn;
-      document.getElementById('cell-detail-ci-val').className = `text-sm font-extrabold font-mono mt-0.5 leading-tight ${isMissIn ? 'text-rose-600' : 'text-slate-900'}`;
+      document.getElementById('cell-detail-ci-val').className = `text-sm font-extrabold font-mono mt-0.5 leading-tight ${isMissIn ? 'text-rose-600' : (actualIn === '—' ? 'text-slate-400' : 'text-slate-900')}`;
       document.getElementById('cell-detail-ci-loc').innerText = inLoc;
 
       document.getElementById('cell-detail-co-val').innerText = actualOut;
-      document.getElementById('cell-detail-co-val').className = `text-sm font-extrabold font-mono mt-0.5 leading-tight ${isMissOut ? 'text-rose-600' : 'text-slate-900'}`;
+      document.getElementById('cell-detail-co-val').className = `text-sm font-extrabold font-mono mt-0.5 leading-tight ${isMissOut ? 'text-rose-600' : (actualOut === '—' ? 'text-slate-400' : 'text-slate-900')}`;
       document.getElementById('cell-detail-co-loc').innerText = outLoc;
 
-      document.getElementById('cell-detail-late-val').innerText = lateMin > 0 ? `${lateMin} phút` : '0 phút';
+      document.getElementById('cell-detail-late-val').innerText = (shiftCode === 'OFF' || shiftCode === 'P' || shiftCode === 'L' || shiftCode === 'Ro') ? '—' : (lateMin > 0 ? `${lateMin} phút` : '0 phút');
       const lateStatusEl = document.getElementById('cell-detail-late-status');
       if (lateStatusEl) {
-        if (lateMin > 0) {
+        if (shiftCode === 'OFF' || shiftCode === 'P' || shiftCode === 'L' || shiftCode === 'Ro') {
+          lateStatusEl.innerHTML = `<span class="text-slate-400">—</span>`;
+        } else if (isMissIn) {
+          lateStatusEl.innerHTML = `<span class="text-rose-600 font-bold">Chưa có giờ vào</span>`;
+        } else if (lateMin > 0) {
           if (cfItem && cfItem.issueType === 'LATE_WITH_REASON') {
             lateStatusEl.innerHTML = `<span class="text-amber-700 font-bold bg-amber-50 px-1 py-0.2 rounded border border-amber-200"><i class="fa-solid fa-file-circle-check mr-1 text-amber-600"></i>Có Đơn M14</span>`;
           } else if (lateMin <= 15) {
@@ -44629,10 +44704,14 @@
         }
       }
 
-      document.getElementById('cell-detail-early-val').innerText = earlyMin > 0 ? `${earlyMin} phút` : '0 phút';
+      document.getElementById('cell-detail-early-val').innerText = (shiftCode === 'OFF' || shiftCode === 'P' || shiftCode === 'L' || shiftCode === 'Ro') ? '—' : (earlyMin > 0 ? `${earlyMin} phút` : '0 phút');
       const earlyStatusEl = document.getElementById('cell-detail-early-status');
       if (earlyStatusEl) {
-        if (earlyMin > 0) {
+        if (shiftCode === 'OFF' || shiftCode === 'P' || shiftCode === 'L' || shiftCode === 'Ro') {
+          earlyStatusEl.innerHTML = `<span class="text-slate-400">—</span>`;
+        } else if (isMissOut) {
+          earlyStatusEl.innerHTML = `<span class="text-rose-600 font-bold">Chưa có giờ ra</span>`;
+        } else if (earlyMin > 0) {
           if (cfItem && cfItem.issueType === 'EARLY_WITH_LEAVE') {
             earlyStatusEl.innerHTML = `<span class="text-indigo-700 font-bold bg-indigo-50 px-1.5 py-0.2 rounded border border-indigo-200"><i class="fa-solid fa-calendar-day mr-1 text-indigo-600"></i>Bù phép M14</span>`;
           } else {
@@ -44647,18 +44726,28 @@
       let tempWork = 'Tạm tính: 1.0 công';
       if (shiftCode === 'P') { workDur = 'Nghỉ phép'; tempWork = '1.0 công phép [P]'; }
       else if (shiftCode === 'L') { workDur = 'Nghỉ lễ'; tempWork = '1.0 công lễ [L]'; }
+      else if (shiftCode === 'Ro') { workDur = 'Thai sản'; tempWork = '0 công [Ro] (BHXH)'; }
       else if (shiftCode === 'OFF') { workDur = '0h 00p'; tempWork = '0 công [OFF]'; }
       else if (isMissIn || isMissOut) { workDur = 'Chưa xác định'; tempWork = 'Cần bổ sung giờ chấm công'; }
-      else if (lateMin === 52) { workDur = '7h 13p'; tempWork = 'Quy đổi: 0.75 công'; }
-      else if (earlyMin === 90) { workDur = '6h 32p'; tempWork = '0.75 công + 0.25P'; }
-      else if (earlyMin === 75) { workDur = '6h 50p'; tempWork = 'Quy đổi: 0.5 công'; }
-      else if (lateMin === 42) { workDur = '7h 23p'; tempWork = 'Đề xuất M14: 1.0 công'; }
+      else if (cfItem && cfItem.issueType === 'LATE_WITH_REASON') { workDur = '7h 23p'; tempWork = 'Đề xuất M14: 1.0 công [S1]'; }
+      else if (cfItem && cfItem.issueType === 'LATE_UNEXCUSED') { workDur = '7h 13p'; tempWork = 'Quy đổi: 0.75 công [0.75X]'; }
+      else if (cfItem && cfItem.issueType === 'EARLY_WITH_LEAVE') { workDur = '6h 32p'; tempWork = '0.75 công + 0.25P'; }
+      else if (cfItem && cfItem.issueType === 'EARLY_UNEXCUSED') { workDur = '6h 50p'; tempWork = 'Quy đổi: 0.5 công [0.5S1]'; }
+      else if (cfItem && cfItem.issueType === 'SHORT_HOURS_DUTY') { workDur = '8h 00p'; tempWork = 'Đề xuất M14: 1.0 công [X]'; }
+      else if (cfItem && cfItem.issueType === 'CONFLICT_LEAVE_WORK') { workDur = '8h 04p'; tempWork = '1.0 công [S1] + Hoàn phép'; }
+      else if (cfItem && cfItem.issueType === 'HOLIDAY_OVERTIME_WORK') { workDur = '8h 13p'; tempWork = '1.0 công Lễ + Làm lễ [S1L]'; }
+      else if (cfItem && cfItem.issueType === 'SHIFT_MISMATCH_WORKED') { workDur = '8h 20p'; tempWork = '1.0 công ca đêm [S2]'; }
+      else if (cfItem && cfItem.issueType === 'PENDING_APPROVAL_OVERRIDE') { workDur = '8h 10p'; tempWork = '1.0 công [S2] (Duyệt đổi ca)'; }
+      else if (cfItem && cfItem.issueType === 'EXEMPT_ATTENDANCE_CONFIRM') { workDur = 'Miễn chấm công'; tempWork = 'Duyệt 1.0 công định biên'; }
+      else if (shiftCode === 'S1') { workDur = '8h 13p'; tempWork = '1.0 công [S1]'; }
+      else if (shiftCode === 'S2') { workDur = '8h 10p'; tempWork = '1.0 công [S2] (+30% đêm)'; }
+      else if (shiftCode === 'HC') { workDur = '8h 11p'; tempWork = '1.0 công [X]'; }
 
       document.getElementById('cell-detail-work-duration').innerText = workDur;
       document.getElementById('cell-detail-temp-work').innerText = tempWork;
 
       renderVisualTimelineBar(shiftCode, actualIn, actualOut, lateMin, earlyMin, otMin, isMissIn, isMissOut);
-      renderCellRawPunchesLog(actualIn, actualOut, inLoc, outLoc, dateStr, isMissIn, isMissOut);
+      renderCellRawPunchesLog(actualIn, actualOut, inLoc, outLoc, dateStr, isMissIn, isMissOut, shiftCode);
       renderCellRequestContainer(cfItem, missPunch, lateMin, earlyMin, pap, day);
 
       const overrideSel = document.getElementById('cell-override-symbol');
@@ -44667,12 +44756,15 @@
       const statusPill = document.getElementById('cell-detail-status-pill');
       const quickActionArea = document.getElementById('cell-detail-quick-action-area');
 
-      if (overrideSel) overrideSel.value = currentSymbol;
-      let calcDaysVal = 1.0;
-      if (currentSymbol === '0.75X') calcDaysVal = 0.75;
-      else if (currentSymbol === '0.5X' || currentSymbol === '0.5S1' || currentSymbol === '0.5S2') calcDaysVal = 0.5;
-      else if (currentSymbol === 'OFF') calcDaysVal = 0.0;
-      else if (missPunch && !dayRec.confirmed) calcDaysVal = 0.0;
+      if (overrideSel) {
+        const selectSymbol = (shiftCode === 'OFF') ? 'OFF' : (activeSym || 'X');
+        overrideSel.value = selectSymbol;
+      }
+      let calcDaysVal = stdVal;
+      if (activeSym === '0.75X') calcDaysVal = 0.75;
+      else if (activeSym === '0.5X' || activeSym === '0.5S1' || activeSym === '0.5S2') calcDaysVal = 0.5;
+      else if (shiftCode === 'OFF') calcDaysVal = 0.0;
+      else if (isMissIn && isMissOut && !dayRec.confirmed) calcDaysVal = 0.0;
 
       if (overrideDays) overrideDays.value = calcDaysVal;
       if (overrideNote) overrideNote.value = (cfItem ? cfItem.proposal : (missPunch ? missPunch.reason : ''));
@@ -44830,16 +44922,23 @@
       }
     }
 
-    function renderCellRawPunchesLog(actualIn, actualOut, inLoc, outLoc, dateStr, isMissIn, isMissOut) {
+    function renderCellRawPunchesLog(actualIn, actualOut, inLoc, outLoc, dateStr, isMissIn, isMissOut, shiftCode) {
       const tbody = document.getElementById('cell-detail-punches-tbody');
       const countEl = document.getElementById('cell-detail-punch-count');
       const badgePunches = document.getElementById('cell-tab-badge-punches');
       if (!tbody) return;
 
       if (actualIn === '—' && actualOut === '—') {
+        const emptyReason = (shiftCode === 'P')
+          ? 'Không có dữ liệu chấm công trong ngày (Nghỉ phép năm [P]).'
+          : ((shiftCode === 'L')
+            ? 'Không có dữ liệu chấm công trong ngày (Nghỉ Lễ Quốc khánh [L]).'
+            : ((shiftCode === 'Ro')
+              ? 'Không có dữ liệu chấm công trong ngày (Chế độ thai sản [Ro]).'
+              : 'Không có dữ liệu chấm công trong ngày (Nghỉ tuần / Ngày nghỉ không xếp ca [OFF]).'));
         tbody.innerHTML = `
           <tr>
-            <td colspan="7" class="py-4 text-center text-slate-400 italic">Không có dữ liệu chấm công trong ngày (Nghỉ phép / Nghỉ ca / Ngày lễ).</td>
+            <td colspan="7" class="py-4 text-center text-slate-400 italic">${emptyReason}</td>
           </tr>
         `;
         if (countEl) countEl.innerText = '0 lượt ghi nhận';
@@ -44848,8 +44947,8 @@
       }
 
       let punches = [];
-      if (!isMissIn && actualIn && actualIn !== '--:--') {
-        const formNameIn = (inLoc && inLoc !== 'Không có dữ liệu chấm công' && !inLoc.includes('Thiếu'))
+      if (!isMissIn && actualIn && actualIn !== '--:--' && actualIn !== '—') {
+        const formNameIn = (inLoc && inLoc !== 'Không có dữ liệu chấm công' && !inLoc.includes('Thiếu') && !inLoc.includes('Không có ca'))
           ? inLoc
           : 'Trụ sở Cảng Phước An';
         punches.push({
@@ -44861,11 +44960,11 @@
           formName: formNameIn,
           method: 'Mobile GPS + Selfie',
           location: formNameIn.includes('ngoài') ? 'Tọa độ ngoài văn phòng (Hợp lệ)' : 'Trụ sở Cảng (R ≤ 300m)',
-          auth: 'Selfie AI: 99.4%'
+          auth: 'Ảnh hợp lệ'
         });
       }
-      if (!isMissOut && actualOut && actualOut !== '--:--') {
-        const formNameOut = (outLoc && outLoc !== 'Không có dữ liệu chấm công' && !outLoc.includes('Thiếu'))
+      if (!isMissOut && actualOut && actualOut !== '--:--' && actualOut !== '—') {
+        const formNameOut = (outLoc && outLoc !== 'Không có dữ liệu chấm công' && !outLoc.includes('Thiếu') && !outLoc.includes('Không có ca'))
           ? outLoc
           : 'Trụ sở Cảng Phước An';
         punches.push({
@@ -44877,7 +44976,7 @@
           formName: formNameOut,
           method: 'Mobile GPS + Selfie',
           location: formNameOut.includes('ngoài') ? 'Tọa độ ngoài văn phòng (Hợp lệ)' : 'Trụ sở Cảng (R ≤ 300m)',
-          auth: 'Selfie AI: 98.9%'
+          auth: 'Ảnh hợp lệ'
         });
       }
 
@@ -44886,32 +44985,32 @@
 
       tbody.innerHTML = punches.map(p => `
         <tr class="hover:bg-slate-50 transition border-b border-slate-100">
-          <td class="py-1.5 px-2 text-center text-slate-400 font-mono text-[11px]">${p.idx}</td>
-          <td class="py-1.5 px-2 font-mono font-bold text-slate-900 whitespace-nowrap">${p.time}</td>
-          <td class="py-1.5 px-2 text-center whitespace-nowrap">
+          <td class="py-2 px-2 text-center text-slate-400 font-mono text-[11px]">${p.idx}</td>
+          <td class="py-2 px-2 font-mono font-bold text-slate-900 whitespace-nowrap">${p.time}</td>
+          <td class="py-2 px-2 text-center whitespace-nowrap">
             <span class="px-2 py-0.5 rounded font-bold text-[10px] border ${p.badgeCls}">${p.type}</span>
           </td>
-          <td class="py-1.5 px-2 text-slate-800 font-medium whitespace-nowrap">
+          <td class="py-2 px-2 text-slate-800 font-medium whitespace-nowrap">
             <div class="flex items-center space-x-1.5">
               <i class="fa-solid fa-building-user text-[#2E3191] text-[11px]"></i>
               <span>${p.formName}</span>
             </div>
           </td>
-          <td class="py-1.5 px-2 whitespace-nowrap">
+          <td class="py-2 px-2 whitespace-nowrap">
             <span class="inline-flex items-center space-x-1 px-2 py-0.5 rounded-full text-[10px] font-bold bg-blue-50 text-[#2E3191] border border-blue-200">
               <i class="fa-solid fa-mobile-screen text-[9px]"></i>
               <span>${p.method}</span>
             </span>
           </td>
-          <td class="py-1.5 px-2 text-slate-700 font-medium whitespace-nowrap">
+          <td class="py-2 px-2 text-slate-700 font-medium whitespace-nowrap">
             <div class="flex items-center space-x-1 text-[11px]">
               <i class="fa-solid fa-location-dot text-rose-500 text-[10px]"></i>
               <span>${p.location}</span>
             </div>
           </td>
-          <td class="py-1.5 px-2 text-center whitespace-nowrap">
-            <span class="inline-flex items-center space-x-1 text-emerald-700 font-semibold text-[10px]">
-              <i class="fa-solid fa-camera mr-0.5 text-emerald-600 text-xs"></i>
+          <td class="py-2 px-2 text-center whitespace-nowrap">
+            <span class="inline-flex items-center space-x-1 px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-50 text-emerald-800 border border-emerald-200">
+              <i class="fa-solid fa-camera text-emerald-600 text-xs"></i>
               <span>${p.auth}</span>
             </span>
           </td>
@@ -48765,21 +48864,21 @@
             <div class="flex items-center justify-between text-slate-500 text-[11px] pb-1 border-b border-slate-100">
               <span class="font-semibold text-slate-700 flex items-center space-x-1">
                 <i class="fa-solid fa-mobile-screen-button text-[#2E3191] text-xs"></i>
-                <span>Ghi nhận từ App PAP Mobile (GPS + Chụp ảnh Selfie AI)</span>
+                <span>Ghi nhận từ App PAP Mobile (Mobile GPS + Chụp ảnh Selfie)</span>
               </span>
               <span class="text-[11px] text-slate-500 font-mono" id="cell-detail-punch-count">2 lượt ghi nhận</span>
             </div>
             <div class="overflow-x-auto max-h-40 overflow-y-auto">
               <table class="w-full text-left text-xs">
-                <thead class="bg-slate-50 text-slate-600 text-[10px] font-bold uppercase border-b border-slate-200 sticky top-0">
+                <thead class="bg-[#2E3191] text-white text-[10px] font-bold uppercase sticky top-0 shadow-xs">
                   <tr>
-                    <th class="py-1.5 px-2 text-center w-8">Lượt</th>
-                    <th class="py-1.5 px-2 whitespace-nowrap">Thời gian chấm công</th>
-                    <th class="py-1.5 px-2 text-center whitespace-nowrap">Sự kiện</th>
-                    <th class="py-1.5 px-2 whitespace-nowrap">Hình thức chấm công</th>
-                    <th class="py-1.5 px-2 whitespace-nowrap">Phương thức</th>
-                    <th class="py-1.5 px-2 whitespace-nowrap">Vị trí GPS / Địa điểm</th>
-                    <th class="py-1.5 px-2 text-center whitespace-nowrap">Xác thực</th>
+                    <th class="py-2 px-2 text-center w-8">Lượt</th>
+                    <th class="py-2 px-2 whitespace-nowrap">Thời gian chấm công</th>
+                    <th class="py-2 px-2 text-center whitespace-nowrap">Sự kiện</th>
+                    <th class="py-2 px-2 whitespace-nowrap">Hình thức chấm công</th>
+                    <th class="py-2 px-2 whitespace-nowrap">Phương thức</th>
+                    <th class="py-2 px-2 whitespace-nowrap">Vị trí GPS / Địa điểm</th>
+                    <th class="py-2 px-2 text-center whitespace-nowrap">Ảnh Selfie</th>
                   </tr>
                 </thead>
                 <tbody id="cell-detail-punches-tbody" class="divide-y divide-slate-100 font-medium">
