@@ -44855,9 +44855,9 @@
           type: 'IN',
           typeLabel: 'Vào ca (Check-in)',
           badgeCls: 'bg-emerald-50 text-emerald-800 border-emerald-300',
-          device: inLoc.includes('C1') ? 'Máy PAP-C1-02' : (inLoc.includes('STS') ? 'Trạm cẩu STS-01' : 'Máy PAP #01'),
+          method: 'Mobile GPS + Selfie',
           location: inLoc,
-          auth: 'Chuẩn 99.4%'
+          auth: 'Selfie AI: 99.4%'
         });
       }
       if (!isMissOut && actualOut && actualOut !== '--:--') {
@@ -44867,9 +44867,9 @@
           type: 'OUT',
           typeLabel: 'Ra ca (Check-out)',
           badgeCls: 'bg-blue-50 text-blue-800 border-blue-300',
-          device: outLoc.includes('C1') ? 'Máy PAP-C1-02' : (outLoc.includes('STS') ? 'Trạm cẩu STS-01' : 'Máy PAP #01'),
+          method: 'Mobile GPS + Selfie',
           location: outLoc,
-          auth: 'Chuẩn 98.9%'
+          auth: 'Selfie AI: 98.9%'
         });
       }
 
@@ -44883,11 +44883,21 @@
           <td class="py-1.5 px-2 text-center">
             <span class="px-2 py-0.2 rounded font-bold text-[10px] border ${p.badgeCls}">${p.type}</span>
           </td>
-          <td class="py-1.5 px-2 font-medium text-slate-700">${p.device}</td>
-          <td class="py-1.5 px-2 text-slate-600">${p.location}</td>
+          <td class="py-1.5 px-2">
+            <span class="inline-flex items-center space-x-1.5 px-2 py-0.5 rounded-full text-[11px] font-bold bg-blue-50 text-[#2E3191] border border-blue-200">
+              <i class="fa-solid fa-mobile-screen text-[10px]"></i>
+              <span>${p.method}</span>
+            </span>
+          </td>
+          <td class="py-1.5 px-2 text-slate-700 font-medium">
+            <div class="flex items-center space-x-1">
+              <i class="fa-solid fa-location-dot text-rose-500 text-[10px]"></i>
+              <span>${p.location}</span>
+            </div>
+          </td>
           <td class="py-1.5 px-2 text-center">
             <span class="inline-flex items-center space-x-1 text-emerald-700 font-semibold text-[10px]">
-              <i class="fa-solid fa-check text-xs"></i>
+              <i class="fa-solid fa-camera mr-1 text-emerald-600 text-xs"></i>
               <span>${p.auth}</span>
             </span>
           </td>
@@ -48203,7 +48213,7 @@
               <span>ĐỐI SOÁT & NGUỒN GỐC DỮ LIỆU</span>
             </span>
             <span id="fix-punch-source-badge" class="px-2 py-0.5 rounded font-bold text-[10px] bg-purple-100 text-purple-800 border border-purple-200 flex items-center">
-              <i class="fa-solid fa-fingerprint mr-1"></i> Dữ liệu chấm công
+              <i class="fa-solid fa-mobile-screen mr-1"></i> Mobile GPS + Selfie
             </span>
           </div>
           <div>
@@ -48557,7 +48567,7 @@
               <span>Chi tiết Chấm công:</span>
               <span id="cell-detail-date-title" class="tracking-wide text-amber-200 font-mono">--</span>
             </h3>
-            <p class="text-[11px] text-indigo-100 leading-none mt-0.5">Đối soát ca làm việc, lịch sử quẹt thẻ & xử lý đơn giải trình M14</p>
+            <p class="text-[11px] text-indigo-100 leading-none mt-0.5">Đối soát ca làm việc, dữ liệu chấm công Mobile GPS + Selfie & giải trình M14</p>
           </div>
         </div>
         <div class="flex items-center space-x-2">
@@ -48716,7 +48726,7 @@
               <span id="cell-tab-badge-requests" class="px-1.5 py-0.2 rounded-full text-[10px] bg-slate-100 text-slate-600 font-semibold">0</span>
             </button>
           </div>
-          <span class="text-[10px] text-slate-400 italic hidden sm:inline-block">Dữ liệu đối soát máy quẹt thẻ PAP & Đơn M14</span>
+          <span class="text-[10px] text-slate-400 italic hidden sm:inline-block">Dữ liệu chấm công Mobile GPS + Selfie & Đơn M14</span>
         </div>
 
         <!-- CỤM NỘI DUNG THEO TAB (HIỂN THỊ ĐỘC LẬP TỪNG TAB, KHÔNG XẾP CHỒNG) -->
@@ -48725,8 +48735,8 @@
           <div id="cell-tab-pane-punches" class="p-2.5 sm:p-3 rounded-xl border border-slate-200 bg-white space-y-2 shadow-2xs">
             <div class="flex items-center justify-between text-slate-500 text-[11px] pb-1 border-b border-slate-100">
               <span class="font-semibold text-slate-700 flex items-center space-x-1">
-                <i class="fa-solid fa-server text-slate-400 text-[10px]"></i>
-                <span>Ghi nhận từ máy chấm công vân tay / khuôn mặt & GPS</span>
+                <i class="fa-solid fa-mobile-screen-button text-[#2E3191] text-xs"></i>
+                <span>Ghi nhận từ App PAP Mobile (GPS + Chụp ảnh Selfie AI)</span>
               </span>
               <span class="text-[11px] text-slate-500 font-mono" id="cell-detail-punch-count">2 lượt ghi nhận</span>
             </div>
@@ -48735,9 +48745,9 @@
                 <thead class="bg-slate-50 text-slate-600 text-[10px] font-bold uppercase border-b border-slate-200 sticky top-0">
                   <tr>
                     <th class="py-1.5 px-2 text-center w-10">Lượt</th>
-                    <th class="py-1.5 px-2">Thời gian quẹt</th>
+                    <th class="py-1.5 px-2">Thời gian chấm công</th>
                     <th class="py-1.5 px-2 text-center">Sự kiện</th>
-                    <th class="py-1.5 px-2">Thiết bị chấm công</th>
+                    <th class="py-1.5 px-2">Hình thức chấm công</th>
                     <th class="py-1.5 px-2">Vị trí GPS / Địa điểm</th>
                     <th class="py-1.5 px-2 text-center">Xác thực</th>
                   </tr>
