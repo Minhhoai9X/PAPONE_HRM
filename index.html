@@ -40839,6 +40839,7 @@
           currentShift: '12 ca',
           type: 'SHIFT_COUNT_TOO_LOW',
           severity: 'warning',
+          isWarningOnly: true,
           title: 'Tổng ca quá ít so với định biên (12/17 ca)',
           desc: 'Tháng chuẩn 17 ngày ca: Bị xếp chỉ có 12 ca (thiếu 5 ca), nguy cơ hụt ngày công lao động.',
           currentShifts: 12,
@@ -40848,9 +40849,9 @@
           sourceIcon: '⚓',
           sourceBadgeClass: 'bg-blue-50 text-blue-800 border-blue-200',
           rootCause: 'Thống kê tổng số ca trong kỳ M07 so với công chuẩn định biên ca kíp Cảng (17 ca): Thiếu 5 ca.',
-          actionPlan: 'Bổ sung 5 ca làm việc vào các ngày trống để đủ chuẩn 17 ca',
-          suggestShift: 'BALANCE_ADD_5',
-          suggestLabel: 'Bổ sung 5 ca làm việc vào các ngày trống để đủ chuẩn 17 ca',
+          actionPlan: 'Theo dõi & lưu ý điều độ ca kíp (Chỉ cảnh báo, không xử lý duyệt)',
+          suggestShift: '',
+          suggestLabel: 'Lưu ý điều độ ca kíp (Chỉ cảnh báo)',
           basisTitle: 'Định biên ca kíp PAP',
           basisDetail: 'Quy chế khoán ca sản xuất cảng: Chuẩn 17 ca/tháng đối với lao động ca kíp.'
         },
@@ -40864,6 +40865,7 @@
           currentShift: '22 ca',
           type: 'SHIFT_COUNT_TOO_HIGH',
           severity: 'danger',
+          isWarningOnly: true,
           title: 'Tổng ca vượt trần làm thêm (22/17 ca)',
           desc: 'Xếp lên tới 22 ca (vượt 5 ca định biên, tương đương 40h OT), nguy cơ vi phạm trần làm thêm giờ.',
           currentShifts: 22,
@@ -40873,9 +40875,9 @@
           sourceIcon: '⚖️',
           sourceBadgeClass: 'bg-rose-50 text-rose-800 border-rose-200',
           rootCause: 'Thống kê tổng ca M07 phát hiện xếp dồn ca vượt trần giới hạn làm thêm 40 giờ/tháng.',
-          actionPlan: 'Giảm 5 ca dồn, chuyển sang ca Nghỉ [OFF] để về chuẩn 17 ca',
-          suggestShift: 'BALANCE_REMOVE_5',
-          suggestLabel: 'Giảm 5 ca làm dồn, chuyển sang Nghỉ ca [OFF] để về chuẩn 17 ca',
+          actionPlan: 'Theo dõi trần làm thêm & an toàn lao động (Chỉ cảnh báo, không xử lý duyệt)',
+          suggestShift: '',
+          suggestLabel: 'Cảnh báo kiểm soát giờ OT (Chỉ cảnh báo)',
           basisTitle: 'Điều 107 BLLĐ 2019',
           basisDetail: 'Khống chế trần làm thêm không quá 40 giờ/tháng và đảm bảo sức khỏe an toàn hàng hải.'
         }
@@ -42697,16 +42699,21 @@
       let readinessClass = 'text-amber-600 font-bold';
 
       if (currentAttendanceLockStep === 1) {
+        const actionableAnomalies = attendanceScheduleAnomaliesStore.filter(a => !a.isWarningOnly && a.type !== 'SHIFT_COUNT_TOO_LOW' && a.type !== 'SHIFT_COUNT_TOO_HIGH');
+        const warningAnomalies = attendanceScheduleAnomaliesStore.filter(a => a.isWarningOnly || a.type === 'SHIFT_COUNT_TOO_LOW' || a.type === 'SHIFT_COUNT_TOO_HIGH');
+        const actionableCount = actionableAnomalies.length;
+        const warningsCount = warningAnomalies.length;
+
         anomalyCount = attendanceScheduleAnomaliesStore.length;
-        initialCount = 8;
+        initialCount = 6;
         stepName = 'BƯỚC 1: LỊCH CA';
         const anomPaps = new Set(attendanceScheduleAnomaliesStore.map(a => a.pap));
         affectedEmployeesCount = anomPaps.size;
-        if (anomalyCount === 0) {
-          readinessText = 'Sẵn sàng sang Bước 2';
+        if (actionableCount === 0) {
+          readinessText = `Sẵn sàng sang Bước 2 (${warningsCount} cảnh báo)`;
           readinessClass = 'text-emerald-600 font-bold';
         } else {
-          readinessText = `Còn ${anomalyCount} vi phạm`;
+          readinessText = `Còn ${actionableCount} vi phạm cần duyệt`;
           readinessClass = 'text-rose-600 font-bold';
         }
       } else if (currentAttendanceLockStep === 2) {
@@ -42776,7 +42783,14 @@
       const elStepBadge = document.getElementById('kpi-step-badge');
       if (elStepBadge) elStepBadge.innerText = stepName;
       const elAnomCount = document.getElementById('kpi-anomaly-count');
-      if (elAnomCount) elAnomCount.innerText = anomalyCount;
+      if (elAnomCount) {
+        if (currentAttendanceLockStep === 1) {
+          const actionableCount = attendanceScheduleAnomaliesStore.filter(a => !a.isWarningOnly && a.type !== 'SHIFT_COUNT_TOO_LOW' && a.type !== 'SHIFT_COUNT_TOO_HIGH').length;
+          elAnomCount.innerText = actionableCount;
+        } else {
+          elAnomCount.innerText = anomalyCount;
+        }
+      }
 
       // KPI 4: Tiến độ phê duyệt
       const elProgressText = document.getElementById('kpi-resolved-progress-text');
@@ -42784,6 +42798,17 @@
         if (currentAttendanceLockStep === 4) {
           elProgressText.innerText = `${anomalyCount} ca lệch chuẩn (Đối soát)`;
           elProgressText.className = 'font-bold text-[#1877F2]';
+        } else if (currentAttendanceLockStep === 1) {
+          const actionableCount = attendanceScheduleAnomaliesStore.filter(a => !a.isWarningOnly && a.type !== 'SHIFT_COUNT_TOO_LOW' && a.type !== 'SHIFT_COUNT_TOO_HIGH').length;
+          const warningsCount = attendanceScheduleAnomaliesStore.filter(a => a.isWarningOnly || a.type === 'SHIFT_COUNT_TOO_LOW' || a.type === 'SHIFT_COUNT_TOO_HIGH').length;
+          if (actionableCount === 0) {
+            elProgressText.innerText = `6/6 đã duyệt (${warningsCount} cảnh báo theo dõi)`;
+            elProgressText.className = 'font-bold text-emerald-600';
+          } else {
+            const resolved = 6 - actionableCount;
+            elProgressText.innerText = `${resolved}/6 đã duyệt (${warningsCount} cảnh báo)`;
+            elProgressText.className = 'font-bold text-[#1877F2]';
+          }
         } else if (anomalyCount === 0) {
           elProgressText.innerText = `${initialCount}/${initialCount} (Hoàn tất)`;
           elProgressText.className = 'font-bold text-emerald-600';
@@ -42794,8 +42819,15 @@
       }
       const elProgressBar = document.getElementById('kpi-resolved-progress-bar');
       if (elProgressBar) {
-        elProgressBar.style.width = currentAttendanceLockStep === 4 ? '100%' : `${resolvedPct}%`;
-        elProgressBar.className = (currentAttendanceLockStep === 4 || anomalyCount === 0) ? 'bg-emerald-500 h-full transition-all duration-300' : 'bg-[#1877F2] h-full transition-all duration-300';
+        if (currentAttendanceLockStep === 1) {
+          const actionableCount = attendanceScheduleAnomaliesStore.filter(a => !a.isWarningOnly && a.type !== 'SHIFT_COUNT_TOO_LOW' && a.type !== 'SHIFT_COUNT_TOO_HIGH').length;
+          const pct = Math.min(100, Math.round(((6 - actionableCount) / 6) * 100));
+          elProgressBar.style.width = `${pct}%`;
+          elProgressBar.className = (actionableCount === 0) ? 'bg-emerald-500 h-full transition-all duration-300' : 'bg-[#1877F2] h-full transition-all duration-300';
+        } else {
+          elProgressBar.style.width = currentAttendanceLockStep === 4 ? '100%' : `${resolvedPct}%`;
+          elProgressBar.className = (currentAttendanceLockStep === 4 || anomalyCount === 0) ? 'bg-emerald-500 h-full transition-all duration-300' : 'bg-[#1877F2] h-full transition-all duration-300';
+        }
       }
       const elReadiness = document.getElementById('kpi-lock-readiness');
       if (elReadiness) {
@@ -42812,12 +42844,24 @@
           : '⚠️ Danh sách cảnh báo và duyệt nhanh';
       }
       if (badgeViewAnom) {
-        badgeViewAnom.innerText = anomalyCount;
-        if (currentAttendanceLockStep === 4) {
+        if (currentAttendanceLockStep === 1) {
+          const actionableCount = attendanceScheduleAnomaliesStore.filter(a => !a.isWarningOnly && a.type !== 'SHIFT_COUNT_TOO_LOW' && a.type !== 'SHIFT_COUNT_TOO_HIGH').length;
+          const warningsCount = attendanceScheduleAnomaliesStore.filter(a => a.isWarningOnly || a.type === 'SHIFT_COUNT_TOO_LOW' || a.type === 'SHIFT_COUNT_TOO_HIGH').length;
+          if (actionableCount === 0) {
+            badgeViewAnom.innerText = warningsCount;
+            badgeViewAnom.className = 'px-1.5 py-0.2 rounded-full bg-amber-500 text-white font-extrabold text-[10px]';
+          } else {
+            badgeViewAnom.innerText = actionableCount;
+            badgeViewAnom.className = 'px-1.5 py-0.2 rounded-full bg-rose-600 text-white font-extrabold text-[10px] animate-pulse';
+          }
+        } else if (currentAttendanceLockStep === 4) {
+          badgeViewAnom.innerText = anomalyCount;
           badgeViewAnom.className = 'px-1.5 py-0.2 rounded-full bg-[#1877F2] text-white font-extrabold text-[10px]';
         } else if (anomalyCount === 0) {
+          badgeViewAnom.innerText = 0;
           badgeViewAnom.className = 'px-1.5 py-0.2 rounded-full bg-emerald-600 text-white font-extrabold text-[10px]';
         } else {
+          badgeViewAnom.innerText = anomalyCount;
           badgeViewAnom.className = 'px-1.5 py-0.2 rounded-full bg-rose-600 text-white font-extrabold text-[10px] animate-pulse';
         }
       }
@@ -42889,7 +42933,7 @@
           <option value="SHIFT_AFTER_RESIGNED">🚨 Sau ngày thôi việc (${cResign})</option>
           <option value="CONFLICT_APPROVED_LEAVE">⚠️ Trùng phép M14 (${cLeave})</option>
           <option value="WORKING_DAY_UNASSIGNED">⚠️ Chưa phân ca (${cUnassign})</option>
-          <option value="SHIFT_COUNT">⚠️ Lệch chuẩn định biên 17 ca (${cCount})</option>
+          <option value="SHIFT_COUNT">⚠️ Cảnh báo định biên 17 ca (Không duyệt) (${cCount})</option>
         `;
       } else if (currentAttendanceLockStep === 2) {
         const pTotal = attendanceMissingPunches.length;
@@ -43112,17 +43156,43 @@
           return;
         }
 
-        tbody.innerHTML = list.map((a, idx) => {
+        const actionableCountInList = list.filter(a => !(a.isWarningOnly || a.type === 'SHIFT_COUNT_TOO_LOW' || a.type === 'SHIFT_COUNT_TOO_HIGH')).length;
+        let bannerHtml = '';
+        if (actionableCountInList === 0 && list.length > 0) {
+          bannerHtml = `
+            <tr class="bg-emerald-50/80 border-b border-emerald-200">
+              <td colspan="9" class="py-2.5 px-4 text-emerald-950 font-medium">
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+                  <div class="flex items-center space-x-2 text-xs">
+                    <span class="w-5 h-5 rounded-full bg-emerald-600 text-white flex items-center justify-center text-xs font-bold shrink-0">✓</span>
+                    <span><strong>Đã phê duyệt xong 100% các vi phạm cần xử lý.</strong> Các dòng bên dưới là cảnh báo tổng số ca định biên để theo dõi (không yêu cầu phê duyệt).</span>
+                  </div>
+                  <button type="button" onclick="switchAttendanceLockStep(2)" class="px-3 py-1.5 bg-[#2E3191] hover:bg-[#242775] text-white font-bold text-xs rounded-xl shadow-xs transition cursor-pointer flex items-center justify-center space-x-1 shrink-0 self-start sm:self-auto">
+                    <span>Tiếp tục: Bước 2 (Chấm công)</span>
+                    <span>&rarr;</span>
+                  </button>
+                </div>
+              </td>
+            </tr>
+          `;
+        }
+
+        tbody.innerHTML = bannerHtml + list.map((a, idx) => {
           const isDanger = (a.severity === 'danger');
+          const isWarningOnly = (a.isWarningOnly || a.type === 'SHIFT_COUNT_TOO_LOW' || a.type === 'SHIFT_COUNT_TOO_HIGH');
           const badgeClass = isDanger 
             ? 'bg-rose-100 text-rose-800 border-rose-300' 
             : 'bg-amber-100 text-amber-900 border-amber-300';
           const iconType = isDanger ? '🚨' : '⚠️';
 
           return `
-            <tr class="hover:bg-amber-50/40 transition border-b border-slate-200 group text-xs">
+            <tr class="hover:bg-amber-50/40 transition border-b border-slate-200 group text-xs ${isWarningOnly ? 'bg-amber-50/20' : ''}">
               <td class="py-2 px-2 text-center sticky left-0 z-10 bg-white group-hover:bg-amber-50/40 border-r border-slate-200 w-9">
-                <input type="checkbox" name="chk-anomaly-item" value="${a.id}" ${period.isLocked ? 'disabled' : ''} onchange="updateAnomalySelectionCount()" class="rounded border-slate-300 text-[#2E3191] focus:ring-[#2E3191] cursor-pointer">
+                ${isWarningOnly ? `
+                  <span class="text-slate-300 font-mono text-[11px]" title="Chỉ cảnh báo theo dõi, không xử lý duyệt">—</span>
+                ` : `
+                  <input type="checkbox" name="chk-anomaly-item" value="${a.id}" ${period.isLocked ? 'disabled' : ''} onchange="updateAnomalySelectionCount()" class="rounded border-slate-300 text-[#2E3191] focus:ring-[#2E3191] cursor-pointer">
+                `}
               </td>
               <td class="py-2 px-1 text-center text-slate-500 font-mono sticky left-9 z-10 bg-white group-hover:bg-amber-50/40 border-r border-slate-200 w-10 min-w-[38px] max-w-[38px] text-[11px]">${idx + 1}</td>
               <td class="py-2 px-2.5 sticky left-[74px] z-10 bg-white group-hover:bg-amber-50/40 border-r border-slate-200 w-[190px] min-w-[180px] max-w-[210px] shadow-[4px_0_8px_-2px_rgba(0,0,0,0.08)]">
@@ -43164,12 +43234,21 @@
               </td>
               <!-- CỘT 7: HƯỚNG XỬ LÝ ĐỀ XUẤT -->
               <td class="py-2 px-2.5 border-r border-slate-200 min-w-[180px] max-w-[220px]">
-                <div class="p-1.5 bg-emerald-50 text-emerald-950 border border-emerald-300 rounded-lg text-[11px] leading-snug">
-                  <div class="flex items-center space-x-1 text-emerald-800 font-bold mb-0.5">
-                    <span class="text-emerald-600 shrink-0">💡</span>
-                    <span class="truncate" title="${a.suggestLabel || a.actionPlan}">${a.suggestLabel || a.actionPlan}</span>
+                ${isWarningOnly ? `
+                  <div class="p-1.5 bg-amber-50 text-amber-900 border border-amber-300 rounded-lg text-[11px] leading-snug">
+                    <div class="flex items-center space-x-1 text-amber-800 font-bold mb-0.5">
+                      <span class="text-amber-600 shrink-0">⚠️</span>
+                      <span class="truncate" title="${a.suggestLabel || a.actionPlan}">${a.suggestLabel || a.actionPlan}</span>
+                    </div>
                   </div>
-                </div>
+                ` : `
+                  <div class="p-1.5 bg-emerald-50 text-emerald-950 border border-emerald-300 rounded-lg text-[11px] leading-snug">
+                    <div class="flex items-center space-x-1 text-emerald-800 font-bold mb-0.5">
+                      <span class="text-emerald-600 shrink-0">💡</span>
+                      <span class="truncate" title="${a.suggestLabel || a.actionPlan}">${a.suggestLabel || a.actionPlan}</span>
+                    </div>
+                  </div>
+                `}
               </td>
               <!-- CỘT 8: CĂN CỨ & QUY ĐỊNH (DỰA VÀO ĐÂU) -->
               <td class="py-2 px-2.5 border-r border-slate-200 min-w-[170px] max-w-[200px]">
@@ -43188,6 +43267,17 @@
                     <svg class="w-3 h-3 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>
                     Chỉ đọc
                   </span>
+                ` : (isWarningOnly ? `
+                  <div class="flex items-center justify-center space-x-1">
+                    <span class="inline-flex items-center space-x-1 px-1.5 py-1 bg-amber-50 text-amber-800 border border-amber-300 font-bold text-[10px] rounded-lg shadow-2xs" title="Chỉ cảnh báo theo dõi định biên, không xử lý duyệt tại Bước 1">
+                      <span>⚠️</span>
+                      <span>Cảnh báo</span>
+                    </span>
+                    <button type="button" onclick="openAnomalyDetailModal('${a.id}')" class="px-1.5 py-1 bg-white hover:bg-slate-100 text-slate-700 border border-slate-300 font-semibold text-xs rounded-lg shadow-2xs transition cursor-pointer flex items-center space-x-1" title="Xem chi tiết phân tích số ca">
+                      <span>🔍</span>
+                      <span>Xem</span>
+                    </button>
+                  </div>
                 ` : `
                   <div class="flex items-center justify-center space-x-1">
                     <button type="button" onclick="approveSingleAnomaly('${a.id}')" class="px-2 py-1 bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs rounded-lg shadow-2xs transition cursor-pointer flex items-center space-x-1" title="Duyệt nhanh áp dụng ngay phương án đề xuất">
@@ -43198,7 +43288,7 @@
                       🔍 Sửa
                     </button>
                   </div>
-                `}
+                `)}
               </td>
             </tr>
           `;
@@ -43741,55 +43831,26 @@
         const anom = attendanceScheduleAnomaliesStore.find(a => a.id === anomalyId);
         if (!anom) return;
 
-        if (anom.type === 'SHIFT_COUNT_TOO_LOW' || anom.type === 'SHIFT_COUNT_TOO_HIGH') {
-          const standardCount = period.standardShiftDays || 17;
-          const matrixData = attendanceDailyMatrixStore[currentAttendancePeriodId] || [];
-          const empM = matrixData.find(m => m.pap === anom.pap);
-          if (empM && empM.days) {
-            if (anom.type === 'SHIFT_COUNT_TOO_LOW') {
-              let needed = standardCount - (anom.currentShifts || 12);
-              for (const d of empM.days) {
-                if (needed <= 0) break;
-                const dayOfWeek = new Date(2026, 8, d.day).getDay();
-                if ((!d.symbol || d.symbol === '') && dayOfWeek !== 0) {
-                  d.symbol = 'S1';
-                  d.label = 'S1';
-                  needed--;
-                }
-              }
-            } else if (anom.type === 'SHIFT_COUNT_TOO_HIGH') {
-              let excess = (anom.currentShifts || 22) - standardCount;
-              for (let i = empM.days.length - 1; i >= 0; i--) {
-                if (excess <= 0) break;
-                const d = empM.days[i];
-                if (d.symbol === 'S1' || d.symbol === 'S2') {
-                  d.symbol = '';
-                  d.label = '';
-                  excess--;
-                }
-              }
-            }
-          }
-          recalculateEmployeeSummary(anom.pap);
-          attendanceScheduleAnomaliesStore = attendanceScheduleAnomaliesStore.filter(a => a.id !== anomalyId);
+        if (anom.isWarningOnly || anom.type === 'SHIFT_COUNT_TOO_LOW' || anom.type === 'SHIFT_COUNT_TOO_HIGH') {
           if (!silent) {
-            showToast(`✓ Đã tự động cân bằng ${standardCount} ca chuẩn định biên cho ${anom.pap} (${anom.name})!`);
+            showToast('Trường hợp này là cảnh báo định biên công, chỉ dùng để theo dõi quản lý và không xử lý duyệt!', 'info');
           }
-        } else {
-          const matrixData = attendanceDailyMatrixStore[currentAttendancePeriodId] || [];
-          const empM = matrixData.find(m => m.pap === anom.pap);
-          if (empM && empM.days) {
-            const dayRec = empM.days.find(d => d.day === anom.day);
-            if (dayRec) {
-              dayRec.symbol = anom.suggestShift;
-              dayRec.label = anom.suggestShift;
-            }
+          return;
+        }
+
+        const matrixData = attendanceDailyMatrixStore[currentAttendancePeriodId] || [];
+        const empM = matrixData.find(m => m.pap === anom.pap);
+        if (empM && empM.days) {
+          const dayRec = empM.days.find(d => d.day === anom.day);
+          if (dayRec) {
+            dayRec.symbol = anom.suggestShift;
+            dayRec.label = anom.suggestShift;
           }
-          recalculateEmployeeSummary(anom.pap);
-          attendanceScheduleAnomaliesStore = attendanceScheduleAnomaliesStore.filter(a => a.id !== anomalyId);
-          if (!silent) {
-            showToast(`✓ Đã duyệt phương án [${anom.suggestShift || 'TRỐNG'}] cho ${anom.pap} (${anom.name}) - ngày ${anom.day}!`);
-          }
+        }
+        recalculateEmployeeSummary(anom.pap);
+        attendanceScheduleAnomaliesStore = attendanceScheduleAnomaliesStore.filter(a => a.id !== anomalyId);
+        if (!silent) {
+          showToast(`✓ Đã duyệt phương án [${anom.suggestShift || 'TRỐNG'}] cho ${anom.pap} (${anom.name}) - ngày ${anom.day}!`);
         }
 
       } else if (currentAttendanceLockStep === 2) {
@@ -43874,16 +43935,17 @@
       }
 
       if (currentAttendanceLockStep === 1) {
-        const count = attendanceScheduleAnomaliesStore.length;
+        const actionableAnomalies = attendanceScheduleAnomaliesStore.filter(a => !a.isWarningOnly && a.type !== 'SHIFT_COUNT_TOO_LOW' && a.type !== 'SHIFT_COUNT_TOO_HIGH');
+        const count = actionableAnomalies.length;
         if (count === 0) {
-          showToast('Hiện tại không có vi phạm lịch làm việc nào cần phê duyệt!', 'info');
+          showToast('Đã hoàn tất duyệt các vi phạm cần xử lý! 2 cảnh báo tổng số ca được giữ lại để theo dõi quản trị.', 'info');
           return;
         }
-        const allIds = attendanceScheduleAnomaliesStore.map(a => a.id);
-        allIds.forEach(id => {
+        const actionableIds = actionableAnomalies.map(a => a.id);
+        actionableIds.forEach(id => {
           approveSingleAnomaly(id, true);
         });
-        showToast(`⚡ Đã duyệt tự động 1-Chạm thành công toàn bộ ${count} vi phạm lịch làm việc! Bảng công đã sẵn sàng 100%!`);
+        showToast(`⚡ Đã duyệt tự động 1-Chạm thành công ${count} vi phạm lịch làm việc! Bảng công đã sẵn sàng chuyển sang Bước 2.`);
       } else if (currentAttendanceLockStep === 2) {
         const count = attendanceMissingPunches.length;
         if (count === 0) {
@@ -45698,7 +45760,7 @@
                 </div>
                 ${shiftCountAnom ? `
                   <div class="mt-0.5">
-                    <button type="button" onclick="openQuickFixShiftCountAnomalyModal('${shiftCountAnom.id}')" class="inline-flex items-center space-x-1 px-1 py-0.5 rounded text-[9px] font-bold ${shiftCountAnom.severity === 'danger' ? 'bg-rose-100 text-rose-700 border border-rose-300' : 'bg-amber-100 text-amber-800 border border-amber-300'} animate-pulse hover:shadow-xs cursor-pointer" title="Cảnh báo tổng số ca: ${shiftCountAnom.desc}. Nhấp để xử lý!">
+                    <button type="button" onclick="openQuickFixShiftCountAnomalyModal('${shiftCountAnom.id}')" class="inline-flex items-center space-x-1 px-1 py-0.5 rounded text-[9px] font-bold ${shiftCountAnom.severity === 'danger' ? 'bg-rose-100 text-rose-700 border border-rose-300' : 'bg-amber-100 text-amber-800 border border-amber-300'} animate-pulse hover:shadow-xs cursor-pointer" title="Cảnh báo tổng số ca: ${shiftCountAnom.desc}. Nhấp để xem cảnh báo!">
                       <span>⚠️</span>
                       <span class="${isFit ? 'truncate max-w-[120px]' : ''}">${shiftCountAnom.type === 'SHIFT_COUNT_TOO_LOW' ? 'Thiếu ca (' + (shiftCountAnom.actualCount || 12) + '/' + (shiftCountAnom.standardCount || 17) + ')' : 'Vượt trần (' + (shiftCountAnom.actualCount || 22) + '/' + (shiftCountAnom.standardCount || 17) + ')'}</span>
                     </button>
@@ -46751,10 +46813,10 @@
           conseqBox.innerHTML = `<strong>Căn cứ định biên:</strong> Theo Quy chế Vận hành Cảng PAP & HĐLĐ ca kíp, nhân viên cần đạt tối thiểu <strong>${standardCount} ca chuẩn/tháng</strong> để đảm bảo dây chuyền khai thác cầu bến.`;
         }
         if (suggestText) {
-          suggestText.innerHTML = `Hệ thống sẽ <strong>tự động bổ sung ${Math.abs(diff)} ca luân phiên (S1/S2)</strong> vào các ngày còn trống trong kỳ để tổng ca đạt đúng <strong>${standardCount} ca chuẩn</strong>.`;
+          suggestText.innerHTML = `⚠️ <strong>Cảnh báo quản trị:</strong> Nhân viên thiếu <strong>${Math.abs(diff)} ca</strong> so với định biên công chuẩn (${standardCount} ca). Trường hợp này <strong>chỉ cảnh báo để theo dõi quản lý, không xử lý duyệt</strong> tại Bước 1 và không chặn chuyển bước. Nếu cần điều chỉnh phân ca, bộ phận quản lý ca kíp thực hiện trực tiếp trên phân hệ Lập lịch ca (M07).`;
         }
         if (btnLabel) {
-          btnLabel.innerText = `Áp dụng bổ sung ${Math.abs(diff)} ca bù định biên (Đạt ${standardCount} ca chuẩn)`;
+          btnLabel.innerText = `Cảnh báo theo dõi định biên (Không duyệt)`;
         }
       } else {
         if (alertBox) alertBox.className = 'p-3.5 rounded-xl border border-rose-300 bg-rose-50/80 space-y-2';
@@ -46772,10 +46834,10 @@
           conseqBox.innerHTML = `<strong>Căn cứ pháp lý:</strong> Theo Điều 107 & 110 Bộ luật Lao động 2019, người lao động phải được bố trí nghỉ tuần bình quân tối thiểu 4 ngày/tháng, không được xếp dồn quá tải ca.`;
         }
         if (suggestText) {
-          suggestText.innerHTML = `Hệ thống sẽ <strong>tự động chuyển ${diff} ca dồn dập cuối kỳ thành ngày nghỉ ca (OFF)</strong> hợp lệ để đưa tổng ca về mức <strong>${standardCount} ca chuẩn</strong> an toàn.`;
+          suggestText.innerHTML = `⚠️ <strong>Cảnh báo quản trị:</strong> Nhân viên vượt <strong>${diff} ca</strong> so với định biên công chuẩn (${standardCount} ca). Trường hợp này <strong>chỉ cảnh báo để theo dõi quản lý, không xử lý duyệt</strong> tại Bước 1 và không chặn chuyển bước. Số ca dôi dư sẽ được theo dõi đối soát và quy đổi công tại Bước 4.`;
         }
         if (btnLabel) {
-          btnLabel.innerText = `Áp dụng giảm ${diff} ca dồn thành ngày nghỉ ca (Về ${standardCount} ca chuẩn)`;
+          btnLabel.innerText = `Cảnh báo theo dõi định biên (Không duyệt)`;
         }
       }
 
@@ -46788,82 +46850,8 @@
     }
 
     function applyQuickFixShiftCountSuggestion() {
-      const period = getCurrentAttendancePeriod();
-      if (period && period.isLocked) {
-        showToast('Kỳ công đã khóa. Không thể điều chỉnh định biên ca!', 'warning');
-        return;
-      }
-      const pap = document.getElementById('fix-shift-count-pap').value;
-      if (!pap) return;
-
-      const standardCount = period.standardShiftDays || 17;
-      const matrix = attendanceMatrixStore[period.id] || [];
-      const empM = matrix.find(m => m.pap === pap);
-
-      if (empM && empM.days) {
-        // Đếm số ca hiện tại
-        let currentShifts = 0;
-        empM.days.forEach(d => {
-          if (d.symbol === 'S1' || d.symbol === 'S2' || d.symbol === 'S1L' || d.symbol === 'S2L') {
-            currentShifts++;
-          }
-        });
-
-        if (currentShifts < standardCount) {
-          // THIẾU CA: Bổ sung ca vào các ngày trống
-          let needed = standardCount - currentShifts;
-          for (let i = 0; i < empM.days.length && needed > 0; i++) {
-            const dayRec = empM.days[i];
-            if (!dayRec.symbol || dayRec.symbol === '-' || dayRec.symbol === '') {
-              // Điền ca S1 hoặc S2 luân phiên
-              dayRec.symbol = (needed % 2 === 0) ? 'S1' : 'S2';
-              needed--;
-            }
-          }
-        } else if (currentShifts > standardCount) {
-          // THỪA CA: Giảm các ca cuối kỳ thành ''
-          let excess = currentShifts - standardCount;
-          for (let i = empM.days.length - 1; i >= 0 && excess > 0; i--) {
-            const dayRec = empM.days[i];
-            if (dayRec.symbol === 'S1' || dayRec.symbol === 'S2') {
-              dayRec.symbol = ''; // Chuyển thành nghỉ
-              excess--;
-            }
-          }
-        }
-
-        // Cập nhật lại attendanceSummaryStore
-        const summaries = attendanceSummaryStore[period.id] || [];
-        const empSum = summaries.find(s => s.pap === pap);
-        if (empSum) {
-          let dX = 0, s1 = 0, s2 = 0, dL = 0, dP = 0;
-          empM.days.forEach(d => {
-            if (d.symbol === 'X') dX++;
-            else if (d.symbol === 'S1') s1++;
-            else if (d.symbol === 'S2') s2++;
-            else if (d.symbol === 'L') dL++;
-            else if (d.symbol === 'S1L') { s1++; dL++; }
-            else if (d.symbol === 'S2L') { s2++; dL++; }
-            else if (d.symbol === 'P') dP++;
-          });
-          empSum.daysX = dX;
-          empSum.shiftsS1 = s1;
-          empSum.shiftsS2 = s2;
-          empSum.daysL = dL;
-          empSum.daysP = dP;
-          empSum.actualDays = dX + s1 + s2;
-          empSum.paidDays = empSum.actualDays + dL + dP;
-          empSum.totalPaid = empSum.paidDays;
-        }
-      }
-
-      // Xóa anomaly khỏi store
-      attendanceScheduleAnomaliesStore = attendanceScheduleAnomaliesStore.filter(a => !(a.pap === pap && (a.type === 'SHIFT_COUNT_TOO_LOW' || a.type === 'SHIFT_COUNT_TOO_HIGH')));
-
+      showToast('ℹ️ Cảnh báo định biên ca chỉ dùng để theo dõi quản lý, không thực hiện thao tác duyệt tại Bước 1!', 'info');
       closeQuickFixShiftCountModal();
-      showToast(`✓ Đã tự động cân bằng số ca về ${standardCount} ca chuẩn cho nhân sự ${pap}!`);
-      renderAttendanceLockStatus();
-      renderLockWorkspace();
     }
 
     function focusEmpOnGridFromShiftCountModal() {
@@ -47967,7 +47955,7 @@
       <div class="pap-primary text-white p-4 flex items-center justify-between">
         <h3 class="text-sm font-bold flex items-center space-x-2">
           <span>⚠️</span>
-          <span>XỬ LÝ CẢNH BÁO TỔNG SỐ CA TRONG THÁNG (BƯỚC 1)</span>
+          <span>THÔNG TIN CẢNH BÁO TỔNG SỐ CA TRONG THÁNG (BƯỚC 1)</span>
         </h3>
         <button type="button" onclick="closeQuickFixShiftCountModal()" class="text-white/80 hover:text-white text-xl leading-none cursor-pointer">&times;</button>
       </div>
@@ -48022,19 +48010,19 @@
           </div>
         </div>
 
-        <!-- Khối gợi ý hành động 1-chạm -->
-        <div class="bg-blue-50/80 border border-blue-200 rounded-xl p-3.5 space-y-2.5">
-          <div class="flex items-center space-x-1.5 text-blue-900 font-bold text-xs">
-            <span>💡</span>
-            <span>Phương án xử lý khuyến nghị của hệ thống:</span>
+        <!-- Khối thông tin định biên & hướng dẫn quản trị (Chỉ cảnh báo, không xử lý duyệt) -->
+        <div class="bg-amber-50/80 border border-amber-300 rounded-xl p-3.5 space-y-2.5">
+          <div class="flex items-center space-x-1.5 text-amber-950 font-bold text-xs">
+            <span>ℹ️</span>
+            <span>Quy định xử lý cảnh báo định biên:</span>
           </div>
-          <div id="fix-shift-count-suggest-text" class="text-[11px] text-blue-800 leading-relaxed">
+          <div id="fix-shift-count-suggest-text" class="text-[11px] text-amber-900 leading-relaxed">
             Gợi ý xử lý...
           </div>
-          <button type="button" id="btn-apply-shift-count-fix" onclick="applyQuickFixShiftCountSuggestion()" class="w-full py-2 bg-[#2E3191] hover:bg-[#242775] text-white font-bold rounded-xl shadow-xs transition cursor-pointer flex items-center justify-center space-x-2">
-            <span>⚡</span>
-            <span id="btn-apply-shift-count-label">Áp dụng cân bằng ca tự động (Về 17 ca chuẩn)</span>
-          </button>
+          <div class="p-2.5 bg-white/90 rounded-lg border border-amber-200 text-[11px] text-amber-800 flex items-start space-x-2">
+            <span class="text-amber-600 font-bold shrink-0">📌</span>
+            <span><strong>Chỉ cảnh báo theo dõi:</strong> Mục này chỉ nhằm cung cấp thông tin đối chiếu số lượng ca thực tế so với định biên công chuẩn (17 ca). Hệ thống không yêu cầu phê duyệt tại Bước 1 và không chặn tiến trình chuyển sang Bước 2.</span>
+          </div>
         </div>
 
         <div class="flex items-center justify-between pt-2 border-t border-slate-200">
