@@ -521,8 +521,8 @@
           <i class="fa-solid fa-chevron-down text-slate-400" style="font-size:11px"></i>
         </div>
         <div id="greq-status-menu" style="display:none;position:absolute;z-index:90;top:calc(100% + 4px);left:0;right:0;background:#fff;border:1px solid #cbd5e1;border-radius:8px;box-shadow:0 8px 24px rgba(0,0,0,0.12);padding:8px">
-          <label style="display:flex;align-items:center;gap:8px;padding:6px 8px;font-size:12px;cursor:pointer;border-radius:4px"><input type="checkbox" class="chk-greq-st" value="PENDING" checked onchange="onGreqStatusCheckboxChange()"> Chờ bạn duyệt</label>
-          <label style="display:flex;align-items:center;gap:8px;padding:6px 8px;font-size:12px;cursor:pointer;border-radius:4px"><input type="checkbox" class="chk-greq-st" value="APPROVED" checked onchange="onGreqStatusCheckboxChange()"> Đã duyệt</label>
+          <label style="display:flex;align-items:center;gap:8px;padding:6px 8px;font-size:12px;cursor:pointer;border-radius:4px"><input type="checkbox" class="chk-greq-st" value="PENDING" onchange="onGreqStatusCheckboxChange()"> Chờ bạn duyệt</label>
+          <label style="display:flex;align-items:center;gap:8px;padding:6px 8px;font-size:12px;cursor:pointer;border-radius:4px"><input type="checkbox" class="chk-greq-st" value="APPROVED" onchange="onGreqStatusCheckboxChange()"> Đã duyệt</label>
           <label style="display:flex;align-items:center;gap:8px;padding:6px 8px;font-size:12px;cursor:pointer;border-radius:4px"><input type="checkbox" class="chk-greq-st" value="PROCESSING" onchange="onGreqStatusCheckboxChange()"> Đang xử lý</label>
           <label style="display:flex;align-items:center;gap:8px;padding:6px 8px;font-size:12px;cursor:pointer;border-radius:4px"><input type="checkbox" class="chk-greq-st" value="REJECTED" onchange="onGreqStatusCheckboxChange()"> Từ chối</label>
         </div>
@@ -1308,47 +1308,76 @@
         <!-- BỘ LỌC VÀ TÌM KIẾM -->
         <div class="card" style="padding:12px 16px;background:#fff;border-radius:10px;border:1px solid #e2e8f0;margin-bottom:12px">
           <!-- HÀNG 1: CÁC TIÊU CHÍ LỌC -->
-          <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap">
-            <!-- Năm -->
-            <div style="display:flex;align-items:center;gap:6px">
-              <span style="font-size:12px;font-weight:600;color:#64748b;white-space:nowrap"><i class="fa-solid fa-calendar mr-1"></i>Năm:</span>
-              <select id="m8otsum-filter-year" onchange="filterM8OtSum()" style="border:1px solid #cbd5e1;border-radius:8px;padding:6px 10px;font-size:12px;background:#fff;color:#0f172a;cursor:pointer">
-                <option value="2026" selected>2026</option>
-                <option value="2025">2025</option>
-              </select>
+          <div style="display:flex;gap:12px;align-items:center;flex-wrap:wrap">
+            <!-- Cụm điều hướng Năm & Tháng theo template của lịch (Calendar Period Navigator) -->
+            <div style="display:inline-flex;align-items:center;background:#fff;border:1px solid #cbd5e1;border-radius:8px;height:34px;box-shadow:0 1px 2px rgba(0,0,0,0.03);overflow:hidden">
+              <button type="button" onclick="m8otsumPrevMonth()" title="Tháng trước" style="border:0;padding:0 9px;height:100%;font-size:11px;color:#64748b;background:transparent;cursor:pointer;display:inline-flex;align-items:center">
+                <i class="fa-solid fa-chevron-left"></i>
+              </button>
+              <div style="border-left:1px solid #e2e8f0;border-right:1px solid #e2e8f0;padding:0 10px;height:100%;display:inline-flex;align-items:center;gap:6px;background:#f8fafc">
+                <i class="fa-regular fa-calendar-days pap-text" style="font-size:12px"></i>
+                <select id="m8otsum-filter-month" onchange="filterM8OtSum()" style="border:none;background:transparent;font-weight:700;font-size:12px;color:#2E3191;cursor:pointer;outline:none;padding:0">
+                  <option value="1">Tháng 01</option>
+                  <option value="2">Tháng 02</option>
+                  <option value="3">Tháng 03</option>
+                  <option value="4">Tháng 04</option>
+                  <option value="5">Tháng 05</option>
+                  <option value="6">Tháng 06</option>
+                  <option value="7">Tháng 07</option>
+                  <option value="8">Tháng 08</option>
+                  <option value="9">Tháng 09</option>
+                  <option value="10" selected>Tháng 10</option>
+                  <option value="11">Tháng 11</option>
+                  <option value="12">Tháng 12</option>
+                  <option value="ALL">Cả năm</option>
+                </select>
+                <span style="color:#cbd5e1">/</span>
+                <select id="m8otsum-filter-year" onchange="filterM8OtSum()" style="border:none;background:transparent;font-weight:700;font-size:12px;color:#0f172a;cursor:pointer;outline:none;padding:0">
+                  <option value="2026" selected>2026</option>
+                  <option value="2025">2025</option>
+                  <option value="2024">2024</option>
+                </select>
+              </div>
+              <button type="button" onclick="m8otsumNextMonth()" title="Tháng sau" style="border:0;padding:0 9px;height:100%;font-size:11px;color:#64748b;background:transparent;cursor:pointer;display:inline-flex;align-items:center">
+                <i class="fa-solid fa-chevron-right"></i>
+              </button>
             </div>
 
-            <!-- Kỳ công -->
-            <div style="display:flex;align-items:center;gap:6px">
-              <span style="font-size:12px;font-weight:600;color:#64748b;white-space:nowrap"><i class="fa-solid fa-business-time mr-1"></i>Kỳ công:</span>
-              <select id="m8otsum-filter-period" onchange="filterM8OtSum()" style="border:1px solid #cbd5e1;border-radius:8px;padding:6px 10px;font-size:12px;background:#fff;color:#0f172a;cursor:pointer">
-                <option value="Kỳ 10/2026 (01/10–31/10)" selected>Kỳ 10/2026 (01/10–31/10)</option>
-                <option value="Kỳ 09/2026 (01/09–30/09)">Kỳ 09/2026 (01/09–30/09)</option>
-                <option value="Kỳ 08/2026 (01/08–31/08)">Kỳ 08/2026 (01/08–31/08)</option>
-              </select>
+            <!-- Phòng ban / đơn vị lọc multi-search -->
+            <div style="position:relative;min-width:220px;max-width:320px;flex:1">
+              <div id="m8otsum-dept-trigger" onclick="toggleM8SumDeptDropdown(event)" style="height:34px;background:#fff;border:1px solid #cbd5e1;border-radius:8px;padding:0 10px;display:flex;align-items:center;justify-content:space-between;cursor:pointer;box-sizing:border-box">
+                <div id="m8otsum-dept-chips" style="display:flex;align-items:center;gap:4px;overflow:hidden;white-space:nowrap;text-overflow:ellipsis">
+                  <span class="badge" style="background:#eff6ff;color:#1d4ed8;border:1px solid #bfdbfe;font-size:11px;padding:2px 8px;border-radius:4px;display:inline-flex;align-items:center;gap:4px">
+                    <i class="fa-solid fa-building mr-1"></i>Tất cả phòng ban
+                  </span>
+                </div>
+                <div style="display:flex;align-items:center;gap:5px;color:#64748b;margin-left:6px;flex-shrink:0">
+                  <span id="m8otsum-dept-count" style="font-size:10.5px;background:#f1f5f9;color:#334155;padding:1px 6px;border-radius:10px;font-weight:600">Tất cả</span>
+                  <i class="fa-solid fa-chevron-down" style="font-size:10px"></i>
+                </div>
+              </div>
+
+              <!-- Popup Menu Multi-search Phòng ban -->
+              <div id="m8otsum-dept-menu" style="display:none;position:absolute;z-index:90;left:0;right:0;top:calc(100% + 4px);background:#fff;border:1px solid #cbd5e1;border-radius:8px;box-shadow:0 10px 15px -3px rgba(0,0,0,0.1);padding:8px" onclick="event.stopPropagation()">
+                <div style="position:relative;margin-bottom:8px">
+                  <i class="fa-solid fa-magnifying-glass" style="position:absolute;left:9px;top:9px;color:#94a3b8;font-size:11px"></i>
+                  <input type="text" id="m8otsum-dept-search" oninput="filterM8SumDeptList(this.value)" placeholder="Tìm phòng ban / đơn vị..." style="width:100%;height:30px;padding:0 10px 0 28px;border:1px solid #cbd5e1;border-radius:6px;font-size:11.5px;box-sizing:border-box">
+                </div>
+                <div id="m8otsum-dept-list" style="max-height:190px;overflow-y:auto;display:flex;flex-direction:column;gap:3px">
+                  <!-- Rendered dynamically -->
+                </div>
+              </div>
             </div>
 
-            <!-- Phòng ban -->
-            <div style="display:flex;align-items:center;gap:6px">
-              <span style="font-size:12px;font-weight:600;color:#64748b;white-space:nowrap"><i class="fa-solid fa-building mr-1"></i>Phòng ban:</span>
-              <select id="m8otsum-filter-dept" onchange="filterM8OtSum()" style="border:1px solid #cbd5e1;border-radius:8px;padding:6px 10px;font-size:12px;background:#fff;color:#0f172a;cursor:pointer;min-width:140px">
-                <option value="ALL" selected>Tất cả phòng ban</option>
-                <option value="Kỹ thuật Cơ điện">Kỹ thuật Cơ điện</option>
-                <option value="Khai thác">Khai thác</option>
-                <option value="PT Phần mềm">PT Phần mềm</option>
-                <option value="Phòng Kế toán">Phòng Kế toán</option>
-              </select>
-            </div>
-
-            <!-- Tìm kiếm -->
-            <div style="position:relative;flex:1;min-width:200px">
-              <input id="m8otsum-search" oninput="filterM8OtSum()" placeholder="Tìm theo mã NV, họ tên…" style="width:100%;padding:6px 10px 6px 30px;border:1px solid #cbd5e1;border-radius:8px;font-size:12px;box-sizing:border-box">
-              <i class="fa-solid fa-magnifying-glass" style="position:absolute;left:10px;top:8px;color:#94a3b8;font-size:12px"></i>
+            <!-- Tìm kiếm theo mã NV, họ tên -->
+            <div style="position:relative;flex:1;min-width:180px">
+              <input id="m8otsum-search" oninput="filterM8OtSum()" placeholder="Tìm theo mã NV, họ tên…" style="width:100%;height:34px;padding:0 10px 0 30px;border:1px solid #cbd5e1;border-radius:8px;font-size:12px;box-sizing:border-box">
+              <i class="fa-solid fa-magnifying-glass" style="position:absolute;left:10px;top:10px;color:#94a3b8;font-size:12px"></i>
             </div>
 
             <!-- Nút Cột & Đặt lại -->
-            <button type="button" class="btn btn-o" onclick="openM8Picker('m8otsum',this)" style="font-size:12px;padding:6px 12px"><i class="fa-solid fa-table-columns mr-1"></i>Cột</button>
-            <button type="button" class="btn btn-o" onclick="resetM8OtSumFilters()" style="font-size:12px;padding:6px 12px;color:#be123c;border-color:#fecdd3;background:#fff1f2" title="Đặt lại bộ lọc"><i class="fa-solid fa-arrow-rotate-left mr-1"></i>Đặt lại</button>
+            <button type="button" class="btn btn-o" onclick="openM8Picker('m8otsum',this)" style="font-size:12px;height:34px;padding:0 12px"><i class="fa-solid fa-table-columns mr-1"></i>Cột</button>
+            <button type="button" class="btn btn-o" onclick="resetM8OtSumFilters()" style="font-size:12px;height:34px;padding:0 12px;color:#be123c;border-color:#fecdd3;background:#fff1f2" title="Đặt lại bộ lọc"><i class="fa-solid fa-arrow-rotate-left mr-1"></i>Đặt lại</button>
           </div>
 
           <!-- HÀNG 2: BỘ LỌC NHANH (PILLS) -->
@@ -1390,6 +1419,7 @@
         </div>
       </div>
 
+      <!-- PHÊ DUYỆT ĐƠN TĂNG CA: QUY CHUẨN TẬP TRUNG TẠI PHÂN HỆ ĐƠN TỪ & PHÊ DUYỆT (REQUESTS) -->
       <!-- PANE 2: CHÍNH SÁCH OT -->
       <div id="m8-pol" class="m8pane" style="display:none">
         <!-- HEADER THANH TIÊU ĐỀ CHÍNH SÁCH OT -->
@@ -3147,6 +3177,7 @@ thead .sl,thead .sr{background:var(--pap)}
     </div>
     <div class="mdl-bd">
       <div class="frow">
+        <div><label class="fl">Phân nhóm *</label><select class="fi" id="type-f-cat" style="font-weight:600"><option value="Nghỉ phép" selected>Nghỉ phép (Phép năm, bù, cá nhân, BHXH...)</option><option value="Vắng mặt">Vắng mặt (Đi công tác, làm ngoài VP/WFH)</option></select></div>
         <div><label class="fl">Mã loại nghỉ *</label><input class="fi" id="type-f-code" placeholder="VD: AL, SL, ML..." style="text-transform:uppercase"></div>
         <div><label class="fl">Ký hiệu chấm công *</label><input class="fi" id="type-f-sym" placeholder="VD: P, O, TS..."></div>
       </div>
@@ -4052,6 +4083,13 @@ function navM8(k, el){
   document.querySelectorAll('#m08-submenu .side-sub').forEach(function(s){
     s.classList.toggle('active', s.getAttribute('data-m8') === k);
   });
+  if (k === 'apv') {
+    nav('requests');
+    if (typeof switchGreqNavTab === 'function') {
+      switchGreqNavTab('INBOX', document.getElementById('tab-greq-inbox'));
+    }
+    return;
+  }
   var subTitles = {
     'sum': 'Tổng hợp tăng ca (OT)',
     'pol': 'Chính sách & Loại tăng ca'
@@ -4060,6 +4098,7 @@ function navM8(k, el){
   if(tt && subTitles[k]) tt.textContent = subTitles[k];
   if(k === 'pol' && typeof initOtPolTable === 'function') setTimeout(initOtPolTable, 50);
   if(k === 'sum' && typeof initM8 === 'function') setTimeout(initM8, 50);
+  if(k === 'apv' && typeof initM8ApvTables === 'function') setTimeout(initM8ApvTables, 50);
 }
 
 function navM9(k, el){
@@ -8208,16 +8247,15 @@ function renderM8T(id){
   }
   if(id==='m8otsum'){
     const selYear=document.getElementById('m8otsum-filter-year')?document.getElementById('m8otsum-filter-year').value:'2026';
-    const selPeriod=document.getElementById('m8otsum-filter-period')?document.getElementById('m8otsum-filter-period').value:'Kỳ 10/2026 (01/10–31/10)';
-    const selDept=document.getElementById('m8otsum-filter-dept')?document.getElementById('m8otsum-filter-dept').value:'ALL';
+    const selMonth=document.getElementById('m8otsum-filter-month')?document.getElementById('m8otsum-filter-month').value:'10';
     const q=(document.getElementById('m8otsum-search')?document.getElementById('m8otsum-search').value:'').trim().toLowerCase();
     
-    // Quick pill counts based on year/period/dept
+    // Quick pill counts based on year/month/dept multi-search
     const baseList=rows.filter(r=>{
       const matchY=!selYear||selYear==='ALL'||String(r.nam)===selYear;
-      const matchP=!selPeriod||selPeriod==='ALL'||String(r.ky_cong)===selPeriod;
-      const matchD=!selDept||selDept==='ALL'||String(r.phong)===selDept;
-      return matchY&&matchP&&matchD;
+      const matchM=!selMonth||selMonth==='ALL'||String(r.thang||10)===selMonth;
+      const matchD=currentM8SumSelectedDepts.includes('ALL')||currentM8SumSelectedDepts.includes(r.phong);
+      return matchY&&matchM&&matchD;
     });
     const cAll=baseList.length;
     const cPaid=baseList.filter(r=>r.paid_ot>0).length;
@@ -8329,7 +8367,16 @@ function m8tab(id,btn){
   const pane=document.getElementById('m8-'+id);if(pane){pane.classList.add('active');pane.style.display='block';}
 }
 function m8subtab(id,btn){
-  document.querySelectorAll('#m8-apv .tab').forEach(t=>t.classList.remove('active'));btn.classList.add('active');
+  document.querySelectorAll('#m8-apv .tab').forEach(t => {
+    t.classList.remove('active');
+    t.style.background = '#fff';
+    t.style.color = '#475569';
+  });
+  if (btn) {
+    btn.classList.add('active');
+    btn.style.background = '#2E3191';
+    btn.style.color = '#fff';
+  }
   ['m8apv-wait','m8apv-hist'].forEach(p=>{const el=document.getElementById(p);if(el)el.style.display=p===id?'block':'none';});
 }
 function openM8Mdl(id){const el=document.getElementById(id);if(el)el.style.display='flex';}
@@ -8356,6 +8403,161 @@ function openM8ReqView(r){
 }
 /* Modal CHI TIẾT OT của 1 NV (tab Tổng hợp) */
 window.m8otsumQuickFilter = 'ALL';
+
+const m8otsumDepartments = [
+  { id: 'ALL', name: 'Tất cả phòng ban & đơn vị' },
+  { id: 'Kỹ thuật Cơ điện', name: 'Kỹ thuật Cơ điện' },
+  { id: 'Khai thác', name: 'Khai thác' },
+  { id: 'PT Phần mềm', name: 'PT Phần mềm' },
+  { id: 'Phòng Kế toán', name: 'Phòng Kế toán' },
+  { id: 'Ban Tổng Giám đốc', name: 'Ban Tổng Giám đốc' },
+  { id: 'Phòng Nhân sự', name: 'Phòng Nhân sự' }
+];
+let currentM8SumSelectedDepts = ['ALL'];
+
+function toggleM8SumDeptDropdown(e) {
+  if (e) e.stopPropagation();
+  const m = document.getElementById('m8otsum-dept-menu');
+  if (!m) return;
+  const isHidden = m.style.display === 'none' || !m.style.display;
+  m.style.display = isHidden ? 'block' : 'none';
+  if (isHidden) {
+    const s = document.getElementById('m8otsum-dept-search');
+    if (s) { s.value = ''; s.focus(); }
+    renderM8SumDeptList('');
+  }
+}
+
+function filterM8SumDeptList(q) {
+  renderM8SumDeptList((q || '').toLowerCase().trim());
+}
+
+function renderM8SumDeptList(q) {
+  const container = document.getElementById('m8otsum-dept-list');
+  if (!container) return;
+  const filtered = m8otsumDepartments.filter(d => {
+    if (!q) return true;
+    return d.name.toLowerCase().includes(q) || d.id.toLowerCase().includes(q);
+  });
+  
+  if (!filtered.length) {
+    container.innerHTML = '<div style="color:#94a3b8;font-size:11.5px;padding:8px;text-align:center">Không tìm thấy phòng ban</div>';
+    return;
+  }
+
+  container.innerHTML = filtered.map(d => {
+    const isChecked = currentM8SumSelectedDepts.includes(d.id);
+    return '<label style="display:flex;align-items:center;gap:8px;padding:6px 8px;border-radius:6px;cursor:pointer;font-size:12px;user-select:none;transition:background .1s" onmouseover="this.style.background=\'#f8fafc\'" onmouseout="this.style.background=\'transparent\'">' +
+      '<input type="checkbox" ' + (isChecked ? 'checked' : '') + ' onchange="onM8SumDeptCheckboxChange(\'' + d.id + '\', this.checked)" style="width:15px;height:15px;accent-color:#2E3191;cursor:pointer">' +
+      '<span style="' + (d.id === 'ALL' ? 'font-weight:700;color:#2E3191' : 'color:#334155') + '">' + d.name + '</span>' +
+    '</label>';
+  }).join('');
+}
+
+function onM8SumDeptCheckboxChange(id, checked) {
+  if (id === 'ALL') {
+    if (checked) {
+      currentM8SumSelectedDepts = ['ALL'];
+    } else {
+      currentM8SumSelectedDepts = [];
+    }
+  } else {
+    currentM8SumSelectedDepts = currentM8SumSelectedDepts.filter(x => x !== 'ALL');
+    if (checked) {
+      if (!currentM8SumSelectedDepts.includes(id)) currentM8SumSelectedDepts.push(id);
+    } else {
+      currentM8SumSelectedDepts = currentM8SumSelectedDepts.filter(x => x !== id);
+    }
+    if (currentM8SumSelectedDepts.length === 0) {
+      currentM8SumSelectedDepts = ['ALL'];
+    }
+  }
+  renderM8SumDeptChips();
+  const searchInp = document.getElementById('m8otsum-dept-search');
+  renderM8SumDeptList(searchInp ? searchInp.value : '');
+  filterM8OtSum();
+}
+
+function removeM8SumDeptChip(id) {
+  currentM8SumSelectedDepts = currentM8SumSelectedDepts.filter(x => x !== id);
+  if (currentM8SumSelectedDepts.length === 0) {
+    currentM8SumSelectedDepts = ['ALL'];
+  }
+  renderM8SumDeptChips();
+  filterM8OtSum();
+}
+
+function renderM8SumDeptChips() {
+  const chipsBox = document.getElementById('m8otsum-dept-chips');
+  const countBox = document.getElementById('m8otsum-dept-count');
+  if (!chipsBox) return;
+  chipsBox.innerHTML = '';
+  if (currentM8SumSelectedDepts.includes('ALL')) {
+    chipsBox.innerHTML = '<span class="badge" style="background:#eff6ff;color:#1d4ed8;border:1px solid #bfdbfe;font-size:11px;padding:2px 8px;border-radius:4px;display:inline-flex;align-items:center;gap:4px">' +
+      '<i class="fa-solid fa-building mr-1"></i>Tất cả phòng ban' +
+    '</span>';
+    if (countBox) countBox.textContent = 'Tất cả';
+    return;
+  }
+  if (currentM8SumSelectedDepts.length === 0) {
+    chipsBox.innerHTML = '<span style="color:#94a3b8;font-size:12px">Chọn phòng ban...</span>';
+    if (countBox) countBox.textContent = '0 đã chọn';
+    return;
+  }
+  if (currentM8SumSelectedDepts.length === 1) {
+    const d = m8otsumDepartments.find(x => x.id === currentM8SumSelectedDepts[0]);
+    chipsBox.innerHTML = '<span class="badge" style="background:#eff6ff;color:#1d4ed8;border:1px solid #bfdbfe;font-size:11px;padding:2px 8px;border-radius:4px;display:inline-flex;align-items:center;gap:4px">' +
+      '<span>' + (d ? d.name : currentM8SumSelectedDepts[0]) + '</span>' +
+      '<i class="fa-solid fa-xmark" style="cursor:pointer;font-size:10px" onclick="event.stopPropagation(); removeM8SumDeptChip(\'' + currentM8SumSelectedDepts[0] + '\')"></i>' +
+    '</span>';
+    if (countBox) countBox.textContent = '1 đơn vị';
+    return;
+  }
+  chipsBox.innerHTML = '<span class="badge" style="background:#eff6ff;color:#1d4ed8;border:1px solid #bfdbfe;font-size:11px;padding:2px 8px;border-radius:4px;display:inline-flex;align-items:center;gap:4px">' +
+    '<i class="fa-solid fa-building mr-1"></i>' + currentM8SumSelectedDepts.length + ' phòng ban đã chọn' +
+  '</span>';
+  if (countBox) countBox.textContent = currentM8SumSelectedDepts.length + ' đơn vị';
+}
+
+document.addEventListener('click', function(e) {
+  const m = document.getElementById('m8otsum-dept-menu');
+  const t = document.getElementById('m8otsum-dept-trigger');
+  if (m && m.style.display !== 'none' && !m.contains(e.target) && !t.contains(e.target)) {
+    m.style.display = 'none';
+  }
+});
+
+function m8otsumPrevMonth() {
+  const mEl = document.getElementById('m8otsum-filter-month');
+  const yEl = document.getElementById('m8otsum-filter-year');
+  if (!mEl || !yEl) return;
+  let curM = mEl.value === 'ALL' ? 10 : parseInt(mEl.value, 10);
+  let curY = parseInt(yEl.value, 10);
+  curM--;
+  if (curM < 1) {
+    curM = 12;
+    curY--;
+    yEl.value = String(curY);
+  }
+  mEl.value = String(curM);
+  filterM8OtSum();
+}
+
+function m8otsumNextMonth() {
+  const mEl = document.getElementById('m8otsum-filter-month');
+  const yEl = document.getElementById('m8otsum-filter-year');
+  if (!mEl || !yEl) return;
+  let curM = mEl.value === 'ALL' ? 10 : parseInt(mEl.value, 10);
+  let curY = parseInt(yEl.value, 10);
+  curM++;
+  if (curM > 12) {
+    curM = 1;
+    curY++;
+    yEl.value = String(curY);
+  }
+  mEl.value = String(curM);
+  filterM8OtSum();
+}
 
 function setM8SumQuickFilter(type) {
   window.m8otsumQuickFilter = type;
@@ -8386,10 +8588,10 @@ function setM8SumQuickFilter(type) {
 function resetM8OtSumFilters() {
   const fy = document.getElementById('m8otsum-filter-year');
   if (fy) fy.value = '2026';
-  const fp = document.getElementById('m8otsum-filter-period');
-  if (fp) fp.value = 'Kỳ 10/2026 (01/10–31/10)';
-  const fd = document.getElementById('m8otsum-filter-dept');
-  if (fd) fd.value = 'ALL';
+  const fm = document.getElementById('m8otsum-filter-month');
+  if (fm) fm.value = '10';
+  currentM8SumSelectedDepts = ['ALL'];
+  renderM8SumDeptChips();
   const fs = document.getElementById('m8otsum-search');
   if (fs) fs.value = '';
   setM8SumQuickFilter('ALL');
@@ -8456,7 +8658,7 @@ function openM8SumDetailModal(r) {
         <td style="padding:9px 12px;text-align:center">${htBadge}</td>
         <td style="padding:9px 12px;text-align:center;font-weight:700;color:#0f172a">${it.he_so}%</td>
         <td style="padding:9px 12px;text-align:right;font-weight:800;color:${it.hinh_thuc_code === 'PAID' ? '#047857' : '#0284c7'}">${formatOtHours(it.gio_quy_doi)}</td>
-        <td style="padding:9px 12px;text-align:center"><span class="badge" style="background:#f1f5f9;color:#334155;border:1px solid #cbd5e1;padding:2px 8px;border-radius:6px;font-family:monospace;font-weight:600">${it.ma_don}</span></td>
+        <td style="padding:9px 12px;text-align:center"><button type="button" class="badge" onclick="closeM8SumDetailModal(); openM8ApvModal('${it.ma_don}')" style="background:#eef2ff;color:#2E3191;border:1px solid #c7d2fe;padding:2px 8px;border-radius:6px;font-family:monospace;font-weight:700;cursor:pointer;transition:all .15s" title="Bấm để xem và phê duyệt đơn tăng ca này">${it.ma_don}</button></td>
       `;
       tbody.appendChild(tr);
     });
@@ -8567,6 +8769,11 @@ function recalcOtApprovalSummary() {
 }
 
 function openM8ApvModal(target) {
+  const reqId = typeof target === 'object' && target !== null ? (target.id || target.code) : target;
+  if (reqId && typeof viewGlobalReq === 'function') {
+    viewGlobalReq(reqId);
+    return;
+  }
   let r = null;
   let source = 'M08';
 
@@ -8847,7 +9054,15 @@ function submitOtApproval() {
 
     closeM8ApvModal();
 
-    if (typeof renderT === 'function' && typeof M7T !== 'undefined' && M7T['greq']) {
+    if (typeof greqMasterData !== 'undefined') {
+      const gItem = greqMasterData.find(x => x.id === reqId);
+      if (gItem && gItem.tabType === 'INBOX') {
+        gItem.tabType = 'APPROVED_BY_ME';
+      }
+    }
+    if (typeof initGreqTable === 'function') {
+      initGreqTable();
+    } else if (typeof renderT === 'function' && typeof M7T !== 'undefined' && M7T['greq']) {
       renderT('greq');
     }
     if (typeof renderM8T === 'function' && typeof M8PT !== 'undefined') {
@@ -8976,6 +9191,7 @@ const m8otsumData=[
     phong:'Kỹ thuật Cơ điện',
     nam:'2026',
     ky_cong:'Kỳ 10/2026 (01/10–31/10)',
+    thang:10,
     tong_ot:3,
     paid_ot:3,
     paid_conv:4.5,
@@ -9004,6 +9220,7 @@ const m8otsumData=[
     phong:'Khai thác',
     nam:'2026',
     ky_cong:'Kỳ 10/2026 (01/10–31/10)',
+    thang:10,
     tong_ot:4,
     paid_ot:0,
     paid_conv:0,
@@ -9032,6 +9249,7 @@ const m8otsumData=[
     phong:'PT Phần mềm',
     nam:'2026',
     ky_cong:'Kỳ 10/2026 (01/10–31/10)',
+    thang:10,
     tong_ot:7,
     paid_ot:3,
     paid_conv:6,
@@ -9085,6 +9303,14 @@ const m8otsumCell={
     return r[k]??'';
   }
 };
+
+function initM8ApvTables() {
+  if (typeof m8mkTable === 'function') {
+    if (document.getElementById('m8apvw-head')) m8mkTable('m8apvw', m8apvwCols, m8apvwData, m8apvwCell);
+    if (document.getElementById('m8apvh-head')) m8mkTable('m8apvh', m8apvhCols, m8apvhData, m8apvhCell);
+  }
+}
+
 function initM8(){
   if(document.getElementById('m8otsum-head')) m8mkTable('m8otsum',m8otsumCols,m8otsumData,m8otsumCell);
   // ssInit dropdowns M8
@@ -9914,13 +10140,13 @@ function E9chipStatus(s){const m={PENDING:['#fffbeb','#b45309','Chờ duyệt'],
 
 /* ===== DATA ===== */
 const typesData=[
-  {code:'AL',name:'Nghỉ phép năm',sym:'P',rate:100,src:'COMPANY',srcText:'Công ty chi trả lương (100%)',deduct:'Quỹ phép năm',deductAnnual:true,deductComp:false,attach:'Không',minUnit:'HALF_DAY',minUnitText:'0.5 ngày',law:'Điều 113, 114 BLLĐ 2019',desc:'Nghỉ phép hằng năm hưởng 100% lương theo HĐLĐ. Duy nhất loại nghỉ này trừ trực tiếp vào quỹ ngày phép năm.',status:'ACTIVE',created:'Admin HR · 01/01/2026',updated:'—'},
-  {code:'CL',name:'Nghỉ phép bù',sym:'NB',rate:100,src:'COMPANY',srcText:'Công ty chi trả lương (100%)',deduct:'Quỹ phép bù',deductAnnual:false,deductComp:true,attach:'Không',minUnit:'HALF_DAY',minUnitText:'0.5 ngày',law:'Khoản 3 Điều 111 BLLĐ 2019',desc:'Nghỉ bù tương ứng với số giờ làm thêm (OT) hoặc trực ca lễ tết đã tích lũy trong Quỹ nghỉ bù. Hưởng nguyên 100% lương, khấu trừ quỹ phép bù, không trừ quỹ phép năm.',status:'ACTIVE',created:'Admin HR · 01/01/2026',updated:'—'},
-  {code:'PL',name:'Nghỉ cá nhân',sym:'VR',rate:100,src:'COMPANY',srcText:'Công ty chi trả lương (100%)',deduct:'Không',deductAnnual:false,deductComp:false,attach:'Bắt buộc',minUnit:'FULL_DAY',minUnitText:'1 ngày',law:'Khoản 1 Điều 115 BLLĐ',desc:'Nghỉ việc riêng có hưởng lương theo chế độ: Bản thân kết hôn (3 ngày), con kết hôn (1 ngày), tang chế tứ thân phụ mẫu (3 ngày). Không trừ quỹ phép năm.',status:'ACTIVE',created:'Admin HR · 01/01/2026',updated:'—'},
-  {code:'BT',name:'Đi công tác',sym:'CT',rate:100,src:'COMPANY',srcText:'Công ty chi trả lương (100%)',deduct:'Không',deductAnnual:false,deductComp:false,attach:'Bắt buộc',minUnit:'FULL_DAY',minUnitText:'1 ngày',law:'Quy chế công tác PAP-QC03',desc:'Cử đi công tác đối tác, cầu cảng, khách hàng hoặc ngoại tỉnh theo quyết định điều động. Hưởng 100% lương + Phụ cấp lưu trú.',status:'ACTIVE',created:'Admin HR · 01/01/2026',updated:'—'},
-  {code:'WFH',name:'Làm việc ngoài văn phòng',sym:'WFH',rate:100,src:'COMPANY',srcText:'Công ty chi trả lương (100%)',deduct:'Không',deductAnnual:false,deductComp:false,attach:'Không',minUnit:'HALF_DAY',minUnitText:'0.5 ngày',law:'Quy chế làm việc từ xa PAP-QC05',desc:'Làm việc ngoài văn phòng, tại nhà (WFH) hoặc offsite hiện trường cầu bến có phê duyệt. Tính đủ công ngày, không trừ quỹ phép.',status:'ACTIVE',created:'Admin HR · 01/01/2026',updated:'—'},
-  {code:'UL',name:'Nghỉ không lương',sym:'KL',rate:0,src:'UNPAID',srcText:'Không hưởng lương (0%)',deduct:'Không',deductAnnual:false,deductComp:false,attach:'Không',minUnit:'HALF_DAY',minUnitText:'0.5 ngày',law:'Khoản 2, 3 Điều 115 BLLĐ',desc:'Nghỉ việc riêng không hưởng lương thỏa thuận với người sử dụng lao động khi nhân sự đã hết quỹ phép năm.',status:'ACTIVE',created:'Admin HR · 01/01/2026',updated:'—'},
-  {code:'OTHER',name:'Các loại khác',sym:'BH',rate:75,src:'BHXH',srcText:'Bảo hiểm xã hội (BHXH) chi trả',deduct:'Không',deductAnnual:false,deductComp:false,attach:'Bắt buộc',minUnit:'HALF_DAY',minUnitText:'0.5 ngày',law:'Luật BHXH 2014',desc:'Bao gồm các chế độ đặc thù hưởng trợ cấp BHXH: Nghỉ ốm đau bản thân (SL), Thai sản (ML), Dưỡng sức phục hồi sức khỏe (CVL). Không trừ quỹ phép.',status:'ACTIVE',created:'Admin HR · 01/01/2026',updated:'—'}
+  {code:'AL',cat:'Nghỉ phép',name:'Nghỉ phép năm',sym:'P',rate:100,src:'COMPANY',srcText:'Công ty chi trả lương (100%)',deduct:'Quỹ phép năm',deductAnnual:true,deductComp:false,attach:'Không',minUnit:'HALF_DAY',minUnitText:'0.5 ngày',law:'Điều 113, 114 BLLĐ 2019',desc:'Nghỉ phép hằng năm hưởng 100% lương theo HĐLĐ. Duy nhất loại nghỉ này trừ trực tiếp vào quỹ ngày phép năm.',status:'ACTIVE',created:'Admin HR • 01/01/2026',updated:'-'},
+  {code:'CL',cat:'Nghỉ phép',name:'Nghỉ phép bù',sym:'NB',rate:100,src:'COMPANY',srcText:'Công ty chi trả lương (100%)',deduct:'Quỹ phép bù',deductAnnual:false,deductComp:true,attach:'Không',minUnit:'HALF_DAY',minUnitText:'0.5 ngày',law:'Khoản 3 Điều 111 BLLĐ 2019',desc:'Nghỉ bù tương ứng với số giờ làm thêm (OT) hoặc trực ca lễ tết đã tích lũy trong Quỹ nghỉ bù. Hưởng nguyên 100% lương, khấu trừ quỹ phép bù, không trừ quỹ phép năm.',status:'ACTIVE',created:'Admin HR • 01/01/2026',updated:'-'},
+  {code:'PL',cat:'Nghỉ phép',name:'Nghỉ cá nhân',sym:'VR',rate:100,src:'COMPANY',srcText:'Công ty chi trả lương (100%)',deduct:'Không',deductAnnual:false,deductComp:false,attach:'Bắt buộc',minUnit:'FULL_DAY',minUnitText:'1 ngày',law:'Khoản 1 Điều 115 BLLĐ',desc:'Nghỉ việc riêng có hưởng lương theo chế độ: Bản thân kết hôn (3 ngày), con kết hôn (1 ngày), tang chế tứ thân phụ mẫu (3 ngày). Không trừ quỹ phép năm.',status:'ACTIVE',created:'Admin HR • 01/01/2026',updated:'-'},
+  {code:'BT',cat:'Vắng mặt',name:'Đi công tác',sym:'CT',rate:100,src:'COMPANY',srcText:'Công ty chi trả lương (100%)',deduct:'Không',deductAnnual:false,deductComp:false,attach:'Bắt buộc',minUnit:'FULL_DAY',minUnitText:'1 ngày',law:'Quy chế công tác PAP-QC03',desc:'Cử đi công tác đối tác, cầu cảng, khách hàng hoặc ngoại tỉnh theo quyết định điều động. Hưởng 100% lương + Phụ cấp lưu trú.',status:'ACTIVE',created:'Admin HR • 01/01/2026',updated:'-'},
+  {code:'WFH',cat:'Vắng mặt',name:'Làm việc ngoài văn phòng',sym:'WFH',rate:100,src:'COMPANY',srcText:'Công ty chi trả lương (100%)',deduct:'Không',deductAnnual:false,deductComp:false,attach:'Không',minUnit:'HALF_DAY',minUnitText:'0.5 ngày',law:'Quy chế làm việc từ xa PAP-QC05',desc:'Làm việc ngoài văn phòng, tại nhà (WFH) hoặc offsite hiện trường cầu bến có phê duyệt. Tính đủ công ngày, không trừ quỹ phép.',status:'ACTIVE',created:'Admin HR • 01/01/2026',updated:'-'},
+  {code:'UL',cat:'Nghỉ phép',name:'Nghỉ không lương',sym:'KL',rate:0,src:'UNPAID',srcText:'Không hưởng lương (0%)',deduct:'Không',deductAnnual:false,deductComp:false,attach:'Không',minUnit:'HALF_DAY',minUnitText:'0.5 ngày',law:'Khoản 2, 3 Điều 115 BLLĐ',desc:'Nghỉ việc riêng không hưởng lương thỏa thuận với người sử dụng lao động khi nhân sự đã hết quỹ phép năm.',status:'ACTIVE',created:'Admin HR • 01/01/2026',updated:'-'},
+  {code:'OTHER',cat:'Nghỉ phép',name:'Các loại khác',sym:'BH',rate:75,src:'BHXH',srcText:'Bảo hiểm xã hội (BHXH) chi trả',deduct:'Không',deductAnnual:false,deductComp:false,attach:'Bắt buộc',minUnit:'HALF_DAY',minUnitText:'0.5 ngày',law:'Luật BHXH 2014',desc:'Bao gồm các chế độ đặc thù hưởng trợ cấp BHXH: Nghỉ ốm đau bản thân (SL), Thai sản (ML), Dưỡng sức phục hồi sức khỏe (CVL). Không trừ quỹ phép.',status:'ACTIVE',created:'Admin HR • 01/01/2026',updated:'-'}
 ];
   const ledAnnualData=[
   {pap:'PAP0001',nv:'Phạm Quốc Tuấn',ini:'PQT',color:'#2E3191',pb:'Ban TGĐ',chuc_vu:'Tổng Giám đốc',ngay_vao_lam:'15/01/2018',tham_nien_ct:'8 năm',ton:2,het_han:0,tn:1,nam:12,used:3,remain:12,year:2026,hist:[{id:'NP-2026-001',created:'08/02/2026',title:'Đơn xin nghỉ phép năm',type:'Phép năm',from:'10/02/2026',to:'11/02/2026',days:2,st:'Đã duyệt'},{id:'NP-2026-008',created:'22/04/2026',title:'Đơn xin nghỉ phép năm',type:'Phép năm',from:'25/04/2026',to:'25/04/2026',days:1,st:'Đã duyệt'}]},
@@ -10475,6 +10701,7 @@ const wfCell={actionRender:r=>`<button class="btn btn-o" style="font-size:11px;p
 /* ===== CẤU TRÚC BẢNG LOẠI NGHỈ PHÉP CHUẨN UI-TABLE-TEMPLATE (PROTOTYPE - 14 CỘT) ===== */
 const E9tyColumns = [
   {key:'stt', title:'STT', pinned:true, visible:true, sticky:'l', sortable:false, search:false, filter:false, center:true},
+  {key:'cat', title:'Phân nhóm', pinned:false, visible:true, sortable:true, search:false, filter:true, center:true},
   {key:'code', title:'Mã loại', pinned:false, visible:true, sortable:true, search:true, filter:false},
   {key:'name', title:'Tên loại nghỉ', pinned:false, visible:true, sortable:true, search:true, filter:false},
   {key:'sym', title:'Ký hiệu', pinned:false, visible:true, sortable:true, search:false, filter:false, center:true},
@@ -10547,6 +10774,12 @@ function E9renderTyHead(){
 
 function E9renderTyCell(c, r, start, i) {
   if (c.key === 'stt') return start + i + 1;
+  if (c.key === 'cat') {
+    const isLeave = r.cat === 'Nghỉ phép' || (!r.cat && r.code !== 'BT' && r.code !== 'WFH');
+    return isLeave 
+      ? '<span class="badge" style="background:#eff6ff;color:#1d4ed8;border:1px solid #bfdbfe;font-size:11px;padding:2px 8px;border-radius:4px;font-weight:600"><i class="fa-solid fa-umbrella-beach mr-1"></i>Nghỉ phép</span>'
+      : '<span class="badge" style="background:#f5f3ff;color:#7c3aed;border:1px solid #ddd6fe;font-size:11px;padding:2px 8px;border-radius:4px;font-weight:600"><i class="fa-solid fa-briefcase mr-1"></i>Vắng mặt</span>';
+  }
   if (c.key === 'action') {
     return '<button title="Sửa" aria-label="Sửa" class="text-slate-500 hover:text-[#2E3191]" style="border:none;background:none;cursor:pointer;font-size:12px;color:#64748b;padding:3px 6px" onclick="E9openTypeEdit(\'' + r.code + '\')"><i class="fa-solid fa-pen"></i></button>';
   }
@@ -10716,6 +10949,7 @@ document.addEventListener('click', e => {
 function E9saveLeaveType(){
   const code = (document.getElementById('type-f-code').value || '').trim().toUpperCase();
   const name = (document.getElementById('type-f-name').value || '').trim();
+  const cat = (document.getElementById('type-f-cat')?.value || 'Nghỉ phép');
   const sym = (document.getElementById('type-f-sym').value || '').trim().toUpperCase();
   if(!code || !name){
     alert('Vui lòng nhập Mã loại và Tên loại nghỉ!');
@@ -11740,6 +11974,7 @@ function E9openTypeEdit(code){
       codeEl.value = t.code;
       codeEl.readOnly = true;
       document.getElementById('type-f-sym').value = t.sym || '';
+      const catEl = document.getElementById('type-f-cat'); if(catEl) catEl.value = t.cat || (t.code === 'BT' || t.code === 'WFH' ? 'Vắng mặt' : 'Nghỉ phép');
       document.getElementById('type-f-name').value = t.name || '';
       document.getElementById('type-f-status').value = (t.status === 'INACTIVE' || t.status === 'Ngừng hoạt động') ? 'INACTIVE' : 'ACTIVE';
       document.getElementById('type-f-src').value = t.src || 'COMPANY';
@@ -11760,6 +11995,7 @@ function E9openTypeEdit(code){
   codeEl.value = '';
   codeEl.readOnly = false;
   document.getElementById('type-f-sym').value = '';
+  const catElNew = document.getElementById('type-f-cat'); if(catElNew) catElNew.value = 'Nghỉ phép';
   document.getElementById('type-f-name').value = '';
   document.getElementById('type-f-status').value = 'ACTIVE';
   document.getElementById('type-f-src').value = 'COMPANY';
@@ -13778,44 +14014,97 @@ function renderReqGroupsList(groups) {
 
   // Icon & color mapping for groups
   const metaMap = {
-    'GRP-AL': { icon: 'fa-umbrella-beach', color: '#1d4ed8', bg: '#eff6ff', tag: 'Nghỉ phép', desc: 'Trừ quỹ phép năm &bull; Báo trước tối thiểu 1 ngày' },
-    'GRP-COMP': { icon: 'fa-clock-rotate-left', color: '#15803d', bg: '#f0fdf4', tag: 'Nghỉ phép bù', desc: 'Nghỉ bù làm thêm giờ &bull; Trừ trực tiếp vào Quỹ nghỉ bù' },
-    'GRP-PL': { icon: 'fa-user-clock', color: '#0284c7', bg: '#f0f9ff', tag: 'Nghỉ việc riêng', desc: 'Chế độ hưởng 100% lương &bull; Không trừ quỹ phép' },
+    'GRP-AL': { icon: 'fa-umbrella-beach', color: '#1d4ed8', bg: '#eff6ff', tag: 'Nghỉ phép', desc: 'Trừ quỹ phép năm • Báo trước tối thiểu 1 ngày' },
+    'GRP-COMP': { icon: 'fa-clock-rotate-left', color: '#15803d', bg: '#f0fdf4', tag: 'Nghỉ phép bù', desc: 'Nghỉ bù làm thêm giờ • Trừ trực tiếp vào Quỹ nghỉ bù' },
+    'GRP-PL': { icon: 'fa-user-clock', color: '#0284c7', bg: '#f0f9ff', tag: 'Nghỉ việc riêng', desc: 'Chế độ hưởng 100% lương • Không trừ quỹ phép' },
     'GRP-BT': { icon: 'fa-briefcase', color: '#7c3aed', bg: '#f5f3ff', tag: 'Đi công tác', desc: 'Công tác tại các cầu cảng hoặc tỉnh/thành khác' },
     'GRP-WFH': { icon: 'fa-laptop-house', color: '#0d9488', bg: '#f0fdfa', tag: 'Làm việc ngoài VP', desc: 'Làm việc từ xa (WFH) / Hiện trường ngoại vi cảng' },
     'GRP-UL': { icon: 'fa-file-contract', color: '#d97706', bg: '#fffbeb', tag: 'Nghỉ không lương', desc: 'Việc riêng khi đã sử dụng hết quỹ ngày phép năm' },
-    'GRP-OTHER': { icon: 'fa-notes-medical', color: '#db2777', bg: '#fdf2f8', tag: 'Chế độ khác', desc: 'Chế độ ốm đau / thai sản / dưỡng sức &bull; BHXH chi trả' },
-    'GRP-PUNCH': { icon: 'fa-clock-rotate-left', color: '#b45309', bg: '#fef3c7', tag: 'Giải trình công', desc: 'Quên quẹt thẻ đầu/cuối ca &bull; Chấm bổ sung giờ vào/ra' },
-    'GRP-OT': { icon: 'fa-stopwatch', color: '#047857', bg: '#ecfdf5', tag: 'Làm thêm giờ (OT)', desc: 'Tăng ca bốc dỡ tàu hàng &bull; Tính lương OT hoặc nghỉ bù' }
+    'GRP-OTHER': { icon: 'fa-notes-medical', color: '#db2777', bg: '#fdf2f8', tag: 'Chế độ khác', desc: 'Chế độ ốm đau / thai sản / dưỡng sức • BHXH chi trả' },
+    'GRP-PUNCH': { icon: 'fa-fingerprint', color: '#b45309', bg: '#fef3c7', tag: 'Giải trình công', desc: 'Quên quẹt thẻ đầu/cuối ca • Chấm bổ sung giờ vào/ra' },
+    'GRP-OT': { icon: 'fa-stopwatch', color: '#047857', bg: '#ecfdf5', tag: 'Làm thêm giờ (OT)', desc: 'Tăng ca bốc dỡ tàu hàng • Tính lương OT hoặc nghỉ bù' }
   };
 
-  groups.forEach((g) => {
-    const meta = metaMap[g.code] || { icon: 'fa-file-lines', color: '#2E3191', bg: '#eef2ff', tag: 'Đơn từ', desc: 'Đề xuất phê duyệt nội bộ' };
-    const item = document.createElement('div');
-    item.className = 'req-group-item';
-    item.style.cssText = 'padding:12px 20px;border-bottom:1px solid #f1f5f9;cursor:pointer;display:flex;align-items:center;justify-content:space-between;transition:background 0.15s';
-    item.onmouseenter = () => item.style.background = '#f8fafc';
-    item.onmouseleave = () => item.style.background = '#fff';
-    item.onclick = () => selectReqGroup(g.code);
+  // 4 NHÓM NGHIỆP VỤ CHUẨN
+  const sections = [
+    {
+      id: 'SEC_LEAVE',
+      title: '1. ĐƠN XIN NGHỈ',
+      icon: 'fa-umbrella-beach',
+      color: '#1d4ed8',
+      bg: '#eff6ff',
+      codes: ['GRP-AL', 'GRP-COMP', 'GRP-PL', 'GRP-UL', 'GRP-OTHER']
+    },
+    {
+      id: 'SEC_PUNCH',
+      title: '2. GIẢI TRÌNH QUÊN CHẤM CÔNG',
+      icon: 'fa-fingerprint',
+      color: '#b45309',
+      bg: '#fef3c7',
+      codes: ['GRP-PUNCH']
+    },
+    {
+      id: 'SEC_OT',
+      title: '3. LÀM THÊM GIỜ (OT)',
+      icon: 'fa-stopwatch',
+      color: '#047857',
+      bg: '#ecfdf5',
+      codes: ['GRP-OT']
+    },
+    {
+      id: 'SEC_MISSION',
+      title: '4. VẮNG MẶT LÀM VIỆC (CÔNG TÁC & NGOÀI VP)',
+      icon: 'fa-briefcase',
+      color: '#7c3aed',
+      bg: '#f5f3ff',
+      codes: ['GRP-BT', 'GRP-WFH']
+    }
+  ];
 
-    item.innerHTML = 
-      '<div style="display:flex;align-items:center;gap:12px">' +
-        '<div style="width:38px;height:38px;border-radius:8px;background:' + meta.bg + ';color:' + meta.color + ';display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0">' +
-          '<i class="fa-solid ' + meta.icon + '"></i>' +
-        '</div>' +
-        '<div>' +
-          '<div style="font-weight:700;font-size:13.5px;color:#0f172a;display:flex;align-items:center;gap:8px">' +
-            g.name +
-            '<span class="badge" style="background:#f1f5f9;color:#475569;border:1px solid #e2e8f0;font-size:10px;padding:1px 6px;font-weight:600">' + meta.tag + '</span>' +
+  sections.forEach((sec) => {
+    const secItems = groups.filter(g => sec.codes.includes(g.code));
+    if (secItems.length === 0) return;
+
+    // Header phân nhóm
+    const headerEl = document.createElement('div');
+    headerEl.style.cssText = 'background:#f8fafc;padding:7px 18px;border-top:1px solid #e2e8f0;border-bottom:1px solid #e2e8f0;font-size:11px;font-weight:700;color:#334155;display:flex;align-items:center;justify-content:space-between;letter-spacing:0.3px';
+    headerEl.innerHTML = 
+      '<span style="display:flex;align-items:center;gap:7px">' +
+        '<span style="width:20px;height:20px;border-radius:4px;background:' + sec.bg + ';color:' + sec.color + ';display:inline-flex;align-items:center;justify-content:center;font-size:10.5px"><i class="fa-solid ' + sec.icon + '"></i></span>' +
+        '<span>' + sec.title + '</span>' +
+      '</span>' +
+      '<span style="font-size:10px;font-weight:700;background:#e2e8f0;color:#475569;padding:1px 6px;border-radius:10px">' + secItems.length + ' loại</span>';
+    listEl.appendChild(headerEl);
+
+    // Danh sách items trong nhóm
+    secItems.forEach((g) => {
+      const meta = metaMap[g.code] || { icon: 'fa-file-lines', color: '#2E3191', bg: '#eef2ff', tag: 'Đơn từ', desc: 'Đề xuất phê duyệt nội bộ' };
+      const item = document.createElement('div');
+      item.className = 'req-group-item';
+      item.style.cssText = 'padding:11px 20px;border-bottom:1px solid #f1f5f9;cursor:pointer;display:flex;align-items:center;justify-content:space-between;transition:background 0.15s;background:#fff';
+      item.onmouseenter = () => item.style.background = '#f8fafc';
+      item.onmouseleave = () => item.style.background = '#fff';
+      item.onclick = () => selectReqGroup(g.code);
+
+      item.innerHTML = 
+        '<div style="display:flex;align-items:center;gap:12px">' +
+          '<div style="width:36px;height:36px;border-radius:8px;background:' + meta.bg + ';color:' + meta.color + ';display:flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0">' +
+            '<i class="fa-solid ' + meta.icon + '"></i>' +
           '</div>' +
-          '<div style="font-size:11.5px;color:#64748b;margin-top:2px">' + meta.desc + '</div>' +
+          '<div>' +
+            '<div style="font-weight:700;font-size:13px;color:#0f172a;display:flex;align-items:center;gap:8px">' +
+              g.name +
+              '<span class="badge" style="background:#f1f5f9;color:#475569;border:1px solid #e2e8f0;font-size:10px;padding:1px 6px;font-weight:600">' + meta.tag + '</span>' +
+            '</div>' +
+            '<div style="font-size:11px;color:#64748b;margin-top:2px">' + meta.desc + '</div>' +
+          '</div>' +
         '</div>' +
-      '</div>' +
-      '<div style="display:flex;align-items:center;gap:8px;color:#94a3b8">' +
-        '<i class="fa-solid fa-chevron-right" style="font-size:11px"></i>' +
-      '</div>';
+        '<div style="display:flex;align-items:center;gap:8px;color:#94a3b8">' +
+          '<i class="fa-solid fa-chevron-right" style="font-size:11px"></i>' +
+        '</div>';
 
-    listEl.appendChild(item);
+      listEl.appendChild(item);
+    });
   });
 }
 
@@ -14397,6 +14686,11 @@ function submitGlobalCreateReq() {
 }
 
 function quickGlobalApprove(id) {
+  const targetReq = typeof greqMasterData !== 'undefined' ? greqMasterData.find(x => x.id === id) : null;
+  if (targetReq && (targetReq.typeCode === 'OT' || (targetReq.type && targetReq.type.includes('Làm thêm giờ')) || (targetReq.id && targetReq.id.startsWith('OT-')))) {
+    openM8ApvModal(id);
+    return;
+  }
   const row = document.getElementById('grow-' + id);
   if (row) {
     const statusCell = row.querySelector('.cell-status');
@@ -14486,28 +14780,286 @@ function viewGlobalReq(id) {
     statusText: 'CHỜ DUYỆT'
   };
 
-  if (title) {
-    title.innerHTML = '<i class="fa-solid fa-file-shield text-[#2E3191] mr-1.5"></i>Chi tiết đơn đề xuất: <b>' + r.id + '</b>';
-  }
-
   const deptName = r.dept === 'PM' ? 'PT Phần mềm' : (r.dept === 'KT' ? 'Khai thác cảng' : (r.dept || ''));
   const isPending = r.status === 'PENDING';
   const isApproved = r.status === 'APPROVED';
+  const isRejected = r.status === 'REJECTED';
 
-  let statusBadge = '<span class="badge" style="background:#fffbeb;color:#b45309;border:1px solid #fde68a;padding:2px 8px;border-radius:6px;font-weight:700">Chờ bạn duyệt</span>';
+  let statusBadge = '<span class="badge" style="background:#fffbeb;color:#b45309;border:1px solid #fde68a;padding:2px 8px;border-radius:6px;font-weight:700">Chờ duyệt</span>';
   if (isApproved) {
     statusBadge = '<span class="badge" style="background:#f0fdf4;color:#15803d;border:1px solid #bbf7d0;padding:2px 8px;border-radius:6px;font-weight:700">Đã duyệt</span>';
   } else if (r.status === 'PROCESSING') {
     statusBadge = '<span class="badge" style="background:#eff6ff;color:#1d4ed8;border:1px solid #bfdbfe;padding:2px 8px;border-radius:6px;font-weight:700">Đang xử lý</span>';
-  } else if (r.status === 'REJECTED') {
+  } else if (isRejected) {
     statusBadge = '<span class="badge" style="background:#fef2f2;color:#b91c1c;border:1px solid #fecaca;padding:2px 8px;border-radius:6px;font-weight:700">Từ chối</span>';
   }
+
+  // NẾU LÀ ĐƠN TĂNG CA (OT): FORM PHÊ DUYỆT & CHI TIẾT LOẠI TĂNG CA ĐẦY ĐỦ 100% CÁC TRƯỜNG
+  if (r.typeCode === 'OT' || (r.type && r.type.includes('Làm thêm giờ')) || (r.id && r.id.startsWith('OT-'))) {
+    if (title) {
+      title.innerHTML = '<i class="fa-solid fa-stamp text-[#047857] mr-1.5"></i>' + (isPending ? 'Phê duyệt đơn đề xuất: ' : 'Chi tiết đơn đề xuất: ') + '<b>' + r.id + '</b>';
+    }
+
+    const timeStr = r.time || '01/11/2026 · 17:30 - 20:30';
+    let otDate = '01/11/2026';
+    let otRange = '17:30 → 20:30';
+    if (timeStr.includes('·')) {
+      const parts = timeStr.split('·');
+      otDate = parts[0].trim();
+      otRange = parts[1].trim().replace('-', '→').replace('–', '→');
+    }
+    const isComp = (r.huo === 'LEAVE_COMP' || r.huo === 'COMP' || r.rewardType === 'COMP' || (r.time && r.time.includes('Nghỉ bù')));
+    const rawH = String(r.hours || (timeStr.includes('22:00') ? '8.0' : '3.0')).replace(/[^0-9.]/g, '');
+    const otHoursNum = parseFloat(rawH) || 3.0;
+    const otHours = otHoursNum.toFixed(1) + 'h';
+    const approvedHoursNum = r.approvedHours ? parseFloat(r.approvedHours) : otHoursNum;
+
+    const isNight = timeStr.includes('22:00') || timeStr.includes('06:00');
+    const dayTypeLabel = isNight ? 'Ca đêm (22:00–06:00)' : 'Ngày thường (08:00–17:00)';
+    const rateVal = isNight ? 2.0 : 1.5;
+    const rateCoef = isNight ? '200%' : '150%';
+    const shiftInfo = isNight ? '22:00–06:00 (Ca 3)' : '08:00–17:00 (Hành chính)';
+    const attInfo = isNight ? '21:55–06:05 (Hợp lệ)' : '08:00–20:00 (Hợp lệ)';
+    const checkIn = isNight ? '21:55' : '07:55';
+    const checkOut = isNight ? '06:05' : '20:05';
+    const empTitle = r.empTitle || (r.dept === 'PM' ? 'Kỹ sư phần mềm' : (r.dept === 'KT' ? 'Nhân viên khai thác' : 'Chuyên viên nghiệp vụ'));
+
+    let contentHtml =
+      '<!-- 1. BANNER NHÓM ĐỀ XUẤT + BADGE MÃ ĐƠN & TRẠNG THÁI -->' +
+      '<div style="background:#eff6ff;border:1px solid #bfdbfe;border-radius:8px;padding:10px 14px;margin-bottom:14px;display:flex;align-items:center;justify-content:space-between">' +
+        '<div style="display:flex;align-items:center;gap:8px">' +
+          '<span style="font-size:12px;color:#1e40af;font-weight:600">Nhóm đề xuất:</span>' +
+          '<span class="badge" style="background:#2E3191;color:#fff;font-weight:700;font-size:12px;padding:3px 10px"><i class="fa-solid fa-stopwatch mr-1"></i>Làm thêm giờ (OT)</span>' +
+        '</div>' +
+        '<div style="display:flex;align-items:center;gap:6px">' +
+          '<span style="font-family:monospace;font-weight:700;font-size:11.5px;color:#2E3191;background:#fff;border:1px solid #cbd5e1;padding:2px 8px;border-radius:4px">' + r.id + '</span>' +
+          statusBadge +
+        '</div>' +
+      '</div>' +
+
+      '<!-- 2. HÀNG 3 CỘT: TIÊU ĐỀ - NHÓM - LOẠI (CHUẨN MẪU ĐƠN ĐỀ XUẤT) -->' +
+      '<div style="display:grid;grid-template-columns:1.2fr 1fr 1fr;gap:10px;margin-bottom:12px">' +
+        '<div>' +
+          '<label class="fl" style="font-size:11px;font-weight:600;color:#64748b;margin-bottom:4px;display:block">Tiêu đề đề xuất</label>' +
+          '<input type="text" readonly class="fi" value="' + (r.title || ('Làm thêm giờ (OT) - ' + (r.name || r.user))) + '" style="background:#f8fafc;font-weight:600;color:#0f172a;border:1px solid #cbd5e1;border-radius:6px;height:34px;padding:0 10px;width:100%;box-sizing:border-box">' +
+        '</div>' +
+        '<div>' +
+          '<label class="fl" style="font-size:11px;font-weight:600;color:#64748b;margin-bottom:4px;display:block">Nhóm</label>' +
+          '<input type="text" readonly class="fi" value="Làm thêm giờ" style="background:#f8fafc;color:#1e293b;font-weight:600;border:1px solid #cbd5e1;border-radius:6px;height:34px;padding:0 10px;width:100%;box-sizing:border-box">' +
+        '</div>' +
+        '<div>' +
+          '<label class="fl" style="font-size:11px;font-weight:600;color:#64748b;margin-bottom:4px;display:block">Loại</label>' +
+          '<input type="text" readonly class="fi" value="Làm thêm giờ (OT)" style="background:#f8fafc;color:#1e293b;font-weight:600;border:1px solid #cbd5e1;border-radius:6px;height:34px;padding:0 10px;width:100%;box-sizing:border-box">' +
+        '</div>' +
+      '</div>' +
+
+      '<!-- 3. THẺ THÔNG TIN NHÂN SỰ ĐỀ XUẤT (AVATAR, MÃ PAP, PHÒNG BAN, CHỨC DANH, NGÀY NỘP) -->' +
+      '<div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:10px 14px;margin-bottom:14px;display:flex;align-items:center;justify-content:space-between">' +
+        '<div style="display:flex;align-items:center;gap:10px">' +
+          renderGreqLetterAvatar(r.name || r.user, 38) +
+          '<div>' +
+            '<div style="font-weight:700;font-size:13px;color:#0f172a">' + (r.name || r.user) + '</div>' +
+            '<div style="font-size:11px;color:#64748b"><span style="font-family:monospace;font-weight:700;color:#2E3191">' + (r.pap || 'PAP0048') + '</span> &bull; ' + deptName + ' &bull; <span style="color:#475569">' + empTitle + '</span></div>' +
+          '</div>' +
+        '</div>' +
+        '<div style="text-align:right">' +
+          '<div style="font-size:11px;color:#64748b">Ngày nộp đơn</div>' +
+          '<div style="font-size:12px;font-weight:600;color:#1e293b">' + (r.dateCreated || '31/10/2026') + '</div>' +
+        '</div>' +
+      '</div>' +
+
+      '<!-- 4. KHỐI ĐỐI CHIẾU CHẤM CÔNG THỰC TẾ (NỔI BẬT VỚI CHECKBOX BẮT BUỘC KHI DUYỆT) -->' +
+      '<div style="background:#f0fdf4;border:1px solid #bbf7d0;border-radius:10px;padding:12px 16px;margin-bottom:14px;font-size:12.5px">' +
+        '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">' +
+          '<div style="font-weight:700;color:#065f46;display:flex;align-items:center;gap:6px">' +
+            '<i class="fa-solid fa-fingerprint text-[#047857]"></i><span>Đối chiếu chấm công thực tế</span>' +
+          '</div>' +
+          '<span style="background:#ecfdf5;color:#047857;border:1px solid #a7f3d0;padding:2px 8px;border-radius:9999px;font-size:11px;font-weight:700">' +
+            '<i class="fa-solid fa-circle-check mr-1"></i>Hợp lệ' +
+          '</span>' +
+        '</div>' +
+        '<div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:8px">' +
+          '<div style="background:#fff;padding:6px 10px;border-radius:6px;border:1px solid #dcfce7">' +
+            '<span style="font-size:11px;color:#64748b;display:block">Ca làm việc</span>' +
+            '<span style="font-weight:600;color:#1e293b">' + shiftInfo + '</span>' +
+          '</div>' +
+          '<div style="background:#fff;padding:6px 10px;border-radius:6px;border:1px solid #dcfce7">' +
+            '<span style="font-size:11px;color:#64748b;display:block">Check-in</span>' +
+            '<span style="font-weight:700;color:#047857"><i class="fa-solid fa-arrow-right-to-bracket mr-1" style="font-size:10px"></i>' + checkIn + '</span>' +
+          '</div>' +
+          '<div style="background:#fff;padding:6px 10px;border-radius:6px;border:1px solid #dcfce7">' +
+            '<span style="font-size:11px;color:#64748b;display:block">Check-out</span>' +
+            '<span style="font-weight:700;color:#047857"><i class="fa-solid fa-arrow-right-from-bracket mr-1" style="font-size:10px"></i>' + checkOut + '</span>' +
+          '</div>' +
+        '</div>' +
+        '<div style="font-size:11px;color:#15803d;margin-bottom:8px">' +
+          '<i class="fa-solid fa-shield-check mr-1"></i>Dữ liệu chấm công thực tế đầy đủ In/Out, đối chiếu hợp lệ với khung giờ làm thêm, không vi phạm hạn mức.' +
+        '</div>' +
+        '<label style="display:flex;align-items:center;gap:8px;font-size:12px;font-weight:700;color:#065f46;background:#fff;padding:8px 12px;border:1px solid #86efac;border-radius:6px;cursor:pointer">' +
+          '<input type="checkbox" id="unified-att-confirm" ' + (isApproved ? 'checked disabled' : 'checked') + ' onchange="toggleUnifiedAttConfirm()" style="width:16px;height:16px;accent-color:#047857;cursor:pointer">' +
+          '<span>Xác nhận dữ liệu chấm công hợp lệ trước khi phê duyệt</span>' +
+        '</label>' +
+        '<div id="unified-att-error" style="display:none;color:#ef4444;font-size:11.5px;margin-top:4px;font-weight:600"><i class="fa-solid fa-triangle-exclamation mr-1"></i>Vui lòng xác nhận dữ liệu chấm công hợp lệ trước khi phê duyệt!</div>' +
+      '</div>' +
+
+      '<!-- 5. KHỐI KHUNG THỜI GIAN TĂNG CA (CHUẨN 24 GIỜ) -->' +
+      '<div style="margin-bottom:14px">' +
+        '<label class="fl" style="margin-bottom:6px;font-weight:600;display:block">Khung thời gian tăng ca</label>' +
+        '<div style="display:grid;grid-template-columns:1fr 1.3fr 0.8fr;gap:10px;background:#fff;border:1px solid #cbd5e1;border-radius:8px;padding:10px 12px;align-items:center">' +
+          '<div>' +
+            '<span style="font-size:11px;color:#64748b;display:block;margin-bottom:2px">Ngày làm thêm</span>' +
+            '<span style="font-weight:600;font-size:12.5px;color:#0f172a"><i class="fa-regular fa-calendar mr-1 text-[#2E3191]"></i>' + otDate + '</span>' +
+          '</div>' +
+          '<div>' +
+            '<span style="font-size:11px;color:#64748b;display:block;margin-bottom:2px">Khung giờ (Từ → Đến)</span>' +
+            '<span style="font-weight:700;font-size:12.5px;color:#1e293b"><i class="fa-regular fa-clock mr-1 text-[#2E3191]"></i>' + otRange + '</span>' +
+          '</div>' +
+          '<div style="text-align:right">' +
+            '<span style="font-size:11px;color:#64748b;display:block;margin-bottom:2px">Số giờ đề nghị</span>' +
+            '<span style="font-weight:800;font-size:13.5px;color:#2E3191">' + otHours + '</span>' +
+          '</div>' +
+        '</div>' +
+      '</div>' +
+
+      '<!-- 6. PHÊ DUYỆT SỐ GIỜ & HÌNH THỨC GHI NHẬN (KHỐI QUYẾT ĐỊNH CỦA NGƯỜI DUYỆT) -->' +
+      '<div style="background:#fff;border:1px solid #cbd5e1;border-radius:10px;padding:12px 16px;margin-bottom:14px">' +
+        '<div style="font-size:13px;font-weight:700;color:#0f172a;margin-bottom:10px;display:flex;align-items:center;gap:6px">' +
+          '<i class="fa-solid fa-gavel text-[#2E3191]"></i><span>Quyết định phê duyệt số giờ &amp; Hình thức ghi nhận</span>' +
+        '</div>' +
+        '<div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px">' +
+          '<div>' +
+            '<label class="fl" style="font-size:11px;font-weight:600;color:#64748b;margin-bottom:4px;display:block">Số giờ đề nghị</label>' +
+            '<input type="text" readonly id="unified-req-hours-val" value="' + otHours + '" style="background:#f8fafc;font-weight:700;color:#64748b;border:1px solid #cbd5e1;border-radius:6px;height:36px;padding:0 10px;width:100%;box-sizing:border-box">' +
+          '</div>' +
+          '<div>' +
+            '<label class="fl" style="font-size:11px;font-weight:700;color:#0f172a;margin-bottom:4px;display:block">Số giờ OT được duyệt <span style="color:#ef4444">*</span></label>' +
+            '<input type="number" id="unified-apv-hours" step="0.5" min="0.5" max="' + otHoursNum + '" value="' + approvedHoursNum + '" ' + (isApproved ? 'readonly' : '') + ' oninput="recalcUnifiedOtCalculation(' + otHoursNum + ', ' + rateVal + ')" style="background:' + (isApproved ? '#f8fafc' : '#fff') + ';font-weight:800;color:#047857;border:1px solid #cbd5e1;border-radius:6px;height:36px;padding:0 10px;font-size:13px;width:100%;box-sizing:border-box">' +
+          '</div>' +
+        '</div>' +
+        '<div id="unified-hours-error" style="display:none;color:#ef4444;font-size:11.5px;margin-top:-6px;margin-bottom:10px;font-weight:600"></div>' +
+
+        '<div style="margin-bottom:12px">' +
+          '<label class="fl" style="font-size:11px;font-weight:700;color:#0f172a;margin-bottom:6px;display:block">Hình thức ghi nhận <span style="color:#ef4444">*</span></label>' +
+          '<div style="display:flex;align-items:center;gap:20px;padding:8px 14px;border:1px solid #e2e8f0;border-radius:8px;background:#f8fafc">' +
+            '<label style="display:inline-flex;align-items:center;gap:8px;font-size:12.5px;font-weight:600;color:#1e293b;cursor:pointer">' +
+              '<input type="radio" name="unified-mode" id="unified-mode-pay" value="PAID" ' + (isComp ? '' : 'checked') + ' ' + (isApproved ? 'disabled' : '') + ' onchange="recalcUnifiedOtCalculation(' + otHoursNum + ', ' + rateVal + ')" style="width:16px;height:16px;accent-color:#2E3191;cursor:pointer">' +
+              '<span>PAID – Hưởng lương tăng ca</span>' +
+            '</label>' +
+            '<label style="display:inline-flex;align-items:center;gap:8px;font-size:12.5px;font-weight:600;color:#1e293b;cursor:pointer">' +
+              '<input type="radio" name="unified-mode" id="unified-mode-comp" value="COMP_LEAVE" ' + (isComp ? 'checked' : '') + ' ' + (isApproved ? 'disabled' : '') + ' onchange="recalcUnifiedOtCalculation(' + otHoursNum + ', ' + rateVal + ')" style="width:16px;height:16px;accent-color:#2E3191;cursor:pointer">' +
+              '<span>COMP_LEAVE – Quy đổi nghỉ bù</span>' +
+            '</label>' +
+          '</div>' +
+        '</div>' +
+
+        '<!-- BẢNG TÓM TẮT THÔNG TIN CHÍNH SÁCH & QUY ĐỔI SAU DUYỆT -->' +
+        '<div style="background:#f8fafc;border:1px solid #e2e8f0;border-left:4px solid #2E3191;border-radius:8px;padding:12px 14px;font-size:12px">' +
+          '<div style="display:flex;justify-content:space-between;margin-bottom:6px">' +
+            '<span style="color:#64748b">Chính sách:</span><span style="font-weight:700;color:#0f172a">Chính sách tăng ca</span>' +
+          '</div>' +
+          '<div style="display:flex;justify-content:space-between;margin-bottom:6px">' +
+            '<span style="color:#64748b">Loại ngày:</span><span style="background:#eef2ff;color:#2E3191;border:1px solid #c7d2fe;padding:1px 6px;border-radius:4px;font-weight:700">' + dayTypeLabel + '</span>' +
+          '</div>' +
+          '<div style="display:flex;justify-content:space-between;margin-bottom:6px">' +
+            '<span style="color:#64748b">Hệ số áp dụng:</span><span id="unified-calc-rate-txt" style="font-weight:700;color:#0f172a">' + rateCoef + '</span>' +
+          '</div>' +
+          '<div style="display:flex;justify-content:space-between;align-items:center;padding-top:8px;border-top:1px dashed #cbd5e1">' +
+            '<div>' +
+              '<span id="unified-calc-label" style="font-weight:700;color:#047857;font-size:12.5px">' + (isComp ? 'Quỹ nghỉ bù dự kiến:' : 'Giờ công quy đổi tính lương:') + '</span>' +
+              '<div id="unified-calc-formula" style="font-size:11px;color:#64748b;margin-top:2px">' + (isComp ? 'comp_leave_hours = ' : 'payroll_weighted_hours = ') + approvedHoursNum + ' × ' + rateVal + ' = ' + (approvedHoursNum * rateVal).toFixed(1).replace('.', ',') + ' giờ</div>' +
+            '</div>' +
+            '<span id="unified-calc-result-hours" style="font-size:17px;font-weight:800;color:#047857">' + (approvedHoursNum * rateVal).toFixed(1).replace('.', ',') + ' giờ</span>' +
+          '</div>' +
+        '</div>' +
+      '</div>' +
+
+      '<!-- 7. MÔ TẢ CỦA NGƯỜI NỘP ĐƠN -->' +
+      '<div style="margin-bottom:12px">' +
+        '<label class="fl" style="font-size:11px;font-weight:600;color:#64748b;margin-bottom:4px;display:block">Mô tả / Lý do của người đề xuất</label>' +
+        '<div style="background:#fff;border:1px solid #cbd5e1;border-radius:6px;padding:8px 12px;font-size:12.5px;color:#1e293b;min-height:44px;line-height:1.5">' + (r.reason || 'Làm thêm giờ phục vụ giải phóng hàng hóa cảng.') + '</div>' +
+      '</div>' +
+
+      '<!-- 8. NHẬN XÉT CỦA NGƯỜI DUYỆT (BẮT BUỘC KHI GIẢM GIỜ HOẶC TỪ CHỐI) -->' +
+      '<div style="margin-bottom:14px">' +
+        '<label class="fl" style="font-size:11.5px;font-weight:600;color:#334155;margin-bottom:4px;display:block">' +
+          'Nhận xét của người duyệt ' +
+          '<span id="unified-note-req-tag" style="display:none;color:#ef4444">* (Bắt buộc khi điều chỉnh giảm giờ hoặc Từ chối)</span>' +
+        '</label>' +
+        '<textarea id="unified-apv-note" ' + (isApproved ? 'readonly' : '') + ' placeholder="Nhập nhận xét / lý do phê duyệt hoặc điều chỉnh giờ..." rows="2" style="background:' + (isApproved ? '#f8fafc' : '#fff') + ';border:1px solid #cbd5e1;border-radius:6px;padding:8px 10px;font-size:12px;color:#1e293b;width:100%;box-sizing:border-box;resize:none;font-family:inherit">' + (r.approvalNote || r.batchNote || '') + '</textarea>' +
+        '<div id="unified-note-error" style="display:none;color:#ef4444;font-size:11.5px;margin-top:4px;font-weight:600"><i class="fa-solid fa-triangle-exclamation mr-1"></i>Bắt buộc nhập nhận xét lý do khi điều chỉnh giảm giờ hoặc Từ chối đơn</div>' +
+      '</div>' +
+
+      '<!-- 9. CẤU HÌNH NGƯỜI DUYỆT VÀ NGƯỜI THEO DÕI -->' +
+      '<div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:12px">' +
+        '<div>' +
+          '<label class="fl" style="font-size:11px;font-weight:600;color:#64748b;margin-bottom:4px;display:block">Quản lý trực tiếp duyệt</label>' +
+          '<div style="min-height:34px;background:#f8fafc;border:1px solid #cbd5e1;border-radius:6px;padding:4px 8px;display:flex;align-items:center;gap:6px">' +
+            '<span class="badge" style="background:#eff6ff;color:#1d4ed8;border:1px solid #bfdbfe;font-size:11px;padding:2px 8px;border-radius:4px;display:inline-flex;align-items:center;gap:4px">' +
+              '<i class="fa-solid fa-user-check text-blue-600"></i>' + (r.approver || 'Quản lý trực tiếp') +
+            '</span>' +
+          '</div>' +
+        '</div>' +
+        '<div>' +
+          '<label class="fl" style="font-size:11px;font-weight:600;color:#64748b;margin-bottom:4px;display:block">Người duyệt cố định</label>' +
+          '<div style="min-height:34px;background:#f8fafc;border:1px solid #cbd5e1;border-radius:6px;padding:4px 8px;display:flex;align-items:center;gap:6px">' +
+            '<span class="badge" style="background:#eff6ff;color:#1d4ed8;border:1px solid #bfdbfe;font-size:11px;padding:2px 8px;border-radius:4px;display:inline-flex;align-items:center;gap:4px">' +
+              '<i class="fa-solid fa-user-shield text-indigo-600"></i>Ban Nhân sự (HR & C&B)' +
+            '</span>' +
+          '</div>' +
+        '</div>' +
+        '<div>' +
+          '<label class="fl" style="font-size:11px;font-weight:600;color:#64748b;margin-bottom:4px;display:block">Người theo dõi</label>' +
+          '<div style="min-height:34px;background:#f8fafc;border:1px solid #cbd5e1;border-radius:6px;padding:4px 8px;display:flex;align-items:center;gap:6px">' +
+            '<span class="badge" style="background:#f1f5f9;color:#475569;border:1px solid #cbd5e1;font-size:11px;padding:2px 8px;border-radius:4px;display:inline-flex;align-items:center;gap:4px">' +
+              '<i class="fa-solid fa-eye text-slate-500"></i>Phòng Kế hoạch & Điều độ' +
+            '</span>' +
+          '</div>' +
+        '</div>' +
+      '</div>' +
+
+      '<!-- 10. TIẾN TRÌNH PHÊ DUYỆT (TIMELINE) -->' +
+      '<div style="font-size:12px;margin-bottom:8px">' +
+        '<span style="font-weight:600;color:#475569">Tiến trình phê duyệt:</span>' +
+        '<div style="background:#fff;padding:10px 14px;border:1px solid #e2e8f0;border-radius:6px;margin-top:4px">' +
+          '<div style="display:flex;align-items:center;gap:8px;font-size:11.5px">' +
+            '<span style="width:20px;height:20px;border-radius:50%;background:' + (isApproved ? '#22c55e' : (isRejected ? '#ef4444' : '#f59e0b')) + ';color:#fff;display:inline-flex;align-items:center;justify-content:center;font-size:10px">' +
+              '<i class="fa-solid ' + (isApproved ? 'fa-check' : (isRejected ? 'fa-xmark' : 'fa-clock')) + '"></i>' +
+            '</span>' +
+            '<span><b>Cấp 1: ' + (r.approver || 'Quản lý trực tiếp') + '</b></span>' +
+            '<span style="margin-left:auto;color:#64748b;font-size:11px">' + (isApproved ? 'Đã duyệt (' + (r.approvedHours || otHoursNum) + 'h)' : (isRejected ? 'Đã từ chối' : 'Đang chờ xử lý (SLA 24h)')) + '</span>' +
+          '</div>' +
+        '</div>' +
+      '</div>';
+
+    body.innerHTML = contentHtml;
+
+    if (ft) {
+      if (isPending) {
+        ft.innerHTML =
+          '<button class="btn btn-o" onclick="E9closeMdl(\'mdl-global-view\')">Hủy / Đóng</button>' +
+          '<button class="btn" style="background:#be123c;color:#fff;border:none;padding:7px 16px;border-radius:6px;font-weight:600;display:inline-flex;align-items:center;gap:6px" onclick="submitUnifiedOtReject(\'' + r.id + '\')"><i class="fa-solid fa-xmark"></i>Từ chối</button>' +
+          '<button class="btn btn-p" style="background:#047857;color:#fff;padding:7px 18px;border-radius:6px;font-weight:700;display:inline-flex;align-items:center;gap:6px" onclick="submitUnifiedOtApproval(\'' + r.id + '\', ' + otHoursNum + ', ' + rateVal + ')"><i class="fa-solid fa-stamp"></i>Phê duyệt đơn OT</button>';
+      } else {
+        ft.innerHTML = '<button class="btn btn-o" onclick="E9closeMdl(\'mdl-global-view\')">Đóng</button>';
+      }
+    }
+
+    E9openMdl('mdl-global-view');
+    return;
+  }
+  // CÁC LOẠI ĐƠN KHÁC (NGHỈ PHÉP, ĐI CÔNG TÁC, WFH, GIẢI TRÌNH CHẤM CÔNG...)
+
+  if (title) {
+    title.innerHTML = '<i class="fa-solid fa-file-shield text-[#2E3191] mr-1.5"></i>Chi tiết đơn đề xuất: <b>' + r.id + '</b>';
+  }
+
+  // reuse deptName, isPending, isApproved, statusBadge from scope
 
   let contentHtml =
     '<div style="background:#f8fafc;padding:14px;border-radius:8px;border:1px solid #e2e8f0;margin-bottom:14px">' +
       '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">' +
         '<div style="display:flex;align-items:center;gap:8px">' +
-          '<img src="' + (r.avatar || 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=60&auto=format&fit=crop&q=80') + '" style="width:34px;height:34px;border-radius:50%;object-fit:cover;border:1px solid #cbd5e1" alt="">' +
+          renderGreqLetterAvatar(r.name || r.user, 34) +
           '<div>' +
             '<div style="font-weight:700;font-size:13px;color:#0f172a">' + (r.name || r.user || 'Nhân sự') + '</div>' +
             '<div style="font-size:11px;color:#64748b"><span style="font-family:monospace;font-weight:600;color:#2E3191">' + (r.pap || 'PAP0009') + '</span> &bull; ' + deptName + '</div>' +
@@ -14600,12 +15152,13 @@ const greqCols = [
   { k: 'type', t: 'Loại đề xuất', sort: true, filter: true, vis: true, w: 125 },
   { k: 'time', t: 'Thời gian áp dụng', sort: true, vis: true, w: 125 },
   { k: 'reason', t: 'Lý do', search: true, vis: true, w: 120 },
+  { k: 'approver', t: 'Người duyệt', vis: true, w: 170 },
   { k: 'status', t: 'Trạng thái', filter: true, sort: true, vis: true, w: 95 },
   { k: 'action', t: 'Thao tác', sr: true, vis: true, w: 75, center: true }
 ];
 
 let greqCurrentNavTab = 'ALL';
-let greqSelectedStatuses = ['PENDING', 'APPROVED'];
+let greqSelectedStatuses = [];
 let greqSelectedCats = [];
 
 const greqCatLabels = {
@@ -15326,15 +15879,15 @@ let greqMasterData = [
   },
   {
     "id": "OT-2026-050",
-    "user": "Đội Xếp dỡ Ca 3",
-    "name": "Đội Xếp dỡ Ca 3",
-    "pap": "PAP-TEAM3",
+    "user": "Trần Văn Hùng",
+    "name": "Trần Văn Hùng",
+    "pap": "PAP0048",
     "dept": "KT",
-    "avatar": "https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=60&auto=format&fit=crop&q=80",
+    "avatar": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=60&auto=format&fit=crop&q=80",
     "type": "Làm thêm giờ (OT)",
     "typeCode": "OT",
     "time": "01/11/2026 · 22:00 - 06:00",
-    "reason": "Làm thêm giờ",
+    "reason": "Giải phóng hàng tàu container cập cảng đột xuất ban đêm",
     "approver": "Nguyễn Văn Hải",
     "slaInfo": "Theo dõi giờ công & an toàn lao động",
     "status": "APPROVED",
@@ -15342,7 +15895,7 @@ let greqMasterData = [
     "tabType": "WATCHING",
     "dateCreated": "2026-10-31",
     "isSaved": false,
-    "title": "Đơn đề xuất làm thêm giờ"
+    "title": "Làm thêm giờ (OT) - Trần Văn Hùng"
   },
   {
     "id": "NP-2026-077",
@@ -15507,6 +16060,7 @@ function submitGreqBatchApprove() {
       item.statusText = 'ĐÃ DUYỆT';
       item.batchApproved = true;
       item.batchNote = note;
+      item.tabType = 'APPROVED_BY_ME';
     }
   });
 
@@ -15634,9 +16188,9 @@ function resetGreqTopFilters() {
   const chkSaved = document.getElementById('chk-greq-saved');
   if (chkSaved) chkSaved.checked = false;
 
-  greqSelectedStatuses = ['PENDING', 'APPROVED'];
+  greqSelectedStatuses = [];
   document.querySelectorAll('.chk-greq-st').forEach(cb => {
-    cb.checked = (cb.value === 'PENDING' || cb.value === 'APPROVED');
+    cb.checked = false;
   });
   renderGreqStatusChips();
 
@@ -15705,9 +16259,10 @@ function greqCell(r, k, i) {
     return '<span style="font-family:monospace;font-weight:700;color:#2E3191;background:#eef2ff;padding:2px 6px;border-radius:4px;font-size:11.5px">' + (r.pap || '—') + '</span>';
   }
   if (k === 'name' || k === 'user') {
+    const fullName = r.name || r.user || '-';
     return '<div style="display:flex;align-items:center;gap:7px">' +
-      '<img src="' + (r.avatar || 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=60&auto=format&fit=crop&q=80') + '" style="width:24px;height:24px;border-radius:50%;object-fit:cover;border:1px solid #e2e8f0" alt="">' +
-      '<span style="font-weight:600;font-size:12px;color:#1e293b">' + (r.name || r.user || '—') + '</span>' +
+      renderGreqLetterAvatar(fullName, 24) +
+      '<span style="font-weight:600;font-size:12px;color:#1e293b">' + fullName + '</span>' +
     '</div>';
   }
   if (k === 'dept') {
@@ -15736,9 +16291,7 @@ function greqCell(r, k, i) {
     return '<span style="font-size:12px;color:#475569">' + (r.reason || '—') + '</span>';
   }
   if (k === 'approver' || k === 'routing') {
-    const approverName = r.approver || r.routing || '—';
-    const isMe = approverName.includes('Bạn');
-    return '<span style="font-size:12px;font-weight:600;color:' + (isMe ? '#2E3191' : '#1e293b') + '">' + approverName + '</span>';
+    return renderGreqApproverFlowCell(r);
   }
   if (k === 'status') {
     let bg = '#f1f5f9', color = '#475569', border = '#cbd5e1', dot = '#94a3b8';
@@ -15755,13 +16308,88 @@ function greqCell(r, k, i) {
     let btns = '<div style="display:flex;align-items:center;justify-content:center;gap:4px">' +
       '<button class="ctrl" style="color:#2E3191;cursor:pointer" title="Xem chi tiết đơn" onclick="viewGlobalReq(\'' + r.id + '\')"><i class="fa-regular fa-eye"></i></button>';
     if (r.status === 'PENDING' && (r.tabType === 'INBOX' || greqCurrentNavTab === 'INBOX')) {
-      btns += ' <button class="ctrl" style="color:#16a34a;cursor:pointer" title="Phê duyệt nhanh" onclick="quickGlobalApprove(\'' + r.id + '\')"><i class="fa-solid fa-check"></i></button>';
+      const isOT = (r.typeCode === 'OT' || (r.type && r.type.includes('Làm thêm giờ')) || (r.id && r.id.startsWith('OT-')));
+      if (isOT) {
+        btns += ' <button class="ctrl" style="color:#047857;cursor:pointer" title="Mở Form phê duyệt OT (Đối chiếu chấm công)" onclick="openM8ApvModal(\'' + r.id + '\')"><i class="fa-solid fa-stamp"></i></button>';
+      } else {
+        btns += ' <button class="ctrl" style="color:#16a34a;cursor:pointer" title="Phê duyệt nhanh" onclick="quickGlobalApprove(\'' + r.id + '\')"><i class="fa-solid fa-check"></i></button>';
+      }
       btns += ' <button class="ctrl" style="color:#dc2626;cursor:pointer" title="Từ chối" onclick="openGlobalRejectModal(\'' + r.id + '\')"><i class="fa-solid fa-xmark"></i></button>';
     }
     btns += '</div>';
     return btns;
   }
   return r[k] ?? '';
+}
+
+function updateGreqTabBadges() {
+  const kw = (document.getElementById('greq-kw-search')?.value || '').toLowerCase().trim();
+  const fromDate = document.getElementById('greq-from-date')?.value;
+  const toDate = document.getElementById('greq-to-date')?.value;
+
+  function matchesExtraFilters(r) {
+    // 1. Filter by Multi-Search Category
+    if (typeof greqSelectedCats !== 'undefined' && greqSelectedCats && greqSelectedCats.length > 0) {
+      const matchCat = greqSelectedCats.some(cat => {
+        if (cat === 'LEAVE_PL') return r.type === 'Nghỉ cá nhân' || r.typeCode === 'LEAVE_PL';
+        return r.typeCode === cat;
+      });
+      if (!matchCat) return false;
+    }
+
+    // 2. Filter by Statuses
+    if (typeof greqSelectedStatuses !== 'undefined' && greqSelectedStatuses && greqSelectedStatuses.length > 0) {
+      if (!greqSelectedStatuses.includes(r.status)) return false;
+    }
+
+    // 3. Filter by Keyword
+    if (kw) {
+      const matchKw = (r.id && r.id.toLowerCase().includes(kw)) ||
+                      (r.title && r.title.toLowerCase().includes(kw)) ||
+                      (r.user && r.user.toLowerCase().includes(kw)) ||
+                      (r.name && r.name.toLowerCase().includes(kw)) ||
+                      (r.type && r.type.toLowerCase().includes(kw)) ||
+                      (r.approver && r.approver.toLowerCase().includes(kw)) ||
+                      (r.reason && r.reason.toLowerCase().includes(kw));
+      if (!matchKw) return false;
+    }
+
+    // 4. Filter by Date range
+    if (fromDate && r.dateCreated && r.dateCreated < fromDate) return false;
+    if (toDate && r.dateCreated && r.dateCreated > toDate) return false;
+
+    return true;
+  }
+
+  let countAll = 0;
+  let countSent = 0;
+  let countInbox = 0;
+  let countApproved = 0;
+  let countWatching = 0;
+
+  if (typeof greqMasterData !== 'undefined' && Array.isArray(greqMasterData)) {
+    greqMasterData.forEach(r => {
+      if (matchesExtraFilters(r)) {
+        countAll++;
+        if (r.tabType === 'SENT') countSent++;
+        else if (r.tabType === 'INBOX') countInbox++;
+        else if (r.tabType === 'APPROVED_BY_ME') countApproved++;
+        else if (r.tabType === 'WATCHING') countWatching++;
+      }
+    });
+  }
+
+  const bAll = document.getElementById('badge-tab-all');
+  const bSent = document.getElementById('badge-tab-sent');
+  const bInbox = document.getElementById('badge-tab-inbox');
+  const bApproved = document.getElementById('badge-tab-approved');
+  const bWatching = document.getElementById('badge-tab-watching');
+
+  if (bAll) bAll.textContent = countAll;
+  if (bSent) bSent.textContent = countSent;
+  if (bInbox) bInbox.textContent = countInbox;
+  if (bApproved) bApproved.textContent = countApproved;
+  if (bWatching) bWatching.textContent = countWatching;
 }
 
 function initGreqTable() {
@@ -15779,6 +16407,7 @@ function initGreqTable() {
 
   const filtered = getFilteredGreqData();
   mkTable('greq', greqCols, filtered, greqCell);
+  updateGreqTabBadges();
 }
 
 function switchGreqPill(pill) {
@@ -15869,14 +16498,15 @@ const bpolCell = {
 // --- 4. OT POLICIES (otpol) DATA & CONTROLLER ---
 const otpolCols = [
   { k: 'stt', t: 'STT', vis: true, w: 32 },
-  { k: 'code', t: 'Mã loại / CS', sort: true, search: true, vis: true, w: 90 },
+  { k: 'code', t: 'Mã loại / CS', sort: true, search: true, vis: true, w: 95 },
   { k: 'name', t: 'Tên chính sách tăng ca', sort: true, search: true, vis: true, w: 160 },
-  { k: 'dept', t: 'Đối tượng áp dụng', sort: true, search: true, vis: true, w: 110 },
+  { k: 'dept', t: 'Đối tượng áp dụng', sort: true, search: true, vis: true, w: 120 },
   { k: 'effectiveDate', t: 'Ngày hiệu lực', sort: true, vis: true, w: 95 },
   { k: 'limit', t: 'Hạn mức quy định', sort: true, vis: true, w: 130 },
   { k: 'rates', t: 'Hệ số tăng ca', vis: true, w: 120 },
   { k: 'reward', t: 'Hình thức ghi nhận', vis: true, w: 110 },
-  { k: 'wf', t: 'Quy trình phê duyệt', sort: true, search: true, vis: true, w: 150 },
+  { k: 'created', t: 'Người tạo', sort: true, search: true, vis: true, w: 130 },
+  { k: 'updated', t: 'Cập nhật', sort: true, search: true, vis: true, w: 130 },
   { k: 'status', t: 'Trạng thái', filter: true, sort: true, vis: true, w: 95 },
   { k: 'action', t: 'Thao tác', vis: true, w: 65, center: true }
 ];
@@ -16076,10 +16706,16 @@ const otpolCell = {
       if (isComp) badges.push('<span class="badge" style="background:#f0f9ff;color:#0369a1;border:1px solid #bae6fd;font-size:11px;font-weight:700;padding:2px 8px;border-radius:6px"><i class="fa-solid fa-umbrella-beach mr-1"></i>Nghỉ bù</span>');
       return '<div style="display:flex;gap:4px;flex-wrap:wrap">' + (badges.join('') || '<span style="color:#cbd5e1">—</span>') + '</div>';
     }
-    if (k === 'wf') {
-      return '<span style="cursor:pointer;font-weight:600;color:#2E3191;font-size:11.5px;display:inline-flex;align-items:center;gap:4px" onclick="openBaseWfModal(\'' + (r.wfCode || 'WF-OT-01') + '\')" title="Bấm để xem/cấu hình Quy trình phê duyệt">' +
-        '<i class="fa-solid fa-diagram-project" style="font-size:11px;color:#2E3191"></i> ' + (r.wfName || 'Quy trình phê duyệt tăng ca (Quản lý trực tiếp → HR)') +
-      '</span>';
+    if (k === 'created') {
+      const v = r.created || 'Admin HR · 01/01/2026';
+      const pp = v.split(' · ');
+      return '<div style="line-height:1.3"><b style="font-size:11px;color:#1e293b">' + (pp[0] || 'Admin HR') + '</b>' + (pp[1] ? '<div style="font-size:10px;color:#94a3b8">' + pp[1] + '</div>' : '') + '</div>';
+    }
+    if (k === 'updated') {
+      const v = r.updated || 'Admin HR · 01/11/2026';
+      if (v === '—') return '<span style="color:#cbd5e1">—</span>';
+      const pp = v.split(' · ');
+      return '<div style="line-height:1.3"><b style="font-size:11px;color:#1e293b">' + (pp[0] || 'Admin HR') + '</b>' + (pp[1] ? '<div style="font-size:10px;color:#94a3b8">' + pp[1] + '</div>' : '') + '</div>';
     }
     if (k === 'status') {
       const isAct = r.status === 'Đang áp dụng' || r.status === 'Đang hoạt động';
@@ -18478,6 +19114,320 @@ function openM6AddWfModal() {
   if (typeof E9toast === 'function') E9toast('Mở form tạo mới Quy trình phê duyệt giải trình chấm công');
 }
 
+
+
+
+function recalcUnifiedOtCalculation(reqH, rateVal) {
+  const inp = document.getElementById('unified-apv-hours');
+  const hoursVal = parseFloat(inp?.value) || 0;
+  const isComp = document.getElementById('unified-mode-comp')?.checked;
+
+  const hoursError = document.getElementById('unified-hours-error');
+  const noteTag = document.getElementById('unified-note-req-tag');
+
+  if (hoursVal > reqH) {
+    if (hoursError) {
+      hoursError.textContent = 'Số giờ phê duyệt không được vượt quá số giờ đề nghị (' + reqH + 'h)';
+      hoursError.style.display = 'block';
+    }
+  } else if (hoursVal <= 0) {
+    if (hoursError) {
+      hoursError.textContent = 'Số giờ phê duyệt phải lớn hơn 0';
+      hoursError.style.display = 'block';
+    }
+  } else {
+    if (hoursError) hoursError.style.display = 'none';
+  }
+
+  if (hoursVal < reqH) {
+    if (noteTag) noteTag.style.display = 'inline';
+  } else {
+    if (noteTag) noteTag.style.display = 'none';
+  }
+
+  const weighted = (hoursVal * rateVal).toFixed(1).replace('.', ',');
+  const labelEl = document.getElementById('unified-calc-label');
+  const formEl = document.getElementById('unified-calc-formula');
+  const resEl = document.getElementById('unified-calc-result-hours');
+
+  if (labelEl) labelEl.textContent = isComp ? 'Quỹ nghỉ bù dự kiến:' : 'Giờ công quy đổi tính lương:';
+  if (formEl) formEl.textContent = (isComp ? 'comp_leave_hours = ' : 'payroll_weighted_hours = ') + hoursVal + ' × ' + rateVal + ' = ' + weighted + ' giờ';
+  if (resEl) resEl.textContent = weighted + ' giờ';
+}
+
+function toggleUnifiedAttConfirm() {
+  const chk = document.getElementById('unified-att-confirm');
+  const err = document.getElementById('unified-att-error');
+  if (err) err.style.display = (chk && chk.checked) ? 'none' : 'block';
+}
+
+function submitUnifiedOtApproval(id, reqH, rateVal) {
+  const chk = document.getElementById('unified-att-confirm');
+  const attError = document.getElementById('unified-att-error');
+  if (!chk || !chk.checked) {
+    if (attError) attError.style.display = 'block';
+    if (typeof E9toast === 'function') E9toast('Vui lòng xác nhận dữ liệu chấm công hợp lệ trước khi phê duyệt!', 'warn');
+    return;
+  }
+  if (attError) attError.style.display = 'none';
+
+  const inp = document.getElementById('unified-apv-hours');
+  const approvedHours = parseFloat(inp?.value) || 0;
+  const hoursError = document.getElementById('unified-hours-error');
+
+  if (approvedHours <= 0 || approvedHours > reqH) {
+    if (hoursError) {
+      hoursError.textContent = approvedHours <= 0 ? 'Số giờ phê duyệt phải lớn hơn 0' : ('Không được vượt quá ' + reqH + 'h đề nghị');
+      hoursError.style.display = 'block';
+    }
+    inp?.focus();
+    return;
+  }
+  if (hoursError) hoursError.style.display = 'none';
+
+  const note = (document.getElementById('unified-apv-note')?.value || '').trim();
+  const noteError = document.getElementById('unified-note-error');
+  if (approvedHours < reqH && !note) {
+    if (noteError) {
+      noteError.textContent = 'Bắt buộc nhập nhận xét lý do khi phê duyệt ít hơn số giờ đề nghị (' + approvedHours + '/' + reqH + 'h)';
+      noteError.style.display = 'block';
+    }
+    document.getElementById('unified-apv-note')?.focus();
+    return;
+  }
+  if (noteError) noteError.style.display = 'none';
+
+  const isComp = document.getElementById('unified-mode-comp')?.checked;
+
+  if (typeof greqMasterData !== 'undefined') {
+    const item = greqMasterData.find(x => x.id === id);
+    if (item) {
+      item.status = 'APPROVED';
+      item.statusText = 'ĐÃ DUYỆT';
+      item.approvedHours = approvedHours;
+      item.rewardType = isComp ? 'COMP_LEAVE' : 'PAID';
+      item.approvalNote = note;
+      if (item.tabType === 'INBOX') {
+        item.tabType = 'APPROVED_BY_ME';
+      }
+    }
+  }
+
+  E9closeMdl('mdl-global-view');
+  if (typeof initGreqTable === 'function') {
+    initGreqTable();
+  }
+
+  if (typeof E9toast === 'function') {
+    E9toast('✓ Đã phê duyệt đơn tăng ca ' + id + ' (' + approvedHours + 'h) thành công!', 'success');
+  }
+}
+
+function submitUnifiedOtReject(id) {
+  const note = (document.getElementById('unified-apv-note')?.value || '').trim();
+  const noteError = document.getElementById('unified-note-error');
+  if (!note) {
+    if (noteError) {
+      noteError.textContent = 'Bắt buộc nhập nhận xét lý do khi từ chối đơn tăng ca';
+      noteError.style.display = 'block';
+    }
+    document.getElementById('unified-apv-note')?.focus();
+    if (typeof E9toast === 'function') E9toast('Vui lòng nhập lý do từ chối!', 'warn');
+    return;
+  }
+  if (noteError) noteError.style.display = 'none';
+
+  if (typeof greqMasterData !== 'undefined') {
+    const item = greqMasterData.find(x => x.id === id);
+    if (item) {
+      item.status = 'REJECTED';
+      item.statusText = 'TỪ CHỐI';
+      item.approvalNote = note;
+    }
+  }
+
+  E9closeMdl('mdl-global-view');
+  if (typeof initGreqTable === 'function') {
+    initGreqTable();
+  }
+
+  if (typeof E9toast === 'function') {
+    E9toast('Đã từ chối đơn tăng ca ' + id + ' kèm lý do!', 'warn');
+  }
+}
+
+
+
+// --- APPROVAL FLOW MULTI-STEP AVATAR ENGINE ---
+
+// --- GREQ LETTER AVATAR ENGINE (NO REAL PHOTOS) ---
+function getGreqInitials(name) {
+  if (!name) return 'U';
+  const clean = name.replace(/\([^)]*\)/g, '').trim();
+  if (/giám\s*đốc/i.test(clean)) return 'GĐ';
+  if (/nhân\s*sự/i.test(clean) && !/hoàng|nguyễn|trần|lê|phạm/i.test(clean)) return 'NS';
+  const parts = clean.split(/\s+/).filter(Boolean);
+  if (parts.length === 0) return 'U';
+  if (parts.length === 1) return parts[0].slice(0, 2).toUpperCase();
+  const first = parts[0].charAt(0).toUpperCase();
+  const last = parts[parts.length - 1].charAt(0).toUpperCase();
+  return (first + last);
+}
+
+const GREQ_AVATAR_PALETTES = [
+  { bg: '#e0e7ff', text: '#3730a3', border: '#c7d2fe' },
+  { bg: '#dbeafe', text: '#1e40af', border: '#bfdbfe' },
+  { bg: '#fce7f3', text: '#9d174d', border: '#fbcfe8' },
+  { bg: '#fef3c7', text: '#92400e', border: '#fde68a' },
+  { bg: '#dcfce7', text: '#166534', border: '#bbf7d0' },
+  { bg: '#ede9fe', text: '#5b21b6', border: '#ddd6fe' },
+  { bg: '#ffedd5', text: '#9a3412', border: '#fed7aa' },
+  { bg: '#ccfbf1', text: '#115e59', border: '#99f6e4' }
+];
+
+function getGreqAvatarPalette(name) {
+  if (!name) return GREQ_AVATAR_PALETTES[0];
+  let hash = 0;
+  for (let i = 0; i < name.length; i++) hash = (hash * 31 + name.charCodeAt(i)) & 0xffffffff;
+  return GREQ_AVATAR_PALETTES[Math.abs(hash) % GREQ_AVATAR_PALETTES.length];
+}
+
+function renderGreqLetterAvatar(name, size, borderOverride) {
+  size = size || 26;
+  const init = getGreqInitials(name);
+  const pal = getGreqAvatarPalette(name);
+  const border = borderOverride || pal.border;
+  const borderWidth = borderOverride ? '2px' : '1px';
+  const fontSize = size <= 24 ? 9.5 : (size <= 28 ? 10.5 : (size <= 34 ? 12 : 13.5));
+  return '<div style="width:' + size + 'px;height:' + size + 'px;min-width:' + size + 'px;min-height:' + size + 'px;border-radius:50%;background:' + pal.bg + ';color:' + pal.text + ';border:' + borderWidth + ' solid ' + border + ';display:inline-flex;align-items:center;justify-content:center;font-size:' + fontSize + 'px;font-weight:700;flex-shrink:0;user-select:none;box-shadow:0 1px 2px rgba(0,0,0,0.05);letter-spacing:-0.2px">' + init + '</div>';
+}
+
+function getGreqApprovalFlow(r) {
+  const mngName = r.approver || (r.dept === 'PM' ? 'Trần Văn Nam' : (r.dept === 'KT' ? 'Nguyễn Văn Hải' : 'Phạm Văn Hùng'));
+  const mngAvatar = r.dept === 'PM' 
+    ? 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=60&auto=format&fit=crop&q=80'
+    : (r.dept === 'KT'
+      ? 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=60&auto=format&fit=crop&q=80'
+      : 'https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?w=60&auto=format&fit=crop&q=80');
+
+  const hrName = 'Hoàng Thị Lan (Ban Nhân sự)';
+  const hrAvatar = 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=60&auto=format&fit=crop&q=80';
+
+  const is3Steps = (r.typeCode === 'BIZ' || (r.type && (r.type.includes('công tác') || r.type.includes('thai sản'))));
+  const dirName = 'Ban Giám đốc Cảng';
+  const dirAvatar = 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=60&auto=format&fit=crop&q=80';
+
+  let steps = [];
+
+  if (is3Steps) {
+    if (r.status === 'APPROVED') {
+      steps = [
+        { name: mngName, role: 'Quản lý', avatar: mngAvatar, status: 'DONE', label: 'Đã duyệt' },
+        { name: hrName, role: 'Nhân sự', avatar: hrAvatar, status: 'DONE', label: 'Đã duyệt' },
+        { name: dirName, role: 'Ban Giám đốc', avatar: dirAvatar, status: 'DONE', label: 'Đã duyệt' }
+      ];
+    } else if (r.status === 'PROCESSING') {
+      steps = [
+        { name: mngName, role: 'Quản lý', avatar: mngAvatar, status: 'DONE', label: 'Đã duyệt' },
+        { name: hrName, role: 'Nhân sự', avatar: hrAvatar, status: 'WAIT', label: 'Đang duyệt' },
+        { name: dirName, role: 'Ban Giám đốc', avatar: dirAvatar, status: 'TODO', label: 'Chưa duyệt' }
+      ];
+    } else if (r.status === 'REJECTED') {
+      steps = [
+        { name: mngName, role: 'Quản lý', avatar: mngAvatar, status: 'REJECT', label: 'Từ chối' },
+        { name: hrName, role: 'Nhân sự', avatar: hrAvatar, status: 'TODO', label: 'Chưa duyệt' },
+        { name: dirName, role: 'Ban Giám đốc', avatar: dirAvatar, status: 'TODO', label: 'Chưa duyệt' }
+      ];
+    } else {
+      // PENDING
+      steps = [
+        { name: mngName, role: 'Quản lý', avatar: mngAvatar, status: 'WAIT', label: 'Đang chờ duyệt' },
+        { name: hrName, role: 'Nhân sự', avatar: hrAvatar, status: 'TODO', label: 'Chưa duyệt' },
+        { name: dirName, role: 'Ban Giám đốc', avatar: dirAvatar, status: 'TODO', label: 'Chưa duyệt' }
+      ];
+    }
+  } else {
+    // 2 bước chuẩn: Quản lý -> Ban Nhân sự
+    if (r.status === 'APPROVED') {
+      steps = [
+        { name: mngName, role: 'Quản lý', avatar: mngAvatar, status: 'DONE', label: 'Đã duyệt' },
+        { name: hrName, role: 'Nhân sự', avatar: hrAvatar, status: 'DONE', label: 'Đã duyệt' }
+      ];
+    } else if (r.status === 'PROCESSING') {
+      steps = [
+        { name: mngName, role: 'Quản lý', avatar: mngAvatar, status: 'DONE', label: 'Đã duyệt' },
+        { name: hrName, role: 'Nhân sự', avatar: hrAvatar, status: 'WAIT', label: 'Đang duyệt' }
+      ];
+    } else if (r.status === 'REJECTED') {
+      steps = [
+        { name: mngName, role: 'Quản lý', avatar: mngAvatar, status: 'REJECT', label: 'Từ chối' },
+        { name: hrName, role: 'Nhân sự', avatar: hrAvatar, status: 'TODO', label: 'Chưa duyệt' }
+      ];
+    } else {
+      // PENDING
+      steps = [
+        { name: mngName, role: 'Quản lý', avatar: mngAvatar, status: 'WAIT', label: 'Đang chờ duyệt' },
+        { name: hrName, role: 'Nhân sự', avatar: hrAvatar, status: 'TODO', label: 'Chưa duyệt' }
+      ];
+    }
+  }
+
+  return steps;
+}
+
+function renderGreqApproverFlowCell(r) {
+  const steps = getGreqApprovalFlow(r);
+
+  let html = '<div style="display:inline-flex;align-items:center;gap:4px;flex-wrap:nowrap" onclick="event.stopPropagation()">';
+
+  steps.forEach((st, idx) => {
+    let borderColor = '#cbd5e1';
+    let badgeBg = '#94a3b8';
+    let badgeIcon = 'fa-ellipsis';
+    let opacity = '1';
+
+    if (st.status === 'DONE') {
+      borderColor = '#16a34a';
+      badgeBg = '#16a34a';
+      badgeIcon = 'fa-check';
+    } else if (st.status === 'WAIT') {
+      borderColor = '#ea580c';
+      badgeBg = '#ea580c';
+      badgeIcon = 'fa-clock';
+    } else if (st.status === 'REJECT') {
+      borderColor = '#dc2626';
+      badgeBg = '#dc2626';
+      badgeIcon = 'fa-xmark';
+    } else {
+      opacity = '0.45';
+      badgeIcon = (idx + 1).toString();
+    }
+
+    const stepNum = idx + 1;
+    const tooltip = 'Buoc ' + stepNum + ' (' + st.role + '): ' + st.name + ' - ' + st.label;
+
+    html += '<div style="position:relative;display:inline-flex;align-items:center;justify-content:center;opacity:' + opacity + ';cursor:pointer;flex-shrink:0" title="' + tooltip + '" onclick="viewGlobalReq(\'' + r.id + '\')">';
+    // Render letter avatar (chữ cái) thay vì hình ảnh thật
+    html += renderGreqLetterAvatar(st.name, 26, borderColor);
+
+    if (st.status === 'TODO') {
+      html += '<span style="position:absolute;bottom:-2px;right:-3px;width:12px;height:12px;border-radius:50%;background:#e2e8f0;color:#475569;display:flex;align-items:center;justify-content:center;font-size:8px;font-weight:700;border:1.5px solid #fff;line-height:1">' + stepNum + '</span>';
+    } else {
+      html += '<span style="position:absolute;bottom:-2px;right:-3px;width:12px;height:12px;border-radius:50%;background:' + badgeBg + ';color:#fff;display:flex;align-items:center;justify-content:center;font-size:7px;border:1.5px solid #fff;line-height:1"><i class="fa-solid ' + badgeIcon + '"></i></span>';
+    }
+    html += '</div>';
+
+    // Connector line between avatars
+    if (idx < steps.length - 1) {
+      const lineColor = st.status === 'DONE' ? '#16a34a' : '#cbd5e1';
+      html += '<div style="width:8px;height:2px;background:' + lineColor + ';border-radius:1px;margin:0 1px;flex-shrink:0"></div>';
+    }
+  });
+
+  html += '</div>';
+
+  return html;
+}
 
 </script>
 <!-- M05 modal: thiết lập GPS -->
