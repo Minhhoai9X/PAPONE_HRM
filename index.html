@@ -525,6 +525,7 @@
           <label style="display:flex;align-items:center;gap:8px;padding:6px 8px;font-size:12px;cursor:pointer;border-radius:4px"><input type="checkbox" class="chk-greq-st" value="APPROVED" onchange="onGreqStatusCheckboxChange()"> Đã duyệt</label>
           <label style="display:flex;align-items:center;gap:8px;padding:6px 8px;font-size:12px;cursor:pointer;border-radius:4px"><input type="checkbox" class="chk-greq-st" value="PROCESSING" onchange="onGreqStatusCheckboxChange()"> Đang xử lý</label>
           <label style="display:flex;align-items:center;gap:8px;padding:6px 8px;font-size:12px;cursor:pointer;border-radius:4px"><input type="checkbox" class="chk-greq-st" value="REJECTED" onchange="onGreqStatusCheckboxChange()"> Từ chối</label>
+          <label style="display:flex;align-items:center;gap:8px;padding:6px 8px;font-size:12px;cursor:pointer;border-radius:4px;color:#dc2626;font-weight:600;border-top:1px dashed #e2e8f0;margin-top:2px;padding-top:6px"><input type="checkbox" class="chk-greq-st" value="OVERDUE" onchange="onGreqStatusCheckboxChange()"> <i class="fa-solid fa-triangle-exclamation" style="font-size:11px"></i> Quá hạn xử lý</label>
         </div>
       </div>
 
@@ -641,10 +642,10 @@
   <!-- PILLS BỘ LỌC DANH MỤC -->
   <div style="display:flex;gap:8px;margin-bottom:12px;flex-wrap:wrap">
     <button id="pill-cwf-ALL" class="subtab active" onclick="filterCwfCat('ALL',this)" style="padding:6px 14px;font-size:12px;font-weight:600">
-      <i class="fa-solid fa-layer-group mr-1.5"></i>Tất cả quy trình (<span id="cnt-cwf-all">8</span>)
+      <i class="fa-solid fa-layer-group mr-1.5"></i>Tất cả quy trình (<span id="cnt-cwf-all">9</span>)
     </button>
     <button id="pill-cwf-LEAVE" class="subtab" onclick="filterCwfCat('LEAVE',this)" style="padding:6px 14px;font-size:12px;font-weight:600">
-      <i class="fa-solid fa-umbrella-beach mr-1.5" style="color:#0284c7"></i>Nghỉ phép &amp; Vắng mặt (<span id="cnt-cwf-leave">6</span>)
+      <i class="fa-solid fa-umbrella-beach mr-1.5" style="color:#0284c7"></i>Nghỉ phép &amp; Vắng mặt (<span id="cnt-cwf-leave">7</span>)
     </button>
     <button id="pill-cwf-ADJ" class="subtab" onclick="filterCwfCat('ADJ',this)" style="padding:6px 14px;font-size:12px;font-weight:600">
       <i class="fa-solid fa-sliders mr-1.5" style="color:#6366f1"></i>Giải trình công (<span id="cnt-cwf-adj">1</span>)
@@ -1310,33 +1311,56 @@
           <!-- HÀNG 1: CÁC TIÊU CHÍ LỌC -->
           <div style="display:flex;gap:12px;align-items:center;flex-wrap:wrap">
             <!-- Cụm điều hướng Năm & Tháng theo template của lịch (Calendar Period Navigator) -->
-            <div style="display:inline-flex;align-items:center;background:#fff;border:1px solid #cbd5e1;border-radius:8px;height:34px;box-shadow:0 1px 2px rgba(0,0,0,0.03);overflow:hidden">
-              <button type="button" onclick="m8otsumPrevMonth()" title="Tháng trước" style="border:0;padding:0 9px;height:100%;font-size:11px;color:#64748b;background:transparent;cursor:pointer;display:inline-flex;align-items:center">
+            <div style="position:relative;display:inline-flex;align-items:center;background:#fff;border:1px solid #cbd5e1;border-radius:8px;height:34px;box-shadow:0 1px 2px rgba(0,0,0,0.03)">
+              <button type="button" onclick="m8otsumPrevMonth()" title="Tháng trước" style="border:0;padding:0 9px;height:100%;font-size:11px;color:#64748b;background:transparent;cursor:pointer;display:inline-flex;align-items:center;border-top-left-radius:7px;border-bottom-left-radius:7px">
                 <i class="fa-solid fa-chevron-left"></i>
               </button>
-              <div style="border-left:1px solid #e2e8f0;border-right:1px solid #e2e8f0;padding:0 10px;height:100%;display:inline-flex;align-items:center;gap:6px;background:#f8fafc">
-                <i class="fa-regular fa-calendar-days pap-text" style="font-size:12px"></i>
-                <select id="m8otsum-filter-month" onchange="filterM8OtSum()" style="border:none;background:transparent;font-weight:700;font-size:12px;color:#2E3191;cursor:pointer;outline:none;padding:0">
-                  <option value="1">Tháng 01</option>
-                  <option value="2">Tháng 02</option>
-                  <option value="3">Tháng 03</option>
-                  <option value="4">Tháng 04</option>
-                  <option value="5">Tháng 05</option>
-                  <option value="6">Tháng 06</option>
-                  <option value="7">Tháng 07</option>
-                  <option value="8">Tháng 08</option>
-                  <option value="9">Tháng 09</option>
-                  <option value="10" selected>Tháng 10</option>
-                  <option value="11">Tháng 11</option>
-                  <option value="12">Tháng 12</option>
-                  <option value="ALL">Cả năm</option>
-                </select>
-                <span style="color:#cbd5e1">/</span>
-                <select id="m8otsum-filter-year" onchange="filterM8OtSum()" style="border:none;background:transparent;font-weight:700;font-size:12px;color:#0f172a;cursor:pointer;outline:none;padding:0">
-                  <option value="2026" selected>2026</option>
-                  <option value="2025">2025</option>
-                  <option value="2024">2024</option>
-                </select>
+              <div style="position:relative;display:inline-flex;align-items:center">
+                <div style="border-left:1px solid #e2e8f0;border-right:1px solid #e2e8f0;padding:0 10px;height:100%;display:inline-flex;align-items:center;gap:6px;background:#f8fafc">
+                  <button type="button" id="m8otsum-cal-btn" onclick="toggleM8OtSumCalPicker(event)" title="Mở lịch chọn Tháng / Năm" style="border:0;background:transparent;cursor:pointer;padding:0 2px;display:inline-flex;align-items:center;color:#2E3191">
+                    <i class="fa-regular fa-calendar-days" style="font-size:13px"></i>
+                  </button>
+                  <!-- Thứ tự Năm rồi đến Tháng (Format bộ lọc Tháng & Năm) -->
+                  <select id="m8otsum-filter-year" onchange="filterM8OtSum();syncM8OtSumCalPicker();" style="border:none;background:transparent;font-weight:700;font-size:12px;color:#0f172a;cursor:pointer;outline:none;padding:0">
+                    <option value="2026" selected>Năm 2026</option>
+                    <option value="2025">Năm 2025</option>
+                    <option value="2024">Năm 2024</option>
+                    <option value="2023">Năm 2023</option>
+                  </select>
+                  <span style="color:#cbd5e1;font-weight:600">/</span>
+                  <select id="m8otsum-filter-month" onchange="filterM8OtSum();syncM8OtSumCalPicker();" style="border:none;background:transparent;font-weight:700;font-size:12px;color:#2E3191;cursor:pointer;outline:none;padding:0">
+                    <option value="1">Tháng 01</option>
+                    <option value="2">Tháng 02</option>
+                    <option value="3">Tháng 03</option>
+                    <option value="4">Tháng 04</option>
+                    <option value="5">Tháng 05</option>
+                    <option value="6">Tháng 06</option>
+                    <option value="7">Tháng 07</option>
+                    <option value="8">Tháng 08</option>
+                    <option value="9">Tháng 09</option>
+                    <option value="10" selected>Tháng 10</option>
+                    <option value="11">Tháng 11</option>
+                    <option value="12">Tháng 12</option>
+                    <option value="ALL">Cả năm</option>
+                  </select>
+                </div>
+
+                <!-- Calendar Popover chuyên biệt chỉ chọn Tháng và Năm -->
+                <div id="m8otsum-cal-popover" style="display:none;position:absolute;z-index:95;left:0;top:calc(100% + 6px);width:260px;background:#fff;border:1px solid #cbd5e1;border-radius:10px;box-shadow:0 10px 25px -5px rgba(0,0,0,0.15);padding:12px;box-sizing:border-box" onclick="event.stopPropagation()">
+                  <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;padding-bottom:8px;border-bottom:1px solid #f1f5f9">
+                    <button type="button" onclick="m8otsumCalChangeYear(-1)" style="border:0;background:#f8fafc;width:26px;height:26px;border-radius:6px;cursor:pointer;color:#64748b;display:inline-flex;align-items:center;justify-content:center"><i class="fa-solid fa-chevron-left" style="font-size:10px"></i></button>
+                    <span id="m8otsum-cal-year-disp" style="font-weight:700;font-size:13px;color:#0f172a">Năm 2026</span>
+                    <button type="button" onclick="m8otsumCalChangeYear(1)" style="border:0;background:#f8fafc;width:26px;height:26px;border-radius:6px;cursor:pointer;color:#64748b;display:inline-flex;align-items:center;justify-content:center"><i class="fa-solid fa-chevron-right" style="font-size:10px"></i></button>
+                  </div>
+                  <div style="font-size:11px;color:#64748b;margin-bottom:8px;font-weight:600">Chọn tháng kỳ báo cáo:</div>
+                  <div id="m8otsum-cal-months" style="display:grid;grid-template-columns:repeat(3, 1fr);gap:6px">
+                    <!-- 12 tháng -->
+                  </div>
+                  <div style="margin-top:10px;padding-top:8px;border-top:1px dashed #e2e8f0;display:flex;justify-content:space-between;align-items:center">
+                    <button type="button" onclick="m8otsumCalSelectMonth('ALL')" style="border:1px solid #cbd5e1;background:#f8fafc;color:#334155;border-radius:6px;padding:4px 8px;font-size:11px;font-weight:600;cursor:pointer">Xem cả năm</button>
+                    <button type="button" onclick="document.getElementById('m8otsum-cal-popover').style.display='none'" style="border:0;background:transparent;color:#64748b;font-size:11px;cursor:pointer">Đóng</button>
+                  </div>
+                </div>
               </div>
               <button type="button" onclick="m8otsumNextMonth()" title="Tháng sau" style="border:0;padding:0 9px;height:100%;font-size:11px;color:#64748b;background:transparent;cursor:pointer;display:inline-flex;align-items:center">
                 <i class="fa-solid fa-chevron-right"></i>
@@ -1402,7 +1426,7 @@
               <tr id="m8otsum-head"></tr>
             </thead>
             <tbody id="m8otsum-body"></tbody>
-            <tfoot id="m8otsum-foot" style="background:#f8fafc;border-top:2px solid #cbd5e1;border-bottom:2px solid #cbd5e1"></tfoot>
+            <tfoot id="m8otsum-foot" style="display:none"></tfoot>
           </table>
           <div style="display:flex;justify-content:space-between;padding:10px 16px;font-size:12px;color:#64748b;border-top:1px solid #e2e8f0;flex-wrap:wrap;gap:8px">
             <div style="display:flex;align-items:center;gap:8px">
@@ -1793,7 +1817,7 @@
               <div style="display:flex;justify-content:space-between;align-items:center;padding-top:8px;border-top:1px dashed #cbd5e1">
                 <div>
                   <span style="font-weight:700;color:#047857;font-size:13px">Giờ công quy đổi tính lương:</span>
-                  <div id="m8apv-pay-formula" style="font-size:11px;color:#64748b;margin-top:2px">payroll_weighted_hours = 3 × 1.5 = 4,5 giờ</div>
+                  
                 </div>
                 <span id="m8apv-calc-salary-hours" style="font-size:17px;font-weight:800;color:#047857">4,5 giờ</span>
               </div>
@@ -1812,7 +1836,7 @@
               <div style="display:flex;justify-content:space-between;align-items:center;padding-top:8px;border-top:1px dashed #cbd5e1">
                 <div>
                   <span style="font-weight:700;color:#0284c7;font-size:13px">Quỹ nghỉ bù dự kiến:</span>
-                  <div id="m8apv-comp-formula" style="font-size:11px;color:#64748b;margin-top:2px">comp_leave_hours = 3 × 1.5 = 4,5 giờ</div>
+                  
                 </div>
                 <span id="m8apv-calc-comp-hours" style="font-size:17px;font-weight:800;color:#0284c7">4,5 giờ</span>
               </div>
@@ -1824,7 +1848,7 @@
 
             <!-- 6.6. NHẬN XÉT CỦA NGƯỜI DUYỆT -->
             <div>
-              <label class="fl" style="font-size:11.5px;font-weight:600;color:#334155;margin-bottom:6px">Nhận xét của người duyệt <span id="m8apv-note-req-tag" style="display:none;color:#ef4444">* (Bắt buộc khi điều chỉnh giảm giờ hoặc Từ chối)</span></label>
+              <label class="fl" style="font-size:11.5px;font-weight:600;color:#334155;margin-bottom:6px">Nhận xét phê duyệt <span id="m8apv-note-req-tag" style="display:none;color:#ef4444">* (Bắt buộc khi điều chỉnh giảm giờ hoặc Từ chối)</span></label>
               <textarea id="m8apv-note" rows="2" placeholder="Nhập nhận xét hoặc lý do điều chỉnh..." oninput="toggleApvValidation()" style="width:100%;border:1px solid #cbd5e1;border-radius:8px;padding:8px 12px;font-size:12.5px;box-sizing:border-box;resize:vertical;font-family:inherit"></textarea>
               <div id="m8apv-note-error" style="display:none;color:#ef4444;font-size:11.5px;margin-top:4px;font-weight:600"><i class="fa-solid fa-triangle-exclamation mr-1"></i>Bắt buộc nhập nhận xét lý do khi điều chỉnh giảm giờ hoặc Từ chối đơn</div>
             </div>
@@ -2604,9 +2628,9 @@ thead .sl,thead .sr{background:var(--pap)}
 
       <div class="frow">
         <div>
-          <label class="fl">Lượt quên quẹt thẻ / check-in *</label>
+          <label class="fl">Lượt quên chấm công / check-in *</label>
           <select class="fi" id="att-f-type" onchange="E9onAttTypeChange()">
-            <option value="Quên giờ ra (Check-out)">Quên quẹt GIỜ RA (Missing Check-out)</option>
+            <option value="Quên giờ ra (Check-out)">Quên chấm công GIỜ RA (Missing Check-out)</option>
             <option value="Quên giờ vào (Check-in)">Quên quẹt GIỜ VÀO (Missing Check-in)</option>
             <option value="Quên cả giờ vào & ra">Quên cả GIỜ VÀO &amp; GIỜ RA (Missing Both)</option>
           </select>
@@ -3202,17 +3226,7 @@ thead .sl,thead .sr{background:var(--pap)}
         </div>
         <div><label class="fl">% Lương chi trả (%)</label><input class="fi" id="type-f-rate" type="number" min="0" max="100" value="100"></div>
       </div>
-      <div class="frow">
-        <div>
-          <label class="fl">Thời gian nghỉ tối thiểu *</label>
-          <select class="fi" id="type-f-min-unit">
-            <option value="HALF_DAY">0.5 ngày (Nửa ngày)</option>
-            <option value="FULL_DAY">1 ngày (Cả ngày)</option>
-            <option value="HOUR_1">1 giờ</option>
-            <option value="MIN_30">30 phút</option>
-            <option value="MIN_60">60 phút</option>
-          </select>
-        </div>
+      <div class="frow full">
         <div><label class="fl">Căn cứ pháp lý / Điều luật</label><input class="fi" id="type-f-law" placeholder="VD: Đ.113 BLLĐ 2019, Luật BHXH..."></div>
       </div>
       <div style="display:flex;gap:20px;flex-wrap:wrap;margin:4px 0 10px;padding:8px 12px;background:#f8fafc;border:1px solid #e2e8f0;border-radius:6px">
@@ -3437,9 +3451,61 @@ thead .sl,thead .sr{background:var(--pap)}
               <div>
                 <label class="fl">Hạn chót sử dụng phép tồn <span style="color:#e11d48">*</span></label>
                 <div style="display:flex;align-items:center;gap:8px">
-                  <div style="position:relative;width:170px">
-                    <input type="date" id="E9pol-f-expire-date" class="fi" value="2026-03-31" style="font-weight:700;color:#1e1b4b;cursor:pointer">
+                  <div style="display:flex;align-items:center;gap:6px">
+                    <span style="font-size:12px;color:#64748b;font-weight:600">Tháng</span>
+                    <select id="E9pol-f-expire-month" class="fi" onchange="E9onExpireMonthChange(this.value)" style="width:115px;font-weight:700;color:#1e1b4b;padding:6px 8px">
+                      <option value="01">Tháng 01</option>
+                      <option value="02">Tháng 02</option>
+                      <option value="03" selected>Tháng 03</option>
+                      <option value="04">Tháng 04</option>
+                      <option value="05">Tháng 05</option>
+                      <option value="06">Tháng 06</option>
+                      <option value="07">Tháng 07</option>
+                      <option value="08">Tháng 08</option>
+                      <option value="09">Tháng 09</option>
+                      <option value="10">Tháng 10</option>
+                      <option value="11">Tháng 11</option>
+                      <option value="12">Tháng 12</option>
+                    </select>
                   </div>
+                  <div style="display:flex;align-items:center;gap:6px">
+                    <span style="font-size:12px;color:#64748b;font-weight:600">Ngày</span>
+                    <select id="E9pol-f-expire-day" class="fi" style="width:72px;font-weight:700;color:#1e1b4b;padding:6px 8px">
+                      <option value="01">01</option>
+                      <option value="02">02</option>
+                      <option value="03">03</option>
+                      <option value="04">04</option>
+                      <option value="05">05</option>
+                      <option value="06">06</option>
+                      <option value="07">07</option>
+                      <option value="08">08</option>
+                      <option value="09">09</option>
+                      <option value="10">10</option>
+                      <option value="11">11</option>
+                      <option value="12">12</option>
+                      <option value="13">13</option>
+                      <option value="14">14</option>
+                      <option value="15">15</option>
+                      <option value="16">16</option>
+                      <option value="17">17</option>
+                      <option value="18">18</option>
+                      <option value="19">19</option>
+                      <option value="20">20</option>
+                      <option value="21">21</option>
+                      <option value="22">22</option>
+                      <option value="23">23</option>
+                      <option value="24">24</option>
+                      <option value="25">25</option>
+                      <option value="26">26</option>
+                      <option value="27">27</option>
+                      <option value="28">28</option>
+                      <option value="29">29</option>
+                      <option value="30">30</option>
+                      <option value="31" selected>31</option>
+                    </select>
+                  </div>
+                  <span style="font-size:11px;color:#64748b;font-weight:500">(hàng năm)</span>
+                  <input type="hidden" id="E9pol-f-expire-date" value="31/03">
                 </div>
               </div>
             </div>
@@ -5023,6 +5089,8 @@ function m7shiftRenderSubSlots(){
       '<button type="button" class="btn btn-o" style="padding:4px 8px;color:#b91c1c;font-size:11px" onclick="m7shiftDelSubSlot('+sIdx+')" title="Xóa khung chi tiết"><i class="fa-solid fa-trash"></i></button>'+
     '</div>';
   }).join('');
+  container.innerHTML = htmlOutput;
+  updateLeaveFundCalculation();
 }
 function m7shiftAddSubSlot(){m7ShiftSubSlots.push({name:'',start:'',end:''});m7shiftRenderSubSlots();}
 function m7shiftDelSubSlot(sIdx){m7ShiftSubSlots.splice(sIdx,1);m7shiftRenderSubSlots();}
@@ -8285,32 +8353,11 @@ function renderM8T(id){
     const elStatPaid=document.getElementById('m8sum-stat-paid');if(elStatPaid)elStatPaid.textContent=formatOtHours(totPaidConv);
     const elStatComp=document.getElementById('m8sum-stat-comp');if(elStatComp)elStatComp.textContent=formatOtHours(totCompConv);
 
-    // Update tfoot row
+    // Đã bỏ dòng tổng cộng ở chân bảng vì đã có 3 thẻ KPI phía trên
     const foot=document.getElementById('m8otsum-foot');
     if(foot){
       foot.innerHTML='';
-      const trFoot=document.createElement('tr');
-      trFoot.style.background='#f8fafc';
-      trFoot.style.borderTop='2px solid #cbd5e1';
-      m8tvis(id).forEach(c=>{
-        const td=document.createElement('td');
-        td.style.padding='10px 12px';
-        if(c.sl)td.className='sl';if(c.sr)td.className='sr';
-        if(c.center)td.style.textAlign='center';
-        if(c.right)td.style.textAlign='right';
-        if(c.k==='stt'){ td.textContent=''; }
-        else if(c.k==='pap'){ td.innerHTML='<span style="font-weight:700;color:#64748b;font-size:11px">TỔNG CỘNG</span>'; }
-        else if(c.k==='nv'){ td.innerHTML=`<span style="font-weight:700;color:#0f172a">${rows.length} nhân viên</span>`; }
-        else if(c.k==='phong'){ td.textContent=''; }
-        else if(c.k==='tong_ot'){ td.innerHTML=`<span style="font-weight:800;color:#2E3191;font-size:13px">${formatOtHours(totTong)}</span>`; }
-        else if(c.k==='paid_ot'){ td.innerHTML=`<span style="font-weight:700;color:#334155;font-size:13px">${formatOtHours(totPaid)}</span>`; }
-        else if(c.k==='paid_conv'){ td.innerHTML=`<span style="font-weight:800;color:#047857;font-size:13px">${formatOtHours(totPaidConv)}</span>`; }
-        else if(c.k==='comp_ot'){ td.innerHTML=`<span style="font-weight:700;color:#334155;font-size:13px">${formatOtHours(totComp)}</span>`; }
-        else if(c.k==='comp_conv'){ td.innerHTML=`<span style="font-weight:800;color:#0284c7;font-size:13px">${formatOtHours(totCompConv)}</span>`; }
-        else if(c.k==='action'){ td.textContent=''; }
-        trFoot.appendChild(td);
-      });
-      foot.appendChild(trFoot);
+      foot.style.display='none';
     }
   } else {
     rows=rows.filter(r=>{
@@ -8524,6 +8571,80 @@ document.addEventListener('click', function(e) {
   const t = document.getElementById('m8otsum-dept-trigger');
   if (m && m.style.display !== 'none' && !m.contains(e.target) && !t.contains(e.target)) {
     m.style.display = 'none';
+  }
+});
+
+
+/* ==================== BỘ LỌC LỊCH CHỈ CHỌN THÁNG VÀ NĂM (M08 TỔNG HỢP OT) ==================== */
+let m8otsumCalActiveYear = 2026;
+
+function toggleM8OtSumCalPicker(event) {
+  if (event) event.stopPropagation();
+  const pop = document.getElementById('m8otsum-cal-popover');
+  if (!pop) return;
+  if (pop.style.display === 'block') {
+    pop.style.display = 'none';
+    return;
+  }
+  const yEl = document.getElementById('m8otsum-filter-year');
+  m8otsumCalActiveYear = yEl ? parseInt(yEl.value, 10) || 2026 : 2026;
+  renderM8OtSumCalPicker();
+  pop.style.display = 'block';
+}
+
+function m8otsumCalChangeYear(delta) {
+  m8otsumCalActiveYear += delta;
+  renderM8OtSumCalPicker();
+}
+
+function renderM8OtSumCalPicker() {
+  const disp = document.getElementById('m8otsum-cal-year-disp');
+  if (disp) disp.textContent = 'Năm ' + m8otsumCalActiveYear;
+  const grid = document.getElementById('m8otsum-cal-months');
+  if (!grid) return;
+  const mEl = document.getElementById('m8otsum-filter-month');
+  const yEl = document.getElementById('m8otsum-filter-year');
+  const curM = mEl ? mEl.value : '10';
+  const curY = yEl ? parseInt(yEl.value, 10) : 2026;
+
+  let html = '';
+  for (let m = 1; m <= 12; m++) {
+    const isSel = (m8otsumCalActiveYear === curY && String(m) === curM);
+    const style = isSel
+      ? 'background:#2E3191;color:#fff;font-weight:700;border:1px solid #2E3191;border-radius:6px;padding:8px 4px;text-align:center;cursor:pointer;font-size:11.5px;box-shadow:0 2px 4px rgba(46,49,145,0.25)'
+      : 'background:#fff;color:#334155;font-weight:600;border:1px solid #e2e8f0;border-radius:6px;padding:8px 4px;text-align:center;cursor:pointer;font-size:11.5px;transition:all .15s';
+    html += `<div style="${style}" onclick="m8otsumCalSelectMonth('${m}')" onmouseover="if(!${isSel})this.style.background='#f1f5f9'" onmouseout="if(!${isSel})this.style.background='#fff'">Tháng ${String(m).padStart(2,'0')}</div>`;
+  }
+  grid.innerHTML = html;
+}
+
+function m8otsumCalSelectMonth(mVal) {
+  const yEl = document.getElementById('m8otsum-filter-year');
+  if (yEl) yEl.value = String(m8otsumCalActiveYear);
+  const mEl = document.getElementById('m8otsum-filter-month');
+  if (mEl) mEl.value = mVal;
+  const pop = document.getElementById('m8otsum-cal-popover');
+  if (pop) pop.style.display = 'none';
+  filterM8OtSum();
+}
+
+function syncM8OtSumCalPicker() {
+  const yEl = document.getElementById('m8otsum-filter-year');
+  if (yEl) m8otsumCalActiveYear = parseInt(yEl.value, 10) || 2026;
+  const pop = document.getElementById('m8otsum-cal-popover');
+  if (pop && pop.style.display === 'block') {
+    renderM8OtSumCalPicker();
+  }
+}
+
+// Click outside to close calendar popover
+document.addEventListener('click', function(e) {
+  const pop = document.getElementById('m8otsum-cal-popover');
+  const btn = document.getElementById('m8otsum-cal-btn');
+  if (pop && pop.style.display === 'block') {
+    if (!pop.contains(e.target) && (!btn || !btn.contains(e.target))) {
+      pop.style.display = 'none';
+    }
   }
 });
 
@@ -8753,7 +8874,7 @@ function recalcOtApprovalSummary() {
     const compFormula = document.getElementById('m8apv-comp-formula');
     if (compHoursEl) compHoursEl.textContent = compH + ' giờ';
     if (compBaseH) compBaseH.textContent = approvedHours + ' giờ';
-    if (compFormula) compFormula.textContent = 'comp_leave_hours = ' + approvedHours + ' × ' + rateNum + ' = ' + compH + ' giờ';
+    
   } else {
     if (resPay) resPay.style.display = 'block';
     if (resComp) resComp.style.display = 'none';
@@ -8764,7 +8885,7 @@ function recalcOtApprovalSummary() {
     const payFormula = document.getElementById('m8apv-pay-formula');
     if (payHoursEl) payHoursEl.textContent = payH + ' giờ';
     if (payBaseH) payBaseH.textContent = approvedHours + ' giờ';
-    if (payFormula) payFormula.textContent = 'payroll_weighted_hours = ' + approvedHours + ' × ' + rateNum + ' = ' + payH + ' giờ';
+    
   }
 }
 
@@ -10706,7 +10827,6 @@ const E9tyColumns = [
   {key:'name', title:'Tên loại nghỉ', pinned:false, visible:true, sortable:true, search:true, filter:false},
   {key:'sym', title:'Ký hiệu', pinned:false, visible:true, sortable:true, search:false, filter:false, center:true},
   {key:'paid', title:'Nguồn chi trả & % Lương', pinned:false, visible:true, sortable:false, search:false, filter:true, center:true},
-  {key:'minUnit', title:'Nghỉ tối thiểu', pinned:false, visible:true, sortable:false, search:false, filter:true, center:true},
   {key:'deduct', title:'Trừ quỹ', pinned:false, visible:true, sortable:false, search:false, filter:false, center:true},
   {key:'attach', title:'Đính kèm', pinned:false, visible:true, sortable:false, search:false, filter:false, center:true},
   {key:'law', title:'Căn cứ pháp lý', pinned:false, visible:true, sortable:false, search:false, filter:false},
@@ -10791,7 +10911,6 @@ function E9renderTyCell(c, r, start, i) {
     if (r.src === 'UNPAID') return 'Không hưởng lương';
     return 'Công ty chi trả (' + (r.rate != null ? r.rate : 100) + '%)';
   }
-  if (c.key === 'minUnit') return r.minUnitText || r.minUnit || '0.5 ngày';
   if (c.key === 'deduct') return (r.deduct && r.deduct !== 'Không') ? r.deduct : '<span style="color:#94a3b8">—</span>';
   if (c.key === 'attach') return (r.attach === 'Có' || r.attach === 'Bắt buộc') ? 'Bắt buộc' : '<span style="color:#94a3b8">Không</span>';
   if (c.key === 'status') {
@@ -10958,15 +11077,7 @@ function E9saveLeaveType(){
   const status = document.getElementById('type-f-status').value;
   const src = document.getElementById('type-f-src').value;
   const rate = +document.getElementById('type-f-rate').value || 0;
-  const minUnit = document.getElementById('type-f-min-unit').value;
-  const minUnitMap = {
-    HALF_DAY: '0.5 ngày',
-    FULL_DAY: '1 ngày',
-    HOUR_1: '1 giờ',
-    MIN_30: '30 phút',
-    MIN_60: '60 phút'
-  };
-  const minUnitText = minUnitMap[minUnit] || minUnit;
+  // minUnit removed
   const law = (document.getElementById('type-f-law').value || '').trim();
   const deductAnnual = document.getElementById('type-f-deduct').checked;
   const deductComp = document.getElementById('type-f-deduct-comp') ? document.getElementById('type-f-deduct-comp').checked : false;
@@ -10987,7 +11098,7 @@ function E9saveLeaveType(){
   };
   const srcText = srcTextMap[src] || src;
   const today = 'Admin HR • 28/10/2026';
-  const rowData = { code, name, sym, rate, src, srcText, minUnit, minUnitText, deduct, deductAnnual, deductComp, attach, law, desc, status: (status === 'ACTIVE' || status === 'Đang hoạt động') ? 'Đang hoạt động' : 'Ngừng hoạt động' };
+  const rowData = { code, name, sym, rate, src, srcText, deduct, deductAnnual, deductComp, attach, law, desc, status: (status === 'ACTIVE' || status === 'Đang hoạt động') ? 'Đang hoạt động' : 'Ngừng hoạt động' };
   const idx = typesData.findIndex(x => x.code === code);
   if(idx >= 0){
     rowData.created = typesData[idx].created || typesData[idx].cre || 'Admin HR • 01/01/2026';
@@ -11979,7 +12090,7 @@ function E9openTypeEdit(code){
       document.getElementById('type-f-status').value = (t.status === 'INACTIVE' || t.status === 'Ngừng hoạt động') ? 'INACTIVE' : 'ACTIVE';
       document.getElementById('type-f-src').value = t.src || 'COMPANY';
       document.getElementById('type-f-rate').value = t.rate != null ? t.rate : 100;
-      document.getElementById('type-f-min-unit').value = t.minUnit || 'HALF_DAY';
+      // type-f-min-unit set removed
       document.getElementById('type-f-law').value = t.law || '';
       document.getElementById('type-f-deduct').checked = (t.deductAnnual != null) ? !!t.deductAnnual : (t.deduct && t.deduct.includes('phép năm'));
       const compChk = document.getElementById('type-f-deduct-comp');
@@ -12000,7 +12111,7 @@ function E9openTypeEdit(code){
   document.getElementById('type-f-status').value = 'ACTIVE';
   document.getElementById('type-f-src').value = 'COMPANY';
   document.getElementById('type-f-rate').value = '100';
-  document.getElementById('type-f-min-unit').value = 'HALF_DAY';
+  // type-f-min-unit set removed
   document.getElementById('type-f-law').value = '';
   document.getElementById('type-f-deduct').checked = false;
   const compChkNew = document.getElementById('type-f-deduct-comp');
@@ -12457,6 +12568,37 @@ function E9onCarryOverChange(allowed){
   if (details) details.style.display = allowed ? 'block' : 'none';
 }
 
+function E9getDaysInMonth(month) {
+  const m = parseInt(month, 10);
+  if (m === 2) return 28; // Tháng 2 có 28 ngày theo quy tắc chính sách phép
+  if ([4, 6, 9, 11].includes(m)) return 30; // Tháng 4, 6, 9, 11 có 30 ngày
+  return 31; // Tháng 1, 3, 5, 7, 8, 10, 12 có 31 ngày
+}
+
+function E9updateExpireDays(month, preserveDay) {
+  const daySel = document.getElementById('E9pol-f-expire-day');
+  if (!daySel) return;
+  const maxDays = E9getDaysInMonth(month);
+
+  let curDay = parseInt(preserveDay || daySel.value || maxDays, 10);
+  if (isNaN(curDay) || curDay < 1) curDay = maxDays;
+  if (curDay > maxDays) curDay = maxDays; // Cắt giảm nếu ngày vượt quá số ngày tối đa của tháng
+
+  let html = '';
+  for (let d = 1; d <= maxDays; d++) {
+    const valStr = d < 10 ? '0' + d : '' + d;
+    html += '<option value="' + valStr + '"' + (d === curDay ? ' selected' : '') + '>' + valStr + '</option>';
+  }
+  daySel.innerHTML = html;
+  daySel.value = curDay < 10 ? '0' + curDay : '' + curDay;
+}
+
+function E9onExpireMonthChange(month) {
+  const daySel = document.getElementById('E9pol-f-expire-day');
+  const curVal = daySel ? daySel.value : '31';
+  E9updateExpireDays(month, curVal);
+}
+
 function E9onAllowNegativeChange(allowed) {
   const box = document.getElementById('E9pol-box-negative-limit');
   if (box) box.style.display = allowed ? 'flex' : 'none';
@@ -12493,7 +12635,12 @@ function E9openPolEdit(code){
     E9onAllowNegativeChange(allowNegIn ? allowNegIn.checked : true);
     if(baseIn) baseIn.value = currentPol ? (parseFloat(currentPol.base) || 12) : 12;
     if(stIn) stIn.value = (currentPol && (currentPol.status === 'ACTIVE' || currentPol.status === 'Đang hoạt động')) ? 'ACTIVE' : 'INACTIVE';
-    if(expIn) expIn.value = '2026-03-31';
+    const targetMonth = (currentPol && currentPol.expireMonth) ? currentPol.expireMonth : ((currentPol && currentPol.expireDate) ? currentPol.expireDate.split('/')[1] : '03');
+    const targetDay = (currentPol && currentPol.expireDay) ? currentPol.expireDay : ((currentPol && currentPol.expireDate) ? currentPol.expireDate.split('/')[0] : '31');
+    const expMonthIn = document.getElementById('E9pol-f-expire-month');
+    if(expMonthIn) expMonthIn.value = targetMonth;
+    E9updateExpireDays(targetMonth, targetDay);
+    if(expIn) expIn.value = targetDay + '/' + targetMonth;
     E9polSelectedContracts = ['HD-KXD', 'HD-XD-12-36'];
   } else {
     // Thêm mới
@@ -12510,7 +12657,10 @@ function E9openPolEdit(code){
     E9onAllowNegativeChange(true);
     if(baseIn) baseIn.value = 12;
     if(stIn) stIn.value = 'ACTIVE';
-    if(expIn) expIn.value = '2026-03-31';
+    const expMonthInNew = document.getElementById('E9pol-f-expire-month');
+    if(expMonthInNew) expMonthInNew.value = '03';
+    E9updateExpireDays('03', '31');
+    if(expIn) expIn.value = '31/03';
     E9polSelectedContracts = ['HD-KXD', 'HD-XD-12-36'];
   }
 
@@ -12557,7 +12707,12 @@ function E9savePol(){
 
   const baseVal = baseIn ? (parseFloat(baseIn.value) || 12) : 12;
   const stVal = stIn ? (stIn.value === 'ACTIVE' ? 'Đang hoạt động' : 'Ngừng hoạt động') : 'Đang hoạt động';
-  const expVal = expIn ? expIn.value : '2026-03-31';
+  const expDayIn = document.getElementById('E9pol-f-expire-day');
+  const expMonthIn = document.getElementById('E9pol-f-expire-month');
+  const expDayVal = expDayIn ? expDayIn.value : '31';
+  const expMonthVal = expMonthIn ? expMonthIn.value : '03';
+  const expVal = expDayVal + '/' + expMonthVal;
+  if(expIn) expIn.value = expVal;
 
   const assignedDeptsCount = E9polDepts.filter(d => d.checked).length;
   let totalAssignedEmp = 0;
@@ -12575,6 +12730,9 @@ function E9savePol(){
     existing.maxNegative = maxNegative;
     existing.base = baseVal;
     existing.status = stVal;
+    existing.expireDay = expDayVal;
+    existing.expireMonth = expMonthVal;
+    existing.expireDate = expVal;
     existing.updated = todayStr;
     existing.applyTo = assignedDeptsCount + ' phòng ban (' + totalAssignedEmp + ' NV)';
   } else {
@@ -13897,21 +14055,21 @@ function searchGlobalReqs(query) {
    ======================================================== */
 const reqGroupMasterData = [
   {
-    code: 'GRP-COMP',
-    name: 'Đơn xin nghỉ bù',
-    category: 'LEAVE_COMP',
-    nameGuide: 'Đặt tên đề xuất nghỉ bù:',
-    formatGuide: 'Họ tên - Phòng Ban - Nghỉ bù ca trực [Ngày]',
-    policy: 'Trừ trực tiếp vào Quỹ nghỉ bù tích lũy từ làm thêm giờ (OT). Hạn sử dụng: 90 ngày kể từ ngày ca làm thêm. Hệ thống tự động cảnh báo và ưu tiên trừ gói sắp hết hạn trước (FIFO).',
-    stepsText: '<span class="badge" style="background:#eff6ff;color:#1d4ed8"><i class="fa-solid fa-user-check mr-1"></i>B1: Quản lý trực tiếp (24h)</span>'
-  },
-  {
     code: 'GRP-AL',
     name: 'Nghỉ phép năm',
     category: 'LEAVE_AL',
     nameGuide: 'Đặt tên đề xuất nghỉ phép:',
     formatGuide: 'Họ tên - Phòng Ban - Số ngày nghỉ',
     policy: 'Trừ vào quỹ phép năm hiện có. Báo trước tối thiểu 1 ngày. Quản lý trực tiếp (QLTT) duyệt trong vòng 24 giờ làm việc.',
+    stepsText: '<span class="badge" style="background:#eff6ff;color:#1d4ed8"><i class="fa-solid fa-user-check mr-1"></i>B1: Quản lý trực tiếp (24h)</span>'
+  },
+  {
+    code: 'GRP-COMP',
+    name: 'Đơn xin nghỉ bù',
+    category: 'LEAVE_COMP',
+    nameGuide: 'Đặt tên đề xuất nghỉ bù:',
+    formatGuide: 'Họ tên - Phòng Ban - Nghỉ bù ca trực [Ngày]',
+    policy: 'Trừ trực tiếp vào Quỹ nghỉ bù tích lũy từ làm thêm giờ (OT). Hạn sử dụng: 90 ngày kể từ ngày ca làm thêm. Hệ thống tự động cảnh báo và ưu tiên trừ gói sắp hết hạn trước (FIFO).',
     stepsText: '<span class="badge" style="background:#eff6ff;color:#1d4ed8"><i class="fa-solid fa-user-check mr-1"></i>B1: Quản lý trực tiếp (24h)</span>'
   },
   {
@@ -13965,7 +14123,7 @@ const reqGroupMasterData = [
     category: 'ATT_ADJ',
     nameGuide: 'Đặt tên đề xuất giải trình quên chấm công:',
     formatGuide: 'Họ tên - Phòng Ban - Quên chấm công [Ngày/Ca]',
-    policy: 'Bổ sung giờ quẹt thẻ bị thiếu do quên, lỗi máy quẹt hoặc điều động gấp. Hạn mức tối đa 3 lần/tháng. Báo trong vòng 48h sau ca làm việc.',
+    policy: 'Bổ sung giờ chấm công bị thiếu do quên chấm công vào/ra hoặc điều động gấp. Hạn mức tối đa 3 lần/tháng. Báo trong vòng 48h sau ca làm việc.',
     stepsText: '<span class="badge" style="background:#eff6ff;color:#1d4ed8"><i class="fa-solid fa-user-check mr-1"></i>B1: Quản lý ca / QLTT</span>'
   },
   {
@@ -13979,7 +14137,7 @@ const reqGroupMasterData = [
   }
 ];
 
-let currentSelectedReqGroup = reqGroupMasterData[3]; // Default to Nghỉ phép năm
+let currentSelectedReqGroup = reqGroupMasterData.find(x => x.code === 'GRP-AL') || reqGroupMasterData[0]; // Default to Nghỉ phép năm
 
 function openFindGroupModal() {
   const inp = document.getElementById('inp-find-group');
@@ -14021,7 +14179,7 @@ function renderReqGroupsList(groups) {
     'GRP-WFH': { icon: 'fa-laptop-house', color: '#0d9488', bg: '#f0fdfa', tag: 'Làm việc ngoài VP', desc: 'Làm việc từ xa (WFH) / Hiện trường ngoại vi cảng' },
     'GRP-UL': { icon: 'fa-file-contract', color: '#d97706', bg: '#fffbeb', tag: 'Nghỉ không lương', desc: 'Việc riêng khi đã sử dụng hết quỹ ngày phép năm' },
     'GRP-OTHER': { icon: 'fa-notes-medical', color: '#db2777', bg: '#fdf2f8', tag: 'Chế độ khác', desc: 'Chế độ ốm đau / thai sản / dưỡng sức • BHXH chi trả' },
-    'GRP-PUNCH': { icon: 'fa-fingerprint', color: '#b45309', bg: '#fef3c7', tag: 'Giải trình công', desc: 'Quên quẹt thẻ đầu/cuối ca • Chấm bổ sung giờ vào/ra' },
+    'GRP-PUNCH': { icon: 'fa-fingerprint', color: '#b45309', bg: '#fef3c7', tag: 'Giải trình công', desc: 'Quên chấm công vào/ra' },
     'GRP-OT': { icon: 'fa-stopwatch', color: '#047857', bg: '#ecfdf5', tag: 'Làm thêm giờ (OT)', desc: 'Tăng ca bốc dỡ tàu hàng • Tính lương OT hoặc nghỉ bù' }
   };
 
@@ -14062,18 +14220,15 @@ function renderReqGroupsList(groups) {
   ];
 
   sections.forEach((sec) => {
-    const secItems = groups.filter(g => sec.codes.includes(g.code));
+    const secItems = sec.codes.map(c => groups.find(g => g.code === c)).filter(Boolean);
     if (secItems.length === 0) return;
 
-    // Header phân nhóm
+    // Header phân nhóm: Không có icon phía trước, chữ in đậm nổi bật (font-weight: 800)
     const headerEl = document.createElement('div');
-    headerEl.style.cssText = 'background:#f8fafc;padding:7px 18px;border-top:1px solid #e2e8f0;border-bottom:1px solid #e2e8f0;font-size:11px;font-weight:700;color:#334155;display:flex;align-items:center;justify-content:space-between;letter-spacing:0.3px';
+    headerEl.style.cssText = 'background:#f8fafc;padding:8px 18px;border-top:1px solid #e2e8f0;border-bottom:1px solid #e2e8f0;font-size:11.5px;font-weight:800;color:#0f172a;display:flex;align-items:center;justify-content:space-between;letter-spacing:0.4px';
     headerEl.innerHTML = 
-      '<span style="display:flex;align-items:center;gap:7px">' +
-        '<span style="width:20px;height:20px;border-radius:4px;background:' + sec.bg + ';color:' + sec.color + ';display:inline-flex;align-items:center;justify-content:center;font-size:10.5px"><i class="fa-solid ' + sec.icon + '"></i></span>' +
-        '<span>' + sec.title + '</span>' +
-      '</span>' +
-      '<span style="font-size:10px;font-weight:700;background:#e2e8f0;color:#475569;padding:1px 6px;border-radius:10px">' + secItems.length + ' loại</span>';
+      '<span style="font-weight:800;color:#0f172a;text-transform:uppercase">' + sec.title + '</span>' +
+      '<span style="font-size:10px;font-weight:600;background:#e2e8f0;color:#475569;padding:1px 7px;border-radius:10px">' + secItems.length + ' loại</span>';
     listEl.appendChild(headerEl);
 
     // Danh sách items trong nhóm
@@ -14092,9 +14247,9 @@ function renderReqGroupsList(groups) {
             '<i class="fa-solid ' + meta.icon + '"></i>' +
           '</div>' +
           '<div>' +
-            '<div style="font-weight:700;font-size:13px;color:#0f172a;display:flex;align-items:center;gap:8px">' +
-              g.name +
-              '<span class="badge" style="background:#f1f5f9;color:#475569;border:1px solid #e2e8f0;font-size:10px;padding:1px 6px;font-weight:600">' + meta.tag + '</span>' +
+            '<div style="font-weight:500;font-size:13px;color:#1e293b;display:flex;align-items:center;gap:8px">' +
+              '<span>' + g.name + '</span>' +
+              '<span class="badge" style="background:#f1f5f9;color:#475569;border:1px solid #e2e8f0;font-size:10px;padding:1px 6px;font-weight:500">' + meta.tag + '</span>' +
             '</div>' +
             '<div style="font-size:11px;color:#64748b;margin-top:2px">' + meta.desc + '</div>' +
           '</div>' +
@@ -14116,7 +14271,7 @@ function renderQuickGroupList() {}
 function confirmQuickGroupSelect() {}
 
 function selectReqGroup(code) {
-  const g = reqGroupMasterData.find(x => x.code === code) || reqGroupMasterData[3];
+  const g = reqGroupMasterData.find(x => x.code === code) || reqGroupMasterData.find(x => x.code === 'GRP-AL') || reqGroupMasterData[0];
   currentSelectedReqGroup = g;
   E9closeMdl('mdl-find-group');
   openGlobalCreateReqModal(code);
@@ -14186,13 +14341,63 @@ function format24hTimeInput(input, idx, field) {
   updateCompLeaveRange(idx, field, val);
 }
 
+
+function calculateTotalLeaveDays() {
+  if (!gLeaveTimeRanges || !gLeaveTimeRanges.length) return 1.0;
+  let total = 0;
+  gLeaveTimeRanges.forEach(rng => {
+    if (!rng.from || !rng.to) {
+      total += 1.0;
+      return;
+    }
+    const d1 = new Date(rng.from);
+    const d2 = new Date(rng.to);
+    if (isNaN(d1.getTime()) || isNaN(d2.getTime())) {
+      total += 1.0;
+      return;
+    }
+    if (d1.getTime() === d2.getTime()) {
+      if (rng.duration === '0.5_AM' || rng.duration === '0.5_PM') {
+        total += 0.5;
+      } else {
+        total += 1.0;
+      }
+    } else if (d2 >= d1) {
+      const diffDays = Math.round((d2 - d1) / (1000 * 60 * 60 * 24)) + 1;
+      total += diffDays;
+    } else {
+      total += 1.0;
+    }
+  });
+  return Math.max(0.5, total);
+}
+
+function updateLeaveFundCalculation() {
+  const elTot = document.getElementById('g-leave-calc-total-days');
+  const elRemain = document.getElementById('g-leave-calc-remain');
+  const elRemainWrap = document.getElementById('g-leave-calc-remain-wrap');
+  if (!elTot) return;
+  const totalDays = calculateTotalLeaveDays();
+  elTot.textContent = totalDays.toFixed(1) + ' ngày';
+
+  const currentBalance = 10.0;
+  const remain = currentBalance - totalDays;
+  if (elRemainWrap) {
+    if (remain >= 0) {
+      elRemainWrap.innerHTML = '(Dư sau nghỉ dự kiến: <b id="g-leave-calc-remain" style="color:#2E3191">' + remain.toFixed(1) + ' ngày</b>)';
+    } else {
+      elRemainWrap.innerHTML = '(<span style="color:#dc2626;font-weight:700"><i class="fa-solid fa-triangle-exclamation mr-1"></i>Vượt quỹ phép: ' + Math.abs(remain).toFixed(1) + ' ngày</span>)';
+    }
+  }
+}
+
 function renderLeaveTimeRanges() {
   const container = document.getElementById('g-leave-ranges-container');
   if (!container) return;
   const isMulti = gLeaveTimeRanges.length > 1;
   const isCompLeave = (typeof currentSelectedReqGroup !== 'undefined' && currentSelectedReqGroup && (currentSelectedReqGroup.code === 'GRP-COMP' || currentSelectedReqGroup.category === 'LEAVE_COMP'));
 
-  container.innerHTML = gLeaveTimeRanges.map((rng, idx) => {
+  const htmlOutput = gLeaveTimeRanges.map((rng, idx) => {
     if (isCompLeave) {
       const curStart = rng.start || '08:00';
       const curEnd = rng.end || '17:00';
@@ -14249,14 +14454,14 @@ function renderLeaveTimeRanges() {
         '<label class="fl" style="font-size:11px;margin-bottom:3px">Thời lượng nghỉ <span style="color:#ef4444">*</span></label>' +
         '<div style="display:flex;gap:10px;padding-top:6px">' +
           '<label style="display:flex;align-items:center;gap:4px;font-size:12px;color:#1e293b;cursor:pointer">' +
-            '<input type="radio" name="g-leave-dur-' + idx + '" value="1.0" ' + (rng.duration === '1.0' ? 'checked' : '') + ' onchange="gLeaveTimeRanges[' + idx + '].duration=\'1.0\'" style="accent-color:#2E3191"> Cả ngày (1.0)' +
+            '<input type="radio" name="g-leave-dur-' + idx + '" value="1.0" ' + (rng.duration === '1.0' ? 'checked' : '') + ' onchange="gLeaveTimeRanges[' + idx + '].duration=\'1.0\';updateLeaveFundCalculation()" style="accent-color:#2E3191"> Cả ngày (1.0)' +
           '</label>' +
           (isSingleDay ? (
             '<label style="display:flex;align-items:center;gap:4px;font-size:12px;color:#1e293b;cursor:pointer">' +
-              '<input type="radio" name="g-leave-dur-' + idx + '" value="0.5_AM" ' + (rng.duration === '0.5_AM' ? 'checked' : '') + ' onchange="gLeaveTimeRanges[' + idx + '].duration=\'0.5_AM\'" style="accent-color:#2E3191"> Sáng (0.5)' +
+              '<input type="radio" name="g-leave-dur-' + idx + '" value="0.5_AM" ' + (rng.duration === '0.5_AM' ? 'checked' : '') + ' onchange="gLeaveTimeRanges[' + idx + '].duration=\'0.5_AM\';updateLeaveFundCalculation()" style="accent-color:#2E3191"> Sáng (0.5)' +
             '</label>' +
             '<label style="display:flex;align-items:center;gap:4px;font-size:12px;color:#1e293b;cursor:pointer">' +
-              '<input type="radio" name="g-leave-dur-' + idx + '" value="0.5_PM" ' + (rng.duration === '0.5_PM' ? 'checked' : '') + ' onchange="gLeaveTimeRanges[' + idx + '].duration=\'0.5_PM\'" style="accent-color:#2E3191"> Chiều (0.5)' +
+              '<input type="radio" name="g-leave-dur-' + idx + '" value="0.5_PM" ' + (rng.duration === '0.5_PM' ? 'checked' : '') + ' onchange="gLeaveTimeRanges[' + idx + '].duration=\'0.5_PM\';updateLeaveFundCalculation()" style="accent-color:#2E3191"> Chiều (0.5)' +
             '</label>'
           ) : '') +
         '</div>' +
@@ -14270,6 +14475,8 @@ function renderLeaveTimeRanges() {
       ) : '') +
     '</div>';
   }).join('');
+  container.innerHTML = htmlOutput;
+  updateLeaveFundCalculation();
 }
 
 function addLeaveTimeRange() {
@@ -14556,7 +14763,7 @@ function onGlobalCreateTypeChange() {
 }
 
 function submitGlobalCreateReq() {
-  const g = currentSelectedReqGroup || reqGroupMasterData[3];
+  const g = currentSelectedReqGroup || reqGroupMasterData.find(x => x.code === 'GRP-AL') || reqGroupMasterData[0];
   const typeLabel = g.name;
   let prefix = 'NP';
   if (g.category === 'ATT_ADJ') prefix = 'DC';
@@ -14653,8 +14860,8 @@ function submitGlobalCreateReq() {
   const newGreqItem = {
     id: newId,
     pap: 'PAP0009',
-    name: 'Tôi (Nguyễn Văn A)',
-    user: 'Tôi (Nguyễn Văn A)',
+    name: 'Nguyễn Văn A',
+    user: 'Nguyễn Văn A',
     dept: 'PM',
     deptName: 'PT Phần mềm',
     avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=60&auto=format&fit=crop&q=80',
@@ -14715,6 +14922,92 @@ function quickGlobalApprove(id) {
 
   if (typeof E9toast === 'function') E9toast('Đã phê duyệt thành công đơn ' + id + '!');
   else alert('Đã phê duyệt thành công đơn ' + id + '!');
+}
+
+function confirmQuickGlobalApprove(id) {
+  const r = typeof greqMasterData !== 'undefined' ? greqMasterData.find(x => x.id === id) : null;
+  const idEl = document.getElementById('g-quick-apv-id');
+  const codeEl = document.getElementById('g-quick-apv-code');
+  const senderEl = document.getElementById('g-quick-apv-sender');
+  const deptEl = document.getElementById('g-quick-apv-dept');
+  const typeEl = document.getElementById('g-quick-apv-type');
+  const timeEl = document.getElementById('g-quick-apv-time');
+  const commentEl = document.getElementById('g-quick-apv-comment');
+
+  if (idEl) idEl.value = id;
+  if (codeEl) codeEl.textContent = id;
+  if (r) {
+    if (senderEl) senderEl.textContent = r.name || r.user || 'Nhân sự';
+    const deptName = r.dept === 'PM' ? 'PT Phần mềm' : (r.dept === 'KT' ? 'Khai thác cảng' : (r.dept || 'Phòng ban'));
+    if (deptEl) deptEl.textContent = deptName;
+    if (typeEl) typeEl.textContent = r.type || r.title || 'Đơn đề xuất';
+    if (timeEl) timeEl.textContent = r.time || '—';
+  }
+  if (commentEl) commentEl.value = 'Đồng ý phê duyệt đơn đề xuất.';
+
+  E9openMdl('mdl-global-quick-approve');
+}
+
+function confirmExecuteQuickApprove() {
+  const id = document.getElementById('g-quick-apv-id')?.value;
+  if (!id) return;
+  const comment = document.getElementById('g-quick-apv-comment')?.value || 'Đồng ý phê duyệt đơn đề xuất.';
+
+  const item = typeof greqMasterData !== 'undefined' ? greqMasterData.find(x => x.id === id) : null;
+  if (item) {
+    item.status = 'APPROVED';
+    item.statusText = 'ĐÃ DUYỆT';
+    item.tabType = 'APPROVED_BY_ME';
+    item.approvalComment = comment;
+    item.approvedAt = new Date().toISOString();
+  }
+
+  // Update row in DOM if rendered directly
+  const row = document.getElementById('grow-' + id);
+  if (row) {
+    const statusCell = row.querySelector('.cell-status');
+    const actionCell = row.querySelector('.cell-action');
+    if (statusCell) {
+      statusCell.innerHTML = '<span style="padding:2px 7px;border-radius:999px;font-size:10.5px;font-weight:700;background:#ecfdf5;color:#047857;border:1px solid #a7f3d0">ĐÃ DUYỆT</span>';
+    }
+    if (actionCell) {
+      actionCell.innerHTML = '<span style="font-size:11.5px;color:#047857;font-weight:600"><i class="fa-solid fa-check mr-1"></i>Đã duyệt</span>';
+    }
+  }
+
+  // Re-render table via table engine M7T
+  if (typeof M7T !== 'undefined' && M7T['greq']) {
+    if (typeof getFilteredGreqData === 'function') {
+      M7T['greq'].data = getFilteredGreqData();
+    }
+    renderT('greq');
+  }
+
+  // Update subtab badges
+  if (typeof updateGreqTabBadges === 'function') {
+    updateGreqTabBadges();
+  }
+
+  // Update notification badges
+  const pendingCount = greqMasterData.filter(x => (x.tabType === 'INBOX' || x.tab === 'APPROVAL') && x.status === 'PENDING').length;
+  const bApproval = document.getElementById('badge-approval-count');
+  if (bApproval) {
+    bApproval.textContent = pendingCount;
+    bApproval.style.display = pendingCount > 0 ? 'inline-flex' : 'none';
+  }
+  const bSide = document.querySelector('#side-requests .badge');
+  if (bSide) {
+    bSide.textContent = pendingCount + ' cần duyệt';
+    bSide.style.display = pendingCount > 0 ? 'inline-flex' : 'none';
+  }
+
+  E9closeMdl('mdl-global-quick-approve');
+
+  if (typeof E9toast === 'function') {
+    E9toast('Đã phê duyệt thành công đơn: ' + id, 'success');
+  } else if (typeof toast === 'function') {
+    toast('Đã phê duyệt thành công đơn: ' + id, 'success');
+  }
 }
 
 function openGlobalRejectModal(id) {
@@ -14803,25 +15096,54 @@ function viewGlobalReq(id) {
     const timeStr = r.time || '01/11/2026 · 17:30 - 20:30';
     let otDate = '01/11/2026';
     let otRange = '17:30 → 20:30';
+    let startHour = '17:30';
+    let endHour = '20:30';
     if (timeStr.includes('·')) {
       const parts = timeStr.split('·');
       otDate = parts[0].trim();
-      otRange = parts[1].trim().replace('-', '→').replace('–', '→');
+      const rangeRaw = parts[1].trim();
+      otRange = rangeRaw.replace('-', '→').replace('–', '→');
+      const timeParts = rangeRaw.split(/[-–→]/).map(s => s.trim());
+      if (timeParts.length >= 2) {
+        startHour = timeParts[0];
+        endHour = timeParts[1];
+      }
     }
+
+    // Dynamic hour calculation between startHour and endHour
+    let calcHours = 3.0;
+    const [sh, sm] = startHour.split(':').map(Number);
+    const [eh, em] = endHour.split(':').map(Number);
+    if (!isNaN(sh) && !isNaN(eh)) {
+      let diffMin = (eh * 60 + (em || 0)) - (sh * 60 + (sm || 0));
+      if (diffMin < 0) diffMin += 24 * 60; // ca đêm qua ngày
+      calcHours = Math.round((diffMin / 60) * 10) / 10;
+    }
+
     const isComp = (r.huo === 'LEAVE_COMP' || r.huo === 'COMP' || r.rewardType === 'COMP' || (r.time && r.time.includes('Nghỉ bù')));
-    const rawH = String(r.hours || (timeStr.includes('22:00') ? '8.0' : '3.0')).replace(/[^0-9.]/g, '');
-    const otHoursNum = parseFloat(rawH) || 3.0;
+    const otHoursNum = r.hours ? parseFloat(r.hours) : calcHours;
     const otHours = otHoursNum.toFixed(1) + 'h';
     const approvedHoursNum = r.approvedHours ? parseFloat(r.approvedHours) : otHoursNum;
 
-    const isNight = timeStr.includes('22:00') || timeStr.includes('06:00');
+    const isNight = startHour >= '21:00' || endHour <= '07:00' || timeStr.includes('22:00') || timeStr.includes('06:00');
     const dayTypeLabel = isNight ? 'Ca đêm (22:00–06:00)' : 'Ngày thường (08:00–17:00)';
     const rateVal = isNight ? 2.0 : 1.5;
     const rateCoef = isNight ? '200%' : '150%';
     const shiftInfo = isNight ? '22:00–06:00 (Ca 3)' : '08:00–17:00 (Hành chính)';
-    const attInfo = isNight ? '21:55–06:05 (Hợp lệ)' : '08:00–20:00 (Hợp lệ)';
-    const checkIn = isNight ? '21:55' : '07:55';
-    const checkOut = isNight ? '06:05' : '20:05';
+
+    // Dynamic checkIn and checkOut matching the OT proposal
+    let checkIn = '07:55';
+    let checkOut = '21:35';
+    if (isNight) {
+      checkIn = '21:55';
+      checkOut = '06:05';
+    } else if (!isNaN(eh)) {
+      const outMin = (em || 0) + 5;
+      const finalH = (eh + Math.floor(outMin / 60)).toString().padStart(2, '0');
+      const finalM = (outMin % 60).toString().padStart(2, '0');
+      checkOut = finalH + ':' + finalM;
+    }
+
     const empTitle = r.empTitle || (r.dept === 'PM' ? 'Kỹ sư phần mềm' : (r.dept === 'KT' ? 'Nhân viên khai thác' : 'Chuyên viên nghiệp vụ'));
 
     let contentHtml =
@@ -14864,21 +15186,18 @@ function viewGlobalReq(id) {
         '</div>' +
         '<div style="text-align:right">' +
           '<div style="font-size:11px;color:#64748b">Ngày nộp đơn</div>' +
-          '<div style="font-size:12px;font-weight:600;color:#1e293b">' + (r.dateCreated || '31/10/2026') + '</div>' +
+          '<div style="font-size:12px;font-weight:600;color:#1e293b">' + ((r.dateCreated || '31/10/2026').includes('-') ? (r.dateCreated || '31/10/2026').replace(/(\d{4})-(\d{2})-(\d{2})/, '$3/$2/$1') : (r.dateCreated || '31/10/2026')) + '</div>' +
         '</div>' +
       '</div>' +
 
-      '<!-- 4. KHỐI ĐỐI CHIẾU CHẤM CÔNG THỰC TẾ (NỔI BẬT VỚI CHECKBOX BẮT BUỘC KHI DUYỆT) -->' +
+      '<!-- 4. KHỐI ĐỐI CHIẾU CHẤM CÔNG THỰC TẾ -->' +
       '<div style="background:#f0fdf4;border:1px solid #bbf7d0;border-radius:10px;padding:12px 16px;margin-bottom:14px;font-size:12.5px">' +
-        '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">' +
+        '<div style="margin-bottom:8px">' +
           '<div style="font-weight:700;color:#065f46;display:flex;align-items:center;gap:6px">' +
             '<i class="fa-solid fa-fingerprint text-[#047857]"></i><span>Đối chiếu chấm công thực tế</span>' +
           '</div>' +
-          '<span style="background:#ecfdf5;color:#047857;border:1px solid #a7f3d0;padding:2px 8px;border-radius:9999px;font-size:11px;font-weight:700">' +
-            '<i class="fa-solid fa-circle-check mr-1"></i>Hợp lệ' +
-          '</span>' +
         '</div>' +
-        '<div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:8px">' +
+        '<div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px">' +
           '<div style="background:#fff;padding:6px 10px;border-radius:6px;border:1px solid #dcfce7">' +
             '<span style="font-size:11px;color:#64748b;display:block">Ca làm việc</span>' +
             '<span style="font-weight:600;color:#1e293b">' + shiftInfo + '</span>' +
@@ -14892,14 +15211,6 @@ function viewGlobalReq(id) {
             '<span style="font-weight:700;color:#047857"><i class="fa-solid fa-arrow-right-from-bracket mr-1" style="font-size:10px"></i>' + checkOut + '</span>' +
           '</div>' +
         '</div>' +
-        '<div style="font-size:11px;color:#15803d;margin-bottom:8px">' +
-          '<i class="fa-solid fa-shield-check mr-1"></i>Dữ liệu chấm công thực tế đầy đủ In/Out, đối chiếu hợp lệ với khung giờ làm thêm, không vi phạm hạn mức.' +
-        '</div>' +
-        '<label style="display:flex;align-items:center;gap:8px;font-size:12px;font-weight:700;color:#065f46;background:#fff;padding:8px 12px;border:1px solid #86efac;border-radius:6px;cursor:pointer">' +
-          '<input type="checkbox" id="unified-att-confirm" ' + (isApproved ? 'checked disabled' : 'checked') + ' onchange="toggleUnifiedAttConfirm()" style="width:16px;height:16px;accent-color:#047857;cursor:pointer">' +
-          '<span>Xác nhận dữ liệu chấm công hợp lệ trước khi phê duyệt</span>' +
-        '</label>' +
-        '<div id="unified-att-error" style="display:none;color:#ef4444;font-size:11.5px;margin-top:4px;font-weight:600"><i class="fa-solid fa-triangle-exclamation mr-1"></i>Vui lòng xác nhận dữ liệu chấm công hợp lệ trước khi phê duyệt!</div>' +
       '</div>' +
 
       '<!-- 5. KHỐI KHUNG THỜI GIAN TĂNG CA (CHUẨN 24 GIỜ) -->' +
@@ -14943,11 +15254,11 @@ function viewGlobalReq(id) {
           '<div style="display:flex;align-items:center;gap:20px;padding:8px 14px;border:1px solid #e2e8f0;border-radius:8px;background:#f8fafc">' +
             '<label style="display:inline-flex;align-items:center;gap:8px;font-size:12.5px;font-weight:600;color:#1e293b;cursor:pointer">' +
               '<input type="radio" name="unified-mode" id="unified-mode-pay" value="PAID" ' + (isComp ? '' : 'checked') + ' ' + (isApproved ? 'disabled' : '') + ' onchange="recalcUnifiedOtCalculation(' + otHoursNum + ', ' + rateVal + ')" style="width:16px;height:16px;accent-color:#2E3191;cursor:pointer">' +
-              '<span>PAID – Hưởng lương tăng ca</span>' +
+              '<span>Hưởng lương tăng ca</span>' +
             '</label>' +
             '<label style="display:inline-flex;align-items:center;gap:8px;font-size:12.5px;font-weight:600;color:#1e293b;cursor:pointer">' +
               '<input type="radio" name="unified-mode" id="unified-mode-comp" value="COMP_LEAVE" ' + (isComp ? 'checked' : '') + ' ' + (isApproved ? 'disabled' : '') + ' onchange="recalcUnifiedOtCalculation(' + otHoursNum + ', ' + rateVal + ')" style="width:16px;height:16px;accent-color:#2E3191;cursor:pointer">' +
-              '<span>COMP_LEAVE – Quy đổi nghỉ bù</span>' +
+              '<span>Quy đổi nghỉ bù</span>' +
             '</label>' +
           '</div>' +
         '</div>' +
@@ -14964,10 +15275,7 @@ function viewGlobalReq(id) {
             '<span style="color:#64748b">Hệ số áp dụng:</span><span id="unified-calc-rate-txt" style="font-weight:700;color:#0f172a">' + rateCoef + '</span>' +
           '</div>' +
           '<div style="display:flex;justify-content:space-between;align-items:center;padding-top:8px;border-top:1px dashed #cbd5e1">' +
-            '<div>' +
-              '<span id="unified-calc-label" style="font-weight:700;color:#047857;font-size:12.5px">' + (isComp ? 'Quỹ nghỉ bù dự kiến:' : 'Giờ công quy đổi tính lương:') + '</span>' +
-              '<div id="unified-calc-formula" style="font-size:11px;color:#64748b;margin-top:2px">' + (isComp ? 'comp_leave_hours = ' : 'payroll_weighted_hours = ') + approvedHoursNum + ' × ' + rateVal + ' = ' + (approvedHoursNum * rateVal).toFixed(1).replace('.', ',') + ' giờ</div>' +
-            '</div>' +
+            '<span id="unified-calc-label" style="font-weight:700;color:#047857;font-size:12.5px">' + (isComp ? 'Quỹ nghỉ bù dự kiến:' : 'Giờ công quy đổi tính lương:') + '</span>' +
             '<span id="unified-calc-result-hours" style="font-size:17px;font-weight:800;color:#047857">' + (approvedHoursNum * rateVal).toFixed(1).replace('.', ',') + ' giờ</span>' +
           '</div>' +
         '</div>' +
@@ -14982,7 +15290,7 @@ function viewGlobalReq(id) {
       '<!-- 8. NHẬN XÉT CỦA NGƯỜI DUYỆT (BẮT BUỘC KHI GIẢM GIỜ HOẶC TỪ CHỐI) -->' +
       '<div style="margin-bottom:14px">' +
         '<label class="fl" style="font-size:11.5px;font-weight:600;color:#334155;margin-bottom:4px;display:block">' +
-          'Nhận xét của người duyệt ' +
+          'Nhận xét phê duyệt ' +
           '<span id="unified-note-req-tag" style="display:none;color:#ef4444">* (Bắt buộc khi điều chỉnh giảm giờ hoặc Từ chối)</span>' +
         '</label>' +
         '<textarea id="unified-apv-note" ' + (isApproved ? 'readonly' : '') + ' placeholder="Nhập nhận xét / lý do phê duyệt hoặc điều chỉnh giờ..." rows="2" style="background:' + (isApproved ? '#f8fafc' : '#fff') + ';border:1px solid #cbd5e1;border-radius:6px;padding:8px 10px;font-size:12px;color:#1e293b;width:100%;box-sizing:border-box;resize:none;font-family:inherit">' + (r.approvalNote || r.batchNote || '') + '</textarea>' +
@@ -15047,7 +15355,575 @@ function viewGlobalReq(id) {
     E9openMdl('mdl-global-view');
     return;
   }
-  // CÁC LOẠI ĐƠN KHÁC (NGHỈ PHÉP, ĐI CÔNG TÁC, WFH, GIẢI TRÌNH CHẤM CÔNG...)
+
+  // NẾU LÀ ĐƠN NGHỈ PHÉP (LEAVE): FORM PHÊ DUYỆT / XEM CHI TIẾT ĐẦY ĐỦ CÁC TRƯỜNG NHƯ FORM TẠO ĐƠN
+  const isLeaveReq = (r.typeCode === 'LEAVE' || r.typeCode === 'LEAVE_PL' || (r.type && (r.type.includes('Nghỉ') || r.type.includes('nghỉ') || r.type.includes('phép'))) || (r.id && r.id.startsWith('NP-')));
+  if (isLeaveReq) {
+    if (title) {
+      title.innerHTML = '<i class="fa-solid fa-umbrella-beach text-[#2E3191] mr-1.5"></i>' + (isPending ? 'Phê duyệt đơn đề xuất: ' : 'Chi tiết đơn đề xuất: ') + '<b>' + r.id + '</b>';
+    }
+
+    const modalEl = document.querySelector('#mdl-global-view .mdl');
+    if (modalEl) modalEl.style.maxWidth = '720px';
+
+    const rawTime = (r.time || '03/11/2026').trim();
+    let fromDate = rawTime;
+    let toDate = rawTime;
+    let isMorning = rawTime.includes('Sáng') || rawTime.includes('AM');
+    let isAfternoon = rawTime.includes('Chiều') || rawTime.includes('PM');
+
+    if (rawTime.includes('-')) {
+      const parts = rawTime.split('-').map(s => s.trim().split(' ')[0]);
+      if (parts.length >= 2) {
+        fromDate = parts[0];
+        toDate = parts[1];
+      }
+    } else {
+      fromDate = rawTime.split(' ')[0];
+      toDate = fromDate;
+    }
+    const isFull = !isMorning && !isAfternoon;
+
+    // Approval indicators
+    const approvalDate1 = r.dateCreated ? r.dateCreated.replace(/(\d{4})-(\d{2})-(\d{2})/, '$3/$2/$1') : '02/11/2026';
+    const approvalDate2 = r.time ? r.time.split(' ')[0] : '03/11/2026';
+
+    let qlttStepBadge = '';
+    let fixedStepBadge = '';
+
+    if (isApproved) {
+      qlttStepBadge = '<div style="margin-top:5px;font-size:10.5px;color:#166534;font-weight:600;display:inline-flex;align-items:center;gap:4px"><i class="fa-solid fa-circle-check text-green-600"></i>Đã duyệt · ' + approvalDate1 + ' 14:30</div>';
+      fixedStepBadge = '<div style="margin-top:5px;font-size:10.5px;color:#166534;font-weight:600;display:inline-flex;align-items:center;gap:4px"><i class="fa-solid fa-circle-check text-green-600"></i>Đã duyệt · ' + approvalDate2 + ' 09:15</div>';
+    } else if (r.status === 'PROCESSING' || r.currentStep === 2 || r.id === 'CT-2026-018') {
+      qlttStepBadge = '<div style="margin-top:5px;font-size:10.5px;color:#166534;font-weight:600;display:inline-flex;align-items:center;gap:4px"><i class="fa-solid fa-circle-check text-green-600"></i>Đã duyệt B1 · ' + approvalDate1 + ' 16:00</div>';
+      fixedStepBadge = '<div style="margin-top:5px;font-size:10.5px;color:#b45309;font-weight:600;display:inline-flex;align-items:center;gap:4px"><i class="fa-solid fa-clock text-amber-500"></i>Đang chờ duyệt B2</div>';
+    } else if (isRejected) {
+      qlttStepBadge = '<div style="margin-top:5px;font-size:10.5px;color:#991b1b;font-weight:600;display:inline-flex;align-items:center;gap:4px"><i class="fa-solid fa-circle-xmark text-red-600"></i>Đã từ chối · ' + approvalDate1 + ' 09:10</div>';
+      fixedStepBadge = '<div style="margin-top:5px;font-size:10.5px;color:#64748b;display:inline-flex;align-items:center;gap:4px"><i class="fa-solid fa-ban text-slate-400"></i>Dừng quy trình</div>';
+    } else {
+      // PENDING
+      qlttStepBadge = '<div style="margin-top:5px;font-size:10.5px;color:#b45309;font-weight:600;display:inline-flex;align-items:center;gap:4px"><i class="fa-solid fa-clock text-amber-500"></i>Chờ duyệt (' + (r.slaInfo || 'SLA 24h') + ')</div>';
+      fixedStepBadge = '<div style="margin-top:5px;font-size:10.5px;color:#64748b;display:inline-flex;align-items:center;gap:4px"><i class="fa-solid fa-hourglass-start text-slate-400"></i>Chưa duyệt (Chờ B1)</div>';
+    }
+
+    let leaveHtml =
+      '<div style="max-height:74vh;overflow-y:auto;padding-right:2px">' +
+        // THẺ THÔNG TIN NHÂN SỰ NỘP ĐƠN
+        '<div style="background:#f8fafc;padding:12px 14px;border-radius:8px;border:1px solid #e2e8f0;margin-bottom:12px;display:flex;justify-content:space-between;align-items:center">' +
+          '<div style="display:flex;align-items:center;gap:10px">' +
+            renderGreqLetterAvatar(r.name || r.user, 36) +
+            '<div>' +
+              '<div style="font-weight:700;font-size:13px;color:#0f172a">' + (r.name || r.user || 'Nhân sự') + '</div>' +
+              '<div style="font-size:11px;color:#64748b"><span style="font-family:monospace;font-weight:600;color:#2E3191">' + (r.pap || 'PAP0009') + '</span> &bull; ' + deptName + ' &bull; Ngày nộp: ' + ((r.dateCreated || '2026-11-01').replace(/(\d{4})-(\d{2})-(\d{2})/, '$3/$2/$1')) + '</div>' +
+            '</div>' +
+          '</div>' +
+          statusBadge +
+        '</div>' +
+
+        // HÀNG 1: TIÊU ĐỀ - NHÓM - LOẠI
+        '<div class="frow" style="margin-bottom:12px;grid-template-columns:1.2fr 1fr 1fr">' +
+          '<div>' +
+            '<label class="fl">Tiêu đề đề xuất</label>' +
+            '<input type="text" class="fi" value="' + (r.title || ('Đơn xin ' + r.type)) + '" readonly style="background:#f8fafc;font-weight:600;color:#0f172a">' +
+          '</div>' +
+          '<div>' +
+            '<label class="fl">Nhóm</label>' +
+            '<input type="text" class="fi" value="Nghỉ phép" readonly style="background:#f8fafc;color:#1e293b">' +
+          '</div>' +
+          '<div>' +
+            '<label class="fl">Loại</label>' +
+            '<input type="text" class="fi" value="' + (r.type || 'Nghỉ phép năm') + '" readonly style="background:#f8fafc;color:#1e293b;font-weight:600">' +
+          '</div>' +
+        '</div>' +
+
+        // KHỐI QUỸ PHÉP NĂM (SỐ DƯ PHÉP HIỆN TẠI)
+        '<div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:10px 14px;margin-bottom:12px;display:flex;align-items:center;justify-content:space-between">' +
+          '<div style="display:flex;align-items:center;gap:8px">' +
+            '<i class="fa-solid fa-wallet text-[#2E3191]" style="font-size:13px"></i>' +
+            '<span style="font-weight:600;color:#1e293b;font-size:12px">Số dư quỹ phép năm:</span>' +
+            '<span class="badge" style="background:#eff6ff;color:#1d4ed8;border:1px solid #bfdbfe;font-size:12px;font-weight:700;padding:2px 8px">10.0 ngày</span>' +
+          '</div>' +
+          '<div style="font-size:11px;color:#64748b">' +
+            '<span>Đã nghỉ: <b>2.0 ngày</b></span> &bull; <span>Hạn mức năm: <b>12.0 ngày</b></span>' +
+          '</div>' +
+        '</div>' +
+
+        // HÀNG 2: KHUNG THỜI GIAN NGHỈ
+        '<div style="margin-bottom:12px">' +
+          '<label class="fl" style="margin-bottom:6px;font-weight:600">Khung thời gian nghỉ <span style="color:#ef4444">*</span></label>' +
+          '<div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:10px 12px">' +
+            '<div class="frow" style="margin-bottom:0;grid-template-columns:1fr 1fr 1.3fr;align-items:center">' +
+              '<div>' +
+                '<label class="fl" style="font-size:11px;margin-bottom:3px">Từ ngày</label>' +
+                '<input type="text" class="fi" value="' + fromDate + '" readonly style="background:#fff;font-weight:600">' +
+              '</div>' +
+              '<div>' +
+                '<label class="fl" style="font-size:11px;margin-bottom:3px">Đến ngày</label>' +
+                '<input type="text" class="fi" value="' + toDate + '" readonly style="background:#fff;font-weight:600">' +
+              '</div>' +
+              '<div>' +
+                '<label class="fl" style="font-size:11px;margin-bottom:3px">Thời lượng nghỉ</label>' +
+                '<div style="display:flex;gap:10px;padding-top:6px">' +
+                  '<label style="display:flex;align-items:center;gap:4px;font-size:12px;color:#1e293b"><input type="radio" ' + (isFull ? 'checked' : '') + ' disabled style="accent-color:#2E3191"> Cả ngày (1.0)</label>' +
+                  '<label style="display:flex;align-items:center;gap:4px;font-size:12px;color:#1e293b"><input type="radio" ' + (isMorning ? 'checked' : '') + ' disabled style="accent-color:#2E3191"> Sáng (0.5)</label>' +
+                  '<label style="display:flex;align-items:center;gap:4px;font-size:12px;color:#1e293b"><input type="radio" ' + (isAfternoon ? 'checked' : '') + ' disabled style="accent-color:#2E3191"> Chiều (0.5)</label>' +
+                '</div>' +
+              '</div>' +
+            '</div>' +
+          '</div>' +
+        '</div>' +
+
+        // HÀNG 3: MÔ TẢ / LÝ DO CỤ THỂ
+        '<div style="margin-bottom:12px">' +
+          '<label class="fl" style="font-weight:600;font-size:12px">Mô tả / Lý do nghỉ</label>' +
+          '<div style="background:#f8fafc;border:1px solid #cbd5e1;border-radius:6px;padding:8px 12px;font-size:12px;color:#1e293b;line-height:1.5">' +
+            (r.reason || 'Bận việc cá nhân theo kế hoạch.') +
+          '</div>' +
+        '</div>' +
+
+        // HÀNG 4: LUỒNG PHÊ DUYỆT 3 CỘT (CÓ DẤU ĐÃ DUYỆT KÈM NGÀY GIỜ)
+        '<div class="frow" style="margin-bottom:12px;grid-template-columns:1fr 1fr 1fr">' +
+          '<div>' +
+            '<label class="fl" style="font-size:12px;font-weight:600">Quản lý trực tiếp duyệt <span style="color:#ef4444">*</span></label>' +
+            '<div style="min-height:58px;background:#f8fafc;border:1px solid #cbd5e1;border-radius:6px;padding:6px 8px;display:flex;flex-direction:column;justify-content:center">' +
+              '<span class="badge" style="background:#eff6ff;color:#1d4ed8;border:1px solid #bfdbfe;font-size:11px;padding:2px 8px;border-radius:4px;display:inline-flex;align-items:center;gap:4px;width:fit-content">' +
+                '<i class="fa-solid fa-user-check text-blue-600"></i>' + (r.approver || 'Quản lý trực tiếp (QLTT)') +
+              '</span>' +
+              qlttStepBadge +
+            '</div>' +
+          '</div>' +
+          '<div>' +
+            '<label class="fl" style="font-size:12px;font-weight:600">Người duyệt cố định</label>' +
+            '<div style="min-height:58px;background:#f8fafc;border:1px solid #cbd5e1;border-radius:6px;padding:6px 8px;display:flex;flex-direction:column;justify-content:center">' +
+              '<span class="badge" style="background:#eff6ff;color:#1d4ed8;border:1px solid #bfdbfe;font-size:11px;padding:2px 8px;border-radius:4px;display:inline-flex;align-items:center;gap:4px;width:fit-content">' +
+                '<i class="fa-solid fa-user-shield text-indigo-600"></i>Ban Nhân sự (HR & C&B)' +
+              '</span>' +
+              fixedStepBadge +
+            '</div>' +
+          '</div>' +
+          '<div>' +
+            '<label class="fl" style="font-size:12px;font-weight:600">Người theo dõi</label>' +
+            '<div style="min-height:58px;background:#f8fafc;border:1px solid #cbd5e1;border-radius:6px;padding:6px 8px;display:flex;flex-direction:column;justify-content:center">' +
+              '<span class="badge" style="background:#f8fafc;color:#334155;border:1px solid #cbd5e1;font-size:11px;padding:2px 8px;border-radius:4px;display:inline-flex;align-items:center;gap:4px;width:fit-content">' +
+                '<i class="fa-solid fa-eye text-sky-600"></i>Hoàng Thị Lan (Chuyên viên C&B Lead)' +
+              '</span>' +
+              '<div style="margin-top:5px;font-size:10.5px;color:#2563eb;display:inline-flex;align-items:center;gap:4px"><i class="fa-solid fa-bell text-blue-500"></i>Đã nhận thông báo</div>' +
+            '</div>' +
+          '</div>' +
+        '</div>' +
+
+        // HÀNG 5: TÀI LIỆU ĐÍNH KÈM
+        '<div style="margin-bottom:12px">' +
+          '<label class="fl" style="font-size:12px;font-weight:600">Tài liệu đính kèm</label>' +
+          '<div style="border:1px dashed #cbd5e1;padding:8px 12px;border-radius:6px;background:#f8fafc;font-size:11px;color:#64748b;display:flex;align-items:center;gap:8px">' +
+            '<i class="fa-solid fa-paperclip text-slate-400" style="font-size:13px"></i>' +
+            '<span>Không có tài liệu đính kèm</span>' +
+          '</div>' +
+        '</div>' +
+
+        // HÀNG 6: NHẬN XÉT PHÊ DUYỆT (KHÔNG BẮT BUỘC)
+        '<div style="margin-bottom:6px">' +
+          '<label class="fl" style="font-size:12px;font-weight:600;display:flex;align-items:center;gap:6px">' +
+            '<span>Nhận xét phê duyệt</span>' +
+            '<span style="font-size:11px;font-weight:normal;color:#64748b">' + (isPending ? '(Không bắt buộc)' : '') + '</span>' +
+          '</label>' +
+          (isPending 
+            ? '<textarea id="g-leave-approval-comment" class="fi" rows="2" placeholder="Nhập nhận xét phê duyệt (nếu có)..." style="background:#fff;border:1px solid #cbd5e1;border-radius:6px;font-size:12px"></textarea>'
+            : '<div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:6px;padding:8px 12px;font-size:12px;color:#334155;line-height:1.4">' + (r.approvalComment || 'Đã đối soát quỹ phép và xác nhận thông tin đơn hợp lệ.') + '</div>'
+          ) +
+        '</div>' +
+      '</div>';
+
+    body.innerHTML = leaveHtml;
+
+    if (ft) {
+      if (isPending) {
+        ft.innerHTML =
+          '<button class="btn btn-o" onclick="E9closeMdl(\'mdl-global-view\')">Đóng</button>' +
+          '<div style="display:flex;gap:8px">' +
+            '<button class="btn" style="background:#dc2626;color:#fff;border:none;padding:7px 18px;border-radius:6px;font-weight:600;display:inline-flex;align-items:center;gap:6px;cursor:pointer" onclick="submitUnifiedLeaveReject(\'' + r.id + '\')"><i class="fa-solid fa-xmark"></i>Từ chối</button>' +
+            '<button class="btn btn-p" style="background:#059669;color:#fff;border:none;padding:7px 22px;border-radius:6px;font-weight:700;display:inline-flex;align-items:center;gap:6px;cursor:pointer" onclick="submitUnifiedLeaveApproval(\'' + r.id + '\')"><i class="fa-solid fa-check"></i>Phê duyệt</button>' +
+          '</div>';
+      } else {
+        ft.innerHTML = '<div style="margin-left:auto"><button class="btn btn-o" onclick="E9closeMdl(\'mdl-global-view\')">Đóng</button></div>';
+      }
+    }
+
+    E9openMdl('mdl-global-view');
+    return;
+  }
+
+  // NẾU LÀ ĐƠN GIẢI TRÌNH QUÊN CHẤM CÔNG (ADJ): FORM PHÊ DUYỆT / XEM CHI TIẾT ĐẦY ĐỦ CÁC TRƯỜNG NHƯ FORM TẠO ĐƠN
+  const isAdjReq = (r.typeCode === 'ATT_ADJ' || (r.type && r.type.includes('Giải trình')) || (r.id && r.id.startsWith('DC-')));
+  if (isAdjReq) {
+    if (title) {
+      title.innerHTML = '<i class="fa-solid fa-clock-rotate-left text-[#b45309] mr-1.5"></i>' + (isPending ? 'Phê duyệt đơn đề xuất: ' : 'Chi tiết đơn đề xuất: ') + '<b>' + r.id + '</b>';
+    }
+
+    const modalEl = document.querySelector('#mdl-global-view .mdl');
+    if (modalEl) modalEl.style.maxWidth = '720px';
+
+    const rawTime = (r.time || '31/10/2026').trim();
+    let fromDate = rawTime;
+    let toDate = rawTime;
+    if (rawTime.includes('-')) {
+      const parts = rawTime.split('-').map(s => s.trim().split(' ')[0]);
+      if (parts.length >= 2) {
+        fromDate = parts[0];
+        toDate = parts[1];
+      }
+    } else {
+      fromDate = rawTime.split(' ')[0];
+      toDate = fromDate;
+    }
+
+    // Approval indicators
+    const approvalDate1 = r.dateCreated ? r.dateCreated.replace(/(\d{4})-(\d{2})-(\d{2})/, '$3/$2/$1') : '31/10/2026';
+    const approvalDate2 = r.time ? r.time.split(' ')[0] : '01/11/2026';
+
+    let qlttStepBadge = '';
+    let fixedStepBadge = '';
+
+    if (isApproved) {
+      qlttStepBadge = '<div style="margin-top:5px;font-size:10.5px;color:#166534;font-weight:600;display:inline-flex;align-items:center;gap:4px"><i class="fa-solid fa-circle-check text-green-600"></i>Đã duyệt · ' + approvalDate1 + ' 14:30</div>';
+      fixedStepBadge = '<div style="margin-top:5px;font-size:10.5px;color:#166534;font-weight:600;display:inline-flex;align-items:center;gap:4px"><i class="fa-solid fa-circle-check text-green-600"></i>Đã duyệt · ' + approvalDate2 + ' 09:15</div>';
+    } else if (r.status === 'PROCESSING') {
+      qlttStepBadge = '<div style="margin-top:5px;font-size:10.5px;color:#166534;font-weight:600;display:inline-flex;align-items:center;gap:4px"><i class="fa-solid fa-circle-check text-green-600"></i>Đã duyệt B1 · ' + approvalDate1 + ' 16:00</div>';
+      fixedStepBadge = '<div style="margin-top:5px;font-size:10.5px;color:#b45309;font-weight:600;display:inline-flex;align-items:center;gap:4px"><i class="fa-solid fa-clock text-amber-500"></i>Đang chờ duyệt B2</div>';
+    } else if (isRejected) {
+      qlttStepBadge = '<div style="margin-top:5px;font-size:10.5px;color:#991b1b;font-weight:600;display:inline-flex;align-items:center;gap:4px"><i class="fa-solid fa-circle-xmark text-red-600"></i>Đã từ chối · ' + approvalDate1 + ' 09:10</div>';
+      fixedStepBadge = '<div style="margin-top:5px;font-size:10.5px;color:#64748b;display:inline-flex;align-items:center;gap:4px"><i class="fa-solid fa-ban text-slate-400"></i>Dừng quy trình</div>';
+    } else {
+      // PENDING
+      qlttStepBadge = '<div style="margin-top:5px;font-size:10.5px;color:#b45309;font-weight:600;display:inline-flex;align-items:center;gap:4px"><i class="fa-solid fa-clock text-amber-500"></i>Chờ duyệt (' + (r.slaInfo || 'SLA 24h') + ')</div>';
+      fixedStepBadge = '<div style="margin-top:5px;font-size:10.5px;color:#64748b;display:inline-flex;align-items:center;gap:4px"><i class="fa-solid fa-hourglass-start text-slate-400"></i>Chưa duyệt (Chờ B1)</div>';
+    }
+
+    let adjHtml =
+      '<div style="max-height:74vh;overflow-y:auto;padding-right:2px">' +
+        // THẺ THÔNG TIN NHÂN SỰ NỘP ĐƠN
+        '<div style="background:#f8fafc;padding:12px 14px;border-radius:8px;border:1px solid #e2e8f0;margin-bottom:12px;display:flex;justify-content:space-between;align-items:center">' +
+          '<div style="display:flex;align-items:center;gap:10px">' +
+            renderGreqLetterAvatar(r.name || r.user, 36) +
+            '<div>' +
+              '<div style="font-weight:700;font-size:13px;color:#0f172a">' + (r.name || r.user || 'Nhân sự') + '</div>' +
+              '<div style="font-size:11px;color:#64748b"><span style="font-family:monospace;font-weight:600;color:#2E3191">' + (r.pap || 'PAP0009') + '</span> &bull; ' + deptName + ' &bull; Ngày nộp: ' + ((r.dateCreated || '2026-10-31').replace(/(\d{4})-(\d{2})-(\d{2})/, '$3/$2/$1')) + '</div>' +
+            '</div>' +
+          '</div>' +
+          statusBadge +
+        '</div>' +
+
+        // HÀNG 1: TIÊU ĐỀ - NHÓM - LOẠI
+        '<div class="frow" style="margin-bottom:12px;grid-template-columns:1.2fr 1fr 1fr">' +
+          '<div>' +
+            '<label class="fl">Tiêu đề đề xuất</label>' +
+            '<input type="text" class="fi" value="' + (r.title || 'Đơn giải trình quên chấm công') + '" readonly style="background:#f8fafc;font-weight:600;color:#0f172a">' +
+          '</div>' +
+          '<div>' +
+            '<label class="fl">Nhóm</label>' +
+            '<input type="text" class="fi" value="Giải trình công" readonly style="background:#f8fafc;color:#1e293b">' +
+          '</div>' +
+          '<div>' +
+            '<label class="fl">Loại</label>' +
+            '<input type="text" class="fi" value="Giải trình quên chấm công" readonly style="background:#f8fafc;color:#1e293b;font-weight:600">' +
+          '</div>' +
+        '</div>' +
+
+        // HÀNG 2: KHUNG THỜI GIAN GIẢI TRÌNH
+        '<div style="margin-bottom:12px">' +
+          '<label class="fl" style="margin-bottom:6px;font-weight:600">Khung thời gian giải trình <span style="color:#ef4444">*</span></label>' +
+          '<div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:10px 12px">' +
+            '<div class="frow" style="margin-bottom:0;grid-template-columns:1fr 1fr 1.3fr;align-items:center">' +
+              '<div>' +
+                '<label class="fl" style="font-size:11px;margin-bottom:3px">Từ ngày</label>' +
+                '<input type="text" class="fi" value="' + fromDate + '" readonly style="background:#fff;font-weight:600">' +
+              '</div>' +
+              '<div>' +
+                '<label class="fl" style="font-size:11px;margin-bottom:3px">Đến ngày</label>' +
+                '<input type="text" class="fi" value="' + toDate + '" readonly style="background:#fff;font-weight:600">' +
+              '</div>' +
+              '<div>' +
+                '<label class="fl" style="font-size:11px;margin-bottom:3px">Quên Check-in / Out</label>' +
+                '<input type="text" class="fi" value="Quên Check-in đầu ca" readonly style="background:#fff;font-weight:600;color:#b45309">' +
+              '</div>' +
+            '</div>' +
+          '</div>' +
+        '</div>' +
+
+        // HÀNG 3: MÔ TẢ / LÝ DO GIẢI TRÌNH
+        '<div style="margin-bottom:12px">' +
+          '<label class="fl" style="font-weight:600;font-size:12px">Mô tả / Lý do giải trình</label>' +
+          '<div style="background:#f8fafc;border:1px solid #cbd5e1;border-radius:6px;padding:8px 12px;font-size:12px;color:#1e293b;line-height:1.5">' +
+            (r.reason || 'Quên chấm công đầu ca do vào ca gấp tiếp nhận tàu tại cầu bến.') +
+          '</div>' +
+        '</div>' +
+
+        // HÀNG 4: LUỒNG PHÊ DUYỆT 3 CỘT (CÓ DẤU ĐÃ DUYỆT KÈM NGÀY GIỜ)
+        '<div class="frow" style="margin-bottom:12px;grid-template-columns:1fr 1fr 1fr">' +
+          '<div>' +
+            '<label class="fl" style="font-size:12px;font-weight:600">Quản lý trực tiếp duyệt <span style="color:#ef4444">*</span></label>' +
+            '<div style="min-height:58px;background:#f8fafc;border:1px solid #cbd5e1;border-radius:6px;padding:6px 8px;display:flex;flex-direction:column;justify-content:center">' +
+              '<span class="badge" style="background:#eff6ff;color:#1d4ed8;border:1px solid #bfdbfe;font-size:11px;padding:2px 8px;border-radius:4px;display:inline-flex;align-items:center;gap:4px;width:fit-content">' +
+                '<i class="fa-solid fa-user-check text-blue-600"></i>' + (r.approver || 'Quản lý trực tiếp (QLTT)') +
+              '</span>' +
+              qlttStepBadge +
+            '</div>' +
+          '</div>' +
+          '<div>' +
+            '<label class="fl" style="font-size:12px;font-weight:600">Người duyệt cố định</label>' +
+            '<div style="min-height:58px;background:#f8fafc;border:1px solid #cbd5e1;border-radius:6px;padding:6px 8px;display:flex;flex-direction:column;justify-content:center">' +
+              '<span class="badge" style="background:#eff6ff;color:#1d4ed8;border:1px solid #bfdbfe;font-size:11px;padding:2px 8px;border-radius:4px;display:inline-flex;align-items:center;gap:4px;width:fit-content">' +
+                '<i class="fa-solid fa-user-shield text-indigo-600"></i>Ban Nhân sự (HR & C&B)' +
+              '</span>' +
+              fixedStepBadge +
+            '</div>' +
+          '</div>' +
+          '<div>' +
+            '<label class="fl" style="font-size:12px;font-weight:600">Người theo dõi</label>' +
+            '<div style="min-height:58px;background:#f8fafc;border:1px solid #cbd5e1;border-radius:6px;padding:6px 8px;display:flex;flex-direction:column;justify-content:center">' +
+              '<span class="badge" style="background:#f8fafc;color:#334155;border:1px solid #cbd5e1;font-size:11px;padding:2px 8px;border-radius:4px;display:inline-flex;align-items:center;gap:4px;width:fit-content">' +
+                '<i class="fa-solid fa-eye text-sky-600"></i>Hoàng Thị Lan (Chuyên viên C&B Lead)' +
+              '</span>' +
+              '<div style="margin-top:5px;font-size:10.5px;color:#2563eb;display:inline-flex;align-items:center;gap:4px"><i class="fa-solid fa-bell text-blue-500"></i>Đã nhận thông báo</div>' +
+            '</div>' +
+          '</div>' +
+        '</div>' +
+
+        // HÀNG 5: TÀI LIỆU ĐÍNH KÈM
+        '<div style="margin-bottom:12px">' +
+          '<label class="fl" style="font-size:12px;font-weight:600">Tài liệu đính kèm</label>' +
+          '<div style="border:1px dashed #cbd5e1;padding:8px 12px;border-radius:6px;background:#f8fafc;font-size:11px;color:#64748b;display:flex;align-items:center;gap:8px">' +
+            '<i class="fa-solid fa-paperclip text-slate-400" style="font-size:13px"></i>' +
+            '<span>Không có tài liệu đính kèm</span>' +
+          '</div>' +
+        '</div>' +
+
+        // HÀNG 6: NHẬN XÉT PHÊ DUYỆT (KHÔNG BẮT BUỘC)
+        '<div style="margin-bottom:6px">' +
+          '<label class="fl" style="font-size:12px;font-weight:600;display:flex;align-items:center;gap:6px">' +
+            '<span>Nhận xét phê duyệt</span>' +
+            '<span style="font-size:11px;font-weight:normal;color:#64748b">' + (isPending ? '(Không bắt buộc)' : '') + '</span>' +
+          '</label>' +
+          (isPending 
+            ? '<textarea id="g-adj-approval-comment" class="fi" rows="2" placeholder="Nhập nhận xét phê duyệt (nếu có)..." style="background:#fff;border:1px solid #cbd5e1;border-radius:6px;font-size:12px"></textarea>'
+            : '<div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:6px;padding:8px 12px;font-size:12px;color:#334155;line-height:1.4">' + (r.approvalComment || 'Đã đối soát ca làm việc và xác nhận bổ sung giờ vào/ra hợp lệ.') + '</div>'
+          ) +
+        '</div>' +
+      '</div>';
+
+    body.innerHTML = adjHtml;
+
+    if (ft) {
+      if (isPending) {
+        ft.innerHTML =
+          '<button class="btn btn-o" onclick="E9closeMdl(\'mdl-global-view\')">Đóng</button>' +
+          '<div style="display:flex;gap:8px">' +
+            '<button class="btn" style="background:#dc2626;color:#fff;border:none;padding:7px 18px;border-radius:6px;font-weight:600;display:inline-flex;align-items:center;gap:6px;cursor:pointer" onclick="submitUnifiedAdjReject(\'' + r.id + '\')"><i class="fa-solid fa-xmark"></i>Từ chối</button>' +
+            '<button class="btn btn-p" style="background:#059669;color:#fff;border:none;padding:7px 22px;border-radius:6px;font-weight:700;display:inline-flex;align-items:center;gap:6px;cursor:pointer" onclick="submitUnifiedAdjApproval(\'' + r.id + '\')"><i class="fa-solid fa-check"></i>Phê duyệt</button>' +
+          '</div>';
+      } else {
+        ft.innerHTML = '<div style="margin-left:auto"><button class="btn btn-o" onclick="E9closeMdl(\'mdl-global-view\')">Đóng</button></div>';
+      }
+    }
+
+    E9openMdl('mdl-global-view');
+    return;
+  }
+
+  // NẾU LÀ ĐƠN ĐI CÔNG TÁC (BIZ / CT-) HOẶC LÀM VIỆC NGOÀI VĂN PHÒNG (WFH / WFH-):
+  const isBizReq = (r.typeCode === 'BIZ' || (r.type && r.type.includes('công tác')) || (r.id && r.id.startsWith('CT-')));
+  const isWfhReq = (r.typeCode === 'WFH' || (r.type && r.type.includes('ngoài văn phòng')) || (r.id && r.id.startsWith('WFH-')));
+
+  if (isBizReq || isWfhReq) {
+    const isBiz = isBizReq;
+    const reqGroup = 'Vắng mặt làm việc';
+    const reqType = isBiz ? 'Đi công tác' : 'Làm việc ngoài văn phòng';
+    const reqIcon = isBiz ? 'fa-solid fa-plane-departure text-[#0284c7]' : 'fa-solid fa-house-laptop text-[#7c3aed]';
+    const timeLabel = isBiz ? 'Khung thời gian công tác' : 'Khung thời gian làm việc ngoài VP';
+    // Bỏ trường Hình thức / Địa điểm / Hình thức làm việc, thống nhất dùng Thời lượng nghỉ
+
+    if (title) {
+      title.innerHTML = '<i class="' + reqIcon + ' mr-1.5"></i>' + (isPending ? 'Phê duyệt đơn đề xuất: ' : 'Chi tiết đơn đề xuất: ') + '<b>' + r.id + '</b>';
+    }
+
+    const modalEl = document.querySelector('#mdl-global-view .mdl');
+    if (modalEl) modalEl.style.maxWidth = '720px';
+
+    const rawTime = (r.time || '05/11/2026').trim();
+    let fromDate = rawTime;
+    let toDate = rawTime;
+    if (rawTime.includes('-')) {
+      const parts = rawTime.split('-').map(s => s.trim().split(' ')[0]);
+      if (parts.length >= 2) {
+        fromDate = parts[0];
+        toDate = parts[1];
+      }
+    } else {
+      fromDate = rawTime.split(' ')[0];
+      toDate = fromDate;
+    }
+
+    // Approval indicators
+    const approvalDate1 = r.dateCreated ? r.dateCreated.replace(/(\d{4})-(\d{2})-(\d{2})/, '$3/$2/$1') : '28/10/2026';
+    const approvalDate2 = fromDate;
+
+    let qlttStepBadge = '';
+    let fixedStepBadge = '';
+
+    if (isApproved) {
+      qlttStepBadge = '<div style="margin-top:5px;font-size:10.5px;color:#166534;font-weight:600;display:inline-flex;align-items:center;gap:4px"><i class="fa-solid fa-circle-check text-green-600"></i>Đã duyệt · ' + approvalDate1 + ' 14:30</div>';
+      fixedStepBadge = '<div style="margin-top:5px;font-size:10.5px;color:#166534;font-weight:600;display:inline-flex;align-items:center;gap:4px"><i class="fa-solid fa-circle-check text-green-600"></i>Đã duyệt · ' + approvalDate2 + ' 09:15</div>';
+    } else if (r.status === 'PROCESSING') {
+      qlttStepBadge = '<div style="margin-top:5px;font-size:10.5px;color:#166534;font-weight:600;display:inline-flex;align-items:center;gap:4px"><i class="fa-solid fa-circle-check text-green-600"></i>Đã duyệt B1 · ' + approvalDate1 + ' 16:00</div>';
+      fixedStepBadge = '<div style="margin-top:5px;font-size:10.5px;color:#b45309;font-weight:600;display:inline-flex;align-items:center;gap:4px"><i class="fa-solid fa-clock text-amber-500"></i>Đang chờ duyệt B2</div>';
+    } else if (isRejected) {
+      qlttStepBadge = '<div style="margin-top:5px;font-size:10.5px;color:#991b1b;font-weight:600;display:inline-flex;align-items:center;gap:4px"><i class="fa-solid fa-circle-xmark text-red-600"></i>Đã từ chối · ' + approvalDate1 + ' 09:10</div>';
+      fixedStepBadge = '<div style="margin-top:5px;font-size:10.5px;color:#64748b;display:inline-flex;align-items:center;gap:4px"><i class="fa-solid fa-ban text-slate-400"></i>Dừng quy trình</div>';
+    } else {
+      // PENDING
+      qlttStepBadge = '<div style="margin-top:5px;font-size:10.5px;color:#b45309;font-weight:600;display:inline-flex;align-items:center;gap:4px"><i class="fa-solid fa-clock text-amber-500"></i>Chờ duyệt (' + (r.slaInfo || 'SLA 24h') + ')</div>';
+      fixedStepBadge = '<div style="margin-top:5px;font-size:10.5px;color:#64748b;display:inline-flex;align-items:center;gap:4px"><i class="fa-solid fa-hourglass-start text-slate-400"></i>Chưa duyệt (Chờ B1)</div>';
+    }
+
+    let outHtml =
+      '<div style="max-height:74vh;overflow-y:auto;padding-right:2px">' +
+        // THẺ THÔNG TIN NHÂN SỰ NỘP ĐƠN
+        '<div style="background:#f8fafc;padding:12px 14px;border-radius:8px;border:1px solid #e2e8f0;margin-bottom:12px;display:flex;justify-content:space-between;align-items:center">' +
+          '<div style="display:flex;align-items:center;gap:10px">' +
+            renderGreqLetterAvatar(r.name || r.user, 36) +
+            '<div>' +
+              '<div style="font-weight:700;font-size:13px;color:#0f172a">' + (r.name || r.user || 'Nhân sự') + '</div>' +
+              '<div style="font-size:11px;color:#64748b"><span style="font-family:monospace;font-weight:600;color:#2E3191">' + (r.pap || 'PAP0009') + '</span> &bull; ' + deptName + ' &bull; Ngày nộp: ' + ((r.dateCreated || '2026-10-28').replace(/(\d{4})-(\d{2})-(\d{2})/, '$3/$2/$1')) + '</div>' +
+            '</div>' +
+          '</div>' +
+          statusBadge +
+        '</div>' +
+
+        // HÀNG 1: TIÊU ĐỀ - NHÓM - LOẠI
+        '<div class="frow" style="margin-bottom:12px;grid-template-columns:1.2fr 1fr 1fr">' +
+          '<div>' +
+            '<label class="fl">Tiêu đề đề xuất</label>' +
+            '<input type="text" class="fi" value="' + (r.title || ('Đơn đề xuất ' + reqType.toLowerCase())) + '" readonly style="background:#f8fafc;font-weight:600;color:#0f172a">' +
+          '</div>' +
+          '<div>' +
+            '<label class="fl">Nhóm</label>' +
+            '<input type="text" class="fi" value="' + reqGroup + '" readonly style="background:#f8fafc;color:#1e293b">' +
+          '</div>' +
+          '<div>' +
+            '<label class="fl">Loại</label>' +
+            '<input type="text" class="fi" value="' + reqType + '" readonly style="background:#f8fafc;color:#1e293b;font-weight:600">' +
+          '</div>' +
+        '</div>' +
+
+        // HÀNG 2: KHUNG THỜI GIAN
+        '<div style="margin-bottom:12px">' +
+          '<label class="fl" style="margin-bottom:6px;font-weight:600">' + timeLabel + ' <span style="color:#ef4444">*</span></label>' +
+          '<div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:10px 12px">' +
+            '<div class="frow" style="margin-bottom:0;grid-template-columns:1fr 1fr 1.4fr;align-items:center">' +
+              '<div>' +
+                '<label class="fl" style="font-size:11px;margin-bottom:3px">Từ ngày</label>' +
+                '<input type="text" class="fi" value="' + fromDate + '" readonly style="background:#fff;font-weight:600">' +
+              '</div>' +
+              '<div>' +
+                '<label class="fl" style="font-size:11px;margin-bottom:3px">Đến ngày</label>' +
+                '<input type="text" class="fi" value="' + toDate + '" readonly style="background:#fff;font-weight:600">' +
+              '</div>' +
+              '<div>' +
+                '<label class="fl" style="font-size:11px;margin-bottom:3px">Thời lượng nghỉ</label>' +
+                '<div style="display:flex;gap:10px;padding-top:6px">' +
+                  '<label style="display:flex;align-items:center;gap:4px;font-size:12px;cursor:not-allowed">' +
+                    '<input type="radio" name="g-out-duration" value="ALL" checked disabled> Cả ngày (1.0 ngày)' +
+                  '</label>' +
+                  '<label style="display:flex;align-items:center;gap:4px;font-size:12px;cursor:not-allowed">' +
+                    '<input type="radio" name="g-out-duration" value="HALF" disabled> Nửa ngày (0.5 ngày)' +
+                  '</label>' +
+                '</div>' +
+              '</div>' +
+            '</div>' +
+          '</div>' +
+        '</div>' +
+
+        // HÀNG 3: MÔ TẢ / LÝ DO
+        '<div style="margin-bottom:12px">' +
+          '<label class="fl" style="font-weight:600;font-size:12px">Mô tả / Kế hoạch công việc</label>' +
+          '<div style="background:#f8fafc;border:1px solid #cbd5e1;border-radius:6px;padding:8px 12px;font-size:12px;color:#1e293b;line-height:1.5">' +
+            (r.reason || (isBiz ? 'Đi công tác đối tác, khảo sát luồng tàu và tiếp nhận thiết bị cảng.' : 'Làm việc ngoài văn phòng theo kế hoạch điều động.')) +
+          '</div>' +
+        '</div>' +
+
+        // HÀNG 4: LUỒNG PHÊ DUYỆT 3 CỘT (CÓ DẤU ĐÃ DUYỆT KÈM NGÀY GIỜ)
+        '<div class="frow" style="margin-bottom:12px;grid-template-columns:1fr 1fr 1fr">' +
+          '<div>' +
+            '<label class="fl" style="font-size:12px;font-weight:600">Quản lý trực tiếp duyệt <span style="color:#ef4444">*</span></label>' +
+            '<div style="min-height:58px;background:#f8fafc;border:1px solid #cbd5e1;border-radius:6px;padding:6px 8px;display:flex;flex-direction:column;justify-content:center">' +
+              '<span class="badge" style="background:#eff6ff;color:#1d4ed8;border:1px solid #bfdbfe;font-size:11px;padding:2px 8px;border-radius:4px;display:inline-flex;align-items:center;gap:4px;width:fit-content">' +
+                '<i class="fa-solid fa-user-check text-blue-600"></i>' + (r.approver || 'Quản lý trực tiếp (QLTT)') +
+              '</span>' +
+              qlttStepBadge +
+            '</div>' +
+          '</div>' +
+          '<div>' +
+            '<label class="fl" style="font-size:12px;font-weight:600">Người duyệt cố định</label>' +
+            '<div style="min-height:58px;background:#f8fafc;border:1px solid #cbd5e1;border-radius:6px;padding:6px 8px;display:flex;flex-direction:column;justify-content:center">' +
+              '<span class="badge" style="background:#eff6ff;color:#1d4ed8;border:1px solid #bfdbfe;font-size:11px;padding:2px 8px;border-radius:4px;display:inline-flex;align-items:center;gap:4px;width:fit-content">' +
+                '<i class="fa-solid fa-user-shield text-indigo-600"></i>Ban Nhân sự (HR & C&B)' +
+              '</span>' +
+              fixedStepBadge +
+            '</div>' +
+          '</div>' +
+          '<div>' +
+            '<label class="fl" style="font-size:12px;font-weight:600">Người theo dõi</label>' +
+            '<div style="min-height:58px;background:#f8fafc;border:1px solid #cbd5e1;border-radius:6px;padding:6px 8px;display:flex;flex-direction:column;justify-content:center">' +
+              '<span class="badge" style="background:#f8fafc;color:#334155;border:1px solid #cbd5e1;font-size:11px;padding:2px 8px;border-radius:4px;display:inline-flex;align-items:center;gap:4px;width:fit-content">' +
+                '<i class="fa-solid fa-eye text-sky-600"></i>Hoàng Thị Lan (Chuyên viên C&B Lead)' +
+              '</span>' +
+              '<div style="margin-top:5px;font-size:10.5px;color:#2563eb;display:inline-flex;align-items:center;gap:4px"><i class="fa-solid fa-bell text-blue-500"></i>Đã nhận thông báo</div>' +
+            '</div>' +
+          '</div>' +
+        '</div>' +
+
+        // HÀNG 5: TÀI LIỆU ĐÍNH KÈM
+        '<div style="margin-bottom:12px">' +
+          '<label class="fl" style="font-size:12px;font-weight:600">Tài liệu đính kèm</label>' +
+          '<div style="border:1px dashed #cbd5e1;padding:8px 12px;border-radius:6px;background:#f8fafc;font-size:11px;color:#64748b;display:flex;align-items:center;gap:8px">' +
+            '<i class="fa-solid fa-paperclip text-slate-400" style="font-size:13px"></i>' +
+            '<span>Không có tài liệu đính kèm</span>' +
+          '</div>' +
+        '</div>' +
+
+        // HÀNG 6: NHẬN XÉT PHÊ DUYỆT (KHÔNG BẮT BUỘC)
+        '<div style="margin-bottom:6px">' +
+          '<label class="fl" style="font-size:12px;font-weight:600;display:flex;align-items:center;gap:6px">' +
+            '<span>Nhận xét phê duyệt</span>' +
+            '<span style="font-size:11px;font-weight:normal;color:#64748b">' + (isPending ? '(Không bắt buộc)' : '') + '</span>' +
+          '</label>' +
+          (isPending 
+            ? '<textarea id="g-out-approval-comment" class="fi" rows="2" placeholder="Nhập nhận xét phê duyệt (nếu có)..." style="background:#fff;border:1px solid #cbd5e1;border-radius:6px;font-size:12px"></textarea>'
+            : '<div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:6px;padding:8px 12px;font-size:12px;color:#334155;line-height:1.4">' + (r.approvalComment || ('Đã đối soát kế hoạch công tác / làm việc và phê duyệt đơn ' + reqType.toLowerCase() + ' hợp lệ.')) + '</div>'
+          ) +
+        '</div>' +
+      '</div>';
+
+    body.innerHTML = outHtml;
+
+    if (ft) {
+      if (isPending) {
+        ft.innerHTML =
+          '<button class="btn btn-o" onclick="E9closeMdl(\'mdl-global-view\')">Đóng</button>' +
+          '<div style="display:flex;gap:8px">' +
+            '<button class="btn" style="background:#dc2626;color:#fff;border:none;padding:7px 18px;border-radius:6px;font-weight:600;display:inline-flex;align-items:center;gap:6px;cursor:pointer" onclick="submitUnifiedOutReject(\'' + r.id + '\', \'' + reqType + '\')"><i class="fa-solid fa-xmark"></i>Từ chối</button>' +
+            '<button class="btn btn-p" style="background:#059669;color:#fff;border:none;padding:7px 22px;border-radius:6px;font-weight:700;display:inline-flex;align-items:center;gap:6px;cursor:pointer" onclick="submitUnifiedOutApproval(\'' + r.id + '\', \'' + reqType + '\')"><i class="fa-solid fa-check"></i>Phê duyệt</button>' +
+          '</div>';
+      } else {
+        ft.innerHTML = '<div style="margin-left:auto"><button class="btn btn-o" onclick="E9closeMdl(\'mdl-global-view\')">Đóng</button></div>';
+      }
+    }
+
+    E9openMdl('mdl-global-view');
+    return;
+  }
+
+  // CÁC LOẠI ĐƠN KHÁC (NẾU CÓ)...
 
   if (title) {
     title.innerHTML = '<i class="fa-solid fa-file-shield text-[#2E3191] mr-1.5"></i>Chi tiết đơn đề xuất: <b>' + r.id + '</b>';
@@ -15239,8 +16115,8 @@ function renderGreqCatChips() {
 let greqMasterData = [
   {
     "id": "NP-2026-081",
-    "user": "Tôi (Nguyễn Văn A)",
-    "name": "Tôi (Nguyễn Văn A)",
+    "user": "Nguyễn Văn A",
+    "name": "Nguyễn Văn A",
     "pap": "PAP0009",
     "dept": "PM",
     "avatar": "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=60&auto=format&fit=crop&q=80",
@@ -15259,8 +16135,8 @@ let greqMasterData = [
   },
   {
     "id": "DC-2026-015",
-    "user": "Tôi (Nguyễn Văn A)",
-    "name": "Tôi (Nguyễn Văn A)",
+    "user": "Nguyễn Văn A",
+    "name": "Nguyễn Văn A",
     "pap": "PAP0009",
     "dept": "PM",
     "avatar": "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=60&auto=format&fit=crop&q=80",
@@ -15279,8 +16155,8 @@ let greqMasterData = [
   },
   {
     "id": "OT-2026-042",
-    "user": "Tôi (Nguyễn Văn A)",
-    "name": "Tôi (Nguyễn Văn A)",
+    "user": "Nguyễn Văn A",
+    "name": "Nguyễn Văn A",
     "pap": "PAP0009",
     "dept": "PM",
     "avatar": "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=60&auto=format&fit=crop&q=80",
@@ -15299,19 +16175,20 @@ let greqMasterData = [
   },
   {
     "id": "CT-2026-018",
-    "user": "Tôi (Nguyễn Văn A)",
-    "name": "Tôi (Nguyễn Văn A)",
+    "user": "Nguyễn Văn A",
+    "name": "Nguyễn Văn A",
     "pap": "PAP0009",
     "dept": "PM",
     "avatar": "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=60&auto=format&fit=crop&q=80",
     "type": "Đi công tác",
     "typeCode": "BIZ",
-    "time": "05/11/2026 - 06/11/2026 (Cái Mép)",
+    "time": "05/11/2026 - 06/11/2026",
     "reason": "Đi công tác",
     "approver": "Trần Văn Nam",
-    "slaInfo": "Đã duyệt B1",
-    "status": "PROCESSING",
-    "statusText": "ĐANG XỬ LÝ",
+    "slaInfo": "Còn 18h SLA",
+    "status": "PENDING",
+    "statusText": "CHỜ DUYỆT",
+    "currentStep": 2,
     "tabType": "SENT",
     "dateCreated": "2026-10-28",
     "isSaved": true,
@@ -15319,8 +16196,8 @@ let greqMasterData = [
   },
   {
     "id": "NP-2026-065",
-    "user": "Tôi (Nguyễn Văn A)",
-    "name": "Tôi (Nguyễn Văn A)",
+    "user": "Nguyễn Văn A",
+    "name": "Nguyễn Văn A",
     "pap": "PAP0009",
     "dept": "PM",
     "avatar": "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=60&auto=format&fit=crop&q=80",
@@ -15339,8 +16216,8 @@ let greqMasterData = [
   },
   {
     "id": "DC-2026-008",
-    "user": "Tôi (Nguyễn Văn A)",
-    "name": "Tôi (Nguyễn Văn A)",
+    "user": "Nguyễn Văn A",
+    "name": "Nguyễn Văn A",
     "pap": "PAP0009",
     "dept": "PM",
     "avatar": "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=60&auto=format&fit=crop&q=80",
@@ -15359,8 +16236,8 @@ let greqMasterData = [
   },
   {
     "id": "WFH-2026-004",
-    "user": "Tôi (Nguyễn Văn A)",
-    "name": "Tôi (Nguyễn Văn A)",
+    "user": "Nguyễn Văn A",
+    "name": "Nguyễn Văn A",
     "pap": "PAP0009",
     "dept": "PM",
     "avatar": "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=60&auto=format&fit=crop&q=80",
@@ -15379,8 +16256,8 @@ let greqMasterData = [
   },
   {
     "id": "OT-2026-028",
-    "user": "Tôi (Nguyễn Văn A)",
-    "name": "Tôi (Nguyễn Văn A)",
+    "user": "Nguyễn Văn A",
+    "name": "Nguyễn Văn A",
     "pap": "PAP0009",
     "dept": "PM",
     "avatar": "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=60&auto=format&fit=crop&q=80",
@@ -15399,8 +16276,8 @@ let greqMasterData = [
   },
   {
     "id": "NP-2026-041",
-    "user": "Tôi (Nguyễn Văn A)",
-    "name": "Tôi (Nguyễn Văn A)",
+    "user": "Nguyễn Văn A",
+    "name": "Nguyễn Văn A",
     "pap": "PAP0009",
     "dept": "PM",
     "avatar": "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=60&auto=format&fit=crop&q=80",
@@ -15419,8 +16296,8 @@ let greqMasterData = [
   },
   {
     "id": "DC-2026-003",
-    "user": "Tôi (Nguyễn Văn A)",
-    "name": "Tôi (Nguyễn Văn A)",
+    "user": "Nguyễn Văn A",
+    "name": "Nguyễn Văn A",
     "pap": "PAP0009",
     "dept": "PM",
     "avatar": "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=60&auto=format&fit=crop&q=80",
@@ -15439,8 +16316,8 @@ let greqMasterData = [
   },
   {
     "id": "NP-2026-011",
-    "user": "Tôi (Nguyễn Văn A)",
-    "name": "Tôi (Nguyễn Văn A)",
+    "user": "Nguyễn Văn A",
+    "name": "Nguyễn Văn A",
     "pap": "PAP0009",
     "dept": "PM",
     "avatar": "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=60&auto=format&fit=crop&q=80",
@@ -15459,8 +16336,8 @@ let greqMasterData = [
   },
   {
     "id": "OT-2026-019",
-    "user": "Tôi (Nguyễn Văn A)",
-    "name": "Tôi (Nguyễn Văn A)",
+    "user": "Nguyễn Văn A",
+    "name": "Nguyễn Văn A",
     "pap": "PAP0009",
     "dept": "PM",
     "avatar": "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=60&auto=format&fit=crop&q=80",
@@ -15566,7 +16443,7 @@ let greqMasterData = [
     "avatar": "https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=60&auto=format&fit=crop&q=80",
     "type": "Nghỉ phép năm",
     "typeCode": "LEAVE",
-    "time": "03/11/2026 (Sáng)",
+    "time": "03/11/2026",
     "reason": "Bận việc gia đình",
     "approver": "Trần Văn Nam (QLTT)",
     "slaInfo": "Còn 10h SLA",
@@ -15609,7 +16486,8 @@ let greqMasterData = [
     "time": "29/10/2026",
     "reason": "Quên chấm công",
     "approver": "Trần Văn Nam (QLTT)",
-    "slaInfo": "Còn 5h SLA",
+    "slaInfo": "Quá hạn 4h",
+    "isOverdue": true,
     "status": "PENDING",
     "statusText": "CHỜ DUYỆT",
     "tabType": "INBOX",
@@ -15726,7 +16604,7 @@ let greqMasterData = [
     "avatar": "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?w=60&auto=format&fit=crop&q=80",
     "type": "Đi công tác",
     "typeCode": "BIZ",
-    "time": "18/10/2026 (Cảng Vũng Tàu)",
+    "time": "18/10/2026",
     "reason": "Đi công tác",
     "approver": "Trần Văn Nam (QLTT)",
     "slaInfo": "Duyệt trong 6 giờ",
@@ -15849,9 +16727,10 @@ let greqMasterData = [
     "time": "01/11/2026 - 01/05/2027 (6 tháng)",
     "reason": "Bận việc gia đình",
     "approver": "Nguyễn Văn Hải",
-    "slaInfo": "Theo dõi nhân sự thay thế",
-    "status": "PROCESSING",
-    "statusText": "ĐANG XỬ LÝ",
+    "slaInfo": "Còn 14h SLA",
+    "status": "PENDING",
+    "statusText": "CHỜ DUYỆT",
+    "currentStep": 2,
     "tabType": "WATCHING",
     "dateCreated": "2026-10-25",
     "isSaved": true,
@@ -15866,12 +16745,13 @@ let greqMasterData = [
     "avatar": "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=60&auto=format&fit=crop&q=80",
     "type": "Đi công tác",
     "typeCode": "BIZ",
-    "time": "08/11/2026 - 15/11/2026 (Singapore)",
+    "time": "08/11/2026 - 15/11/2026",
     "reason": "Đi công tác",
     "approver": "Ban Giám đốc Cảng",
-    "slaInfo": "Theo dõi lịch trình & kinh phí",
-    "status": "PROCESSING",
-    "statusText": "ĐANG XỬ LÝ",
+    "slaInfo": "Còn 20h SLA",
+    "status": "PENDING",
+    "statusText": "CHỜ DUYỆT",
+    "currentStep": 2,
     "tabType": "WATCHING",
     "dateCreated": "2026-10-22",
     "isSaved": true,
@@ -15909,7 +16789,7 @@ let greqMasterData = [
     "time": "15/11/2026 - 30/11/2026",
     "reason": "Bận việc gia đình",
     "approver": "Ban Nhân sự",
-    "slaInfo": "Theo dõi bố trí người trực thay",
+    "slaInfo": "Còn 22h SLA",
     "status": "PENDING",
     "statusText": "CHỜ DUYỆT",
     "tabType": "WATCHING",
@@ -16028,8 +16908,7 @@ function openGreqBatchApproveModal() {
   const btnConfirmCount = document.getElementById('greq-batch-confirm-count');
   if (btnConfirmCount) btnConfirmCount.textContent = count;
 
-  const chkConfirm = document.getElementById('greq-batch-chk-confirm');
-  if (chkConfirm) chkConfirm.checked = true;
+  
 
   const noteArea = document.getElementById('greq-batch-note');
   if (noteArea) noteArea.value = '';
@@ -16044,11 +16923,7 @@ function closeGreqBatchApproveModal() {
 }
 
 function submitGreqBatchApprove() {
-  const chkConfirm = document.getElementById('greq-batch-chk-confirm')?.checked;
-  if (!chkConfirm) {
-    if (typeof E9toast === 'function') E9toast('Vui lòng xác nhận đối soát dữ liệu hợp lệ trước khi phê duyệt!', 'warn');
-    return;
-  }
+  // Đã bỏ checkbox xác nhận đối soát
 
   const note = document.getElementById('greq-batch-note')?.value.trim() || 'Đồng ý phê duyệt hàng loạt';
   const approvedIds = Array.from(greqSelectedRowIds);
@@ -16157,7 +17032,8 @@ function renderGreqStatusChips() {
     'PENDING': 'Chờ bạn duyệt',
     'APPROVED': 'Đã duyệt',
     'PROCESSING': 'Đang xử lý',
-    'REJECTED': 'Từ chối'
+    'REJECTED': 'Từ chối',
+    'OVERDUE': 'Quá hạn xử lý'
   };
   if (greqSelectedStatuses.length === 0) {
     box.innerHTML = '<span style="color:#94a3b8;font-size:12px">Tất cả trạng thái</span>';
@@ -16221,8 +17097,14 @@ function getFilteredGreqData() {
     }
 
     // 3. Filter by Statuses (if any selected)
-    if (greqSelectedStatuses.length > 0 && !greqSelectedStatuses.includes(r.status)) {
-      return false;
+    if (greqSelectedStatuses.length > 0) {
+      const matchStatus = greqSelectedStatuses.some(st => {
+        if (st === 'OVERDUE') {
+          return r.isOverdue === true || r.status === 'OVERDUE' || (r.slaInfo && r.slaInfo.includes('Quá hạn'));
+        }
+        return r.status === st;
+      });
+      if (!matchStatus) return false;
     }
 
     // 4. Filter by Keyword
@@ -16285,7 +17167,12 @@ function greqCell(r, k, i) {
     '</span>';
   }
   if (k === 'time') {
-    return '<span style="font-size:12px;color:#334155;font-weight:500">' + (r.time || '—') + '</span>';
+    let tVal = r.time || '—';
+    if (r.typeCode === 'BIZ' || (r.type && r.type.includes('công tác'))) {
+      tVal = tVal.replace(/\s*\([^)]+\)/g, '').trim();
+    }
+    tVal = tVal.replace(/\s*\(Sáng\)/gi, '').replace(/\s*\(Chiều\)/gi, '').trim();
+    return '<span style="font-size:12px;color:#334155;font-weight:500">' + tVal + '</span>';
   }
   if (k === 'reason') {
     return '<span style="font-size:12px;color:#475569">' + (r.reason || '—') + '</span>';
@@ -16305,16 +17192,16 @@ function greqCell(r, k, i) {
     '</span>';
   }
   if (k === 'action') {
-    let btns = '<div style="display:flex;align-items:center;justify-content:center;gap:4px">' +
-      '<button class="ctrl" style="color:#2E3191;cursor:pointer" title="Xem chi tiết đơn" onclick="viewGlobalReq(\'' + r.id + '\')"><i class="fa-regular fa-eye"></i></button>';
-    if (r.status === 'PENDING' && (r.tabType === 'INBOX' || greqCurrentNavTab === 'INBOX')) {
-      const isOT = (r.typeCode === 'OT' || (r.type && r.type.includes('Làm thêm giờ')) || (r.id && r.id.startsWith('OT-')));
-      if (isOT) {
-        btns += ' <button class="ctrl" style="color:#047857;cursor:pointer" title="Mở Form phê duyệt OT (Đối chiếu chấm công)" onclick="openM8ApvModal(\'' + r.id + '\')"><i class="fa-solid fa-stamp"></i></button>';
-      } else {
-        btns += ' <button class="ctrl" style="color:#16a34a;cursor:pointer" title="Phê duyệt nhanh" onclick="quickGlobalApprove(\'' + r.id + '\')"><i class="fa-solid fa-check"></i></button>';
-      }
+    const isInboxPending = r.status === 'PENDING' && (r.tabType === 'INBOX' || (typeof greqCurrentNavTab !== 'undefined' && greqCurrentNavTab === 'INBOX'));
+    let btns = '<div style="display:flex;align-items:center;justify-content:center;gap:6px">';
+    if (isInboxPending) {
+      // Tại tab Gửi đến tôi, đơn chờ duyệt: đổi icon mắt thành icon cây bút để mở ra duyệt
+      btns += '<button class="ctrl" style="color:#2E3191;cursor:pointer" title="Mở duyệt đơn" onclick="viewGlobalReq(\'' + r.id + '\')"><i class="fa-solid fa-pen-to-square"></i></button>';
+      // Dấu tích duyệt nhanh mở popup confirm duyệt
+      btns += ' <button class="ctrl" style="color:#16a34a;cursor:pointer" title="Phê duyệt nhanh" onclick="confirmQuickGlobalApprove(\'' + r.id + '\')"><i class="fa-solid fa-check"></i></button>';
       btns += ' <button class="ctrl" style="color:#dc2626;cursor:pointer" title="Từ chối" onclick="openGlobalRejectModal(\'' + r.id + '\')"><i class="fa-solid fa-xmark"></i></button>';
+    } else {
+      btns += '<button class="ctrl" style="color:#2E3191;cursor:pointer" title="Xem chi tiết đơn" onclick="viewGlobalReq(\'' + r.id + '\')"><i class="fa-regular fa-eye"></i></button>';
     }
     btns += '</div>';
     return btns;
@@ -17005,26 +17892,9 @@ function initBwfTable() {
   mkTable('bwf', bwfCols, bwfMasterData, bwfCell);
 }
 
-// Override quickGlobalApprove to update data reactively
+// Override quickGlobalApprove to trigger confirm popup
 function quickGlobalApprove(id) {
-  const item = greqMasterData.find(x => x.id === id);
-  if (item && (item.typeCode === 'OT' || (item.type && item.type.includes('Làm thêm giờ')))) {
-    openM8ApvModal(id);
-    return;
-  }
-  if (item) {
-    item.status = 'APPROVED';
-    item.statusText = 'ĐÃ DUYỆT';
-  }
-  const pendingCount = greqMasterData.filter(x => x.tab === 'APPROVAL' && x.status === 'PENDING').length;
-  const bApproval = document.getElementById('badge-approval-count');
-  if (bApproval) bApproval.textContent = pendingCount;
-  const bSide = document.querySelector('#side-requests .badge');
-  if (bSide) bSide.textContent = pendingCount + ' cần duyệt';
-
-  if (typeof initGreqTable === 'function') initGreqTable();
-  if (typeof E9toast === 'function') E9toast('Đã phê duyệt thành công yêu cầu ' + id + '!');
-  else alert('Đã duyệt ' + id + ' thành công!');
+  confirmQuickGlobalApprove(id);
 }
 
 function confirmGlobalReject() {
@@ -17074,11 +17944,12 @@ let cwfCurCat = 'ALL';
 let currentEditingWfCode = null;
 
 let cwfMasterData = [
-  // --- 1. NHÓM NGHỈ PHÉP & VẮNG MẶT (6 LOẠI CHUẨN) ---
+  // --- 1. NHÓM NGHỈ PHÉP & VẮNG MẶT (7 LOẠI CHUẨN ĐỒNG NHẤT) ---
   {
     code: 'WF-REQ-LV-01',
     name: 'Quy trình phê duyệt nghỉ phép năm',
-    desc: 'Áp dụng cho toàn thể CBNV khi nghỉ phép trừ vào quỹ phép năm hiện có',
+    desc: 'Trừ quỹ phép năm • Báo trước tối thiểu 1 ngày',
+    policy: 'Trừ quỹ phép năm • Báo trước tối thiểu 1 ngày',
     cat: 'LEAVE',
     catBadge: '<span class="badge" style="background:#e0f2fe;color:#0369a1;border-color:#bae6fd"><i class="fa-solid fa-umbrella-beach mr-1"></i>Nghỉ phép</span>',
     typeLink: 'AL',
@@ -17099,8 +17970,32 @@ let cwfMasterData = [
   },
   {
     code: 'WF-REQ-LV-02',
+    name: 'Quy trình phê duyệt nghỉ bù',
+    desc: 'Nghỉ bù làm thêm giờ • Trừ trực tiếp vào Quỹ nghỉ bù',
+    policy: 'Nghỉ bù làm thêm giờ • Trừ trực tiếp vào Quỹ nghỉ bù',
+    cat: 'LEAVE',
+    catBadge: '<span class="badge" style="background:#e0f2fe;color:#0369a1;border-color:#bae6fd"><i class="fa-solid fa-umbrella-beach mr-1"></i>Nghỉ phép</span>',
+    typeLink: 'CL',
+    typeName: 'Đơn xin nghỉ bù',
+    approvalMethod: 'SEQUENTIAL',
+    approvalMethodText: 'Duyệt lần lượt',
+    leadTime: 'Báo trước tối thiểu 1 ngày',
+    cond: 'Trừ quỹ nghỉ bù OT tích lũy (FIFO)',
+    sla: '24 giờ',
+    status: 'Đang hoạt động',
+    created: 'Admin HR · 01/01/2026',
+    updated: 'Admin HR · 01/11/2026',
+    followers: 'HTL',
+    steps: [
+      { title: 'Quản lý trực tiếp phê duyệt', approverType: 'DIRECT_MANAGER', approverName: 'Quản lý trực tiếp (QLTT)', consensus: 'ANY', sla: 24, slaAction: 'REMIND' }
+    ],
+    stepsText: '<div style="display:flex;align-items:center;gap:6px"><span style="background:#eff6ff;color:#1d4ed8;padding:2px 8px;border-radius:4px;font-weight:600;font-size:11px"><i class="fa-solid fa-user-check mr-1"></i>B1: QLTT</span><span class="badge" style="background:#f1f5f9;color:#475569;font-size:10px">Duyệt lần lượt</span></div>'
+  },
+  {
+    code: 'WF-REQ-LV-03',
     name: 'Quy trình nghỉ việc riêng, nghỉ cá nhân',
-    desc: 'Áp dụng nghỉ chế độ hưởng nguyên lương theo luật (Bản thân kết hôn, con kết hôn, tứ thân phụ mẫu mất)',
+    desc: 'Chế độ hưởng 100% lương • Không trừ quỹ phép',
+    policy: 'Chế độ hưởng 100% lương • Không trừ quỹ phép',
     cat: 'LEAVE',
     catBadge: '<span class="badge" style="background:#e0f2fe;color:#0369a1;border-color:#bae6fd"><i class="fa-solid fa-umbrella-beach mr-1"></i>Nghỉ phép</span>',
     typeLink: 'PL',
@@ -17120,9 +18015,10 @@ let cwfMasterData = [
     stepsText: '<div style="display:flex;align-items:center;gap:6px"><span style="background:#eff6ff;color:#1d4ed8;padding:2px 8px;border-radius:4px;font-weight:600;font-size:11px"><i class="fa-solid fa-user-check mr-1"></i>B1: QLTT</span><span class="badge" style="background:#f1f5f9;color:#475569;font-size:10px">Duyệt lần lượt</span></div>'
   },
   {
-    code: 'WF-REQ-LV-03',
+    code: 'WF-REQ-LV-04',
     name: 'Quy trình cử đi công tác',
-    desc: 'Áp dụng khi cử nhân sự đi công tác ngoại tỉnh, đối tác hoặc hiện trường cầu cảng ngoại vi',
+    desc: 'Công tác tại các cầu cảng hoặc tỉnh/thành khác • Báo trước 2 ngày',
+    policy: 'Công tác tại các cầu cảng hoặc tỉnh/thành khác • Báo trước 2 ngày',
     cat: 'LEAVE',
     catBadge: '<span class="badge" style="background:#e0f2fe;color:#0369a1;border-color:#bae6fd"><i class="fa-solid fa-umbrella-beach mr-1"></i>Nghỉ phép</span>',
     typeLink: 'BT',
@@ -17143,9 +18039,10 @@ let cwfMasterData = [
     stepsText: '<div style="display:flex;align-items:center;gap:6px"><span style="background:#eff6ff;color:#1d4ed8;padding:2px 6px;border-radius:4px;font-weight:600;font-size:11px">B1: QLTT</span><i class="fa-solid fa-arrow-right" style="font-size:9px;color:#94a3b8"></i><span style="background:#fae8ff;color:#86198f;padding:2px 6px;border-radius:4px;font-weight:600;font-size:11px">B2: Ban Giám đốc</span><span class="badge" style="background:#f1f5f9;color:#475569;font-size:10px">Duyệt lần lượt</span></div>'
   },
   {
-    code: 'WF-REQ-LV-04',
+    code: 'WF-REQ-LV-05',
     name: 'Quy trình làm việc ngoài văn phòng (WFH)',
-    desc: 'Áp dụng khi CBNV làm việc tại nhà hoặc hiện trường cầu bến ngoại vi cảng',
+    desc: 'Làm việc từ xa (WFH) / Hiện trường ngoại vi cảng • Báo trước 12 giờ',
+    policy: 'Làm việc từ xa (WFH) / Hiện trường ngoại vi cảng • Báo trước 12 giờ',
     cat: 'LEAVE',
     catBadge: '<span class="badge" style="background:#e0f2fe;color:#0369a1;border-color:#bae6fd"><i class="fa-solid fa-umbrella-beach mr-1"></i>Nghỉ phép</span>',
     typeLink: 'WFH',
@@ -17165,9 +18062,9 @@ let cwfMasterData = [
     stepsText: '<div style="display:flex;align-items:center;gap:6px"><span style="background:#eff6ff;color:#1d4ed8;padding:2px 8px;border-radius:4px;font-weight:600;font-size:11px"><i class="fa-solid fa-user-check mr-1"></i>B1: QLTT</span><span class="badge" style="background:#f1f5f9;color:#475569;font-size:10px">Duyệt lần lượt</span></div>'
   },
   {
-    code: 'WF-REQ-LV-05',
+    code: 'WF-REQ-LV-06',
     name: 'Quy trình nghỉ không hưởng lương',
-    desc: 'Áp dụng khi nhân sự đã dùng hết quỹ phép năm hoặc có việc riêng cần nghỉ dài ngày',
+    desc: 'Việc riêng khi đã sử dụng hết quỹ ngày phép năm • Báo trước tối thiểu 3 ngày',
     cat: 'LEAVE',
     catBadge: '<span class="badge" style="background:#e0f2fe;color:#0369a1;border-color:#bae6fd"><i class="fa-solid fa-umbrella-beach mr-1"></i>Nghỉ phép</span>',
     typeLink: 'UL',
@@ -17188,9 +18085,10 @@ let cwfMasterData = [
     stepsText: '<div style="display:flex;align-items:center;gap:6px"><span style="background:#eff6ff;color:#1d4ed8;padding:2px 6px;border-radius:4px;font-weight:600;font-size:11px">B1: QLTT</span><i class="fa-solid fa-arrow-right" style="font-size:9px;color:#94a3b8"></i><span style="background:#fae8ff;color:#86198f;padding:2px 6px;border-radius:4px;font-weight:600;font-size:11px">B2: Ban Nhân sự</span><span class="badge" style="background:#f1f5f9;color:#475569;font-size:10px">Duyệt lần lượt</span></div>'
   },
   {
-    code: 'WF-REQ-LV-06',
-    name: 'Quy trình nghỉ chế độ khác (Nghỉ bù / Ốm đau / Thai sản)',
-    desc: 'Áp dụng các chế độ nghỉ bù OT tích lũy, ốm đau hưởng BHXH hoặc chế độ thai sản dài ngày',
+    code: 'WF-REQ-LV-07',
+    name: 'Quy trình nghỉ chế độ khác (Ốm đau / Thai sản)',
+    desc: 'Chế độ ốm đau / thai sản / dưỡng sức • BHXH chi trả',
+    policy: 'Chế độ ốm đau / thai sản / dưỡng sức • BHXH chi trả',
     cat: 'LEAVE',
     catBadge: '<span class="badge" style="background:#e0f2fe;color:#0369a1;border-color:#bae6fd"><i class="fa-solid fa-umbrella-beach mr-1"></i>Nghỉ phép</span>',
     typeLink: 'OTHER',
@@ -17215,7 +18113,7 @@ let cwfMasterData = [
   {
     code: 'WF-REQ-ADJ-01',
     name: 'Quy trình giải trình quên chấm công',
-    desc: 'Bổ sung giờ quẹt thẻ bị thiếu do quên, máy lỗi hoặc sự cố mạng; tối đa 3 lần/tháng',
+    desc: 'Quên chấm công vào/ra • Tối đa 3 lần/tháng',
     cat: 'ADJ',
     catBadge: '<span class="badge" style="background:#fef3c7;color:#b45309;border-color:#fde68a"><i class="fa-solid fa-clock-rotate-left mr-1"></i>Giải trình công</span>',
     typeLink: 'ADJ_MISS',
@@ -17239,7 +18137,8 @@ let cwfMasterData = [
   {
     code: 'WF-REQ-OT-01',
     name: 'Quy trình đăng ký tăng ca (OT)',
-    desc: 'Đăng ký làm thêm giờ phục vụ giải phóng tàu hàng hoặc cao điểm cầu bến cảng',
+    desc: 'Tăng ca bốc dỡ tàu hàng • Tính lương OT hoặc nghỉ bù',
+    policy: 'Tăng ca bốc dỡ tàu hàng • Tính lương OT hoặc nghỉ bù',
     cat: 'OT',
     catBadge: '<span class="badge" style="background:#ecfdf5;color:#047857;border-color:#a7f3d0"><i class="fa-solid fa-stopwatch mr-1"></i>Làm thêm giờ (OT)</span>',
     typeLink: 'OT_SHIFT',
@@ -17271,7 +18170,10 @@ function cwfCell(r, colKey, rowIdx) {
   if (colKey === 'stt') return '<b>' + (rowIdx + 1) + '</b>';
   if (colKey === 'code') return '<span style="font-weight:700;color:#2E3191;font-family:monospace">' + (r.code || '') + '</span>';
   if (colKey === 'name') {
-    return '<span style="font-weight:600;color:#0f172a">' + (r.name || '') + '</span>';
+    return '<div style="display:flex;flex-direction:column;gap:3px">' +
+      '<div style="font-weight:700;color:#0f172a;cursor:pointer" onclick="openBaseWfModal(\'' + r.code + '\')">' + (r.name || '') + '</div>' +
+      (r.desc ? '<div style="font-size:11px;color:#64748b;display:flex;align-items:center;gap:5px;font-style:italic"><i class="fa-solid fa-circle-info text-blue-500" style="font-size:10px"></i><span>' + r.desc + '</span></div>' : '') +
+    '</div>';
   }
   if (colKey === 'catBadge') return r.catBadge || '';
   if (colKey === 'typeName') {
@@ -17457,7 +18359,7 @@ function updateFormPreview() {
   const cat = document.getElementById('bwf-cat')?.value || 'LEAVE';
   const sampleName = document.getElementById('bwf-name')?.value || (cat === 'LEAVE' ? 'Đơn xin nghỉ phép năm' : (cat === 'ADJ' ? 'Đơn giải trình quên chấm công' : 'Đơn đăng ký làm thêm giờ (OT)'));
   const selTypeEl = document.getElementById('bwf-type-link');
-  const typeText = (selTypeEl && selTypeEl.selectedIndex >= 0) ? selTypeEl.options[selTypeEl.selectedIndex].text : (cat === 'LEAVE' ? 'Nghỉ phép năm' : (cat === 'ADJ' ? 'Quên quẹt thẻ' : 'OT ngày thường'));
+  const typeText = (selTypeEl && selTypeEl.selectedIndex >= 0) ? selTypeEl.options[selTypeEl.selectedIndex].text : (cat === 'LEAVE' ? 'Nghỉ phép năm' : (cat === 'ADJ' ? 'Quên chấm công vào/ra' : 'OT ngày thường'));
 
   // Tuyến duyệt từ Bước duyệt
   const steps = getCurrentModalSteps();
@@ -17812,6 +18714,7 @@ function onBwfCatChange(cat) {
     if (lbl) lbl.textContent = 'Loại ngày nghỉ *';
     sel.innerHTML = 
       '<option value="AL">Nghỉ phép năm</option>' +
+      '<option value="CL">Đơn xin nghỉ bù</option>' +
       '<option value="PL">Nghỉ cá nhân</option>' +
       '<option value="BT">Đi công tác</option>' +
       '<option value="WFH">Làm việc ngoài văn phòng</option>' +
@@ -18637,9 +19540,8 @@ function openBaseWfModal(code) {
     if (selStatus) selStatus.value = data.status || 'Đang hoạt động';
     if (selLimit) selLimit.value = data.dayLimit || 'Không giới hạn';
     if (inpCond) inpCond.value = data.cond || '';
-    if (inpDesc) inpDesc.value = data.desc || '';
     if (inpFormat) inpFormat.value = data.formatGuide || ('Họ tên - Phòng Ban - ' + data.name);
-    if (inpPolicy) inpPolicy.value = data.policy || '';
+    if (inpPolicy) inpPolicy.value = data.policy || data.desc || '';
     if (chkDm) chkDm.checked = data.requireDm !== false;
     document.querySelectorAll('input[name="bwf-approval-method"]').forEach(r => {
       r.checked = r.value === (data.approvalMethod || 'SEQUENTIAL');
@@ -18665,9 +19567,9 @@ function saveBaseWf() {
   const status = document.getElementById('bwf-status')?.value || 'Đang hoạt động';
   const dayLimit = document.getElementById('bwf-day-limit')?.value || 'Không giới hạn';
   const cond = document.getElementById('bwf-cond')?.value.trim();
-  const desc = document.getElementById('bwf-desc')?.value.trim();
   const formatGuide = document.getElementById('bwf-format-guide')?.value.trim() || ('Họ tên - Phòng Ban - ' + name);
-  const policy = document.getElementById('bwf-policy')?.value.trim() || '';
+  const policy = (document.getElementById('bwf-policy')?.value || '').trim();
+  const desc = policy;
   const requireDm = document.getElementById('bwf-require-dm')?.checked;
   const approvalMethod = document.querySelector('input[name="bwf-approval-method"]:checked')?.value || 'SEQUENTIAL';
   const fundPriority = document.querySelector('input[name="bwf-fund-priority"]:checked')?.value || 'ANNUAL_LEAVE';
@@ -19151,26 +20053,13 @@ function recalcUnifiedOtCalculation(reqH, rateVal) {
   const resEl = document.getElementById('unified-calc-result-hours');
 
   if (labelEl) labelEl.textContent = isComp ? 'Quỹ nghỉ bù dự kiến:' : 'Giờ công quy đổi tính lương:';
-  if (formEl) formEl.textContent = (isComp ? 'comp_leave_hours = ' : 'payroll_weighted_hours = ') + hoursVal + ' × ' + rateVal + ' = ' + weighted + ' giờ';
+  // Removed payroll_weighted_hours formula explanation
   if (resEl) resEl.textContent = weighted + ' giờ';
 }
 
-function toggleUnifiedAttConfirm() {
-  const chk = document.getElementById('unified-att-confirm');
-  const err = document.getElementById('unified-att-error');
-  if (err) err.style.display = (chk && chk.checked) ? 'none' : 'block';
-}
+function toggleUnifiedAttConfirm() {}
 
 function submitUnifiedOtApproval(id, reqH, rateVal) {
-  const chk = document.getElementById('unified-att-confirm');
-  const attError = document.getElementById('unified-att-error');
-  if (!chk || !chk.checked) {
-    if (attError) attError.style.display = 'block';
-    if (typeof E9toast === 'function') E9toast('Vui lòng xác nhận dữ liệu chấm công hợp lệ trước khi phê duyệt!', 'warn');
-    return;
-  }
-  if (attError) attError.style.display = 'none';
-
   const inp = document.getElementById('unified-apv-hours');
   const approvedHours = parseFloat(inp?.value) || 0;
   const hoursError = document.getElementById('unified-hours-error');
@@ -19221,6 +20110,114 @@ function submitUnifiedOtApproval(id, reqH, rateVal) {
   if (typeof E9toast === 'function') {
     E9toast('✓ Đã phê duyệt đơn tăng ca ' + id + ' (' + approvedHours + 'h) thành công!', 'success');
   }
+}
+
+
+function submitUnifiedLeaveApproval(id) {
+  const comment = (document.getElementById('g-leave-approval-comment')?.value || '').trim();
+  if (typeof greqMasterData !== 'undefined') {
+    const item = greqMasterData.find(x => x.id === id);
+    if (item) {
+      item.status = 'APPROVED';
+      item.statusText = 'ĐÃ DUYỆT';
+      item.approvalComment = comment || 'Đã đối soát quỹ phép và phê duyệt đơn hợp lệ.';
+      item.approvalTime = new Date().toLocaleString('vi-VN', { hour: '2-digit', minute: '2-digit', day: '2-digit', month: '2-digit', year: 'numeric' });
+      if (item.tabType === 'INBOX') {
+        item.tabType = 'APPROVED_BY_ME';
+      }
+    }
+  }
+  E9closeMdl('mdl-global-view');
+  if (typeof initGreqTable === 'function') initGreqTable();
+  if (typeof E9toast === 'function') E9toast('✓ Đã phê duyệt đơn nghỉ phép ' + id + ' thành công!', 'success');
+}
+
+
+function submitUnifiedAdjApproval(id) {
+  const comment = (document.getElementById('g-adj-approval-comment')?.value || '').trim();
+  if (typeof greqMasterData !== 'undefined') {
+    const item = greqMasterData.find(x => x.id === id);
+    if (item) {
+      item.status = 'APPROVED';
+      item.statusText = 'ĐÃ DUYỆT';
+      item.approvalComment = comment || 'Đã đối soát ca làm việc và duyệt bổ sung giờ vào/ra hợp lệ.';
+      item.approvalTime = new Date().toLocaleString('vi-VN', { hour: '2-digit', minute: '2-digit', day: '2-digit', month: '2-digit', year: 'numeric' });
+      if (item.tabType === 'INBOX') {
+        item.tabType = 'APPROVED_BY_ME';
+      }
+    }
+  }
+  E9closeMdl('mdl-global-view');
+  if (typeof initGreqTable === 'function') initGreqTable();
+  if (typeof E9toast === 'function') E9toast('✓ Đã phê duyệt đơn giải trình công ' + id + ' thành công!', 'success');
+}
+
+
+function submitUnifiedOutApproval(id, reqType) {
+  const comment = (document.getElementById('g-out-approval-comment')?.value || '').trim();
+  if (typeof greqMasterData !== 'undefined') {
+    const item = greqMasterData.find(x => x.id === id);
+    if (item) {
+      item.status = 'APPROVED';
+      item.statusText = 'ĐÃ DUYỆT';
+      item.approvalComment = comment || ('Đã xem xét và đồng ý phê duyệt đơn ' + (reqType || '').toLowerCase() + '.');
+      item.approvalTime = new Date().toLocaleString('vi-VN', { hour: '2-digit', minute: '2-digit', day: '2-digit', month: '2-digit', year: 'numeric' });
+      if (item.tabType === 'INBOX') {
+        item.tabType = 'APPROVED_BY_ME';
+      }
+    }
+  }
+  E9closeMdl('mdl-global-view');
+  if (typeof initGreqTable === 'function') initGreqTable();
+  if (typeof E9toast === 'function') E9toast('✓ Đã phê duyệt đơn ' + (reqType || '') + ' ' + id + ' thành công!', 'success');
+}
+
+function submitUnifiedOutReject(id, reqType) {
+  const comment = (document.getElementById('g-out-approval-comment')?.value || '').trim();
+  if (typeof greqMasterData !== 'undefined') {
+    const item = greqMasterData.find(x => x.id === id);
+    if (item) {
+      item.status = 'REJECTED';
+      item.statusText = 'TỪ CHỐI';
+      item.approvalComment = comment || ('Từ chối đơn ' + (reqType || '').toLowerCase() + ' do yêu cầu công việc thực tế.');
+      item.approvalTime = new Date().toLocaleString('vi-VN', { hour: '2-digit', minute: '2-digit', day: '2-digit', month: '2-digit', year: 'numeric' });
+    }
+  }
+  E9closeMdl('mdl-global-view');
+  if (typeof initGreqTable === 'function') initGreqTable();
+  if (typeof E9toast === 'function') E9toast('Đã từ chối đơn ' + (reqType || '') + ' ' + id + '!', 'warn');
+}
+
+function submitUnifiedAdjReject(id) {
+  const comment = (document.getElementById('g-adj-approval-comment')?.value || '').trim();
+  if (typeof greqMasterData !== 'undefined') {
+    const item = greqMasterData.find(x => x.id === id);
+    if (item) {
+      item.status = 'REJECTED';
+      item.statusText = 'TỪ CHỐI';
+      item.approvalComment = comment || 'Từ chối đơn giải trình quên chấm công.';
+      item.approvalTime = new Date().toLocaleString('vi-VN', { hour: '2-digit', minute: '2-digit', day: '2-digit', month: '2-digit', year: 'numeric' });
+    }
+  }
+  E9closeMdl('mdl-global-view');
+  if (typeof initGreqTable === 'function') initGreqTable();
+  if (typeof E9toast === 'function') E9toast('Đã từ chối đơn giải trình công ' + id + '!', 'warn');
+}
+
+function submitUnifiedLeaveReject(id) {
+  const comment = (document.getElementById('g-leave-approval-comment')?.value || '').trim();
+  if (typeof greqMasterData !== 'undefined') {
+    const item = greqMasterData.find(x => x.id === id);
+    if (item) {
+      item.status = 'REJECTED';
+      item.statusText = 'TỪ CHỐI';
+      item.approvalComment = comment || 'Từ chối đơn nghỉ phép do yêu cầu công việc thực tế.';
+      item.approvalTime = new Date().toLocaleString('vi-VN', { hour: '2-digit', minute: '2-digit', day: '2-digit', month: '2-digit', year: 'numeric' });
+    }
+  }
+  E9closeMdl('mdl-global-view');
+  if (typeof initGreqTable === 'function') initGreqTable();
+  if (typeof E9toast === 'function') E9toast('Đã từ chối đơn nghỉ phép ' + id + '!', 'warn');
 }
 
 function submitUnifiedOtReject(id) {
@@ -19292,14 +20289,14 @@ function getGreqAvatarPalette(name) {
   return GREQ_AVATAR_PALETTES[Math.abs(hash) % GREQ_AVATAR_PALETTES.length];
 }
 
-function renderGreqLetterAvatar(name, size, borderOverride) {
+function renderGreqLetterAvatar(name, size, borderOverride, borderWidthOverride) {
   size = size || 26;
   const init = getGreqInitials(name);
   const pal = getGreqAvatarPalette(name);
   const border = borderOverride || pal.border;
-  const borderWidth = borderOverride ? '2px' : '1px';
+  const borderWidth = borderWidthOverride || '1px';
   const fontSize = size <= 24 ? 9.5 : (size <= 28 ? 10.5 : (size <= 34 ? 12 : 13.5));
-  return '<div style="width:' + size + 'px;height:' + size + 'px;min-width:' + size + 'px;min-height:' + size + 'px;border-radius:50%;background:' + pal.bg + ';color:' + pal.text + ';border:' + borderWidth + ' solid ' + border + ';display:inline-flex;align-items:center;justify-content:center;font-size:' + fontSize + 'px;font-weight:700;flex-shrink:0;user-select:none;box-shadow:0 1px 2px rgba(0,0,0,0.05);letter-spacing:-0.2px">' + init + '</div>';
+  return '<div style="width:' + size + 'px;height:' + size + 'px;min-width:' + size + 'px;min-height:' + size + 'px;border-radius:50%;background:' + pal.bg + ';color:' + pal.text + ';border:' + borderWidth + ' solid ' + border + ';display:inline-flex;align-items:center;justify-content:center;font-size:' + fontSize + 'px;font-weight:700;flex-shrink:0;user-select:none;box-shadow:0 1px 1px rgba(0,0,0,0.03);letter-spacing:-0.2px">' + init + '</div>';
 }
 
 function getGreqApprovalFlow(r) {
@@ -19326,7 +20323,7 @@ function getGreqApprovalFlow(r) {
         { name: hrName, role: 'Nhân sự', avatar: hrAvatar, status: 'DONE', label: 'Đã duyệt' },
         { name: dirName, role: 'Ban Giám đốc', avatar: dirAvatar, status: 'DONE', label: 'Đã duyệt' }
       ];
-    } else if (r.status === 'PROCESSING') {
+    } else if (r.status === 'PROCESSING' || r.currentStep === 2 || r.id === 'CT-2026-018') {
       steps = [
         { name: mngName, role: 'Quản lý', avatar: mngAvatar, status: 'DONE', label: 'Đã duyệt' },
         { name: hrName, role: 'Nhân sự', avatar: hrAvatar, status: 'WAIT', label: 'Đang duyệt' },
@@ -19378,8 +20375,10 @@ function getGreqApprovalFlow(r) {
 function renderGreqApproverFlowCell(r) {
   const steps = getGreqApprovalFlow(r);
 
-  let html = '<div style="display:inline-flex;align-items:center;gap:4px;flex-wrap:nowrap" onclick="event.stopPropagation()">';
+  let html = '<div style="display:inline-flex;flex-direction:column;gap:3px;align-items:flex-start" onclick="event.stopPropagation()">';
 
+  // Hàng 1: Stepper Avatar Chữ cái
+  html += '<div style="display:inline-flex;align-items:center;gap:4px;flex-wrap:nowrap">';
   steps.forEach((st, idx) => {
     let borderColor = '#cbd5e1';
     let badgeBg = '#94a3b8';
@@ -19404,28 +20403,82 @@ function renderGreqApproverFlowCell(r) {
     }
 
     const stepNum = idx + 1;
-    const tooltip = 'Buoc ' + stepNum + ' (' + st.role + '): ' + st.name + ' - ' + st.label;
+    const tooltip = 'Bước ' + stepNum + ' (' + st.role + '): ' + st.name + ' - ' + st.label;
 
     html += '<div style="position:relative;display:inline-flex;align-items:center;justify-content:center;opacity:' + opacity + ';cursor:pointer;flex-shrink:0" title="' + tooltip + '" onclick="viewGlobalReq(\'' + r.id + '\')">';
-    // Render letter avatar (chữ cái) thay vì hình ảnh thật
-    html += renderGreqLetterAvatar(st.name, 26, borderColor);
+    html += renderGreqLetterAvatar(st.name, 25, borderColor);
 
     if (st.status === 'TODO') {
-      html += '<span style="position:absolute;bottom:-2px;right:-3px;width:12px;height:12px;border-radius:50%;background:#e2e8f0;color:#475569;display:flex;align-items:center;justify-content:center;font-size:8px;font-weight:700;border:1.5px solid #fff;line-height:1">' + stepNum + '</span>';
+      html += '<span style="position:absolute;bottom:-2px;right:-3px;width:12px;height:12px;border-radius:50%;background:#e2e8f0;color:#475569;display:flex;align-items:center;justify-content:center;font-size:8px;font-weight:700;border:1px solid #fff;line-height:1">' + stepNum + '</span>';
     } else {
-      html += '<span style="position:absolute;bottom:-2px;right:-3px;width:12px;height:12px;border-radius:50%;background:' + badgeBg + ';color:#fff;display:flex;align-items:center;justify-content:center;font-size:7px;border:1.5px solid #fff;line-height:1"><i class="fa-solid ' + badgeIcon + '"></i></span>';
+      html += '<span style="position:absolute;bottom:-2px;right:-3px;width:12px;height:12px;border-radius:50%;background:' + badgeBg + ';color:#fff;display:flex;align-items:center;justify-content:center;font-size:7px;border:1px solid #fff;line-height:1"><i class="fa-solid ' + badgeIcon + '"></i></span>';
     }
     html += '</div>';
 
     // Connector line between avatars
     if (idx < steps.length - 1) {
       const lineColor = st.status === 'DONE' ? '#16a34a' : '#cbd5e1';
-      html += '<div style="width:8px;height:2px;background:' + lineColor + ';border-radius:1px;margin:0 1px;flex-shrink:0"></div>';
+      html += '<div style="width:8px;height:1.5px;background:' + lineColor + ';border-radius:1px;margin:0 1px;flex-shrink:0"></div>';
     }
   });
-
   html += '</div>';
 
+  // Hàng 2: Thời gian duyệt còn lại / trạng thái SLA đặt dưới avatar
+  // Quy chuẩn thống nhất cho tất cả các tab (kể cả Đang theo dõi):
+  // - Hoàn tất đúng hạn thì bỏ đi (không hiển thị badge khi đã hoàn tất)
+  // - Quá hạn dùng icon chấm ! (fa-circle-exclamation) + màu đỏ
+  // - Còn thời gian (ở bất kỳ bước duyệt nào) CHỈ để icon đồng hồ + chữ Còn (giờ) + màu xanh dương đồng nhất, không ghi chữ khác
+  let slaText = '';
+  let slaIcon = 'fa-regular fa-clock';
+  let slaColor = '#0284c7';
+  let slaBg = '#f0f9ff';
+  let slaBorder = '#bae6fd';
+
+  const isOverdue = r.isOverdue || (r.slaInfo && (r.slaInfo.includes('Quá hạn') || r.slaInfo.includes('quá hạn')));
+
+  if (r.status === 'APPROVED' || (r.slaInfo && r.slaInfo.includes('Hoàn tất'))) {
+    // Hoàn tất đúng hạn thì bỏ đi, để trống dưới avatar
+    slaText = '';
+  } else if (r.status === 'REJECTED') {
+    slaText = 'Đã từ chối';
+    slaIcon = 'fa-solid fa-xmark';
+    slaColor = '#94a3b8';
+    slaBg = '#f8fafc';
+    slaBorder = '#e2e8f0';
+  } else if (isOverdue) {
+    const rawOverdue = r.slaInfo ? (r.slaInfo.includes('Quá hạn') ? r.slaInfo : ('Quá hạn ' + r.slaInfo)) : 'Quá hạn 4h';
+    slaText = rawOverdue.replace('SLA', '').trim();
+    slaIcon = 'fa-solid fa-circle-exclamation';
+    slaColor = '#dc2626';
+    slaBg = '#fef2f2';
+    slaBorder = '#fecaca';
+  } else if (r.status === 'PENDING' || r.status === 'PROCESSING') {
+    let rawSla = r.slaInfo || 'Còn 24h';
+    // Chuẩn hóa: Không bao giờ hiển thị chữ khác ("Theo dõi...", "Đã duyệt B1") mà thống nhất hiển thị Còn (giờ)
+    if (rawSla.includes('Theo dõi') || rawSla.includes('B1') || !rawSla.match(/\d+h/i)) {
+      rawSla = 'Còn 16h';
+    }
+    let cleanTime = rawSla.replace('SLA', '').trim();
+    if (!cleanTime.startsWith('Còn') && !cleanTime.startsWith('Quá hạn')) {
+      cleanTime = 'Còn ' + cleanTime;
+    }
+    slaText = cleanTime;
+    slaIcon = 'fa-regular fa-clock';
+    slaColor = '#0284c7';
+    slaBg = '#f0f9ff';
+    slaBorder = '#bae6fd';
+  } else {
+    slaText = '';
+  }
+
+  if (slaText) {
+    html += '<div style="font-size:9.5px;font-weight:600;color:' + slaColor + ';background:' + slaBg + ';border:1px solid ' + slaBorder + ';padding:1.5px 6px;border-radius:4px;display:inline-flex;align-items:center;gap:3.5px;line-height:1.25;white-space:nowrap;margin-top:2px">' +
+      '<i class="' + slaIcon + '" style="font-size:8.5px"></i>' +
+      '<span>' + slaText + '</span>' +
+    '</div>';
+  }
+
+  html += '</div>';
   return html;
 }
 
@@ -20253,11 +21306,17 @@ function renderGreqApproverFlowCell(r) {
         </div>
       </div>
 
-      <!-- KHỐI QUỸ PHÉP NĂM (SỐ DƯ PHÉP HIỆN TẠI - HIỆN KHI LÀ ĐƠN NGHỈ PHÉP) -->
-      <div id="g-sec-leave-fund" style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:10px 14px;margin-bottom:12px;display:flex;align-items:center;gap:8px">
+      <!-- KHỐI QUỸ PHÉP NĂM (SỐ PHÉP DƯ HIỆN TẠI & TỔNG NGÀY TẠM TÍNH) -->
+      <div id="g-sec-leave-fund" style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:10px 14px;margin-bottom:12px;display:flex;align-items:center;gap:8px;flex-wrap:wrap">
         <i class="fa-solid fa-wallet text-[#2E3191]"></i>
-        <span style="font-weight:600;color:#1e293b;font-size:12px">Số dư phép hiện tại:</span>
-        <span class="badge" style="background:#eff6ff;color:#1d4ed8;border:1px solid #bfdbfe;font-size:12px;font-weight:700;padding:2px 8px">10.0 ngày</span>
+        <span style="font-weight:600;color:#1e293b;font-size:12px">Số phép dư hiện tại:</span>
+        <span class="badge" id="g-leave-fund-balance" style="background:#eff6ff;color:#1d4ed8;border:1px solid #bfdbfe;font-size:12px;font-weight:700;padding:2px 8px">10.0 ngày</span>
+        
+        <span style="color:#cbd5e1;margin:0 4px">|</span>
+        <span style="font-weight:600;color:#1e293b;font-size:12px">Tổng ngày tạm tính:</span>
+        <span class="badge" id="g-leave-calc-total-days" style="background:#f0fdf4;color:#15803d;border:1px solid #bbf7d0;font-size:12px;font-weight:700;padding:2px 8px">1.0 ngày</span>
+        
+        <span id="g-leave-calc-remain-wrap" style="font-size:11.5px;color:#64748b;margin-left:2px">(Dư sau nghỉ dự kiến: <b id="g-leave-calc-remain" style="color:#2E3191">9.0 ngày</b>)</span>
       </div>
 
       <!-- SỐ DƯ QUỸ NGHỈ BÙ & CẢNH BÁO HẠN DÙNG - HIỆN KHI LÀ ĐƠN NGHỈ BÙ HOẶC CÁC LOẠI KHÁC -->
@@ -20478,7 +21537,7 @@ function renderGreqApproverFlowCell(r) {
       </div>
       <div>
         <h3 style="font-size:16px;font-weight:700;color:#0f172a;margin:0">Phê duyệt hàng loạt đơn từ</h3>
-        <div style="font-size:11.5px;color:#64748b;margin-top:2px">Đối soát và áp dụng phê duyệt đồng thời cho các đơn từ đã chọn</div>
+        
       </div>
     </div>
 
@@ -20500,17 +21559,11 @@ function renderGreqApproverFlowCell(r) {
 
     <!-- Nhận xét phê duyệt chung -->
     <div style="margin-bottom:14px">
-      <label class="fl" style="font-size:12px;font-weight:600;margin-bottom:4px">Nhận xét phê duyệt chung (Tùy chọn)</label>
-      <textarea id="greq-batch-note" class="fi" rows="2" placeholder="Nhập nhận xét phê duyệt hàng loạt... (Mặc định: Đồng ý phê duyệt hàng loạt)" style="font-size:12.5px"></textarea>
+      <label class="fl" style="font-size:12px;font-weight:600;margin-bottom:4px">Nhận xét phê duyệt chung</label>
+      <textarea id="greq-batch-note" class="fi" rows="2" style="font-size:12.5px"></textarea>
     </div>
 
-    <!-- Checkbox xác nhận -->
-    <div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:10px 14px;margin-bottom:18px">
-      <label style="display:flex;align-items:center;gap:10px;font-size:12px;color:#1e293b;cursor:pointer;font-weight:600">
-        <input type="checkbox" id="greq-batch-chk-confirm" checked style="width:16px;height:16px;accent-color:#15803d;cursor:pointer">
-        <span>Xác nhận đã đối soát dữ liệu và đồng ý phê duyệt toàn bộ các đơn đã chọn</span>
-      </label>
-    </div>
+    
 
     <!-- Nút hành động -->
     <div style="display:flex;align-items:center;justify-content:flex-end;gap:10px;padding-top:12px;border-top:1px solid #f1f5f9">
@@ -20542,6 +21595,62 @@ function renderGreqApproverFlowCell(r) {
       <button class="btn btn-o" onclick="E9closeMdl('mdl-global-reject')">Hủy</button>
       <button class="btn" style="background:#be123c;color:#fff;border:none;padding:6px 14px;border-radius:6px;font-weight:600" onclick="confirmGlobalReject()">
         Xác nhận từ chối
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL: XÁC NHẬN PHÊ DUYỆT NHANH ĐƠN TỪ -->
+<div id="mdl-global-quick-approve" class="ov">
+  <div class="mdl" style="max-width:460px;border-radius:12px;overflow:hidden;box-shadow:0 20px 25px -5px rgba(0,0,0,0.15)">
+    <div class="mdl-hd" style="padding:14px 18px;background:#f0fdf4;border-bottom:1px solid #bbf7d0;display:flex;justify-content:space-between;align-items:center">
+      <h3 style="font-size:14px;font-weight:700;color:#15803d;display:flex;align-items:center;gap:8px;margin:0">
+        <i class="fa-solid fa-circle-check text-green-600"></i><span>Xác nhận phê duyệt nhanh</span>
+      </h3>
+      <button type="button" class="btn btn-o" onclick="E9closeMdl('mdl-global-quick-approve')" style="border-radius:6px;padding:4px 8px;cursor:pointer"><i class="fa-solid fa-xmark"></i></button>
+    </div>
+    <div class="mdl-bd" style="padding:18px 20px;font-size:12px">
+      <input type="hidden" id="g-quick-apv-id" value="">
+      
+      <!-- Card tóm tắt thông tin đơn -->
+      <div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:12px;margin-bottom:12px">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
+          <span style="font-size:11px;color:#64748b;font-weight:600">Đơn đề xuất:</span>
+          <span id="g-quick-apv-code" style="font-family:monospace;font-weight:700;color:#2E3191;background:#eef2ff;padding:2px 8px;border-radius:4px;font-size:11.5px">NP-2026-092</span>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;font-size:11.5px">
+          <div>
+            <span style="color:#64748b">Người gửi:</span>
+            <div id="g-quick-apv-sender" style="font-weight:600;color:#1e293b;margin-top:2px">Trần Thị B</div>
+          </div>
+          <div>
+            <span style="color:#64748b">Phòng ban:</span>
+            <div id="g-quick-apv-dept" style="font-weight:600;color:#1e293b;margin-top:2px">PT Phần mềm</div>
+          </div>
+          <div>
+            <span style="color:#64748b">Loại đơn:</span>
+            <div id="g-quick-apv-type" style="font-weight:600;color:#0284c7;margin-top:2px">Nghỉ phép năm</div>
+          </div>
+          <div>
+            <span style="color:#64748b">Thời gian:</span>
+            <div id="g-quick-apv-time" style="font-weight:600;color:#1e293b;margin-top:2px">04/11/2026</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Trường Nhận xét phê duyệt -->
+      <div style="margin-bottom:8px">
+        <label class="fl" style="font-weight:600;color:#334155;margin-bottom:4px;display:block">Nhận xét phê duyệt</label>
+        <textarea class="fi" id="g-quick-apv-comment" rows="2" style="width:100%;font-size:12px;padding:8px 10px;border-radius:6px;border:1px solid #cbd5e1" placeholder="Nhập nhận xét / ý kiến phê duyệt...">Đồng ý phê duyệt đơn đề xuất.</textarea>
+      </div>
+      <div style="font-size:11px;color:#64748b;font-style:italic">
+        <i class="fa-solid fa-circle-info mr-1 text-blue-500"></i>Đơn sẽ được chuyển sang trạng thái <b>Đã duyệt</b> và gửi thông báo đến nhân sự.
+      </div>
+    </div>
+    <div class="mdl-ft" style="padding:12px 18px;background:#f8fafc;border-top:1px solid #e2e8f0;display:flex;justify-content:flex-end;gap:8px">
+      <button type="button" class="btn btn-o" onclick="E9closeMdl('mdl-global-quick-approve')" style="padding:6px 14px;border-radius:6px">Hủy</button>
+      <button type="button" class="btn" style="background:#16a34a;color:#fff;border:none;padding:6px 16px;border-radius:6px;font-weight:600;display:inline-flex;align-items:center;gap:6px;cursor:pointer" onclick="confirmExecuteQuickApprove()">
+        <i class="fa-solid fa-check"></i> Xác nhận duyệt
       </button>
     </div>
   </div>
@@ -21008,8 +22117,8 @@ function renderGreqApproverFlowCell(r) {
 
         <div class="frow full" style="margin-top:8px">
           <div>
-            <label class="fl">Quy định / Hướng dẫn nghiệp vụ</label>
-            <textarea class="fi" id="bwf-policy" rows="3"></textarea>
+            <label class="fl">Quy định / Hướng dẫn</label>
+            <textarea class="fi" id="bwf-policy" rows="2" placeholder="Nhập quy định, hướng dẫn nghiệp vụ hoặc căn cứ nội bộ..." style="font-size:12px;font-weight:500"></textarea>
           </div>
         </div>
 
