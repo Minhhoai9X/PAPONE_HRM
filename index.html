@@ -134,6 +134,7 @@
     <div class="side-item" data-pg="m05" onclick="nav('m05',this)"><span><i class="fa-solid fa-id-card ico"></i> Hồ sơ nhân viên</span><span class="badge">M05</span></div>
     <div class="side-sec">Đơn từ &amp; Quy trình</div>
     <div class="side-item" id="side-requests" data-pg="requests" onclick="nav('requests',this)"><span><i class="fa-solid fa-file-signature ico" style="color:#2E3191"></i> Đơn từ &amp; Phê duyệt</span></div>
+    <div class="side-item" id="side-emp-requests" data-pg="emp-requests" onclick="nav('emp-requests',this)"><span><i class="fa-solid fa-users-rectangle ico" style="color:#2E3191"></i> Đơn từ nhân viên</span></div>
     <div class="side-item" id="side-workflows" data-pg="workflows" onclick="nav('workflows',this)"><span><i class="fa-solid fa-diagram-project ico" style="color:#2E3191"></i> Quy trình phê duyệt</span></div>
     <div class="side-sec">Chấm công & Ca kíp</div>
     <div class="side-item" id="side-m07" data-pg="m07" onclick="toggleSub('m07',event)"><span><i class="fa-solid fa-calendar-days ico"></i> Quản lý lịch làm việc</span><span style="display:flex;align-items:center;gap:4px"><span class="badge">M07</span><i class="fa-solid fa-chevron-down side-chev" id="chev-m07" style="font-size:9px;color:#94a3b8;transition:transform .2s" title="Thu gọn / Mở rộng"></i></span></div>
@@ -161,7 +162,7 @@
     <div id="m09-submenu">
       <div class="side-sub active" data-m9="ledger" onclick="navM9('ledger')"><i class="fa-solid fa-book"></i> Quỹ phép & Nghỉ bù</div>
       <div class="side-sub" data-m9="pol" onclick="navM9('pol')"><i class="fa-solid fa-gear"></i> Chính sách nghỉ phép</div>
-      <div class="side-sub" data-m9="types" onclick="navM9('types')"><i class="fa-solid fa-list-check"></i> Loại nghỉ & Vắng mặt</div>
+      <div class="side-sub" data-m9="types" onclick="navM9('types')"><i class="fa-solid fa-list-check"></i> Loại nghỉ/ Công tác</div>
     </div>
   </div>
 </aside>
@@ -626,6 +627,214 @@
 </section>
 
 <!-- ========================================================================= -->
+<!-- PHÂN HỆ ĐƠN TỪ NHÂN VIÊN (QUẢN LÝ, THEO DÕI & CẬP NHẬT ĐỀ XUẤT CHO NHÂN SỰ) -->
+<!-- ========================================================================= -->
+<section id="pg-emp-requests" class="page" style="display:none">
+  <!-- TOP FILTER CARD THEO THIẾT KẾ MẪU 2 HÀNG -->
+  <div class="card" style="padding:16px 20px;margin-bottom:14px;background:#fff;border-radius:12px;border:1px solid #e2e8f0;box-shadow:0 1px 3px rgba(0,0,0,0.05)">
+    <!-- HÀNG 1: TÌM KIẾM - LOẠI ĐỀ XUẤT - TRẠNG THÁI - THỜI GIAN TẠO YÊU CẦU - ĐẶT LẠI - TÌM KIẾM -->
+    <div style="display:flex;align-items:flex-end;gap:14px;flex-wrap:wrap;margin-bottom:14px">
+      <!-- 1. TÌM KIẾM -->
+      <div style="flex:1.2;min-width:200px">
+        <label style="font-size:12px;font-weight:600;color:#1e293b;margin-bottom:6px;display:flex;align-items:center;gap:4px">
+          Tìm kiếm <i class="fa-regular fa-circle-question" style="color:#94a3b8;font-size:11px" title="Tìm theo mã đơn, người tạo, tên đề xuất, loại đề xuất, lý do..."></i>
+        </label>
+        <div style="position:relative">
+          <input type="text" id="ereq-kw-search" class="fi" placeholder="Nhập từ khóa tìm kiếm..." style="border-radius:8px;border:1px solid #cbd5e1;height:38px;font-size:12px;padding:0 12px;width:100%" oninput="applyEreqTopFilters()">
+        </div>
+      </div>
+
+      <!-- 2. BỘ LỌC LOẠI ĐỀ XUẤT (MULTI SEARCH DROPDOWN) -->
+      <div style="flex:1.4;min-width:240px;position:relative">
+        <label style="font-size:12px;font-weight:600;color:#1e293b;margin-bottom:6px;display:block">Loại đề xuất</label>
+        <div id="ereq-cat-trigger" onclick="toggleEreqCatMenu(event)" style="min-height:38px;border:1px solid #cbd5e1;border-radius:8px;background:#fff;padding:4px 10px;display:flex;align-items:center;justify-content:space-between;gap:6px;cursor:pointer">
+          <div id="ereq-cat-chips" style="display:flex;flex-wrap:wrap;gap:4px;align-items:center">
+            <!-- Rendered chips -->
+          </div>
+          <i class="fa-solid fa-chevron-down text-slate-400" style="font-size:11px"></i>
+        </div>
+        <div id="ereq-cat-menu" style="display:none;position:absolute;z-index:95;top:calc(100% + 4px);left:0;right:0;background:#fff;border:1px solid #cbd5e1;border-radius:8px;box-shadow:0 8px 24px rgba(0,0,0,0.12);padding:8px;min-width:260px">
+          <!-- Multi search input -->
+          <div style="position:relative;margin-bottom:8px">
+            <i class="fa-solid fa-magnifying-glass" style="position:absolute;left:8px;top:50%;transform:translateY(-50%);color:#94a3b8;font-size:11px"></i>
+            <input type="text" id="ereq-cat-search-inp" placeholder="Tìm loại đề xuất..." style="width:100%;padding:5px 8px 5px 26px;border:1px solid #cbd5e1;border-radius:6px;font-size:11.5px;box-sizing:border-box" oninput="filterEreqCatOptions(this.value)">
+          </div>
+          <!-- Toolbar -->
+          <div style="display:flex;justify-content:space-between;align-items:center;padding:0 4px 6px;margin-bottom:4px;border-bottom:1px solid #f1f5f9;font-size:11px">
+            <span style="color:#64748b">Lựa chọn</span>
+            <div style="display:flex;gap:8px">
+              <button type="button" onclick="setAllEreqCats(true)" style="background:none;border:none;color:#2E3191;font-weight:600;cursor:pointer;font-size:11px;padding:0">Chọn tất cả</button>
+              <span style="color:#cbd5e1">|</span>
+              <button type="button" onclick="setAllEreqCats(false)" style="background:none;border:none;color:#e11d48;font-weight:600;cursor:pointer;font-size:11px;padding:0">Bỏ chọn</button>
+            </div>
+          </div>
+          <!-- Options list -->
+          <div id="ereq-cat-options-list" style="max-height:190px;overflow-y:auto;display:flex;flex-direction:column;gap:2px">
+            <label class="ereq-cat-opt" data-name="Nghỉ phép năm" style="display:flex;align-items:center;gap:8px;padding:5px 8px;font-size:12px;cursor:pointer;border-radius:4px"><input type="checkbox" class="chk-ereq-cat" value="LEAVE" onchange="onEreqCatCheckboxChange()"> Nghỉ phép năm</label>
+            <label class="ereq-cat-opt" data-name="Quên chấm công Giải trình" style="display:flex;align-items:center;gap:8px;padding:5px 8px;font-size:12px;cursor:pointer;border-radius:4px"><input type="checkbox" class="chk-ereq-cat" value="ATT_ADJ" onchange="onEreqCatCheckboxChange()"> Quên chấm công</label>
+            <label class="ereq-cat-opt" data-name="Làm thêm giờ OT Tăng ca" style="display:flex;align-items:center;gap:8px;padding:5px 8px;font-size:12px;cursor:pointer;border-radius:4px"><input type="checkbox" class="chk-ereq-cat" value="OT" onchange="onEreqCatCheckboxChange()"> Làm thêm giờ (OT)</label>
+            <label class="ereq-cat-opt" data-name="Đi công tác" style="display:flex;align-items:center;gap:8px;padding:5px 8px;font-size:12px;cursor:pointer;border-radius:4px"><input type="checkbox" class="chk-ereq-cat" value="BIZ" onchange="onEreqCatCheckboxChange()"> Đi công tác</label>
+            <label class="ereq-cat-opt" data-name="Làm việc ngoài văn phòng WFH" style="display:flex;align-items:center;gap:8px;padding:5px 8px;font-size:12px;cursor:pointer;border-radius:4px"><input type="checkbox" class="chk-ereq-cat" value="WFH" onchange="onEreqCatCheckboxChange()"> Làm việc ngoài VP</label>
+            <label class="ereq-cat-opt" data-name="Nghỉ việc riêng khác Nghỉ cá nhân" style="display:flex;align-items:center;gap:8px;padding:5px 8px;font-size:12px;cursor:pointer;border-radius:4px"><input type="checkbox" class="chk-ereq-cat" value="LEAVE_PL" onchange="onEreqCatCheckboxChange()"> Nghỉ việc riêng / khác</label>
+          </div>
+        </div>
+      </div>
+
+      <!-- 3. TRẠNG THÁI (CHIPS DROPDOWN) -->
+      <div style="flex:1.4;min-width:260px;position:relative">
+        <label style="font-size:12px;font-weight:600;color:#1e293b;margin-bottom:6px;display:block">Trạng thái</label>
+        <div id="ereq-status-trigger" onclick="toggleEreqStatusMenu(event)" style="min-height:38px;border:1px solid #cbd5e1;border-radius:8px;background:#fff;padding:4px 10px;display:flex;align-items:center;justify-content:space-between;gap:6px;cursor:pointer">
+          <div id="ereq-status-chips" style="display:flex;flex-wrap:wrap;gap:6px;align-items:center">
+            <span style="color:#94a3b8;font-size:12px">Tất cả trạng thái</span>
+          </div>
+          <i class="fa-solid fa-chevron-down text-slate-400" style="font-size:11px"></i>
+        </div>
+        <div id="ereq-status-menu" style="display:none;position:absolute;z-index:90;top:calc(100% + 4px);left:0;right:0;background:#fff;border:1px solid #cbd5e1;border-radius:8px;box-shadow:0 8px 24px rgba(0,0,0,0.12);padding:8px">
+          <label style="display:flex;align-items:center;gap:8px;padding:6px 8px;font-size:12px;cursor:pointer;border-radius:4px"><input type="checkbox" class="chk-ereq-st" value="PENDING" onchange="onEreqStatusCheckboxChange()"> Chờ duyệt</label>
+          <label style="display:flex;align-items:center;gap:8px;padding:6px 8px;font-size:12px;cursor:pointer;border-radius:4px"><input type="checkbox" class="chk-ereq-st" value="APPROVED" onchange="onEreqStatusCheckboxChange()"> Đã duyệt</label>
+          <label style="display:flex;align-items:center;gap:8px;padding:6px 8px;font-size:12px;cursor:pointer;border-radius:4px"><input type="checkbox" class="chk-ereq-st" value="PROCESSING" onchange="onEreqStatusCheckboxChange()"> Đang xử lý</label>
+          <label style="display:flex;align-items:center;gap:8px;padding:6px 8px;font-size:12px;cursor:pointer;border-radius:4px"><input type="checkbox" class="chk-ereq-st" value="REJECTED" onchange="onEreqStatusCheckboxChange()"> Từ chối</label>
+        </div>
+      </div>
+
+      <!-- 4. THỜI GIAN TẠO YÊU CẦU -->
+      <div style="flex:1.5;min-width:270px">
+        <label style="font-size:12px;font-weight:600;color:#1e293b;margin-bottom:6px;display:block">Thời gian tạo yêu cầu</label>
+        <div style="display:flex;align-items:center;gap:6px;border:1px solid #cbd5e1;border-radius:8px;background:#fff;padding:0 10px;height:38px">
+          <input type="date" id="ereq-from-date" style="border:none;outline:none;font-size:12px;color:#1e293b;background:transparent;flex:1" onchange="applyEreqTopFilters()">
+          <span style="color:#94a3b8">&rarr;</span>
+          <input type="date" id="ereq-to-date" style="border:none;outline:none;font-size:12px;color:#1e293b;background:transparent;flex:1" onchange="applyEreqTopFilters()">
+          <i class="fa-regular fa-calendar text-slate-400" style="font-size:13px"></i>
+        </div>
+      </div>
+
+      <!-- 5. NÚT ĐẶT LẠI & TÌM KIẾM -->
+      <div style="display:flex;gap:8px;align-items:flex-end">
+        <button class="btn btn-o" onclick="resetEreqTopFilters()" style="height:38px;padding:0 16px;border-radius:8px;font-size:12px;font-weight:600;color:#334155;border-color:#cbd5e1;background:#fff">Đặt lại</button>
+        <button class="btn btn-p" onclick="applyEreqTopFilters()" style="height:38px;padding:0 22px;border-radius:8px;font-size:12px;font-weight:600;background:#2E3191;border-color:#2E3191">Tìm kiếm</button>
+      </div>
+    </div>
+
+    <!-- HÀNG 2: 2 TABS TINH GỌN (TÔI GỬI ĐI & ĐANG THEO DÕI) — ĐÃ BỎ: TẤT CẢ, GỬI ĐẾN TÔI, DUYỆT BỞI TÔI -->
+    <div style="display:flex;align-items:center;justify-content:space-between;gap:8px;padding-top:12px;border-top:1px solid #f1f5f9">
+      <!-- 2 TABS BÊN TRÁI -->
+      <div style="display:flex;align-items:center;gap:6px;flex-shrink:0">
+        <button type="button" class="greq-nav-tab active" id="tab-ereq-sent" onclick="switchEreqNavTab('SENT', this)">
+          <i class="fa-solid fa-paper-plane" style="font-size:12px;color:#0284c7"></i>
+          <span>Tôi gửi đi</span>
+          <span class="greq-nav-badge" id="badge-ereq-tab-sent">14</span>
+        </button>
+        <button type="button" class="greq-nav-tab" id="tab-ereq-watching" onclick="switchEreqNavTab('WATCHING', this)">
+          <i class="fa-solid fa-eye" style="font-size:12px;color:#7c3aed"></i>
+          <span>Đang theo dõi</span>
+          <span class="greq-nav-badge" id="badge-ereq-tab-watching">8</span>
+        </button>
+      </div>
+
+      <!-- 3 NÚT THAO TÁC BÊN PHẢI (CỘT, TẠO MỚI, TẢI XUỐNG — KHÔNG CÓ DUYỆT HÀNG LOẠT) -->
+      <div style="display:flex;align-items:center;gap:6px;flex-shrink:0">
+        <button class="btn" onclick="openPicker2('ereq', this)" style="background:#2E3191;color:#fff;border:1px solid #2E3191;border-radius:8px;font-size:12px;padding:5px 10px;font-weight:600;font-size:11.5px;display:inline-flex;align-items:center;gap:4px;cursor:pointer">
+          <span>Cột</span>
+          <i class="fa-solid fa-chevron-down" style="font-size:10px"></i>
+        </button>
+        <button class="btn" onclick="openFindGroupModal()" style="background:#2E3191;color:#fff;border:1px solid #2E3191;border-radius:8px;font-size:12px;padding:5px 12px;font-weight:600;font-size:11.5px;display:inline-flex;align-items:center;gap:4px;cursor:pointer">
+          <span>Tạo mới</span>
+          <i class="fa-solid fa-plus"></i>
+        </button>
+        <button class="btn" onclick="exportEmpRequestsExcel()" style="background:#2E3191;color:#fff;border:1px solid #2E3191;border-radius:8px;font-size:12px;padding:5px 10px;font-weight:600;font-size:11.5px;display:inline-flex;align-items:center;gap:4px;cursor:pointer">
+          <span>Tải xuống</span>
+          <i class="fa-solid fa-download"></i>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- BẢNG ĐỘNG CHUẨN UI TABLE TEMPLATE (12 THÀNH PHẦN) -->
+  <div class="card" style="padding:0;overflow:hidden">
+    <div class="pap-frame" style="overflow:auto">
+      <table class="pap" style="width:100%">
+        <thead><tr id="ereq-head"></tr></thead>
+        <tbody id="ereq-body"></tbody>
+      </table>
+    </div>
+    <div style="display:flex;justify-content:space-between;padding:10px 16px;font-size:12px;color:#64748b;border-top:1px solid #f1f5f9">
+      <div style="display:flex;align-items:center;gap:8px">
+        <span>Hiển thị</span>
+        <select onchange="M7T['ereq'].st.pageSize=+this.value;M7T['ereq'].st.page=1;renderT('ereq')" style="border:1px solid #cbd5e1;border-radius:6px;padding:3px 6px">
+          <option value="10" selected>10 dòng/trang</option>
+          <option value="20">20</option>
+          <option value="50">50</option>
+        </select>
+        <span id="ereq-range"></span>
+      </div>
+      <div id="ereq-pager" style="display:flex;align-items:center;gap:8px"></div>
+    </div>
+  </div>
+</section>
+
+<!-- MODAL CẬP NHẬT ĐƠN ĐỀ XUẤT NHÂN VIÊN (CHỈ DÀNH CHO NHÂN SỰ ĐIỀU CHỈNH THÔNG TIN) -->
+<div id="mdl-emp-req-edit" class="ov" style="display:none">
+  <div class="mdl" style="max-width:620px">
+    <div class="mdl-hd" style="display:flex;align-items:center;justify-content:space-between;padding:14px 20px;border-bottom:1px solid #e2e8f0">
+      <h3 style="display:flex;align-items:center;gap:8px;font-size:15px;margin:0;color:#1e293b">
+        <i class="fa-solid fa-pen-to-square text-[#0284c7]"></i>
+        <span>Cập nhật đơn đề xuất: <b id="ereq-edit-id" style="color:#2E3191"></b></span>
+      </h3>
+      <button class="btn btn-o" onclick="E9closeMdl('mdl-emp-req-edit')"><i class="fa-solid fa-xmark"></i></button>
+    </div>
+    <div class="mdl-bd" style="padding:16px 20px">
+      <!-- Employee Info Summary Card -->
+      <div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:12px 14px;margin-bottom:14px;display:flex;align-items:center;justify-content:space-between">
+        <div style="display:flex;align-items:center;gap:10px">
+          <div id="ereq-edit-avatar" style="width:36px;height:36px;border-radius:999px;background:#2E3191;color:#fff;font-weight:700;display:flex;align-items:center;justify-content:center;font-size:12px">NV</div>
+          <div>
+            <div style="font-size:13px;font-weight:700;color:#1e293b" id="ereq-edit-name">Nguyễn Văn A</div>
+            <div style="font-size:11.5px;color:#64748b" id="ereq-edit-dept-pap">PAP0009 · PT Phần mềm</div>
+          </div>
+        </div>
+        <div id="ereq-edit-type-badge">
+          <span style="display:inline-flex;align-items:center;gap:5px;font-size:11px;font-weight:600;padding:3px 8px;border-radius:6px;background:#eef2ff;color:#2E3191">
+            <i class="fa-solid fa-calendar-days"></i> Nghỉ phép năm
+          </span>
+        </div>
+      </div>
+
+      <!-- Form Inputs -->
+      <div style="display:flex;flex-direction:column;gap:12px">
+        <div>
+          <label class="fl" style="font-size:12px;font-weight:700;color:#0f172a;margin-bottom:4px;display:block">Thời gian áp dụng <span class="text-rose-600">*</span></label>
+          <input type="text" id="ereq-edit-time" class="fi" style="width:100%;height:38px;border:1px solid #cbd5e1;border-radius:8px;padding:0 12px;font-size:12px">
+        </div>
+        <div>
+          <label class="fl" style="font-size:12px;font-weight:700;color:#0f172a;margin-bottom:4px;display:block">Lý do đề xuất <span class="text-rose-600">*</span></label>
+          <textarea id="ereq-edit-reason" class="fi" style="width:100%;min-height:60px;border:1px solid #cbd5e1;border-radius:8px;padding:8px 12px;font-size:12px" rows="2"></textarea>
+        </div>
+        <div>
+          <label class="fl" style="font-size:12px;font-weight:700;color:#0f172a;margin-bottom:4px;display:block">Tài liệu đính kèm / Minh chứng</label>
+          <div style="display:flex;align-items:center;gap:8px">
+            <input type="file" id="ereq-edit-file" style="display:none" onchange="document.getElementById('ereq-edit-file-name').textContent = this.files[0]?.name || 'Chưa chọn tệp'">
+            <button type="button" class="btn btn-o" onclick="document.getElementById('ereq-edit-file').click()" style="font-size:11.5px;padding:5px 12px;display:inline-flex;align-items:center;gap:6px">
+              <i class="fa-solid fa-paperclip text-slate-500"></i> Chọn tệp mới
+            </button>
+            <span id="ereq-edit-file-name" style="font-size:11.5px;color:#64748b;font-style:italic">minh_chung_kem_theo.pdf</span>
+          </div>
+        </div>
+        <div>
+          <label class="fl" style="font-size:12px;font-weight:700;color:#0f172a;margin-bottom:4px;display:block">Ghi chú điều chỉnh của Nhân sự</label>
+          <textarea id="ereq-edit-hr-note" class="fi" style="width:100%;min-height:55px;border:1px solid #cbd5e1;border-radius:8px;padding:8px 12px;font-size:12px" rows="2" placeholder="Ghi nhận căn cứ bổ sung hồ sơ hoặc điều chỉnh theo phân công..."></textarea>
+        </div>
+      </div>
+    </div>
+    <div class="mdl-ft" style="display:flex;justify-content:flex-end;gap:8px;padding:12px 20px;border-top:1px solid #e2e8f0;background:#f8fafc;border-radius:0 0 12px 12px">
+      <button class="btn btn-o" onclick="E9closeMdl('mdl-emp-req-edit')">Hủy</button>
+      <button class="btn btn-p" onclick="saveEditEmpReq()" style="background:#2E3191;border-color:#2E3191;color:#fff;font-weight:600;padding:6px 18px">
+        <i class="fa-solid fa-floppy-disk mr-1.5"></i>Lưu thay đổi
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- ========================================================================= -->
 <!-- PHÂN HỆ QUY TRÌNH PHÊ DUYỆT TRUNG TÂM (BASE REQUEST STYLE CHO NGHỈ PHÉP, GIẢI TRÌNH, OT) -->
 <!-- ========================================================================= -->
 <section id="pg-workflows" class="page" style="display:none">
@@ -645,7 +854,7 @@
       <i class="fa-solid fa-layer-group mr-1.5"></i>Tất cả quy trình (<span id="cnt-cwf-all">9</span>)
     </button>
     <button id="pill-cwf-LEAVE" class="subtab" onclick="filterCwfCat('LEAVE',this)" style="padding:6px 14px;font-size:12px;font-weight:600">
-      <i class="fa-solid fa-umbrella-beach mr-1.5" style="color:#0284c7"></i>Nghỉ phép &amp; Vắng mặt (<span id="cnt-cwf-leave">7</span>)
+      <i class="fa-solid fa-umbrella-beach mr-1.5" style="color:#0284c7"></i>Nghỉ phép &amp; Công tác (<span id="cnt-cwf-leave">7</span>)
     </button>
     <button id="pill-cwf-ADJ" class="subtab" onclick="filterCwfCat('ADJ',this)" style="padding:6px 14px;font-size:12px;font-weight:600">
       <i class="fa-solid fa-sliders mr-1.5" style="color:#6366f1"></i>Giải trình công (<span id="cnt-cwf-adj">1</span>)
@@ -1932,7 +2141,7 @@
 :root{--pap:#2E3191}
 .pap-text{color:var(--pap)}
 .card{background:#fff;border:1px solid #e2e8f0;border-radius:.9rem;box-shadow:0 1px 3px rgba(15,23,42,.05)}
-.btn{border:1px solid #cbd5e1;background:#fff;border-radius:.55rem;padding:6px 12px;font-size:12px;font-weight:600;cursor:pointer;color:#334155;transition:.15s}
+.btn{border:1px solid #cbd5e1;background:#fff;border-radius:.55rem;padding:6px 12px;font-size:12px;font-weight:600;cursor:pointer;color:#0f172a;font-weight:650;transition:.15s}
 .btn:hover{background:#f8fafc}
 .btn-p{background:var(--pap);color:#fff;border-color:var(--pap)}
 .btn-p:hover{background:#242873}
@@ -2019,7 +2228,7 @@ thead .sl,thead .sr{background:var(--pap)}
 .ctrl{background:none;border:none;color:rgba(255,255,255,.75);cursor:pointer;padding:0 2px;font-size:10px}
 .chip{display:inline-block;font-size:10px;font-weight:700;padding:2px 9px;border-radius:999px;border:1px solid}
 .ssel{position:relative;min-width:150px}
-.ssel-btn{width:100%;display:flex;justify-content:space-between;align-items:center;gap:6px;padding:6px 10px;border:1px solid #cbd5e1;border-radius:8px;background:#fff;font-size:12px;cursor:pointer;color:#334155}
+.ssel-btn{width:100%;display:flex;justify-content:space-between;align-items:center;gap:6px;padding:6px 10px;border:1px solid #cbd5e1;border-radius:8px;background:#fff;font-size:12px;cursor:pointer;color:#0f172a;font-weight:650}
 .ssel-panel{display:none;position:absolute;top:calc(100% + 4px);left:0;right:0;background:#fff;border:1px solid #e2e8f0;border-radius:8px;box-shadow:0 10px 26px rgba(15,23,42,.15);z-index:40;padding:6px}
 .ssel.open .ssel-panel{display:block}
 .ssel-search{display:flex;align-items:center;gap:6px;border:1px solid #e2e8f0;border-radius:6px;padding:4px 8px;margin-bottom:5px}
@@ -2039,7 +2248,7 @@ thead .sl,thead .sr{background:var(--pap)}
 .mdl-ft{padding:12px 18px;border-top:1px solid #e2e8f0;display:flex;justify-content:flex-end;gap:8px}
 .frow{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px}
 .frow.full{grid-template-columns:1fr}
-.fl{display:block;font-size:11px;font-weight:600;color:#64748b;margin-bottom:4px}
+.fl{display:block;font-size:12px;font-weight:700;color:#0f172a;margin-bottom:5px;line-height:1.4}
 .fi{width:100%;padding:7px 10px;border:1px solid #cbd5e1;border-radius:8px;font-size:12px}
 .fi:focus{outline:none;border-color:var(--pap)}
 .bal-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:16px}
@@ -2064,7 +2273,7 @@ thead .sl,thead .sr{background:var(--pap)}
   <div id="m9-ledger" class="E9pane active">
     <div style="display:flex;gap:8px;margin-bottom:14px">
       <button class="subtab active" id="led-annual" onclick="E9ledTab('annual',this)"><i class="fa-solid fa-umbrella-beach mr-1"></i>Quỹ phép năm</button>
-      <button class="subtab" id="led-comp" onclick="E9ledTab('comp',this)"><i class="fa-solid fa-clock mr-1"></i>Quỹ nghỉ bù (giờ)</button>
+      <button class="subtab" id="led-comp" onclick="E9ledTab('comp',this)"><i class="fa-solid fa-calendar-check mr-1"></i>Quỹ nghỉ bù (ngày)</button>
     </div>
     <!-- Quỹ phép năm -->
     <div id="led-pane-annual">
@@ -2355,7 +2564,7 @@ thead .sl,thead .sr{background:var(--pap)}
               <div class="flex items-center space-x-2 text-xs text-slate-700 font-medium mb-1">
                 <span>Quản lý nhân sự</span>
                 <span>/</span>
-                <span>Nghỉ phép &amp; Vắng mặt</span>
+                <span>Nghỉ phép &amp; Công tác</span>
                 <span>/</span>
                 <span class="text-[#2E3191] font-bold">Cài đặt &gt;&gt; Quy trình nghỉ phép</span>
               </div>
@@ -2530,7 +2739,7 @@ thead .sl,thead .sr{background:var(--pap)}
       </div>
       <div class="flex gap-2">
         <button class="btn btn-p" onclick="E9openTyPicker(this)" aria-label="Ẩn hiện cột"><i class="fa-solid fa-table-columns mr-1"></i>Cột</button>
-        <button class="btn btn-p" onclick="E9openTypeEdit()" aria-label="Thêm loại nghỉ"><i class="fa-solid fa-plus mr-1"></i>Thêm loại nghỉ</button>
+        <button class="btn btn-p" onclick="E9openTypeEdit()" aria-label="Thêm loại nghỉ/ công tác"><i class="fa-solid fa-plus mr-1"></i>Thêm loại nghỉ/ công tác</button>
         <button class="btn btn-p" onclick="E9toast('Tải xuống file Excel danh mục loại nghỉ')" aria-label="Tải xuống Excel"><i class="fa-solid fa-download mr-1"></i>Tải xuống</button>
       </div>
     </div>
@@ -2738,7 +2947,7 @@ thead .sl,thead .sr{background:var(--pap)}
         <div class="flex items-center space-x-2.5">
           <span class="w-8 h-8 rounded-lg bg-white/10 flex items-center justify-center text-lg text-white"><i class="fa-solid fa-sliders"></i></span>
           <div>
-            <h3 class="text-sm font-bold" id="modal-leave-group-title">Thiết lập Quy trình Nghỉ phép / Vắng mặt</h3>
+            <h3 class="text-sm font-bold" id="modal-leave-group-title">Thiết lập Quy trình Nghỉ phép / Công tác</h3>
             
           </div>
         </div>
@@ -3196,23 +3405,38 @@ thead .sl,thead .sr{background:var(--pap)}
 <div id="mdl-type" class="ov">
   <div class="mdl wide">
     <div class="mdl-hd">
-      <h3 id="mdl-type-title"><i class="fa-solid fa-list-check mr-2"></i>Cấu hình loại nghỉ</h3>
+      <h3 id="mdl-type-title"><i class="fa-solid fa-list-check mr-2"></i>Cấu hình Loại nghỉ/ Công tác</h3>
       <button class="btn btn-o" onclick="E9closeMdl('mdl-type')"><i class="fa-solid fa-xmark"></i></button>
     </div>
     <div class="mdl-bd">
       <div class="frow">
-        <div><label class="fl">Phân nhóm *</label><select class="fi" id="type-f-cat" style="font-weight:600"><option value="Nghỉ phép" selected>Nghỉ phép (Phép năm, bù, cá nhân, BHXH...)</option><option value="Vắng mặt">Vắng mặt (Đi công tác, làm ngoài VP/WFH)</option></select></div>
-        <div><label class="fl">Mã loại nghỉ *</label><input class="fi" id="type-f-code" placeholder="VD: AL, SL, ML..." style="text-transform:uppercase"></div>
-        <div><label class="fl">Ký hiệu chấm công *</label><input class="fi" id="type-f-sym" placeholder="VD: P, O, TS..."></div>
+        <div><label class="fl">Mã loại *</label><input class="fi" id="type-f-code" placeholder="VD: AL, SL, ML, CT..." style="text-transform:uppercase"></div>
+        <div><label class="fl">Tên loại nghỉ/ công tác *</label><input class="fi" id="type-f-name" placeholder="VD: Nghỉ phép năm, Đi công tác..."></div>
       </div>
-      <div class="frow">
-        <div><label class="fl">Tên loại nghỉ *</label><input class="fi" id="type-f-name" placeholder="VD: Nghỉ phép năm..."></div>
+      <div class="frow" style="grid-template-columns:1.2fr 1fr 1fr 0.8fr;align-items:flex-end">
         <div>
-          <label class="fl">Trạng thái *</label>
-          <select class="fi" id="type-f-status">
-            <option value="ACTIVE">Đang hoạt động</option>
-            <option value="INACTIVE">Ngừng hoạt động</option>
-          </select>
+          <label class="fl">Ký hiệu chấm công *</label>
+          <input class="fi" id="type-f-sym" placeholder="VD: P, O, TS, CT..." style="text-transform:uppercase" oninput="E9updateTypeSymPreview()">
+        </div>
+        <div>
+          <label class="fl">Màu ký hiệu công</label>
+          <div style="display:flex;align-items:center;gap:6px">
+            <input type="color" id="type-f-color" value="#2E3191" style="width:36px;height:36px;padding:1px 2px;border:1px solid #cbd5e1;border-radius:6px;cursor:pointer;background:#fff;flex-shrink:0" oninput="E9syncTypeColor('text', this.value)">
+            <input class="fi" id="type-f-color-hex" value="#2E3191" maxlength="7" style="font-family:monospace;font-size:12px;text-transform:uppercase;padding:6px 8px" oninput="E9syncTypeHex('text', this.value)">
+          </div>
+        </div>
+        <div>
+          <label class="fl">Màu nền ký hiệu công</label>
+          <div style="display:flex;align-items:center;gap:6px">
+            <input type="color" id="type-f-bgcolor" value="#EEF2FF" style="width:36px;height:36px;padding:1px 2px;border:1px solid #cbd5e1;border-radius:6px;cursor:pointer;background:#fff;flex-shrink:0" oninput="E9syncTypeColor('bg', this.value)">
+            <input class="fi" id="type-f-bgcolor-hex" value="#EEF2FF" maxlength="7" style="font-family:monospace;font-size:12px;text-transform:uppercase;padding:6px 8px" oninput="E9syncTypeHex('bg', this.value)">
+          </div>
+        </div>
+        <div>
+          <label class="fl">Xem trước</label>
+          <div style="height:36px;display:flex;align-items:center;justify-content:center;background:#f8fafc;border:1px dashed #cbd5e1;border-radius:6px">
+            <span id="type-sym-preview" style="display:inline-flex;align-items:center;justify-content:center;min-width:32px;padding:3px 8px;border-radius:6px;font-weight:700;font-size:12px;color:#2E3191;background:#EEF2FF;border:1px solid rgba(46,49,145,0.25)">P</span>
+          </div>
         </div>
       </div>
       <div class="frow">
@@ -3226,13 +3450,54 @@ thead .sl,thead .sr{background:var(--pap)}
         </div>
         <div><label class="fl">% Lương chi trả (%)</label><input class="fi" id="type-f-rate" type="number" min="0" max="100" value="100"></div>
       </div>
-      <div class="frow full">
-        <div><label class="fl">Căn cứ pháp lý / Điều luật</label><input class="fi" id="type-f-law" placeholder="VD: Đ.113 BLLĐ 2019, Luật BHXH..."></div>
+      <div class="frow">
+        <div><label class="fl">Căn cứ pháp lý / Điều luật</label><input class="fi" id="type-f-law" placeholder="VD: Điều 113 BLLĐ 2019"></div>
+        <div>
+          <label class="fl">Trạng thái *</label>
+          <select class="fi" id="type-f-status">
+            <option value="ACTIVE">Đang hoạt động</option>
+            <option value="INACTIVE">Ngừng hoạt động</option>
+          </select>
+        </div>
       </div>
-      <div style="display:flex;gap:20px;flex-wrap:wrap;margin:4px 0 10px;padding:8px 12px;background:#f8fafc;border:1px solid #e2e8f0;border-radius:6px">
-        <label style="display:flex;align-items:center;gap:7px;font-size:12px;font-weight:600;cursor:pointer"><input type="checkbox" id="type-f-deduct"> Trừ vào Quỹ phép năm</label>
-        <label style="display:flex;align-items:center;gap:7px;font-size:12px;font-weight:600;cursor:pointer"><input type="checkbox" id="type-f-deduct-comp"> Trừ vào Quỹ phép bù</label>
-        <label style="display:flex;align-items:center;gap:7px;font-size:12px;font-weight:600;cursor:pointer"><input type="checkbox" id="type-f-attach"> Bắt buộc đính kèm chứng từ</label>
+      <div class="frow full" style="margin-bottom:8px">
+        <div>
+          <label class="fl">Quy tắc trừ quỹ nghỉ</label>
+          <div style="display:flex;gap:22px;flex-wrap:wrap;align-items:center;padding:9px 12px;background:#f8fafc;border:1px solid #e2e8f0;border-radius:6px">
+            <label style="display:flex;align-items:center;gap:7px;font-size:12px;font-weight:600;cursor:pointer;color:#0f172a;font-weight:650">
+              <input type="radio" name="type-f-deduct-mode" id="type-f-deduct-annual" value="ANNUAL" style="accent-color:#2E3191;width:15px;height:15px">
+              <span>Trừ vào Quỹ phép năm</span>
+            </label>
+            <label style="display:flex;align-items:center;gap:7px;font-size:12px;font-weight:600;cursor:pointer;color:#0f172a;font-weight:650">
+              <input type="radio" name="type-f-deduct-mode" id="type-f-deduct-comp" value="COMP" style="accent-color:#2E3191;width:15px;height:15px">
+              <span>Trừ vào Quỹ phép bù</span>
+            </label>
+            <label style="display:flex;align-items:center;gap:7px;font-size:12px;font-weight:600;cursor:pointer;color:#0f172a;font-weight:650">
+              <input type="radio" name="type-f-deduct-mode" id="type-f-deduct-none" value="NONE" style="accent-color:#2E3191;width:15px;height:15px">
+              <span>Không trừ quỹ</span>
+            </label>
+          </div>
+        </div>
+      </div>
+      <div class="frow" style="margin-bottom:8px">
+        <div>
+          <label class="fl">Yêu cầu đính kèm chứng từ</label>
+          <div style="display:flex;align-items:center;padding:9px 12px;background:#f8fafc;border:1px solid #e2e8f0;border-radius:6px;min-height:38px">
+            <label style="display:flex;align-items:center;gap:8px;font-size:12px;font-weight:650;cursor:pointer;color:#0f172a">
+              <input type="checkbox" id="type-f-attach" style="accent-color:#2E3191;width:15px;height:15px">
+              <span>Bắt buộc đính kèm chứng từ</span>
+            </label>
+          </div>
+        </div>
+        <div>
+          <label class="fl">Kiểm tra dữ liệu chấm công</label>
+          <div style="display:flex;align-items:center;padding:9px 12px;background:#f8fafc;border:1px solid #e2e8f0;border-radius:6px;min-height:38px">
+            <label style="display:flex;align-items:center;gap:8px;font-size:12px;font-weight:650;cursor:pointer;color:#0f172a">
+              <input type="checkbox" id="type-f-check-io" style="accent-color:#2E3191;width:15px;height:15px">
+              <span>Check dữ liệu giờ vào giờ ra</span>
+            </label>
+          </div>
+        </div>
       </div>
       <div class="frow full">
         <div>
@@ -3243,7 +3508,7 @@ thead .sl,thead .sr{background:var(--pap)}
         </div>
     <div class="mdl-ft">
       <button class="btn btn-o" onclick="E9closeMdl('mdl-type')">Hủy</button>
-      <button class="btn btn-p" onclick="E9saveLeaveType()"><i class="fa-solid fa-floppy-disk mr-1"></i>Lưu cấu hình</button>
+      <button class="btn btn-p" id="btn-save-leave-type" onclick="E9saveLeaveType()"><i class="fa-solid fa-floppy-disk mr-1"></i>Lưu thay đổi</button>
     </div>
   </div>
 </div>
@@ -3296,22 +3561,14 @@ thead .sl,thead .sr{background:var(--pap)}
             </select>
           </div>
         </div>
-        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px">
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px">
           <div>
             <label class="fl">Hiệu lực từ ngày</label>
             <input type="date" id="E9pol-f-from" class="fi" value="2026-01-01">
           </div>
           <div>
-            <label class="fl">Hiệu lực đến ngày <span style="font-size:10px;color:#94a3b8">(trống = vô hạn)</span></label>
+            <label class="fl">Hiệu lực đến ngày <span style="font-size:11px;color:#94a3b8">(để trống = vô hạn)</span></label>
             <input type="date" id="E9pol-f-to" class="fi">
-          </div>
-          <div>
-            <label class="fl">Trạng thái áp dụng <span style="color:#e11d48">*</span></label>
-            <select id="E9pol-f-status" class="fi" style="font-weight:600">
-              <option value="ACTIVE" selected>🟢 Đang hoạt động</option>
-              <option value="INACTIVE">⚪ Ngừng hoạt động</option>
-              <option value="DRAFT">🟡 Bản nháp</option>
-            </select>
           </div>
         </div>
       </div>
@@ -3470,7 +3727,7 @@ thead .sl,thead .sr{background:var(--pap)}
                   </div>
                   <div style="display:flex;align-items:center;gap:6px">
                     <span style="font-size:12px;color:#64748b;font-weight:600">Ngày</span>
-                    <select id="E9pol-f-expire-day" class="fi" style="width:72px;font-weight:700;color:#1e1b4b;padding:6px 8px">
+                    <select id="E9pol-f-expire-day" class="fi" style="width:108px;font-weight:700;color:#1e1b4b;padding:6px 8px">
                       <option value="01">01</option>
                       <option value="02">02</option>
                       <option value="03">03</option>
@@ -3547,25 +3804,34 @@ thead .sl,thead .sr{background:var(--pap)}
             </select>
           </div>
         </div>
-        <div style="display:grid;grid-template-columns:1.6fr 1fr;gap:14px">
+        <div style="margin-top:4px">
+          <label class="fl">Căn cứ pháp lý</label>
+          <input class="fi" value="Điểm a Khoản 1 Điều 113 & Điều 114 BLLĐ 2019" style="font-size:12px">
+        </div>
+      </div>
+
+      <!-- Khối 6: Cấu hình hạn phép bù (Tách riêng theo yêu cầu) -->
+      <div class="pol-card" style="background:#fff;border:1px solid #e2e8f0;border-radius:12px;padding:16px;box-shadow:0 1px 2px rgba(0,0,0,0.03)">
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:14px;padding-bottom:10px;border-bottom:1px solid #f1f5f9">
+          <span style="display:inline-flex;align-items:center;justify-content:center;width:24px;height:24px;border-radius:50%;background:#e0e7ff;color:#2E3191;font-size:12px;font-weight:700">6</span>
           <div>
-            <label class="fl">Căn cứ pháp lý</label>
-            <input class="fi" value="Điểm a Khoản 1 Điều 113 & Điều 114 BLLĐ 2019" style="font-size:12px">
+            <h4 style="margin:0;font-size:13px;font-weight:700;color:#1e293b">Cấu hình hạn phép bù (Tích lũy từ làm thêm giờ / OT)</h4>
           </div>
-          <div>
-            <label class="fl">Thời hạn phép bù COMP (OT)</label>
-            <div style="display:flex;align-items:center;gap:6px">
-              <input type="number" class="fi" value="3" style="width:60px;text-align:center">
-              <span style="font-size:11px;color:#64748b">tháng</span>
-            </div>
+        </div>
+        <div>
+          <label class="fl">Thời hạn sử dụng quỹ nghỉ bù <span style="color:#e11d48">*</span></label>
+          <div style="display:flex;align-items:center;gap:8px">
+            <input type="number" id="E9pol-f-comp-expire-val" class="fi" value="90" min="1" max="365" style="width:80px;text-align:center;font-weight:700;color:#1e1b4b">
+            <span style="font-size:12px;font-weight:700;color:#0f172a">ngày</span>
+            <span style="font-size:11px;color:#64748b">(kể từ ngày phát sinh OT)</span>
           </div>
         </div>
       </div>
 
-      <!-- Khối 6: Phạm vi (Loại HĐ) - DROPDOWN CHỌN MULTI THEO YÊU CẦU NGƯỜI DÙNG -->
+      <!-- Khối 7: Phạm vi (Loại HĐ) - DROPDOWN CHỌN MULTI THEO YÊU CẦU NGƯỜI DÙNG -->
       <div class="pol-card" style="background:#fff;border:1px solid #e2e8f0;border-radius:12px;padding:16px;box-shadow:0 1px 2px rgba(0,0,0,0.03)">
         <div style="display:flex;align-items:center;gap:10px;margin-bottom:14px;padding-bottom:10px;border-bottom:1px solid #f1f5f9">
-          <span style="display:inline-flex;align-items:center;justify-content:center;width:24px;height:24px;border-radius:50%;background:#e0e7ff;color:#2E3191;font-size:12px;font-weight:700">6</span>
+          <span style="display:inline-flex;align-items:center;justify-content:center;width:24px;height:24px;border-radius:50%;background:#e0e7ff;color:#2E3191;font-size:12px;font-weight:700">7</span>
           <div>
             <h4 style="margin:0;font-size:13px;font-weight:700;color:#1e293b">Phạm vi áp dụng - Phân loại hợp đồng</h4>
           </div>
@@ -3605,67 +3871,7 @@ thead .sl,thead .sr{background:var(--pap)}
         </div>
       </div>
 
-      <!-- Khối 7: Gán đối tượng áp dụng (Template Chọn Đơn vị & Nhân sự Multi-Select) -->
-      <div class="pol-card" style="background:#fff;border:1px solid #e2e8f0;border-radius:12px;padding:16px;box-shadow:0 1px 2px rgba(0,0,0,0.03)">
-        <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;margin-bottom:12px;padding-bottom:10px;border-bottom:1px solid #f1f5f9">
-          <div style="display:flex;align-items:center;gap:10px">
-            <span style="display:inline-flex;align-items:center;justify-content:center;width:24px;height:24px;border-radius:50%;background:#e0e7ff;color:#2E3191;font-size:12px;font-weight:700">7</span>
-            <div>
-              <h4 style="margin:0;font-size:13px;font-weight:700;color:#1e293b">Đối tượng áp dụng</h4>
-            </div>
-          </div>
-          <!-- 3 Summary Badges -->
-          <div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap">
-            <span id="E9pol-sum-depts" style="font-size:11px;font-weight:600;padding:3px 8px;border-radius:6px;background:#e0e7ff;color:#2E3191">5 phòng ban đã chọn</span>
-            <span id="E9pol-sum-nv" style="font-size:11px;font-weight:600;padding:3px 8px;border-radius:6px;background:#dcfce7;color:#15803d">11 nhân sự đủ ĐK áp dụng</span>
-            <span id="E9pol-sum-excluded" style="font-size:11px;font-weight:600;padding:3px 8px;border-radius:6px;background:#fee2e2;color:#b91c1c">4 loại trừ (HĐ không áp dụng)</span>
-          </div>
-        </div>
-
-        <div style="display:grid;grid-template-columns:300px 1fr;gap:14px;min-height:280px">
-          <!-- CỘT TRÁI: PHÒNG BAN / ĐƠN VỊ -->
-          <div style="background:#fff;border:1px solid #e2e8f0;border-radius:10px;display:flex;flex-direction:column;overflow:hidden">
-            <div style="padding:8px 12px;background:#f8fafc;border-bottom:1px solid #e2e8f0;display:flex;justify-content:space-between;align-items:center">
-              <span style="font-size:11px;font-weight:700;color:#334155"><i class="fa-solid fa-building mr-1.5 text-[#2E3191]"></i>Phòng ban / Đơn vị</span>
-              <label style="font-size:11px;color:#2E3191;font-weight:600;cursor:pointer;display:inline-flex;align-items:center;gap:4px;margin:0">
-                <input type="checkbox" id="E9pol-dept-all-chk" checked onchange="E9polToggleAllDepts(this.checked)" style="accent-color:#2E3191"> Tất cả
-              </label>
-            </div>
-            <div style="padding:6px 10px;border-bottom:1px solid #f1f5f9;background:#fff">
-              <div style="position:relative">
-                <i class="fa-solid fa-magnifying-glass" style="position:absolute;left:8px;top:50%;transform:translateY(-50%);color:#94a3b8;font-size:11px"></i>
-                <input id="E9pol-dept-search" class="fi" style="padding-left:26px;height:28px;font-size:11px;width:100%;box-sizing:border-box" placeholder="Tìm phòng ban…" oninput="E9polFilterDepts(this.value)">
-              </div>
-            </div>
-            <div id="E9pol-dept-tree" style="flex:1;max-height:240px;overflow-y:auto;padding:8px;font-size:11px;background:#fafbfc"></div>
-          </div>
-
-          <!-- CỘT PHẢI: NHÂN SỰ ÁP DỤNG -->
-          <div style="background:#fff;border:1px solid #e2e8f0;border-radius:10px;display:flex;flex-direction:column;overflow:hidden">
-            <div style="padding:7px 12px;background:#f8fafc;border-bottom:1px solid #e2e8f0;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:6px">
-              <div style="display:flex;align-items:center;gap:8px">
-                <span style="font-size:11px;font-weight:700;color:#334155"><i class="fa-solid fa-user-check mr-1.5 text-[#2E3191]"></i>Nhân sự áp dụng</span>
-                <label style="font-size:11px;color:#64748b;cursor:pointer;display:inline-flex;align-items:center;gap:4px;margin:0">
-                  <input type="checkbox" id="E9pol-nv-all-chk" checked onchange="E9polNvAll(this.checked)" style="accent-color:#2E3191"> Chọn tất cả đủ ĐK
-                </label>
-              </div>
-              <!-- Status filter tabs -->
-              <div style="display:flex;background:#f1f5f9;border-radius:6px;padding:2px;gap:2px;font-size:10px">
-                <button type="button" id="E9pol-tab-all" onclick="E9polSetNvTab('all')" style="border:0;background:#2E3191;color:#fff;font-weight:600;padding:2px 7px;border-radius:4px;cursor:pointer">Tất cả (<span id="E9pol-tab-nv-all-cnt">0</span>)</button>
-                <button type="button" id="E9pol-tab-eligible" onclick="E9polSetNvTab('eligible')" style="border:0;background:#f1f5f9;color:#475569;font-weight:normal;padding:2px 7px;border-radius:4px;cursor:pointer">Đủ ĐK (<span id="E9pol-tab-nv-el-cnt">0</span>)</button>
-                <button type="button" id="E9pol-tab-ineligible" onclick="E9polSetNvTab('ineligible')" style="border:0;background:#f1f5f9;color:#475569;font-weight:normal;padding:2px 7px;border-radius:4px;cursor:pointer">Không thỏa HĐ (<span id="E9pol-tab-nv-inel-cnt">0</span>)</button>
-              </div>
-            </div>
-            <div style="padding:6px 10px;border-bottom:1px solid #f1f5f9;background:#fff">
-              <div style="position:relative">
-                <i class="fa-solid fa-magnifying-glass" style="position:absolute;left:8px;top:50%;transform:translateY(-50%);color:#94a3b8;font-size:11px"></i>
-                <input id="E9pol-nv-search" class="fi" style="padding-left:26px;height:28px;font-size:11px;width:100%;box-sizing:border-box" placeholder="Tìm theo tên, mã NV, chức danh…" oninput="E9polFilterNv(this.value)">
-              </div>
-            </div>
-            <div id="E9pol-nv-list" style="flex:1;max-height:240px;overflow-y:auto;padding:6px;font-size:11px;background:#fff"></div>
-          </div>
-        </div>
-      </div>
+      
 
     </div>
 
@@ -3833,6 +4039,7 @@ thead .sl,thead .sr{background:var(--pap)}
 function nav(pg,el){
   if (pg === 'm08') { navM8('sum', el); return; }
   if (pg === 'requests' && typeof initGreqTable === 'function') { setTimeout(initGreqTable, 50); }
+  if (pg === 'emp-requests' && typeof initEmpReqTable === 'function') { setTimeout(initEmpReqTable, 50); }
   if (pg === 'workflows' && typeof initCwfTable === 'function') { setTimeout(initCwfTable, 50); }
   document.querySelectorAll('.page').forEach(function(p){ p.classList.remove('active'); p.style.display = 'none'; });
   var pgEl = document.getElementById('pg-'+pg);
@@ -4188,7 +4395,7 @@ function navM9(k, el){
     'ledger': { title: 'Quỹ phép & Nghỉ bù', icon: 'fa-solid fa-book' },
     'wf': { title: 'Quy trình nghỉ phép', icon: 'fa-solid fa-diagram-project' },
     'pol': { title: 'Chính sách nghỉ phép', icon: 'fa-solid fa-gear' },
-    'types': { title: 'Loại nghỉ & Vắng mặt', icon: 'fa-solid fa-list-check' }
+    'types': { title: 'Loại nghỉ/ Công tác', icon: 'fa-solid fa-list-check' }
   };
   var curSub = subTitles[k] || subTitles['ledger'];
   if(k === 'wf' && typeof renderLeaveGroupsTable === 'function'){ renderLeaveGroupsTable(); }
@@ -9163,8 +9370,9 @@ function submitOtApproval() {
     if (isComp && typeof ledCompData !== 'undefined') {
       const compEmp = ledCompData.find(x => x.name === nvName || x.user === nvName || x.pap === 'PAP0009' || x.pap === 'NV001');
       if (compEmp) {
-        compEmp.earned = (parseFloat(compEmp.earned || 0) + approvedHours * 1.5).toFixed(1);
-        compEmp.remain = (parseFloat(compEmp.remain || 0) + approvedHours * 1.5).toFixed(1);
+        const creditDays = ticket.compDays || 1.0;
+        compEmp.earned = (parseFloat(compEmp.earned || 0) + creditDays).toFixed(1);
+        compEmp.remain = (parseFloat(compEmp.remain || 0) + creditDays).toFixed(1);
       }
     }
 
@@ -10261,89 +10469,408 @@ function E9chipStatus(s){const m={PENDING:['#fffbeb','#b45309','Chờ duyệt'],
 
 /* ===== DATA ===== */
 const typesData=[
-  {code:'AL',cat:'Nghỉ phép',name:'Nghỉ phép năm',sym:'P',rate:100,src:'COMPANY',srcText:'Công ty chi trả lương (100%)',deduct:'Quỹ phép năm',deductAnnual:true,deductComp:false,attach:'Không',minUnit:'HALF_DAY',minUnitText:'0.5 ngày',law:'Điều 113, 114 BLLĐ 2019',desc:'Nghỉ phép hằng năm hưởng 100% lương theo HĐLĐ. Duy nhất loại nghỉ này trừ trực tiếp vào quỹ ngày phép năm.',status:'ACTIVE',created:'Admin HR • 01/01/2026',updated:'-'},
-  {code:'CL',cat:'Nghỉ phép',name:'Nghỉ phép bù',sym:'NB',rate:100,src:'COMPANY',srcText:'Công ty chi trả lương (100%)',deduct:'Quỹ phép bù',deductAnnual:false,deductComp:true,attach:'Không',minUnit:'HALF_DAY',minUnitText:'0.5 ngày',law:'Khoản 3 Điều 111 BLLĐ 2019',desc:'Nghỉ bù tương ứng với số giờ làm thêm (OT) hoặc trực ca lễ tết đã tích lũy trong Quỹ nghỉ bù. Hưởng nguyên 100% lương, khấu trừ quỹ phép bù, không trừ quỹ phép năm.',status:'ACTIVE',created:'Admin HR • 01/01/2026',updated:'-'},
-  {code:'PL',cat:'Nghỉ phép',name:'Nghỉ cá nhân',sym:'VR',rate:100,src:'COMPANY',srcText:'Công ty chi trả lương (100%)',deduct:'Không',deductAnnual:false,deductComp:false,attach:'Bắt buộc',minUnit:'FULL_DAY',minUnitText:'1 ngày',law:'Khoản 1 Điều 115 BLLĐ',desc:'Nghỉ việc riêng có hưởng lương theo chế độ: Bản thân kết hôn (3 ngày), con kết hôn (1 ngày), tang chế tứ thân phụ mẫu (3 ngày). Không trừ quỹ phép năm.',status:'ACTIVE',created:'Admin HR • 01/01/2026',updated:'-'},
-  {code:'BT',cat:'Vắng mặt',name:'Đi công tác',sym:'CT',rate:100,src:'COMPANY',srcText:'Công ty chi trả lương (100%)',deduct:'Không',deductAnnual:false,deductComp:false,attach:'Bắt buộc',minUnit:'FULL_DAY',minUnitText:'1 ngày',law:'Quy chế công tác PAP-QC03',desc:'Cử đi công tác đối tác, cầu cảng, khách hàng hoặc ngoại tỉnh theo quyết định điều động. Hưởng 100% lương + Phụ cấp lưu trú.',status:'ACTIVE',created:'Admin HR • 01/01/2026',updated:'-'},
-  {code:'WFH',cat:'Vắng mặt',name:'Làm việc ngoài văn phòng',sym:'WFH',rate:100,src:'COMPANY',srcText:'Công ty chi trả lương (100%)',deduct:'Không',deductAnnual:false,deductComp:false,attach:'Không',minUnit:'HALF_DAY',minUnitText:'0.5 ngày',law:'Quy chế làm việc từ xa PAP-QC05',desc:'Làm việc ngoài văn phòng, tại nhà (WFH) hoặc offsite hiện trường cầu bến có phê duyệt. Tính đủ công ngày, không trừ quỹ phép.',status:'ACTIVE',created:'Admin HR • 01/01/2026',updated:'-'},
-  {code:'UL',cat:'Nghỉ phép',name:'Nghỉ không lương',sym:'KL',rate:0,src:'UNPAID',srcText:'Không hưởng lương (0%)',deduct:'Không',deductAnnual:false,deductComp:false,attach:'Không',minUnit:'HALF_DAY',minUnitText:'0.5 ngày',law:'Khoản 2, 3 Điều 115 BLLĐ',desc:'Nghỉ việc riêng không hưởng lương thỏa thuận với người sử dụng lao động khi nhân sự đã hết quỹ phép năm.',status:'ACTIVE',created:'Admin HR • 01/01/2026',updated:'-'},
-  {code:'OTHER',cat:'Nghỉ phép',name:'Các loại khác',sym:'BH',rate:75,src:'BHXH',srcText:'Bảo hiểm xã hội (BHXH) chi trả',deduct:'Không',deductAnnual:false,deductComp:false,attach:'Bắt buộc',minUnit:'HALF_DAY',minUnitText:'0.5 ngày',law:'Luật BHXH 2014',desc:'Bao gồm các chế độ đặc thù hưởng trợ cấp BHXH: Nghỉ ốm đau bản thân (SL), Thai sản (ML), Dưỡng sức phục hồi sức khỏe (CVL). Không trừ quỹ phép.',status:'ACTIVE',created:'Admin HR • 01/01/2026',updated:'-'}
+  {code:'AL',cat:'Nghỉ phép',name:'Nghỉ phép năm',sym:'P',symColor:'#2E3191',symBg:'#EEF2FF',rate:100,src:'COMPANY',srcText:'Công ty chi trả lương (100%)',deduct:'Quỹ phép năm',deductAnnual:true,deductComp:false,attach:'Không',checkIO:false,minUnit:'HALF_DAY',minUnitText:'0.5 ngày',law:'Điều 113, 114 BLLĐ 2019',desc:'Nghỉ phép hằng năm hưởng 100% lương theo HĐLĐ. Duy nhất loại nghỉ này trừ trực tiếp vào quỹ ngày phép năm.',status:'ACTIVE',created:'Admin HR • 01/01/2026',updated:'-'},
+  {code:'CL',cat:'Nghỉ phép',name:'Nghỉ phép bù',sym:'NB',symColor:'#047857',symBg:'#ECFDF5',rate:100,src:'COMPANY',srcText:'Công ty chi trả lương (100%)',deduct:'Quỹ phép bù',deductAnnual:false,deductComp:true,attach:'Không',checkIO:false,minUnit:'HALF_DAY',minUnitText:'0.5 ngày',law:'Khoản 3 Điều 111 BLLĐ 2019',desc:'Nghỉ bù tương ứng với số giờ làm thêm (OT) hoặc trực ca lễ tết đã tích lũy trong Quỹ nghỉ bù. Hưởng nguyên 100% lương, khấu trừ quỹ phép bù, không trừ quỹ phép năm.',status:'ACTIVE',created:'Admin HR • 01/01/2026',updated:'-'},
+  {code:'PL',cat:'Nghỉ phép',name:'Nghỉ cá nhân',sym:'VR',symColor:'#B45309',symBg:'#FFFBEB',rate:100,src:'COMPANY',srcText:'Công ty chi trả lương (100%)',deduct:'Không',deductAnnual:false,deductComp:false,attach:'Bắt buộc',checkIO:false,minUnit:'FULL_DAY',minUnitText:'1 ngày',law:'Khoản 1 Điều 115 BLLĐ',desc:'Nghỉ việc riêng có hưởng lương theo chế độ: Bản thân kết hôn (3 ngày), con kết hôn (1 ngày), tang chế tứ thân phụ mẫu (3 ngày). Không trừ quỹ phép năm.',status:'ACTIVE',created:'Admin HR • 01/01/2026',updated:'-'},
+  {code:'BT',cat:'Công tác',name:'Đi công tác',sym:'CT',symColor:'#7C3AED',symBg:'#F5F3FF',rate:100,src:'COMPANY',srcText:'Công ty chi trả lương (100%)',deduct:'Không',deductAnnual:false,deductComp:false,attach:'Bắt buộc',checkIO:false,minUnit:'FULL_DAY',minUnitText:'1 ngày',law:'Quy chế công tác PAP-QC03',desc:'Cử đi công tác đối tác, cầu cảng, khách hàng hoặc ngoại tỉnh theo quyết định điều động. Hưởng 100% lương + Phụ cấp lưu trú.',status:'ACTIVE',created:'Admin HR • 01/01/2026',updated:'-'},
+  {code:'WFH',cat:'Công tác',name:'Làm việc ngoài văn phòng',sym:'WFH',symColor:'#0284C7',symBg:'#E0F2FE',rate:100,src:'COMPANY',srcText:'Công ty chi trả lương (100%)',deduct:'Không',deductAnnual:false,deductComp:false,attach:'Không',checkIO:true,minUnit:'HALF_DAY',minUnitText:'0.5 ngày',law:'Quy chế làm việc từ xa PAP-QC05',desc:'Làm việc ngoài văn phòng, tại nhà (WFH) hoặc offsite hiện trường cầu bến có phê duyệt. Tính đủ công ngày, không trừ quỹ phép.',status:'ACTIVE',created:'Admin HR • 01/01/2026',updated:'-'},
+  {code:'UL',cat:'Nghỉ phép',name:'Nghỉ không lương',sym:'KL',symColor:'#475569',symBg:'#F1F5F9',rate:0,src:'UNPAID',srcText:'Không hưởng lương (0%)',deduct:'Không',deductAnnual:false,deductComp:false,attach:'Không',checkIO:false,minUnit:'HALF_DAY',minUnitText:'0.5 ngày',law:'Khoản 2, 3 Điều 115 BLLĐ',desc:'Nghỉ việc riêng không hưởng lương thỏa thuận với người sử dụng lao động khi nhân sự đã hết quỹ phép năm.',status:'ACTIVE',created:'Admin HR • 01/01/2026',updated:'-'},
+  {code:'OTHER',cat:'Nghỉ phép',name:'Các loại khác',sym:'BH',symColor:'#BE123C',symBg:'#FFF1F2',rate:75,src:'BHXH',srcText:'Bảo hiểm xã hội (BHXH) chi trả',deduct:'Không',deductAnnual:false,deductComp:false,attach:'Bắt buộc',checkIO:false,minUnit:'HALF_DAY',minUnitText:'0.5 ngày',law:'Luật BHXH 2014',desc:'Bao gồm các chế độ đặc thù hưởng trợ cấp BHXH: Nghỉ ốm đau bản thân (SL), Thai sản (ML), Dưỡng sức phục hồi sức khỏe (CVL). Không trừ quỹ phép.',status:'ACTIVE',created:'Admin HR • 01/01/2026',updated:'-'}
 ];
   const ledAnnualData=[
-  {pap:'PAP0001',nv:'Phạm Quốc Tuấn',ini:'PQT',color:'#2E3191',pb:'Ban TGĐ',chuc_vu:'Tổng Giám đốc',ngay_vao_lam:'15/01/2018',tham_nien_ct:'8 năm',ton:2,het_han:0,tn:1,nam:12,used:3,remain:12,year:2026,hist:[{id:'NP-2026-001',created:'08/02/2026',title:'Đơn xin nghỉ phép năm',type:'Phép năm',from:'10/02/2026',to:'11/02/2026',days:2,st:'Đã duyệt'},{id:'NP-2026-008',created:'22/04/2026',title:'Đơn xin nghỉ phép năm',type:'Phép năm',from:'25/04/2026',to:'25/04/2026',days:1,st:'Đã duyệt'}]},
-  {pap:'PAP0002',nv:'Nguyễn Văn B',ini:'NVB',color:'#0284c7',pb:'Kỹ thuật',chuc_vu:'Kỹ sư trưởng',ngay_vao_lam:'10/03/2021',tham_nien_ct:'5 năm',ton:2,het_han:1,tn:1,nam:12,used:2.5,remain:11.5,year:2026,hist:[{id:'NP-2026-003',created:'12/03/2026',title:'Đơn xin nghỉ phép năm',type:'Phép năm',from:'15/03/2026',to:'17/03/2026',days:2.5,st:'Đã duyệt'}]},
-  {pap:'PAP0009',nv:'Nguyễn Văn A',ini:'NVA',color:'#059669',pb:'PT Phần mềm',chuc_vu:'Chuyên viên phát triển',ngay_vao_lam:'01/06/2023',tham_nien_ct:'3 năm',ton:0,het_han:0,tn:0,nam:12,used:1,remain:11,year:2026,hist:[{id:'NP-2026-012',created:'28/04/2026',title:'Đơn xin nghỉ phép năm',type:'Phép năm',from:'02/05/2026',to:'02/05/2026',days:1,st:'Đã duyệt'}]},
-  {pap:'PAP0014',nv:'Trần Thị Hoa',ini:'TTH',color:'#d97706',pb:'Khai thác',chuc_vu:'Điều độ viên cảng',ngay_vao_lam:'12/08/2020',tham_nien_ct:'6 năm',ton:3,het_han:1,tn:1,nam:12,used:3,remain:12,year:2026,hist:[{id:'NP-2026-015',created:'05/01/2026',title:'Đơn xin nghỉ phép năm',type:'Phép năm',from:'08/01/2026',to:'11/01/2026',days:4,st:'Đã duyệt'}]},
-  {pap:'PAP0005',nv:'Lê Văn Thắng',ini:'LVT',color:'#7c3aed',pb:'Kỹ thuật',chuc_vu:'Kỹ thuật viên cơ điện',ngay_vao_lam:'05/04/2015',tham_nien_ct:'11 năm',ton:1,het_han:1,tn:2,nam:12,used:2,remain:12,year:2026,hist:[{id:'NP-2026-017',created:'10/04/2026',title:'Đơn xin nghỉ phép năm',type:'Phép năm',from:'14/04/2026',to:'15/04/2026',days:2,st:'Đã duyệt'}]},
-  {pap:'PAP0011',nv:'Phạm Thị Bình',ini:'PTB',color:'#db2777',pb:'Nhân sự',chuc_vu:'Chuyên viên nhân sự',ngay_vao_lam:'20/11/2022',tham_nien_ct:'3 năm',ton:1,het_han:0,tn:0,nam:12,used:0,remain:13,year:2026,hist:[]},
-  {pap:'PAP0001',nv:'Phạm Quốc Tuấn',ini:'PQT',color:'#2E3191',pb:'Ban TGĐ',chuc_vu:'Tổng Giám đốc',ngay_vao_lam:'15/01/2018',tham_nien_ct:'7 năm',ton:3,het_han:0,tn:1,nam:12,used:14,remain:2,year:2025,hist:[]},
-  {pap:'PAP0009',nv:'Nguyễn Văn A',ini:'NVA',color:'#059669',pb:'PT Phần mềm',chuc_vu:'Chuyên viên phát triển',ngay_vao_lam:'01/06/2023',tham_nien_ct:'2 năm',ton:0,het_han:0,tn:0,nam:12,used:12,remain:0,year:2025,hist:[]}
+  {pap:'PAP0001',nv:'Phạm Quốc Tuấn',ini:'PQT',color:'#2E3191',pb:'Ban TGĐ',chuc_vu:'Tổng Giám đốc',ngay_vao_lam:'15/01/2018',ngay_ky_hd:'15/03/2018',ngay_ky_hd:'15/03/2018',tham_nien_ct:'8 năm',ton:2,het_han:0,tn:1,nam:12,used:3,remain:12,year:2026,hist:[{id:'NP-2026-001',created:'08/02/2026',title:'Đơn xin nghỉ phép năm',type:'Phép năm',from:'10/02/2026',to:'11/02/2026',days:2,st:'Đã duyệt'},{id:'NP-2026-008',created:'22/04/2026',title:'Đơn xin nghỉ phép năm',type:'Phép năm',from:'25/04/2026',to:'25/04/2026',days:1,st:'Đã duyệt'}]},
+  {pap:'PAP0002',nv:'Nguyễn Văn B',ini:'NVB',color:'#0284c7',pb:'Kỹ thuật',chuc_vu:'Kỹ sư trưởng',ngay_vao_lam:'10/03/2021',ngay_ky_hd:'10/05/2021',tham_nien_ct:'5 năm',ton:2,het_han:1,tn:1,nam:12,used:2.5,remain:11.5,year:2026,hist:[{id:'NP-2026-003',created:'12/03/2026',title:'Đơn xin nghỉ phép năm',type:'Phép năm',from:'15/03/2026',to:'17/03/2026',days:2.5,st:'Đã duyệt'}]},
+  {pap:'PAP0009',nv:'Nguyễn Văn A',ini:'NVA',color:'#059669',pb:'PT Phần mềm',chuc_vu:'Chuyên viên phát triển',ngay_vao_lam:'01/06/2023',ngay_ky_hd:'01/08/2023',tham_nien_ct:'3 năm',ton:0,het_han:0,tn:0,nam:12,used:1,remain:11,year:2026,hist:[{id:'NP-2026-012',created:'28/04/2026',title:'Đơn xin nghỉ phép năm',type:'Phép năm',from:'02/05/2026',to:'02/05/2026',days:1,st:'Đã duyệt'}]},
+  {pap:'PAP0014',nv:'Trần Thị Hoa',ini:'TTH',color:'#d97706',pb:'Khai thác',chuc_vu:'Điều độ viên cảng',ngay_vao_lam:'12/08/2020',ngay_ky_hd:'12/10/2020',tham_nien_ct:'6 năm',ton:3,het_han:1,tn:1,nam:12,used:3,remain:12,year:2026,hist:[{id:'NP-2026-015',created:'05/01/2026',title:'Đơn xin nghỉ phép năm',type:'Phép năm',from:'08/01/2026',to:'11/01/2026',days:4,st:'Đã duyệt'}]},
+  {pap:'PAP0005',nv:'Lê Văn Thắng',ini:'LVT',color:'#7c3aed',pb:'Kỹ thuật',chuc_vu:'Kỹ thuật viên cơ điện',ngay_vao_lam:'05/04/2015',ngay_ky_hd:'05/06/2015',tham_nien_ct:'11 năm',ton:1,het_han:1,tn:2,nam:12,used:2,remain:12,year:2026,hist:[{id:'NP-2026-017',created:'10/04/2026',title:'Đơn xin nghỉ phép năm',type:'Phép năm',from:'14/04/2026',to:'15/04/2026',days:2,st:'Đã duyệt'}]},
+  {pap:'PAP0011',nv:'Phạm Thị Bình',ini:'PTB',color:'#db2777',pb:'Nhân sự',chuc_vu:'Chuyên viên nhân sự',ngay_vao_lam:'20/11/2022',ngay_ky_hd:'20/01/2023',ngay_ky_hd:'20/01/2023',tham_nien_ct:'3 năm',ton:1,het_han:0,tn:0,nam:12,used:0,remain:13,year:2026,hist:[]},
+  {pap:'PAP0001',nv:'Phạm Quốc Tuấn',ini:'PQT',color:'#2E3191',pb:'Ban TGĐ',chuc_vu:'Tổng Giám đốc',ngay_vao_lam:'15/01/2018',ngay_ky_hd:'15/03/2018',tham_nien_ct:'7 năm',ton:3,het_han:0,tn:1,nam:12,used:14,remain:2,year:2025,hist:[]},
+  {pap:'PAP0009',nv:'Nguyễn Văn A',ini:'NVA',color:'#059669',pb:'PT Phần mềm',chuc_vu:'Chuyên viên phát triển',ngay_vao_lam:'01/06/2023',ngay_ky_hd:'01/08/2023',tham_nien_ct:'2 năm',ton:0,het_han:0,tn:0,nam:12,used:12,remain:0,year:2025,hist:[]}
   ];
 const ledCompData=[
   {
-    pap:'PAP0009',nv:'Nguyễn Văn A',ini:'NVA',color:'#2E3191',pb:'PT Phần mềm',chuc_vu:'Lập trình viên Senior',ngay_vao_lam:'15/03/2019',
-    ton:8,het_han:4,earned:24,used:8,remain:20,bal:20,year:2026,
-    hist:[
-      {date:'10/01/2026',title:'Làm thêm giờ trực đêm hệ thống TOS',from:'10/01/2026',to:'10/01/2026',expiry:'10/04/2026',h:'+16h',type:'Tích lũy OT',ref:'OT-2026-0012',st:'Đã duyệt',note:'Trực đêm tàu container TOS v2 (Đã dùng 8h)'},
-      {date:'02/02/2026',title:'Đơn nghỉ bù sau ca trực TOS',from:'02/02/2026',to:'02/02/2026',expiry:'—',h:'-8h',type:'Nghỉ bù',ref:'NP-2026-0031',st:'Đã duyệt',note:'Nghỉ bù trừ gói 10/01/2026'},
-      {date:'15/02/2026',title:'Làm thêm giờ bảo trì mạng core cuối tuần',from:'15/02/2026',to:'15/02/2026',expiry:'30/06/2026',h:'+8h',type:'Tích lũy OT',ref:'OT-2026-0045',st:'Đã duyệt',note:'Bảo trì cáp quang bến số 1 (Hạn dùng 30/06)'},
-      {date:'31/03/2026',title:'Hết hạn phép bù quý 4/2025',from:'31/03/2026',to:'31/03/2026',expiry:'31/03/2026',h:'-4h',type:'Hết hạn',ref:'QD-HH-2026-Q1',st:'Hệ thống chốt',note:'Hết hạn số dư tồn quý 4/2025 theo quy chế'}
+    "pap": "PAP0009",
+    "nv": "Nguyễn Văn A",
+    "ini": "NVA",
+    "color": "#2E3191",
+    "pb": "PT Phần mềm",
+    "chuc_vu": "Lập trình viên Senior",
+    "ngay_vao_lam": "15/03/2019",
+    "ngay_ky_hd": "15/05/2019",
+    "ton": 1,
+    "het_han": 0.5,
+    "earned": 3,
+    "used": 1,
+    "remain": 2.5,
+    "bal": 2.5,
+    "year": 2026,
+    "hist": [
+      {
+        "date": "10/01/2026",
+        "title": "Làm thêm giờ trực đêm hệ thống TOS",
+        "from": "10/01/2026",
+        "to": "10/01/2026",
+        "expiry": "10/04/2026",
+        "h": "+2.0 ngày",
+        "type": "Tích lũy OT",
+        "ref": "OT-2026-0012",
+        "st": "Đã duyệt",
+        "note": "Trực đêm tàu container TOS v2 (Đã dùng 1.0 ngày)"
+      },
+      {
+        "date": "02/02/2026",
+        "title": "Đơn nghỉ bù sau ca trực TOS",
+        "from": "02/02/2026",
+        "to": "02/02/2026",
+        "expiry": "—",
+        "h": "-1.0 ngày",
+        "type": "Nghỉ bù",
+        "ref": "NP-2026-0031",
+        "st": "Đã duyệt",
+        "note": "Nghỉ bù trừ gói 10/01/2026"
+      },
+      {
+        "date": "15/02/2026",
+        "title": "Làm thêm giờ bảo trì mạng core cuối tuần",
+        "from": "15/02/2026",
+        "to": "15/02/2026",
+        "expiry": "30/06/2026",
+        "h": "+1.0 ngày",
+        "type": "Tích lũy OT",
+        "ref": "OT-2026-0045",
+        "st": "Đã duyệt",
+        "note": "Bảo trì cáp quang bến số 1 (Hạn dùng 30/06)"
+      },
+      {
+        "date": "31/03/2026",
+        "title": "Hết hạn phép bù quý 4/2025",
+        "from": "31/03/2026",
+        "to": "31/03/2026",
+        "expiry": "31/03/2026",
+        "h": "-0.5 ngày",
+        "type": "Hết hạn",
+        "ref": "QD-HH-2026-Q1",
+        "st": "Hệ thống chốt",
+        "note": "Hết hạn số dư tồn quý 4/2025 theo quy chế"
+      }
     ]
   },
   {
-    pap:'PAP0014',nv:'Trần Thị Hoa',ini:'TTH',color:'#0284c7',pb:'Khai thác cảng',chuc_vu:'Nhân viên điều độ bãi',ngay_vao_lam:'10/06/2020',
-    ton:4,het_han:0,earned:20,used:12,remain:12,bal:12,year:2026,
-    hist:[
-      {date:'18/01/2026',title:'Làm thêm ca 3 giải phóng tàu Evergreen',from:'18/01/2026',to:'18/01/2026',h:'+12h',type:'Tích lũy OT',ref:'OT-2026-0018',st:'Đã duyệt',note:'Trực điều độ bãi ca đêm'},
-      {date:'05/02/2026',title:'Làm thêm ngày Chủ nhật đón tàu Maersk',from:'05/02/2026',to:'05/02/2026',h:'+8h',type:'Tích lũy OT',ref:'OT-2026-0034',st:'Đã duyệt',note:'Tàu cập đột xuất'},
-      {date:'28/10/2026',title:'Đơn xin nghỉ bù sau ca trực đêm',from:'28/10/2026',to:'28/10/2026',h:'-8h',type:'Nghỉ bù',ref:'NP-2026-0020',st:'Đã duyệt',note:'Nghỉ bù hồi phục sức khỏe'},
-      {date:'12/10/2026',title:'Đơn nghỉ bù nửa ca',from:'12/10/2026',to:'12/10/2026',h:'-4h',type:'Nghỉ bù',ref:'NP-2026-0014',st:'Đã duyệt',note:'Nghỉ bù việc cá nhân'}
+    "pap": "PAP0014",
+    "nv": "Trần Thị Hoa",
+    "ini": "TTH",
+    "color": "#0284c7",
+    "pb": "Khai thác cảng",
+    "chuc_vu": "Nhân viên điều độ bãi",
+    "ngay_vao_lam": "10/06/2020",
+    "ngay_ky_hd": "10/08/2020",
+    "ton": 0.5,
+    "het_han": 0,
+    "earned": 2.5,
+    "used": 1.5,
+    "remain": 1.5,
+    "bal": 1.5,
+    "year": 2026,
+    "hist": [
+      {
+        "date": "18/01/2026",
+        "title": "Làm thêm ca 3 giải phóng tàu Evergreen",
+        "from": "18/01/2026",
+        "to": "18/01/2026",
+        "h": "+1.5 ngày",
+        "type": "Tích lũy OT",
+        "ref": "OT-2026-0018",
+        "st": "Đã duyệt",
+        "note": "Trực điều độ bãi ca đêm"
+      },
+      {
+        "date": "05/02/2026",
+        "title": "Làm thêm ngày Chủ nhật đón tàu Maersk",
+        "from": "05/02/2026",
+        "to": "05/02/2026",
+        "h": "+1.0 ngày",
+        "type": "Tích lũy OT",
+        "ref": "OT-2026-0034",
+        "st": "Đã duyệt",
+        "note": "Tàu cập đột xuất"
+      },
+      {
+        "date": "28/10/2026",
+        "title": "Đơn xin nghỉ bù sau ca trực đêm",
+        "from": "28/10/2026",
+        "to": "28/10/2026",
+        "h": "-1.0 ngày",
+        "type": "Nghỉ bù",
+        "ref": "NP-2026-0020",
+        "st": "Đã duyệt",
+        "note": "Nghỉ bù hồi phục sức khỏe"
+      },
+      {
+        "date": "12/10/2026",
+        "title": "Đơn nghỉ bù nửa ca",
+        "from": "12/10/2026",
+        "to": "12/10/2026",
+        "h": "-0.5 ngày",
+        "type": "Nghỉ bù",
+        "ref": "NP-2026-0014",
+        "st": "Đã duyệt",
+        "note": "Nghỉ bù việc cá nhân"
+      }
     ]
   },
   {
-    pap:'PAP0005',nv:'Lê Văn Thắng',ini:'LVT',color:'#059669',pb:'Kỹ thuật - CNTT',chuc_vu:'Kỹ sư hệ thống',ngay_vao_lam:'01/08/2021',
-    ton:4,het_han:4,earned:32,used:16,remain:16,bal:16,year:2026,
-    hist:[
-      {date:'12/01/2026',title:'Làm thêm xử lý sự cố cẩu giàn STS',from:'12/01/2026',to:'13/01/2026',h:'+16h',type:'Tích lũy OT',ref:'OT-2026-0015',st:'Đã duyệt',note:'Sửa chữa cảm biến cẩu STS 02'},
-      {date:'20/01/2026',title:'Làm thêm ca đêm kiểm định thiết bị cảng',from:'20/01/2026',to:'21/01/2026',h:'+16h',type:'Tích lũy OT',ref:'OT-2026-0022',st:'Đã duyệt',note:'Kiểm định hệ thống điện bến 1'},
-      {date:'10/02/2026',title:'Đơn nghỉ bù 2 ca kỹ thuật',from:'10/02/2026',to:'11/02/2026',h:'-16h',type:'Nghỉ bù',ref:'NP-2026-0035',st:'Đã duyệt',note:'Nghỉ bù sau chuỗi ca trực'},
-      {date:'31/03/2026',title:'Hết hạn số dư tồn quý 4/2025',from:'31/03/2026',to:'31/03/2026',h:'-4h',type:'Hết hạn',ref:'QD-HH-2026-Q1',st:'Hệ thống chốt',note:'Hết thời hạn chuyển phép bù'}
+    "pap": "PAP0005",
+    "nv": "Lê Văn Thắng",
+    "ini": "LVT",
+    "color": "#059669",
+    "pb": "Kỹ thuật - CNTT",
+    "chuc_vu": "Kỹ sư hệ thống",
+    "ngay_vao_lam": "01/08/2021",
+    "ngay_ky_hd": "01/10/2021",
+    "ton": 0.5,
+    "het_han": 0.5,
+    "earned": 4,
+    "used": 2,
+    "remain": 2,
+    "bal": 2,
+    "year": 2026,
+    "hist": [
+      {
+        "date": "12/01/2026",
+        "title": "Làm thêm xử lý sự cố cẩu giàn STS",
+        "from": "12/01/2026",
+        "to": "13/01/2026",
+        "h": "+2.0 ngày",
+        "type": "Tích lũy OT",
+        "ref": "OT-2026-0015",
+        "st": "Đã duyệt",
+        "note": "Sửa chữa cảm biến cẩu STS 02"
+      },
+      {
+        "date": "20/01/2026",
+        "title": "Làm thêm ca đêm kiểm định thiết bị cảng",
+        "from": "20/01/2026",
+        "to": "21/01/2026",
+        "h": "+2.0 ngày",
+        "type": "Tích lũy OT",
+        "ref": "OT-2026-0022",
+        "st": "Đã duyệt",
+        "note": "Kiểm định hệ thống điện bến 1"
+      },
+      {
+        "date": "10/02/2026",
+        "title": "Đơn nghỉ bù 2 ca kỹ thuật",
+        "from": "10/02/2026",
+        "to": "11/02/2026",
+        "h": "-2.0 ngày",
+        "type": "Nghỉ bù",
+        "ref": "NP-2026-0035",
+        "st": "Đã duyệt",
+        "note": "Nghỉ bù sau chuỗi ca trực"
+      },
+      {
+        "date": "31/03/2026",
+        "title": "Hết hạn số dư tồn quý 4/2025",
+        "from": "31/03/2026",
+        "to": "31/03/2026",
+        "h": "-0.5 ngày",
+        "type": "Hết hạn",
+        "ref": "QD-HH-2026-Q1",
+        "st": "Hệ thống chốt",
+        "note": "Hết thời hạn chuyển phép bù"
+      }
     ]
   },
   {
-    pap:'PAP0007',nv:'Nguyễn Văn An',ini:'NVA',color:'#d97706',pb:'Vận hành',chuc_vu:'Kỹ sư cảng',ngay_vao_lam:'15/01/2018',
-    ton:12,het_han:4,earned:24,used:16,remain:16,bal:16,year:2026,
-    hist:[
-      {date:'08/01/2026',title:'Trực điều hành phân luồng hàng hải',from:'08/01/2026',to:'09/01/2026',h:'+16h',type:'Tích lũy OT',ref:'OT-2026-0008',st:'Đã duyệt',note:'Điều hành luồng sương mù'},
-      {date:'22/01/2026',title:'Trực đêm bàn giao cẩu bến Liebherr',from:'22/01/2026',to:'22/01/2026',h:'+8h',type:'Tích lũy OT',ref:'OT-2026-0025',st:'Đã duyệt',note:'Thử tải cẩu Liebherr'},
-      {date:'14/02/2026',title:'Đơn nghỉ bù 2 ngày làm việc',from:'14/02/2026',to:'15/02/2026',h:'-16h',type:'Nghỉ bù',ref:'NP-2026-0042',st:'Đã duyệt',note:'Nghỉ bù cuối tuần'},
-      {date:'31/03/2026',title:'Hết hạn số dư bù tồn năm trước',from:'31/03/2026',to:'31/03/2026',h:'-4h',type:'Hết hạn',ref:'QD-HH-2026-Q1',st:'Hệ thống chốt',note:'Quy chế 31/03 hàng năm'}
+    "pap": "PAP0007",
+    "nv": "Nguyễn Văn An",
+    "ini": "NVA",
+    "color": "#d97706",
+    "pb": "Vận hành",
+    "chuc_vu": "Kỹ sư cảng",
+    "ngay_vao_lam": "15/01/2018",
+    "ngay_ky_hd": "15/03/2018",
+    "ton": 1.5,
+    "het_han": 0.5,
+    "earned": 3,
+    "used": 2,
+    "remain": 2,
+    "bal": 2,
+    "year": 2026,
+    "hist": [
+      {
+        "date": "08/01/2026",
+        "title": "Trực điều hành phân luồng hàng hải",
+        "from": "08/01/2026",
+        "to": "09/01/2026",
+        "h": "+2.0 ngày",
+        "type": "Tích lũy OT",
+        "ref": "OT-2026-0008",
+        "st": "Đã duyệt",
+        "note": "Điều hành luồng sương mù"
+      },
+      {
+        "date": "22/01/2026",
+        "title": "Trực đêm bàn giao cẩu bến Liebherr",
+        "from": "22/01/2026",
+        "to": "22/01/2026",
+        "h": "+1.0 ngày",
+        "type": "Tích lũy OT",
+        "ref": "OT-2026-0025",
+        "st": "Đã duyệt",
+        "note": "Thử tải cẩu Liebherr"
+      },
+      {
+        "date": "14/02/2026",
+        "title": "Đơn nghỉ bù 2 ngày làm việc",
+        "from": "14/02/2026",
+        "to": "15/02/2026",
+        "h": "-2.0 ngày",
+        "type": "Nghỉ bù",
+        "ref": "NP-2026-0042",
+        "st": "Đã duyệt",
+        "note": "Nghỉ bù cuối tuần"
+      },
+      {
+        "date": "31/03/2026",
+        "title": "Hết hạn số dư bù tồn năm trước",
+        "from": "31/03/2026",
+        "to": "31/03/2026",
+        "h": "-0.5 ngày",
+        "type": "Hết hạn",
+        "ref": "QD-HH-2026-Q1",
+        "st": "Hệ thống chốt",
+        "note": "Quy chế 31/03 hàng năm"
+      }
     ]
   },
   {
-    pap:'PAP0012',nv:'Đỗ Thu Hà',ini:'DTH',color:'#7c3aed',pb:'Kế toán',chuc_vu:'Kế toán viên',ngay_vao_lam:'01/02/2014',
-    ton:0,het_han:0,earned:8,used:0,remain:8,bal:8,year:2026,
-    hist:[
-      {date:'20/01/2026',title:'Làm thêm quyết toán thuế & kiểm toán năm',from:'20/01/2026',to:'20/01/2026',h:'+8h',type:'Tích lũy OT',ref:'OT-2026-0021',st:'Đã duyệt',note:'Quyết toán tài chính năm 2025'}
+    "pap": "PAP0012",
+    "nv": "Đỗ Thu Hà",
+    "ini": "DTH",
+    "color": "#7c3aed",
+    "pb": "Kế toán",
+    "chuc_vu": "Kế toán viên",
+    "ngay_vao_lam": "01/02/2014",
+    "ngay_ky_hd": "01/04/2014",
+    "ton": 0,
+    "het_han": 0,
+    "earned": 1,
+    "used": 0,
+    "remain": 1,
+    "bal": 1,
+    "year": 2026,
+    "hist": [
+      {
+        "date": "20/01/2026",
+        "title": "Làm thêm quyết toán thuế & kiểm toán năm",
+        "from": "20/01/2026",
+        "to": "20/01/2026",
+        "h": "+1.0 ngày",
+        "type": "Tích lũy OT",
+        "ref": "OT-2026-0021",
+        "st": "Đã duyệt",
+        "note": "Quyết toán tài chính năm 2025"
+      }
     ]
   },
   {
-    pap:'PAP0011',nv:'Phạm Thị Bình',ini:'PTB',color:'#db2777',pb:'Nhân sự',chuc_vu:'Chuyên viên nhân sự',ngay_vao_lam:'20/11/2022',
-    ton:0,het_han:0,earned:16,used:8,remain:8,bal:8,year:2026,
-    hist:[
-      {date:'05/02/2026',title:'Diễn tập PCCC & tiếp đoàn thanh tra liên ngành',from:'05/02/2026',to:'05/02/2026',h:'+16h',type:'Tích lũy OT',ref:'HR-2026-0003',st:'Đã duyệt',note:'Hỗ trợ đoàn thanh tra lao động cảng'},
-      {date:'20/02/2026',title:'Đơn xin nghỉ bù 1 ngày',from:'20/02/2026',to:'20/02/2026',h:'-8h',type:'Nghỉ bù',ref:'NP-2026-0040',st:'Đã duyệt',note:'Nghỉ bù sau diễn tập PCCC'}
+    "pap": "PAP0011",
+    "nv": "Phạm Thị Bình",
+    "ini": "PTB",
+    "color": "#db2777",
+    "pb": "Nhân sự",
+    "chuc_vu": "Chuyên viên nhân sự",
+    "ngay_vao_lam": "20/11/2022",
+    "ton": 0,
+    "het_han": 0,
+    "earned": 2,
+    "used": 1,
+    "remain": 1,
+    "bal": 1,
+    "year": 2026,
+    "hist": [
+      {
+        "date": "05/02/2026",
+        "title": "Diễn tập PCCC & tiếp đoàn thanh tra liên ngành",
+        "from": "05/02/2026",
+        "to": "05/02/2026",
+        "h": "+2.0 ngày",
+        "type": "Tích lũy OT",
+        "ref": "HR-2026-0003",
+        "st": "Đã duyệt",
+        "note": "Hỗ trợ đoàn thanh tra lao động cảng"
+      },
+      {
+        "date": "20/02/2026",
+        "title": "Đơn xin nghỉ bù 1 ngày",
+        "from": "20/02/2026",
+        "to": "20/02/2026",
+        "h": "-1.0 ngày",
+        "type": "Nghỉ bù",
+        "ref": "NP-2026-0040",
+        "st": "Đã duyệt",
+        "note": "Nghỉ bù sau diễn tập PCCC"
+      }
     ]
   },
   {
-    pap:'PAP0001',nv:'Phạm Quốc Tuấn',ini:'PQT',color:'#2E3191',pb:'Ban TGĐ',chuc_vu:'Tổng Giám đốc',ngay_vao_lam:'15/01/2018',
-    ton:4,het_han:0,earned:16,used:16,remain:4,bal:4,year:2025,
-    hist:[{date:'15/05/2025',title:'Trực điều hành tiếp đoàn cảng vụ',from:'15/05/2025',to:'15/05/2025',h:'+16h',type:'Tích lũy OT',ref:'OT-2025-0010',st:'Đã duyệt',note:'Trực đột xuất'}]
+    "pap": "PAP0001",
+    "nv": "Phạm Quốc Tuấn",
+    "ini": "PQT",
+    "color": "#2E3191",
+    "pb": "Ban TGĐ",
+    "chuc_vu": "Tổng Giám đốc",
+    "ngay_vao_lam": "15/01/2018",
+    "ton": 0.5,
+    "het_han": 0,
+    "earned": 2,
+    "used": 2,
+    "remain": 0.5,
+    "bal": 0.5,
+    "year": 2025,
+    "hist": [
+      {
+        "date": "15/05/2025",
+        "title": "Trực điều hành tiếp đoàn cảng vụ",
+        "from": "15/05/2025",
+        "to": "15/05/2025",
+        "h": "+2.0 ngày",
+        "type": "Tích lũy OT",
+        "ref": "OT-2025-0010",
+        "st": "Đã duyệt",
+        "note": "Trực đột xuất"
+      }
+    ]
   },
   {
-    pap:'PAP0009',nv:'Nguyễn Văn A',ini:'NVA',color:'#059669',pb:'PT Phần mềm',chuc_vu:'Lập trình viên Senior',ngay_vao_lam:'15/03/2019',
-    ton:0,het_han:0,earned:16,used:16,remain:0,bal:0,year:2025,
-    hist:[{date:'12/08/2025',title:'Triển khai hệ thống cảng v1',from:'12/08/2025',to:'12/08/2025',h:'+16h',type:'Tích lũy OT',ref:'OT-2025-0089',st:'Đã duyệt',note:'Go-live Phase 1'}]
+    "pap": "PAP0009",
+    "nv": "Nguyễn Văn A",
+    "ini": "NVA",
+    "color": "#059669",
+    "pb": "PT Phần mềm",
+    "chuc_vu": "Lập trình viên Senior",
+    "ngay_vao_lam": "15/03/2019",
+    "ton": 0,
+    "het_han": 0,
+    "earned": 2,
+    "used": 2,
+    "remain": 0,
+    "bal": 0,
+    "year": 2025,
+    "hist": [
+      {
+        "date": "12/08/2025",
+        "title": "Triển khai hệ thống cảng v1",
+        "from": "12/08/2025",
+        "to": "12/08/2025",
+        "h": "+2.0 ngày",
+        "type": "Tích lũy OT",
+        "ref": "OT-2025-0089",
+        "st": "Đã duyệt",
+        "note": "Go-live Phase 1"
+      }
+    ]
   }
 ];
 const reqData=[
@@ -10663,14 +11190,15 @@ const ledaCols=[
   {k:'nv',t:'Tên nhân viên',vis:true,sort:true,search:true},
   {k:'pb',t:'Phòng ban/đơn vị',vis:true,sort:true,filter:true},
   {k:'chuc_vu',t:'Chức vụ',vis:true,sort:true,filter:true},
-  {k:'ngay_vao_lam',t:'Ngày bắt đầu làm việc',vis:true,sort:true,center:true},
-  {k:'tham_nien_ct',t:'Tính thâm niên',vis:true,sort:true,center:true},
   {k:'ton',t:'Phép tồn',vis:true,sort:true,center:true},
   {k:'het_han',t:'Hết hạn',vis:true,sort:true,center:true},
   {k:'tn',t:'Thâm niên',vis:true,sort:true,center:true},
   {k:'nam',t:'Phép năm',vis:true,sort:true,center:true},
   {k:'used',t:'Đã dùng',vis:true,sort:true,center:true},
   {k:'remain',t:'Còn lại',vis:true,sort:true,center:true},
+  {k:'ngay_vao_lam',t:'Ngày bắt đầu làm việc',vis:true,sort:true,center:true},
+  {k:'ngay_ky_hd',t:'Ngày ký HĐ chính thức',vis:true,sort:true,center:true},
+  {k:'tham_nien_ct',t:'Tính thâm niên',vis:true,sort:true,center:true},
   {k:'action',t:'Hành động',sr:true,pin:true,vis:true,center:true}
 ];
 const ledaCell={
@@ -10683,14 +11211,15 @@ const ledaCell={
     if(k==='nv') return `<div style="display:flex;align-items:center;gap:8px"><span style="width:28px;height:28px;border-radius:999px;background:${r.color||'#2E3191'};color:#fff;font-size:10px;font-weight:700;display:inline-flex;align-items:center;justify-content:center;flex-shrink:0">${r.ini||'NV'}</span><span style="font-weight:600;color:#1e293b">${r.nv}</span></div>`;
     if(k==='pb') return `<span>${r.pb}</span>`;
     if(k==='chuc_vu') return `<span style="color:#475569">${r.chuc_vu||'—'}</span>`;
-    if(k==='ngay_vao_lam') return `<span style="color:#64748b;font-size:11.5px">${r.ngay_vao_lam||'—'}</span>`;
-    if(k==='tham_nien_ct') return `<span style="font-weight:600;color:#1e293b">${r.tham_nien_ct||'—'}</span>`;
     if(k==='ton') return `<span>${r.ton}</span>`;
     if(k==='het_han') return r.het_han > 0 ? `<span style="color:#d97706;font-weight:600">${r.het_han}</span>` : `<span style="color:#94a3b8">0</span>`;
     if(k==='tn') return `<span>${r.tn}</span>`;
     if(k==='nam') return `<b>${r.nam}</b>`;
     if(k==='used') return `<span style="color:#be123c;font-weight:600">${r.used}</span>`;
     if(k==='remain') return `<span style="display:inline-block;padding:2px 8px;border-radius:999px;background:#ecfdf5;color:#047857;font-weight:700;border:1px solid #a7f3d0">${r.remain}</span>`;
+    if(k==='ngay_vao_lam') return `<span style="color:#64748b;font-size:11.5px">${r.ngay_vao_lam||'—'}</span>`;
+    if(k==='ngay_ky_hd') return `<span style="color:#64748b;font-size:11.5px">${r.ngay_ky_hd||'—'}</span>`;
+    if(k==='tham_nien_ct') return `<span style="font-weight:600;color:#1e293b">${r.tham_nien_ct||'—'}</span>`;
     return r[k]??"";
   }
 };
@@ -10700,12 +11229,11 @@ const ledcCols=[
   {k:'nv',t:'Tên nhân viên',vis:true,sort:true,search:true},
   {k:'pb',t:'Phòng ban/đơn vị',vis:true,sort:true,filter:true},
   {k:'chuc_vu',t:'Chức vụ',vis:true,sort:true,filter:true},
-  {k:'ngay_vao_lam',t:'Ngày bắt đầu làm việc',vis:true,sort:true,center:true},
-  {k:'ton',t:'Bù tồn (giờ)',vis:true,sort:true,center:true},
-  {k:'het_han',t:'Hết hạn (giờ)',vis:true,sort:true,center:true},
-  {k:'earned',t:'Tích lũy OT (giờ)',vis:true,sort:true,center:true},
-  {k:'used',t:'Đã dùng (giờ)',vis:true,sort:true,center:true},
-  {k:'remain',t:'Còn lại (giờ)',vis:true,sort:true,center:true},
+  {k:'ton',t:'Bù tồn (ngày)',vis:true,sort:true,center:true},
+  {k:'het_han',t:'Hết hạn (ngày)',vis:true,sort:true,center:true},
+  {k:'earned',t:'Tích lũy OT (ngày)',vis:true,sort:true,center:true},
+  {k:'used',t:'Đã dùng (ngày)',vis:true,sort:true,center:true},
+  {k:'remain',t:'Còn lại (ngày)',vis:true,sort:true,center:true},
   {k:'action',t:'Hành động',sr:true,pin:true,vis:true,center:true}
 ];
 const ledcCell={
@@ -10718,12 +11246,13 @@ const ledcCell={
     if(k==='nv') return `<div style="display:flex;align-items:center;gap:8px"><span style="width:28px;height:28px;border-radius:999px;background:${r.color||'#6d28d9'};color:#fff;font-size:10px;font-weight:700;display:inline-flex;align-items:center;justify-content:center;flex-shrink:0">${r.ini||'NV'}</span><span style="font-weight:600;color:#1e293b">${r.nv}</span></div>`;
     if(k==='pb') return `<span>${r.pb}</span>`;
     if(k==='chuc_vu') return `<span style="color:#475569">${r.chuc_vu||'—'}</span>`;
-    if(k==='ngay_vao_lam') return `<span style="color:#64748b;font-size:11.5px">${r.ngay_vao_lam||'—'}</span>`;
     if(k==='ton') return `<span>${r.ton}</span>`;
     if(k==='het_han') return r.het_han > 0 ? `<span style="color:#d97706;font-weight:600">${r.het_han}</span>` : `<span style="color:#94a3b8">0</span>`;
     if(k==='earned') return `<b style="color:#0284c7">${r.earned}</b>`;
     if(k==='used') return `<span style="color:#be123c;font-weight:600">${r.used}</span>`;
     if(k==='remain') return `<span style="display:inline-block;padding:2px 8px;border-radius:999px;background:#ecfdf5;color:#047857;font-weight:700;border:1px solid #a7f3d0">${r.remain}</span>`;
+    if(k==='ngay_vao_lam') return `<span style="color:#64748b;font-size:11.5px">${r.ngay_vao_lam||'—'}</span>`;
+    if(k==='ngay_ky_hd') return `<span style="color:#64748b;font-size:11.5px">${r.ngay_ky_hd||'—'}</span>`;
     return r[k]??"";
   }
 };
@@ -10822,13 +11351,13 @@ const wfCell={actionRender:r=>`<button class="btn btn-o" style="font-size:11px;p
 /* ===== CẤU TRÚC BẢNG LOẠI NGHỈ PHÉP CHUẨN UI-TABLE-TEMPLATE (PROTOTYPE - 14 CỘT) ===== */
 const E9tyColumns = [
   {key:'stt', title:'STT', pinned:true, visible:true, sticky:'l', sortable:false, search:false, filter:false, center:true},
-  {key:'cat', title:'Phân nhóm', pinned:false, visible:true, sortable:true, search:false, filter:true, center:true},
   {key:'code', title:'Mã loại', pinned:false, visible:true, sortable:true, search:true, filter:false},
-  {key:'name', title:'Tên loại nghỉ', pinned:false, visible:true, sortable:true, search:true, filter:false},
+  {key:'name', title:'Tên loại nghỉ/ công tác', pinned:false, visible:true, sortable:true, search:true, filter:false},
   {key:'sym', title:'Ký hiệu', pinned:false, visible:true, sortable:true, search:false, filter:false, center:true},
   {key:'paid', title:'Nguồn chi trả & % Lương', pinned:false, visible:true, sortable:false, search:false, filter:true, center:true},
   {key:'deduct', title:'Trừ quỹ', pinned:false, visible:true, sortable:false, search:false, filter:false, center:true},
   {key:'attach', title:'Đính kèm', pinned:false, visible:true, sortable:false, search:false, filter:false, center:true},
+  {key:'checkIO', title:'Check giờ vào/ra', pinned:false, visible:true, sortable:false, search:false, filter:true, center:true},
   {key:'law', title:'Căn cứ pháp lý', pinned:false, visible:true, sortable:false, search:false, filter:false},
   {key:'status', title:'Trạng thái', pinned:false, visible:true, sortable:true, search:false, filter:true, center:true},
   {key:'created', title:'Người tạo', pinned:false, visible:true, sortable:true, search:false, filter:false},
@@ -10875,7 +11404,7 @@ function E9renderTyHead(){
       inner += '<input class="col-search" ' + (q ? '' : 'hidden') + ' data-k="' + c.key + '" placeholder="Tìm…" value="' + q + '" oninput="E9tyState.colSearch[\'' + c.key + '\']=this.value;E9tyState.page=1;E9applyTyRender()">';
     }
     if(c.filter){
-      const vals = c.key === 'status' ? ['Đang hoạt động', 'Ngừng hoạt động'] : [...new Set(typesData.map(r => r[c.key] || '').filter(Boolean))];
+      const vals = c.key === 'status' ? ['Đang hoạt động', 'Ngừng hoạt động'] : (c.key === 'checkIO' ? ['Có', 'Không'] : [...new Set(typesData.map(r => r[c.key] || '').filter(Boolean))]);
       const cur = E9tyState.colFilter[c.key];
       inner += '<div class="filter-menu" hidden data-k="' + c.key + '">' +
         [{label:'Tất cả', val:null}, ...vals.map(v => ({label:v, val:v}))].map(o => '<button class="filter-opt" aria-selected="' + (o.val===cur) + '" onclick="E9setTyFilter(\'' + c.key + '\',' + (o.val===null?'null':'\''+o.val+'\'') + ')">' + o.label + '</button>').join('') +
@@ -10898,14 +11427,18 @@ function E9renderTyCell(c, r, start, i) {
     const isLeave = r.cat === 'Nghỉ phép' || (!r.cat && r.code !== 'BT' && r.code !== 'WFH');
     return isLeave 
       ? '<span class="badge" style="background:#eff6ff;color:#1d4ed8;border:1px solid #bfdbfe;font-size:11px;padding:2px 8px;border-radius:4px;font-weight:600"><i class="fa-solid fa-umbrella-beach mr-1"></i>Nghỉ phép</span>'
-      : '<span class="badge" style="background:#f5f3ff;color:#7c3aed;border:1px solid #ddd6fe;font-size:11px;padding:2px 8px;border-radius:4px;font-weight:600"><i class="fa-solid fa-briefcase mr-1"></i>Vắng mặt</span>';
+      : '<span class="badge" style="background:#f5f3ff;color:#7c3aed;border:1px solid #ddd6fe;font-size:11px;padding:2px 8px;border-radius:4px;font-weight:600"><i class="fa-solid fa-briefcase mr-1"></i>Công tác</span>';
   }
   if (c.key === 'action') {
     return '<button title="Sửa" aria-label="Sửa" class="text-slate-500 hover:text-[#2E3191]" style="border:none;background:none;cursor:pointer;font-size:12px;color:#64748b;padding:3px 6px" onclick="E9openTypeEdit(\'' + r.code + '\')"><i class="fa-solid fa-pen"></i></button>';
   }
   if (c.key === 'code') return '<b>' + r.code + '</b>';
   if (c.key === 'name') return '<b>' + r.name + '</b>';
-  if (c.key === 'sym') return '<span style="font-weight:600">' + r.sym + '</span>';
+  if (c.key === 'sym') {
+    const color = r.symColor || '#2E3191';
+    const bg = r.symBg || '#EEF2FF';
+    return '<span style="display:inline-flex;align-items:center;justify-content:center;min-width:32px;padding:3px 8px;border-radius:6px;font-weight:700;font-size:12px;color:' + color + ';background:' + bg + ';border:1px solid ' + color + '33">' + (r.sym || '-') + '</span>';
+  }
   if (c.key === 'paid') {
     if (r.src === 'BHXH') return 'BHXH chi trả (' + (r.rate != null ? r.rate : 75) + '%)';
     if (r.src === 'UNPAID') return 'Không hưởng lương';
@@ -10913,6 +11446,9 @@ function E9renderTyCell(c, r, start, i) {
   }
   if (c.key === 'deduct') return (r.deduct && r.deduct !== 'Không') ? r.deduct : '<span style="color:#94a3b8">—</span>';
   if (c.key === 'attach') return (r.attach === 'Có' || r.attach === 'Bắt buộc') ? 'Bắt buộc' : '<span style="color:#94a3b8">Không</span>';
+  if (c.key === 'checkIO') {
+    return r.checkIO ? '<span style="display:inline-flex;align-items:center;gap:4px;color:#047857;font-weight:600"><i class="fa-solid fa-check text-xs"></i>Có</span>' : '<span style="color:#94a3b8">Không</span>';
+  }
   if (c.key === 'status') {
     const isAct = r.status === 'ACTIVE' || r.status === 'Đang hoạt động' || r.status === 'Đang áp dụng';
     return isAct ? '<span class="chip" style="background:#ecfdf5;color:#047857;border-color:#a7f3d0;font-weight:600">Đang hoạt động</span>' : '<span class="chip" style="background:#f1f5f9;color:#64748b;border-color:#cbd5e1;font-weight:600">Ngừng hoạt động</span>';
@@ -10945,6 +11481,10 @@ function E9renderTyBody(){
       if(k === 'status') {
         const curStatus = (r.status === 'INACTIVE' || r.status === 'Ngừng hoạt động') ? 'Ngừng hoạt động' : 'Đang hoạt động';
         return curStatus === v || r.status === v;
+      }
+      if(k === 'checkIO') {
+        const lbl = r.checkIO ? 'Có' : 'Không';
+        return lbl === v;
       }
       return r[k] === v;
     });
@@ -11070,6 +11610,8 @@ function E9saveLeaveType(){
   const name = (document.getElementById('type-f-name').value || '').trim();
   const cat = (document.getElementById('type-f-cat')?.value || 'Nghỉ phép');
   const sym = (document.getElementById('type-f-sym').value || '').trim().toUpperCase();
+  const symColor = (document.getElementById('type-f-color')?.value || '#2E3191').trim();
+  const symBg = (document.getElementById('type-f-bgcolor')?.value || '#EEF2FF').trim();
   if(!code || !name){
     alert('Vui lòng nhập Mã loại và Tên loại nghỉ!');
     return;
@@ -11079,17 +11621,18 @@ function E9saveLeaveType(){
   const rate = +document.getElementById('type-f-rate').value || 0;
   // minUnit removed
   const law = (document.getElementById('type-f-law').value || '').trim();
-  const deductAnnual = document.getElementById('type-f-deduct').checked;
-  const deductComp = document.getElementById('type-f-deduct-comp') ? document.getElementById('type-f-deduct-comp').checked : false;
+  const deductModeEl = document.querySelector('input[name="type-f-deduct-mode"]:checked');
+  const deductMode = deductModeEl ? deductModeEl.value : 'NONE';
+  const deductAnnual = deductMode === 'ANNUAL';
+  const deductComp = deductMode === 'COMP';
   let deduct = 'Không';
-  if (deductAnnual && deductComp) {
-    deduct = 'Quỹ phép năm, Quỹ phép bù';
-  } else if (deductAnnual) {
+  if (deductAnnual) {
     deduct = 'Quỹ phép năm';
   } else if (deductComp) {
     deduct = 'Quỹ phép bù';
   }
   const attach = document.getElementById('type-f-attach').checked ? 'Bắt buộc' : 'Không';
+  const checkIO = !!document.getElementById('type-f-check-io')?.checked;
   const desc = (document.getElementById('type-f-desc').value || '').trim();
   const srcTextMap = {
     COMPANY: 'Công ty chi trả lương',
@@ -11098,7 +11641,7 @@ function E9saveLeaveType(){
   };
   const srcText = srcTextMap[src] || src;
   const today = 'Admin HR • 28/10/2026';
-  const rowData = { code, name, sym, rate, src, srcText, deduct, deductAnnual, deductComp, attach, law, desc, status: (status === 'ACTIVE' || status === 'Đang hoạt động') ? 'Đang hoạt động' : 'Ngừng hoạt động' };
+  const rowData = { code, name, sym, symColor, symBg, rate, src, srcText, deduct, deductAnnual, deductComp, attach, checkIO, law, desc, status: (status === 'ACTIVE' || status === 'Đang hoạt động') ? 'Đang hoạt động' : 'Ngừng hoạt động' };
   const idx = typesData.findIndex(x => x.code === code);
   if(idx >= 0){
     rowData.created = typesData[idx].created || typesData[idx].cre || 'Admin HR • 01/01/2026';
@@ -11572,7 +12115,7 @@ function E9ledView(r,fund){
           <span style="font-size:11px;background:#eef2ff;color:#2E3191;padding:2px 8px;border-radius:4px;font-weight:600">${r.pap}</span>
         </div>
         <div style="font-size:12px;color:#64748b;margin-top:3px">
-          <span>${r.pb}</span> · <span>${r.chuc_vu||'Chuyên viên'}</span> · Ngày vào làm: <b style="color:#1e293b">${r.ngay_vao_lam||'—'}</b> · Đơn vị tính: <b style="color:#2E3191">Giờ</b>
+          <span>${r.pb}</span> · <span>${r.chuc_vu||'Chuyên viên'}</span> · Ngày vào làm: <b style="color:#1e293b">${r.ngay_vao_lam||'—'}</b> · Ký HĐ chính thức: <b style="color:#1e293b">${r.ngay_ky_hd||'—'}</b> · Đơn vị tính: <b style="color:#2E3191">Ngày</b>
         </div>
       </div>
     </div>
@@ -11629,7 +12172,7 @@ function E9ledView(r,fund){
           <span style="font-size:11px;background:#eef2ff;color:#2E3191;padding:2px 8px;border-radius:4px;font-weight:600">${r.pap}</span>
         </div>
         <div style="font-size:12px;color:#64748b;margin-top:3px">
-          <span>${r.pb}</span> · <span>${r.chuc_vu||'Chuyên viên'}</span> · Ngày vào làm: <b style="color:#1e293b">${r.ngay_vao_lam||'—'}</b> · Thâm niên: <b style="color:#2E3191">${r.tham_nien_ct||'—'}</b>
+          <span>${r.pb}</span> · <span>${r.chuc_vu||'Chuyên viên'}</span> · Ngày vào làm: <b style="color:#1e293b">${r.ngay_vao_lam||'—'}</b> · Ký HĐ chính thức: <b style="color:#1e293b">${r.ngay_ky_hd||'—'}</b> · Thâm niên: <b style="color:#2E3191">${r.tham_nien_ct||'—'}</b>
         </div>
       </div>
     </div>
@@ -11685,13 +12228,13 @@ function E9ledOpenEdit(r, fund){
   }
   const isComp = (fund === 'comp');
   document.getElementById('led-edit-fund-hidden').value = isComp ? 'comp' : 'annual';
-  document.getElementById('led-edit-title').innerHTML = '<i class="fa-solid fa-pen-to-square pap-text"></i> ' + (isComp ? 'Cập nhật quỹ nghỉ bù (giờ) — ' : 'Cập nhật quỹ phép năm — ') + r.nv;
+  document.getElementById('led-edit-title').innerHTML = '<i class="fa-solid fa-pen-to-square pap-text"></i> ' + (isComp ? 'Cập nhật quỹ nghỉ bù (ngày) — ' : 'Cập nhật quỹ phép năm — ') + r.nv;
   document.getElementById('led-edit-name').textContent = r.nv;
   document.getElementById('led-edit-pap').textContent = r.pap;
   document.getElementById('led-edit-pap-hidden').value = r.pap;
   document.getElementById('led-edit-pb').textContent = r.pb;
   document.getElementById('led-edit-pos').textContent = r.chuc_vu || 'Chuyên viên';
-  document.getElementById('led-edit-start').textContent = (r.ngay_vao_lam || '01/01/2024') + (isComp ? ' (Quỹ: Giờ)' : ' (' + (r.tham_nien_ct || '') + ')');
+  document.getElementById('led-edit-start').textContent = (r.ngay_vao_lam || '01/01/2024') + (isComp ? ' (Quỹ: Ngày)' : ' (' + (r.tham_nien_ct || '') + ')');
 
   const avEl = document.getElementById('led-edit-avatar');
   if(avEl){
@@ -12075,6 +12618,39 @@ function E9openReqCreate(){
   E9openMdl('mdl-req');
 }
 
+function E9updateTypeSymPreview(){
+  const sym = (document.getElementById('type-f-sym')?.value || '').trim().toUpperCase() || 'P';
+  const color = document.getElementById('type-f-color')?.value || '#2E3191';
+  const bg = document.getElementById('type-f-bgcolor')?.value || '#EEF2FF';
+  const p = document.getElementById('type-sym-preview');
+  if(p){
+    p.textContent = sym;
+    p.style.color = color;
+    p.style.background = bg;
+    p.style.borderColor = color + '40';
+  }
+}
+function E9syncTypeColor(type, val){
+  if(type === 'text'){
+    const hex = document.getElementById('type-f-color-hex');
+    if(hex) hex.value = val.toUpperCase();
+  } else {
+    const hex = document.getElementById('type-f-bgcolor-hex');
+    if(hex) hex.value = val.toUpperCase();
+  }
+  E9updateTypeSymPreview();
+}
+function E9syncTypeHex(type, val){
+  if(!/^#[0-9A-Fa-f]{6}$/.test(val)) return;
+  if(type === 'text'){
+    const cp = document.getElementById('type-f-color');
+    if(cp) cp.value = val;
+  } else {
+    const cp = document.getElementById('type-f-bgcolor');
+    if(cp) cp.value = val;
+  }
+  E9updateTypeSymPreview();
+}
 function E9openTypeEdit(code){
   const title = document.getElementById('mdl-type-title');
   const codeEl = document.getElementById('type-f-code');
@@ -12085,18 +12661,33 @@ function E9openTypeEdit(code){
       codeEl.value = t.code;
       codeEl.readOnly = true;
       document.getElementById('type-f-sym').value = t.sym || '';
-      const catEl = document.getElementById('type-f-cat'); if(catEl) catEl.value = t.cat || (t.code === 'BT' || t.code === 'WFH' ? 'Vắng mặt' : 'Nghỉ phép');
+      const symColor = t.symColor || '#2E3191';
+      const symBg = t.symBg || '#EEF2FF';
+      const cEl = document.getElementById('type-f-color'); if(cEl) cEl.value = symColor;
+      const cHexEl = document.getElementById('type-f-color-hex'); if(cHexEl) cHexEl.value = symColor.toUpperCase();
+      const bgEl = document.getElementById('type-f-bgcolor'); if(bgEl) bgEl.value = symBg;
+      const bgHexEl = document.getElementById('type-f-bgcolor-hex'); if(bgHexEl) bgHexEl.value = symBg.toUpperCase();
+      E9updateTypeSymPreview();
+      const catEl = document.getElementById('type-f-cat'); if(catEl) catEl.value = t.cat || (t.code === 'BT' || t.code === 'WFH' ? 'Công tác' : 'Nghỉ phép');
       document.getElementById('type-f-name').value = t.name || '';
       document.getElementById('type-f-status').value = (t.status === 'INACTIVE' || t.status === 'Ngừng hoạt động') ? 'INACTIVE' : 'ACTIVE';
       document.getElementById('type-f-src').value = t.src || 'COMPANY';
       document.getElementById('type-f-rate').value = t.rate != null ? t.rate : 100;
       // type-f-min-unit set removed
       document.getElementById('type-f-law').value = t.law || '';
-      document.getElementById('type-f-deduct').checked = (t.deductAnnual != null) ? !!t.deductAnnual : (t.deduct && t.deduct.includes('phép năm'));
-      const compChk = document.getElementById('type-f-deduct-comp');
-      if (compChk) compChk.checked = (t.deductComp != null) ? !!t.deductComp : (t.deduct && (t.deduct.includes('phép bù') || t.deduct.includes('nghỉ bù') || t.deduct.includes('Quỹ giờ OT') || t.code === 'OTHER'));
+      const isAnnual = (t.deductAnnual != null) ? !!t.deductAnnual : (t.deduct && t.deduct.includes('phép năm'));
+      const isComp = (t.deductComp != null) ? !!t.deductComp : (t.deduct && (t.deduct.includes('phép bù') || t.deduct.includes('nghỉ bù') || t.deduct.includes('Quỹ giờ OT') || t.code === 'OTHER' || t.code === 'CL'));
+      const rAnnual = document.getElementById('type-f-deduct-annual');
+      const rComp = document.getElementById('type-f-deduct-comp');
+      const rNone = document.getElementById('type-f-deduct-none');
+      if (isAnnual && rAnnual) rAnnual.checked = true;
+      else if (isComp && rComp) rComp.checked = true;
+      else if (rNone) rNone.checked = true;
       document.getElementById('type-f-attach').checked = (t.attach === 'Có' || t.attach === 'Bắt buộc');
+      const chkIO = document.getElementById('type-f-check-io'); if(chkIO) chkIO.checked = !!t.checkIO;
       document.getElementById('type-f-desc').value = t.desc || '';
+      const btnSave = document.getElementById('btn-save-leave-type');
+      if (btnSave) btnSave.innerHTML = '<i class="fa-solid fa-floppy-disk mr-1"></i>Lưu thay đổi';
       E9openMdl('mdl-type');
       return;
     }
@@ -12106,18 +12697,24 @@ function E9openTypeEdit(code){
   codeEl.value = '';
   codeEl.readOnly = false;
   document.getElementById('type-f-sym').value = '';
+  const cEl = document.getElementById('type-f-color'); if(cEl) cEl.value = '#2E3191';
+  const cHexEl = document.getElementById('type-f-color-hex'); if(cHexEl) cHexEl.value = '#2E3191';
+  const bgEl = document.getElementById('type-f-bgcolor'); if(bgEl) bgEl.value = '#EEF2FF';
+  const bgHexEl = document.getElementById('type-f-bgcolor-hex'); if(bgHexEl) bgHexEl.value = '#EEF2FF';
+  E9updateTypeSymPreview();
   const catElNew = document.getElementById('type-f-cat'); if(catElNew) catElNew.value = 'Nghỉ phép';
   document.getElementById('type-f-name').value = '';
   document.getElementById('type-f-status').value = 'ACTIVE';
   document.getElementById('type-f-src').value = 'COMPANY';
-  document.getElementById('type-f-rate').value = '100';
-  // type-f-min-unit set removed
+  document.getElementById('type-f-rate').value = 100;
+  // type-f-min-unit reset removed
   document.getElementById('type-f-law').value = '';
-  document.getElementById('type-f-deduct').checked = false;
-  const compChkNew = document.getElementById('type-f-deduct-comp');
-  if (compChkNew) compChkNew.checked = false;
+  const rAnn = document.getElementById('type-f-deduct-annual'); if(rAnn) rAnn.checked = true;
   document.getElementById('type-f-attach').checked = false;
+  const chkIONew = document.getElementById('type-f-check-io'); if(chkIONew) chkIONew.checked = false;
   document.getElementById('type-f-desc').value = '';
+  const btnSave = document.getElementById('btn-save-leave-type');
+  if (btnSave) btnSave.innerHTML = '<i class="fa-solid fa-plus mr-1"></i>Thêm loại nghỉ/ công tác';
   E9openMdl('mdl-type');
 }
 
@@ -12580,17 +13177,22 @@ function E9updateExpireDays(month, preserveDay) {
   if (!daySel) return;
   const maxDays = E9getDaysInMonth(month);
 
-  let curDay = parseInt(preserveDay || daySel.value || maxDays, 10);
-  if (isNaN(curDay) || curDay < 1) curDay = maxDays;
-  if (curDay > maxDays) curDay = maxDays; // Cắt giảm nếu ngày vượt quá số ngày tối đa của tháng
+  const isLastDay = (preserveDay === 'LAST_DAY' || preserveDay === 'Cuối tháng');
+  let curDay = isLastDay ? 'LAST_DAY' : parseInt(preserveDay || daySel.value || maxDays, 10);
+  if (!isLastDay && (isNaN(curDay) || curDay < 1)) curDay = maxDays;
+  if (!isLastDay && curDay > maxDays) curDay = maxDays;
 
-  let html = '';
+  let html = '<option value="LAST_DAY"' + (isLastDay ? ' selected' : '') + '>Cuối tháng</option>';
   for (let d = 1; d <= maxDays; d++) {
     const valStr = d < 10 ? '0' + d : '' + d;
-    html += '<option value="' + valStr + '"' + (d === curDay ? ' selected' : '') + '>' + valStr + '</option>';
+    html += '<option value="' + valStr + '"' + (!isLastDay && d === curDay ? ' selected' : '') + '>' + valStr + '</option>';
   }
   daySel.innerHTML = html;
-  daySel.value = curDay < 10 ? '0' + curDay : '' + curDay;
+  if (isLastDay) {
+    daySel.value = 'LAST_DAY';
+  } else {
+    daySel.value = curDay < 10 ? '0' + curDay : '' + curDay;
+  }
 }
 
 function E9onExpireMonthChange(month) {
@@ -12706,19 +13308,25 @@ function E9savePol(){
   }
 
   const baseVal = baseIn ? (parseFloat(baseIn.value) || 12) : 12;
-  const stVal = stIn ? (stIn.value === 'ACTIVE' ? 'Đang hoạt động' : 'Ngừng hoạt động') : 'Đang hoạt động';
+  const toDateStr = document.getElementById('E9pol-f-to') ? document.getElementById('E9pol-f-to').value : '';
+  let stVal = 'Đang hoạt động';
+  if (toDateStr) {
+    const toDate = new Date(toDateStr);
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    if (toDate < today) {
+      stVal = 'Ngừng hoạt động';
+    }
+  }
   const expDayIn = document.getElementById('E9pol-f-expire-day');
   const expMonthIn = document.getElementById('E9pol-f-expire-month');
-  const expDayVal = expDayIn ? expDayIn.value : '31';
+  const expDayVal = expDayIn ? expDayIn.value : 'LAST_DAY';
   const expMonthVal = expMonthIn ? expMonthIn.value : '03';
-  const expVal = expDayVal + '/' + expMonthVal;
+  const expVal = (expDayVal === 'LAST_DAY' ? 'Cuối tháng' : expDayVal) + '/' + expMonthVal;
   if(expIn) expIn.value = expVal;
 
-  const assignedDeptsCount = E9polDepts.filter(d => d.checked).length;
-  let totalAssignedEmp = 0;
-  E9polDepts.filter(d => d.checked).forEach(d => {
-    totalAssignedEmp += d.nv.filter(n => n.checked && E9isNvEligible(n)).length;
-  });
+  const assignedDeptsCount = 5;
+  const totalAssignedEmp = 15;
 
   const todayStr = 'Admin HR · ' + new Date().toLocaleDateString('vi-VN');
 
@@ -13330,7 +13938,7 @@ function openCreateLeaveGroupModal() {
       const modal = document.getElementById('modal-leave-group-config');
       if (!modal) return;
 
-      document.getElementById('modal-leave-group-title').innerText = 'Tạo mới Quy trình Nghỉ phép / Vắng mặt';
+      document.getElementById('modal-leave-group-title').innerText = 'Tạo mới Quy trình Nghỉ phép / Công tác';
       document.getElementById('btn-save-leave-group-text').innerText = 'Tạo quy trình';
       document.getElementById('leave-group-id').value = '';
 
@@ -14593,9 +15201,35 @@ function removeOtTimeRange(index) {
   }
 }
 
+function setOtCompDays(days) {
+  const inp = document.getElementById('g-ot-comp-days-val');
+  if (inp) {
+    inp.value = days.toFixed(1);
+    updateGlobalOtRewardSummary();
+  }
+}
+
 function updateGlobalOtRewardSummary() {
   const isComp = document.getElementById('g-ot-mode-comp')?.checked;
   const badge = document.getElementById('g-ot-reward-badge');
+  const compBox = document.getElementById('g-ot-comp-days-box');
+  const payRow = document.getElementById('g-ot-summary-pay-row');
+  const rateRow = document.getElementById('g-ot-summary-rate-row');
+  const compRow = document.getElementById('g-ot-summary-comp-row');
+  const compDest = document.getElementById('g-ot-summary-comp-dest');
+  const compDaysVal = parseFloat(document.getElementById('g-ot-comp-days-val')?.value || '1.0');
+  const compDaysSpan = document.getElementById('g-ot-sum-comp-days');
+
+  if (compBox) compBox.style.display = isComp ? 'block' : 'none';
+  if (payRow) payRow.style.display = isComp ? 'none' : 'flex';
+  if (rateRow) rateRow.style.display = isComp ? 'none' : 'flex';
+  if (compRow) compRow.style.display = isComp ? 'flex' : 'none';
+  if (compDest) compDest.style.display = isComp ? 'flex' : 'none';
+
+  if (compDaysSpan) {
+    compDaysSpan.textContent = compDaysVal.toFixed(1) + ' ngày';
+  }
+
   if (badge) {
     if (isComp) {
       badge.textContent = 'Nghỉ bù';
@@ -14793,15 +15427,21 @@ function submitGlobalCreateReq() {
       timeStr = '30/10/2026 (Quên Check-in)';
     }
   } else if (g.category === 'OT') {
+    const isComp = document.getElementById('g-ot-mode-comp')?.checked;
+    const compDaysVal = parseFloat(document.getElementById('g-ot-comp-days-val')?.value || '1.0');
     if (typeof gOtTimeRanges !== 'undefined' && gOtTimeRanges.length > 0) {
       if (gOtTimeRanges.length === 1) {
         const rng = gOtTimeRanges[0];
-        timeStr = rng.date + ' · ' + rng.start + ' - ' + rng.end + ' (' + (rng.hours || '3.0') + 'h)';
+        if (isComp) {
+          timeStr = rng.date + ' · ' + rng.start + ' - ' + rng.end + ' (Đề xuất nghỉ bù: ' + compDaysVal.toFixed(1) + ' ngày)';
+        } else {
+          timeStr = rng.date + ' · ' + rng.start + ' - ' + rng.end + ' (' + (rng.hours || '3.0') + 'h)';
+        }
       } else {
         timeStr = gOtTimeRanges.length + ' ca tăng ca (' + gOtTimeRanges.map(r => r.date).join(', ') + ')';
       }
     } else {
-      timeStr = '01/11/2026 · 17:30 - 20:30 (3.0h)';
+      timeStr = isComp ? '01/11/2026 · 17:30 - 20:30 (Đề xuất nghỉ bù: ' + compDaysVal.toFixed(1) + ' ngày)' : '01/11/2026 · 17:30 - 20:30 (3.0h)';
     }
   } else if (g.category.startsWith('LEAVE') || g.category === 'BUSINESS' || g.category === 'WFH') {
     if (typeof gLeaveTimeRanges !== 'undefined' && gLeaveTimeRanges.length > 0) {
@@ -15059,9 +15699,9 @@ function viewGlobalReq(id) {
   const ft = document.getElementById('g-view-ft');
   if (!body) return;
 
-  const r = greqMasterData.find(x => x.id === id) || {
+  const r = (typeof empReqMasterData !== 'undefined' && empReqMasterData.find(x => x.id === id)) || greqMasterData.find(x => x.id === id) || {
     id: id,
-    name: 'Nguyễn Văn A',
+    name: 'Nguyễn Minh Hoài',
     pap: 'PAP0009',
     dept: 'PT Phần mềm',
     title: 'Đề xuất ' + id,
@@ -15736,7 +16376,7 @@ function viewGlobalReq(id) {
 
   if (isBizReq || isWfhReq) {
     const isBiz = isBizReq;
-    const reqGroup = 'Vắng mặt làm việc';
+    const reqGroup = 'Công tác làm việc';
     const reqType = isBiz ? 'Đi công tác' : 'Làm việc ngoài văn phòng';
     const reqIcon = isBiz ? 'fa-solid fa-plane-departure text-[#0284c7]' : 'fa-solid fa-house-laptop text-[#7c3aed]';
     const timeLabel = isBiz ? 'Khung thời gian công tác' : 'Khung thời gian làm việc ngoài VP';
@@ -18222,22 +18862,7 @@ cwfCell.actionRender = r => cwfCell(r, 'action', 0);
 /* Modal Tab Switcher: 1. Setup vs 2. Form */
 function switchModalWfTab(tab) {
   const pSetup = document.getElementById('pane-modal-wf-setup');
-  const pForm = document.getElementById('pane-modal-wf-form');
-  const bSetup = document.getElementById('tab-modal-wf-setup');
-  const bForm = document.getElementById('tab-modal-wf-form');
-
-  if (tab === 'SETUP') {
-    if (pSetup) pSetup.style.display = 'block';
-    if (pForm) pForm.style.display = 'none';
-    if (bSetup) bSetup.classList.add('active');
-    if (bForm) bForm.classList.remove('active');
-  } else {
-    if (pSetup) pSetup.style.display = 'none';
-    if (pForm) pForm.style.display = 'block';
-    if (bSetup) bSetup.classList.remove('active');
-    if (bForm) bForm.classList.add('active');
-    updateFormPreview();
-  }
+  if (pSetup) pSetup.style.display = 'block';
 }
 
 /* Collapsible Accordion: Cài đặt nâng cao */
@@ -18802,13 +19427,14 @@ const BASE_WF_DEPTS = [
 ];
 
 const BASE_WF_USERS = [
-  { id: 'PVH', name: 'Phạm Văn Hậu', role: 'Tổng Giám đốc' },
-  { id: 'TTM', name: 'Trần Thị Mai', role: 'Kế toán trưởng' },
-  { id: 'LVC', name: 'Lê Văn Cường', role: 'Trưởng phòng Khai thác Cảng' },
-  { id: 'NVN', name: 'Nguyễn Văn Nam', role: 'Trưởng ban Nhân sự' },
-  { id: 'VTL', name: 'Võ Thành Long', role: 'Phó Giám đốc Kỹ thuật' },
-  { id: 'HTL', name: 'Hoàng Thị Lan', role: 'Chuyên viên C&B Lead' },
-  { id: 'DMT', name: 'Đỗ Minh Trí', role: 'Tổ trưởng ca Hiện trường' }
+  { id: 'PVH', code: 'PAP0001', name: 'Phạm Văn Hậu', role: 'Tổng Giám đốc', email: 'hau.pv@phuocanport.com.vn', dept: 'Ban Tổng Giám đốc' },
+  { id: 'TTM', code: 'PAP0003', name: 'Trần Thị Mai', role: 'Kế toán trưởng', email: 'mai.tt@phuocanport.com.vn', dept: 'Phòng Kế toán - Tài chính' },
+  { id: 'LVC', code: 'PAP0005', name: 'Lê Văn Cường', role: 'Trưởng phòng Khai thác Cảng', email: 'cuong.lv@phuocanport.com.vn', dept: 'Phòng Khai thác Cảng' },
+  { id: 'NVN', code: 'PAP0008', name: 'Nguyễn Văn Nam', role: 'Trưởng ban Nhân sự', email: 'nam.nv@phuocanport.com.vn', dept: 'Ban Nhân sự & Pháp chế' },
+  { id: 'NMH', code: 'PAP0009', name: 'Nguyễn Minh Hoài', role: 'Kỹ sư Phần mềm', email: 'hoai.nm@phuocanport.com.vn', dept: 'Phòng CNTT & Chuyển đổi số' },
+  { id: 'VTL', code: 'PAP0012', name: 'Võ Thành Long', role: 'Phó Giám đốc Kỹ thuật', email: 'long.vt@phuocanport.com.vn', dept: 'Ban Quản lý Kỹ thuật' },
+  { id: 'HTL', code: 'PAP0015', name: 'Hoàng Thị Lan', role: 'Chuyên viên C&B Lead', email: 'lan.ht@phuocanport.com.vn', dept: 'Ban Nhân sự & Pháp chế' },
+  { id: 'DMT', code: 'PAP0022', name: 'Đỗ Minh Trí', role: 'Tổ trưởng ca Hiện trường', email: 'tri.dm@phuocanport.com.vn', dept: 'Đội Khai thác Bến bãi' }
 ];
 
 function toggleStepDropdown(menuId) {
@@ -18823,8 +19449,8 @@ function filterStepDropdownItems(inp, listId) {
   const q = inp.value.toLowerCase().trim();
   const list = document.getElementById(listId);
   if (!list) return;
-  list.querySelectorAll('.step-item-row').forEach(row => {
-    const text = row.textContent.toLowerCase();
+  list.querySelectorAll('.step-item-row, .adv-fol-row').forEach(row => {
+    const text = (row.textContent + ' ' + (row.getAttribute('data-search') || '')).toLowerCase();
     row.style.display = text.includes(q) ? 'flex' : 'none';
   });
 }
@@ -19038,10 +19664,21 @@ function renderBaseWfSteps(steps) {
     const userRowsHtml = BASE_WF_USERS.map(u => {
       const isChecked = selectedUsers.includes(u.name) || selectedUsers.includes(u.id);
       const cbId = 'cb-user-' + idx + '-' + u.id;
-      const fullLabel = u.name + ' — ' + u.role;
-      return '<label class="step-item-row" style="display:flex;align-items:center;gap:8px;padding:6px 8px;border-radius:4px;cursor:pointer;font-size:12px" onmouseover="this.style.background=\'#f1f5f9\'" onmouseout="this.style.background=\'transparent\'">' +
-        '<input type="checkbox" id="' + cbId + '" class="step-user-item-cb" value="' + u.name + '" data-label="' + fullLabel + '"' + (isChecked ? ' checked' : '') + ' onchange="onStepUserItemChange(this, \'' + idx + '\')" style="accent-color:#2E3191">' +
-        '<div><span style="font-weight:600;color:#0f172a">' + u.name + '</span> <span style="color:#64748b;font-size:11px">(' + u.role + ')</span></div>' +
+      const fullLabel = u.name + ' (' + (u.code || u.id) + ') — ' + u.role;
+      return '<label class="step-item-row" data-search="' + u.name.toLowerCase() + ' ' + (u.code||'').toLowerCase() + ' ' + (u.email||'').toLowerCase() + ' ' + (u.role||'').toLowerCase() + '" style="display:flex;align-items:flex-start;gap:9px;padding:7px 9px;border-radius:6px;cursor:pointer;font-size:12px;border-bottom:1px solid #f1f5f9;transition:background 0.15s" onmouseover="this.style.background=\'#f8fafc\'" onmouseout="this.style.background=\'transparent\'">' +
+        '<input type="checkbox" id="' + cbId + '" class="step-user-item-cb" value="' + u.name + '" data-label="' + fullLabel + '"' + (isChecked ? ' checked' : '') + ' onchange="onStepUserItemChange(this, \'' + idx + '\')" style="margin-top:3px;accent-color:#2E3191;width:15px;height:15px;flex-shrink:0">' +
+        '<div style="display:flex;flex-direction:column;gap:2px;flex:1;min-width:0">' +
+          '<div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap">' +
+            '<span style="font-weight:700;color:#0f172a;font-size:12px">' + u.name + '</span>' +
+            '<span style="background:#eff6ff;color:#2E3191;font-weight:700;font-size:10.5px;padding:1px 6px;border-radius:4px;border:1px solid #bfdbfe;font-family:monospace">' + (u.code || u.id) + '</span>' +
+            '<span style="color:#64748b;font-size:11px">(' + u.role + ')</span>' +
+          '</div>' +
+          '<div style="display:flex;align-items:center;gap:10px;color:#64748b;font-size:11px">' +
+            '<span style="display:inline-flex;align-items:center;gap:4px;color:#0284c7"><i class="fa-regular fa-envelope" style="font-size:10px"></i>' + (u.email || (u.id.toLowerCase() + '@phuocanport.com.vn')) + '</span>' +
+            '<span style="color:#cbd5e1">•</span>' +
+            '<span style="color:#64748b">' + (u.dept || 'Cảng Phước An') + '</span>' +
+          '</div>' +
+        '</div>' +
       '</label>';
     }).join('');
 
@@ -19152,12 +19789,12 @@ function renderBaseWfSteps(steps) {
         '</div>' +
       '</div>' +
 
-      // HÀNG DƯỚI: HÌNH THỨC PHÊ DUYỆT VÀ THỜI HẠN SLA (NHƯ TRONG ẢNH CỦA USER)
+      // HÀNG DƯỚI: HÌNH THỨC PHÊ DUYỆT VÀ THỜI HẠN SLA
       '<div style="display:grid;grid-template-columns:1.1fr 130px 1.1fr;gap:12px;align-items:start">' +
         '<div>' +
           '<label class="fl">Hình thức phê duyệt *</label>' +
           '<select class="fi step-consensus-select">' +
-            '<option value="ANY"' + (st.consensus === 'ANY' ? ' selected' : '') + '>Chỉ cần 1 người duyệt</option>' +
+            '<option value="ANY"' + (st.consensus === 'ANY' || !st.consensus ? ' selected' : '') + '>Chỉ cần 1 người duyệt</option>' +
             '<option value="ALL"' + (st.consensus === 'ALL' ? ' selected' : '') + '>Tất cả cùng duyệt (Đồng thuận)</option>' +
           '</select>' +
         '</div>' +
@@ -19171,9 +19808,9 @@ function renderBaseWfSteps(steps) {
         '<div>' +
           '<label class="fl">Xử lý khi quá hạn SLA</label>' +
           '<select class="fi step-action-select">' +
+            '<option value=""' + (!st.slaAction ? ' selected' : '') + '></option>' +
             '<option value="REMIND"' + (st.slaAction === 'REMIND' ? ' selected' : '') + '>Gửi nhắc nhở</option>' +
-            '<option value="ESCALATE"' + (st.slaAction === 'ESCALATE' ? ' selected' : '') + '>Chuyển tiếp cấp trên</option>' +
-            '<option value="AUTO_APPROVE"' + (st.slaAction === 'AUTO_APPROVE' ? ' selected' : '') + '>Tự động thông qua</option>' +
+            '<option value="ESCALATE"' + (st.slaAction === 'ESCALATE' ? ' selected' : '') + '>Chuyển bước tiếp theo</option>' +
           '</select>' +
         '</div>' +
       '</div>';
@@ -19201,7 +19838,7 @@ function addBaseWfStep() {
     selectedDepts: ['BNS'],
     consensus: 'ANY',
     sla: 24,
-    slaAction: 'REMIND'
+    slaAction: ''
   });
   renderBaseWfSteps(current);
 }
@@ -19259,7 +19896,7 @@ function getCurrentModalSteps() {
 
     const consensus = card.querySelector('.step-consensus-select')?.value || 'ANY';
     const sla = parseInt(card.querySelector('.step-sla-input')?.value, 10) || 24;
-    const slaAction = card.querySelector('.step-action-select')?.value || 'REMIND';
+    const slaAction = card.querySelector('.step-action-select')?.value || '';
 
     steps.push({
       title,
@@ -19398,9 +20035,20 @@ function renderAdvFollowersList() {
 
   list.innerHTML = BASE_WF_USERS.map(u => {
     const isChecked = bwfAdvSelectedFollowers.includes(u.id);
-    return '<label class="adv-fol-row" style="display:flex;align-items:center;gap:8px;padding:6px 8px;border-radius:4px;cursor:pointer;font-size:12px" onmouseover="this.style.background=\'#f1f5f9\'" onmouseout="this.style.background=\'transparent\'">' +
-      '<input type="checkbox" value="' + u.id + '"' + (isChecked ? ' checked' : '') + ' onchange="onAdvFollowerChange(this)" style="accent-color:#2E3191">' +
-      '<div><span style="font-weight:600;color:#0f172a">' + u.name + '</span> <span style="color:#64748b;font-size:11px">(' + u.role + ')</span></div>' +
+    return '<label class="adv-fol-row" data-search="' + u.name.toLowerCase() + ' ' + (u.code||'').toLowerCase() + ' ' + (u.email||'').toLowerCase() + ' ' + (u.role||'').toLowerCase() + '" style="display:flex;align-items:flex-start;gap:9px;padding:7px 9px;border-radius:6px;cursor:pointer;font-size:12px;border-bottom:1px solid #f1f5f9;transition:background 0.15s" onmouseover="this.style.background=\'#f8fafc\'" onmouseout="this.style.background=\'transparent\'">' +
+      '<input type="checkbox" value="' + u.id + '"' + (isChecked ? ' checked' : '') + ' onchange="onAdvFollowerChange(this)" style="margin-top:3px;accent-color:#2E3191;width:15px;height:15px;flex-shrink:0">' +
+      '<div style="display:flex;flex-direction:column;gap:2px;flex:1;min-width:0">' +
+        '<div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap">' +
+          '<span style="font-weight:700;color:#0f172a;font-size:12px">' + u.name + '</span>' +
+          '<span style="background:#eff6ff;color:#2E3191;font-weight:700;font-size:10.5px;padding:1px 6px;border-radius:4px;border:1px solid #bfdbfe;font-family:monospace">' + (u.code || u.id) + '</span>' +
+          '<span style="color:#64748b;font-size:11px">(' + u.role + ')</span>' +
+        '</div>' +
+        '<div style="display:flex;align-items:center;gap:10px;color:#64748b;font-size:11px">' +
+          '<span style="display:inline-flex;align-items:center;gap:4px;color:#0284c7"><i class="fa-regular fa-envelope" style="font-size:10px"></i>' + (u.email || (u.id.toLowerCase() + '@phuocanport.com.vn')) + '</span>' +
+          '<span style="color:#cbd5e1">•</span>' +
+          '<span style="color:#64748b">' + (u.dept || 'Cảng Phước An') + '</span>' +
+        '</div>' +
+      '</div>' +
     '</label>';
   }).join('');
 }
@@ -19510,8 +20158,11 @@ function openBaseWfModal(code) {
     if (inpPolicy) inpPolicy.value = '';
     if (chkDm) chkDm.checked = true;
     document.querySelectorAll('input[name="bwf-approval-method"]').forEach(r => r.checked = r.value === 'SEQUENTIAL');
+    const leadInp = document.getElementById('bwf-lead-time-val'); if (leadInp) leadInp.value = '';
+    const dayInp = document.getElementById('bwf-day-limit-val'); if (dayInp) dayInp.value = '';
+    const monInp = document.getElementById('bwf-monthly-limit-val'); if (monInp) monInp.value = '';
     renderBaseWfSteps([
-      { title: 'Quản lý trực tiếp phê duyệt', approverType: 'DIRECT_MANAGER', approverName: 'QLTT', consensus: 'ANY', sla: 24, slaAction: 'REMIND' }
+      { title: 'Quản lý trực tiếp phê duyệt', approverType: 'DIRECT_MANAGER', approverName: 'QLTT', consensus: 'ANY', sla: 24, slaAction: '' }
     ]);
     renderCustomFields([
       { name: 'Người bàn giao công việc', key: 'handover_user', type: 'SELECT', required: true, options: 'Nguyễn Văn A, Trần Thị B, Lê Văn C' }
@@ -19572,7 +20223,8 @@ function saveBaseWf() {
   const desc = policy;
   const requireDm = document.getElementById('bwf-require-dm')?.checked;
   const approvalMethod = document.querySelector('input[name="bwf-approval-method"]:checked')?.value || 'SEQUENTIAL';
-  const fundPriority = document.querySelector('input[name="bwf-fund-priority"]:checked')?.value || 'ANNUAL_LEAVE';
+  const fundPriority = (document.querySelector('input[name="bwf-fund-priority"]:checked')?.value) ||
+    (typeLink === 'AL' ? 'ANNUAL_LEAVE' : (typeLink === 'CL' ? 'COMP_LEAVE' : 'NO_DEDUCT'));
   const leadTime = document.getElementById('bwf-lead-time')?.value || '--';
   const followers = document.getElementById('bwf-followers')?.value || 'CB';
 
@@ -20283,6 +20935,9 @@ const GREQ_AVATAR_PALETTES = [
 ];
 
 function getGreqAvatarPalette(name) {
+  if (name && (name.includes('Nguyễn Minh Hoài') || name.includes('Minh Hoài'))) {
+    return { bg: '#54D7F6', text: '#0f172a', border: '#38bdf8' };
+  }
   if (!name) return GREQ_AVATAR_PALETTES[0];
   let hash = 0;
   for (let i = 0; i < name.length; i++) hash = (hash * 31 + name.charCodeAt(i)) & 0xffffffff;
@@ -20480,6 +21135,765 @@ function renderGreqApproverFlowCell(r) {
 
   html += '</div>';
   return html;
+}
+
+
+
+/* ===== PHÂN HỆ ĐƠN TỪ NHÂN VIÊN (EMP-REQUESTS: THEO DÕI, QUẢN LÝ & CẬP NHẬT ĐỀ XUẤT) ===== */
+const ereqCols = [
+  { k: 'stt', t: 'STT', sl: true, vis: true, w: 36, center: true },
+  { k: 'id', t: 'Mã đơn', sort: true, search: true, vis: true, w: 95 },
+  { k: 'pap', t: 'Mã NV', sort: true, search: true, vis: true, w: 80 },
+  { k: 'name', t: 'Họ và tên', sort: true, search: true, vis: true, w: 140 },
+  { k: 'dept', t: 'Phòng ban / đơn vị', sort: true, filter: true, vis: true, w: 125 },
+  { k: 'title', t: 'Tên đề xuất', sort: true, search: true, vis: true, w: 160 },
+  { k: 'type', t: 'Loại đề xuất', sort: true, filter: true, vis: true, w: 125 },
+  { k: 'time', t: 'Thời gian áp dụng', sort: true, vis: true, w: 125 },
+  { k: 'reason', t: 'Lý do', search: true, vis: true, w: 120 },
+  { k: 'approver', t: 'Người duyệt', vis: true, w: 170 },
+  { k: 'status', t: 'Trạng thái', filter: true, sort: true, vis: true, w: 95, center: true },
+  { k: 'action', t: 'Thao tác', sr: true, vis: true, w: 85, center: true }
+];
+
+let ereqCurrentNavTab = 'SENT';
+let ereqSelectedStatuses = [];
+let ereqSelectedCats = [];
+
+let empReqMasterData = [
+  /* TAB: TÔI GỬI ĐI (100% CỦA USER ĐĂNG NHẬP: NGUYỄN VĂN A - PAP0009 - PT PHẦN MỀM) */
+  {
+    id: 'NP-2026-081',
+    user: 'Nguyễn Minh Hoài',
+    name: 'Nguyễn Minh Hoài',
+    pap: 'PAP0009',
+    dept: 'PT Phần mềm',
+    type: 'Nghỉ phép năm',
+    typeCode: 'LEAVE',
+    time: '03/11/2026',
+    reason: 'Bận việc gia đình có đơn xin phép',
+    approver: 'Trần Văn Nam',
+    status: 'PENDING',
+    statusText: 'CHỜ DUYỆT',
+    tabType: 'SENT',
+    dateCreated: '2026-11-01',
+    title: 'Đơn xin nghỉ phép năm'
+  },
+  {
+    id: 'DC-2026-015',
+    user: 'Nguyễn Minh Hoài',
+    name: 'Nguyễn Minh Hoài',
+    pap: 'PAP0009',
+    dept: 'PT Phần mềm',
+    type: 'Quên chấm công',
+    typeCode: 'ATT_ADJ',
+    time: '01/11/2026 · Giờ vào 08:05',
+    reason: 'Quên chấm công ca sáng do tiếp đoàn khách đối tác',
+    approver: 'Phạm Quốc Tuấn',
+    status: 'APPROVED',
+    statusText: 'ĐÃ DUYỆT',
+    tabType: 'SENT',
+    dateCreated: '2026-11-01',
+    title: 'Giải trình quên chấm công'
+  },
+  {
+    id: 'OT-2026-042',
+    user: 'Nguyễn Minh Hoài',
+    name: 'Nguyễn Minh Hoài',
+    pap: 'PAP0009',
+    dept: 'PT Phần mềm',
+    type: 'Làm thêm giờ (OT)',
+    typeCode: 'OT',
+    time: '31/10/2026 · 17:30–21:30 (4h)',
+    reason: 'Hỗ trợ triển khai cập nhật hệ thống TOS cảng',
+    approver: 'Trần Văn Nam',
+    status: 'PROCESSING',
+    statusText: 'ĐANG XỬ LÝ',
+    tabType: 'SENT',
+    dateCreated: '2026-10-31',
+    title: 'Làm thêm giờ hỗ trợ nâng cấp TOS'
+  },
+  {
+    id: 'CT-2026-019',
+    user: 'Nguyễn Minh Hoài',
+    name: 'Nguyễn Minh Hoài',
+    pap: 'PAP0009',
+    dept: 'PT Phần mềm',
+    type: 'Đi công tác',
+    typeCode: 'BIZ',
+    time: '05/11/2026 &rarr; 07/11/2026',
+    reason: 'Tham gia hội thảo Công nghệ Cảng biển Thông minh Hải Phòng',
+    approver: 'Phạm Quốc Tuấn',
+    status: 'PENDING',
+    statusText: 'CHỜ DUYỆT',
+    tabType: 'SENT',
+    dateCreated: '2026-11-02',
+    title: 'Công lệnh đi công tác Hải Phòng'
+  },
+  {
+    id: 'WFH-2026-008',
+    user: 'Nguyễn Minh Hoài',
+    name: 'Nguyễn Minh Hoài',
+    pap: 'PAP0009',
+    dept: 'PT Phần mềm',
+    type: 'Làm việc ngoài VP',
+    typeCode: 'WFH',
+    time: '04/11/2026',
+    reason: 'Làm việc từ xa hoàn thiện tài liệu đặc tả API phân hệ HRM',
+    approver: 'Trần Văn Nam',
+    status: 'APPROVED',
+    statusText: 'ĐÃ DUYỆT',
+    tabType: 'SENT',
+    dateCreated: '2026-11-02',
+    title: 'Đăng ký làm việc ngoài văn phòng'
+  },
+  {
+    id: 'VR-2026-004',
+    user: 'Nguyễn Minh Hoài',
+    name: 'Nguyễn Minh Hoài',
+    pap: 'PAP0009',
+    dept: 'PT Phần mềm',
+    type: 'Nghỉ việc riêng / khác',
+    typeCode: 'LEAVE_PL',
+    time: '10/11/2026 &rarr; 12/11/2026',
+    reason: 'Gia đình có việc hiếu (hưởng 100% lương theo Điều 115 BLLĐ)',
+    approver: 'Phạm Quốc Tuấn',
+    status: 'APPROVED',
+    statusText: 'ĐÃ DUYỆT',
+    tabType: 'SENT',
+    dateCreated: '2026-11-03',
+    title: 'Đơn xin nghỉ việc riêng có lương'
+  },
+  {
+    id: 'NP-2026-079',
+    user: 'Nguyễn Minh Hoài',
+    name: 'Nguyễn Minh Hoài',
+    pap: 'PAP0009',
+    dept: 'PT Phần mềm',
+    type: 'Nghỉ phép năm',
+    typeCode: 'LEAVE',
+    time: '14/11/2026 &rarr; 15/11/2026',
+    reason: 'Giải quyết công việc cá nhân gia đình cuối năm',
+    approver: 'Trần Văn Nam',
+    status: 'PENDING',
+    statusText: 'CHỜ DUYỆT',
+    tabType: 'SENT',
+    dateCreated: '2026-11-03',
+    title: 'Đơn xin nghỉ phép năm 2 ngày'
+  },
+  {
+    id: 'DC-2026-018',
+    user: 'Nguyễn Minh Hoài',
+    name: 'Nguyễn Minh Hoài',
+    pap: 'PAP0009',
+    dept: 'PT Phần mềm',
+    type: 'Quên chấm công',
+    typeCode: 'ATT_ADJ',
+    time: '02/11/2026 · Giờ ra 18:00',
+    reason: 'Thiết bị vân tay bến số 1 mất kết nối mạng nội bộ',
+    approver: 'Trần Văn Nam',
+    status: 'REJECTED',
+    statusText: 'TỪ CHỐI',
+    tabType: 'SENT',
+    dateCreated: '2026-11-03',
+    title: 'Giải trình quên quẹt thẻ ra về'
+  },
+  {
+    id: 'OT-2026-045',
+    user: 'Nguyễn Minh Hoài',
+    name: 'Nguyễn Minh Hoài',
+    pap: 'PAP0009',
+    dept: 'PT Phần mềm',
+    type: 'Làm thêm giờ (OT)',
+    typeCode: 'OT',
+    time: '06/11/2026 · 18:00–22:00 (4h)',
+    reason: 'Trực kỹ thuật giám sát tích hợp API cảng bến số 1',
+    approver: 'Trần Văn Nam',
+    status: 'PENDING',
+    statusText: 'CHỜ DUYỆT',
+    tabType: 'SENT',
+    dateCreated: '2026-11-04',
+    title: 'Làm thêm giờ giám sát API'
+  },
+  {
+    id: 'NP-2026-085',
+    user: 'Nguyễn Minh Hoài',
+    name: 'Nguyễn Minh Hoài',
+    pap: 'PAP0009',
+    dept: 'PT Phần mềm',
+    type: 'Nghỉ phép năm',
+    typeCode: 'LEAVE',
+    time: '18/11/2026',
+    reason: 'Khám sức khỏe định kỳ bệnh viện',
+    approver: 'Trần Văn Nam',
+    status: 'PENDING',
+    statusText: 'CHỜ DUYỆT',
+    tabType: 'SENT',
+    dateCreated: '2026-11-04',
+    title: 'Đơn xin nghỉ phép năm'
+  },
+  {
+    id: 'CT-2026-022',
+    user: 'Nguyễn Minh Hoài',
+    name: 'Nguyễn Minh Hoài',
+    pap: 'PAP0009',
+    dept: 'PT Phần mềm',
+    type: 'Đi công tác',
+    typeCode: 'BIZ',
+    time: '12/11/2026 &rarr; 13/11/2026',
+    reason: 'Làm việc kỹ thuật với đối tác cung cấp phần mềm TOS',
+    approver: 'Phạm Quốc Tuấn',
+    status: 'APPROVED',
+    statusText: 'ĐÃ DUYỆT',
+    tabType: 'SENT',
+    dateCreated: '2026-11-04',
+    title: 'Công tác kết nối kỹ thuật TOS'
+  },
+  {
+    id: 'DC-2026-020',
+    user: 'Nguyễn Minh Hoài',
+    name: 'Nguyễn Minh Hoài',
+    pap: 'PAP0009',
+    dept: 'PT Phần mềm',
+    type: 'Quên chấm công',
+    typeCode: 'ATT_ADJ',
+    time: '04/11/2026 · Giờ vào 07:55',
+    reason: 'Quên quẹt thẻ sáng do trực tiếp sửa lỗi máy chủ',
+    approver: 'Trần Văn Nam',
+    status: 'PENDING',
+    statusText: 'CHỜ DUYỆT',
+    tabType: 'SENT',
+    dateCreated: '2026-11-04',
+    title: 'Giải trình quên chấm công đầu giờ'
+  },
+  {
+    id: 'OT-2026-048',
+    user: 'Nguyễn Minh Hoài',
+    name: 'Nguyễn Minh Hoài',
+    pap: 'PAP0009',
+    dept: 'PT Phần mềm',
+    type: 'Làm thêm giờ (OT)',
+    typeCode: 'OT',
+    time: '08/11/2026 · 08:00–12:00 (4h)',
+    reason: 'Bảo trì định kỳ máy chủ cơ sở dữ liệu cảng cuối tuần',
+    approver: 'Trần Văn Nam',
+    status: 'APPROVED',
+    statusText: 'ĐÃ DUYỆT',
+    tabType: 'SENT',
+    dateCreated: '2026-11-05',
+    title: 'Làm thêm ngày nghỉ cuối tuần'
+  },
+  {
+    id: 'WFH-2026-011',
+    user: 'Nguyễn Minh Hoài',
+    name: 'Nguyễn Minh Hoài',
+    pap: 'PAP0009',
+    dept: 'PT Phần mềm',
+    type: 'Làm việc ngoài VP',
+    typeCode: 'WFH',
+    time: '07/11/2026',
+    reason: 'Làm việc từ xa viết tài liệu hướng dẫn sử dụng phần mềm',
+    approver: 'Trần Văn Nam',
+    status: 'PROCESSING',
+    statusText: 'ĐANG XỬ LÝ',
+    tabType: 'SENT',
+    dateCreated: '2026-11-05',
+    title: 'Làm việc từ xa hoàn thiện tài liệu'
+  },
+
+  /* TAB: ĐANG THEO DÕI (WATCHING: ĐƠN CỦA ĐỒNG NGHIỆP CÙNG DỰ ÁN MÀ USER ĐƯỢC THEO DÕI) */
+  {
+    id: 'NP-2026-076',
+    user: 'Lê Văn Thắng',
+    name: 'Lê Văn Thắng',
+    pap: 'PAP0005',
+    dept: 'Kỹ thuật - CNTT',
+    type: 'Nghỉ phép năm',
+    typeCode: 'LEAVE',
+    time: '28/10/2026 &rarr; 30/10/2026',
+    reason: 'Nghỉ phép cá nhân sau hoàn thành dự án STS',
+    approver: 'Nguyễn Văn B',
+    status: 'APPROVED',
+    statusText: 'ĐÃ DUYỆT',
+    tabType: 'WATCHING',
+    dateCreated: '2026-10-25',
+    title: 'Đơn xin nghỉ phép năm 3 ngày'
+  },
+  {
+    id: 'OT-2026-039',
+    user: 'Trần Thị Hoa',
+    name: 'Trần Thị Hoa',
+    pap: 'PAP0014',
+    dept: 'Khai thác cảng',
+    type: 'Làm thêm giờ (OT)',
+    typeCode: 'OT',
+    time: '25/10/2026 · 18:00–02:00 (8h)',
+    reason: 'Giải phóng hàng tàu chở than nhiệt điện',
+    approver: 'Phạm Quốc Tuấn',
+    status: 'APPROVED',
+    statusText: 'ĐÃ DUYỆT',
+    tabType: 'WATCHING',
+    dateCreated: '2026-10-24',
+    title: 'Làm thêm ca 3 bến hàng rời'
+  },
+  {
+    id: 'DC-2026-012',
+    user: 'Phạm Thị Bình',
+    name: 'Phạm Thị Bình',
+    pap: 'PAP0011',
+    dept: 'Nhân sự',
+    type: 'Quên chấm công',
+    typeCode: 'ATT_ADJ',
+    time: '29/10/2026 · Giờ ra 17:30',
+    reason: 'Làm việc tại hội trường tuyển dụng không quẹt thẻ',
+    approver: 'Phạm Quốc Tuấn',
+    status: 'APPROVED',
+    statusText: 'ĐÃ DUYỆT',
+    tabType: 'WATCHING',
+    dateCreated: '2026-10-29',
+    title: 'Giải trình giờ ra hội trường'
+  },
+  {
+    id: 'CT-2026-016',
+    user: 'Nguyễn Văn An',
+    name: 'Nguyễn Văn An',
+    pap: 'PAP0007',
+    dept: 'Vận hành',
+    type: 'Đi công tác',
+    typeCode: 'BIZ',
+    time: '27/10/2026 &rarr; 29/10/2026',
+    reason: 'Khảo sát hệ thống phao tiêu dẫn luồng Đồng Nai',
+    approver: 'Nguyễn Văn B',
+    status: 'APPROVED',
+    statusText: 'ĐÃ DUYỆT',
+    tabType: 'WATCHING',
+    dateCreated: '2026-10-24',
+    title: 'Công tác dẫn luồng Đồng Nai'
+  },
+  {
+    id: 'NP-2026-070',
+    user: 'Đỗ Thu Hà',
+    name: 'Đỗ Thu Hà',
+    pap: 'PAP0012',
+    dept: 'Kế toán',
+    type: 'Nghỉ phép năm',
+    typeCode: 'LEAVE',
+    time: '20/10/2026',
+    reason: 'Giải quyết việc riêng cá nhân',
+    approver: 'Phạm Quốc Tuấn',
+    status: 'APPROVED',
+    statusText: 'ĐÃ DUYỆT',
+    tabType: 'WATCHING',
+    dateCreated: '2026-10-18',
+    title: 'Đơn xin nghỉ phép năm 1 ngày'
+  },
+  {
+    id: 'WFH-2026-006',
+    user: 'Lê Văn Thắng',
+    name: 'Lê Văn Thắng',
+    pap: 'PAP0005',
+    dept: 'Kỹ thuật - CNTT',
+    type: 'Làm việc ngoài VP',
+    typeCode: 'WFH',
+    time: '23/10/2026',
+    reason: 'Tham gia hội thảo trực tuyến Cảng thông minh',
+    approver: 'Nguyễn Văn B',
+    status: 'APPROVED',
+    statusText: 'ĐÃ DUYỆT',
+    tabType: 'WATCHING',
+    dateCreated: '2026-10-21',
+    title: 'Hội thảo Smart Port online'
+  },
+  {
+    id: 'OT-2026-035',
+    user: 'Lê Văn Thắng',
+    name: 'Lê Văn Thắng',
+    pap: 'PAP0005',
+    dept: 'Kỹ thuật - CNTT',
+    type: 'Làm thêm giờ (OT)',
+    typeCode: 'OT',
+    time: '21/10/2026 · 17:30–20:30 (3h)',
+    reason: 'Bảo trì cáp quang truyền dẫn bến container',
+    approver: 'Nguyễn Văn B',
+    status: 'APPROVED',
+    statusText: 'ĐÃ DUYỆT',
+    tabType: 'WATCHING',
+    dateCreated: '2026-10-20',
+    title: 'Làm thêm giờ bảo trì cáp quang'
+  },
+  {
+    id: 'VR-2026-002',
+    user: 'Trần Thị Hoa',
+    name: 'Trần Thị Hoa',
+    pap: 'PAP0014',
+    dept: 'Khai thác cảng',
+    type: 'Nghỉ việc riêng / khác',
+    typeCode: 'LEAVE_PL',
+    time: '15/10/2026 &rarr; 16/10/2026',
+    reason: 'Gia đình có việc cưới hỏi người thân',
+    approver: 'Phạm Quốc Tuấn',
+    status: 'APPROVED',
+    statusText: 'ĐÃ DUYỆT',
+    tabType: 'WATCHING',
+    dateCreated: '2026-10-12',
+    title: 'Nghỉ việc riêng có hưởng lương'
+  }
+];
+
+function initEmpReqTable() {
+  renderEreqCatChips();
+  renderEreqStatusChips();
+  const filtered = getFilteredEreqData();
+  mkTable('ereq', ereqCols, filtered, ereqCell);
+  updateEreqTabBadges();
+}
+
+function getFilteredEreqData() {
+  const kw = (document.getElementById('ereq-kw-search')?.value || '').toLowerCase().trim();
+  const fromDate = document.getElementById('ereq-from-date')?.value;
+  const toDate = document.getElementById('ereq-to-date')?.value;
+
+  return empReqMasterData.filter(r => {
+    // 1. Filter by Nav Tab ('SENT' or 'WATCHING')
+    if (ereqCurrentNavTab === 'SENT' && r.tabType !== 'SENT') return false;
+    if (ereqCurrentNavTab === 'WATCHING' && r.tabType !== 'WATCHING') return false;
+
+    // 2. Filter by Category
+    if (ereqSelectedCats && ereqSelectedCats.length > 0) {
+      const matchCat = ereqSelectedCats.some(cat => {
+        if (cat === 'LEAVE_PL') return r.type === 'Nghỉ việc riêng / khác' || r.typeCode === 'LEAVE_PL';
+        return r.typeCode === cat;
+      });
+      if (!matchCat) return false;
+    }
+
+    // 3. Filter by Status
+    if (ereqSelectedStatuses && ereqSelectedStatuses.length > 0) {
+      if (!ereqSelectedStatuses.includes(r.status)) return false;
+    }
+
+    // 4. Keyword search
+    if (kw) {
+      const matchText = (
+        (r.id || '') + ' ' +
+        (r.name || r.user || '') + ' ' +
+        (r.pap || '') + ' ' +
+        (r.dept || '') + ' ' +
+        (r.title || '') + ' ' +
+        (r.type || '') + ' ' +
+        (r.reason || '') + ' ' +
+        (r.approver || '')
+      ).toLowerCase();
+      if (!matchText.includes(kw)) return false;
+    }
+
+    // 5. Date filters
+    if (fromDate && r.dateCreated && r.dateCreated < fromDate) return false;
+    if (toDate && r.dateCreated && r.dateCreated > toDate) return false;
+
+    return true;
+  });
+}
+
+function ereqCell(r, k, i) {
+  if (k === 'id') {
+    return '<span style="color:#2E3191;font-weight:700;font-size:12px;cursor:pointer" title="Xem chi tiết đơn" onclick="viewEmpReq(\'' + r.id + '\')">' + (r.id || '') + '</span>';
+  }
+  if (k === 'pap') {
+    return '<span style="font-family:monospace;font-weight:700;color:#2E3191;background:#eef2ff;padding:2px 6px;border-radius:4px;font-size:11.5px">' + (r.pap || '—') + '</span>';
+  }
+  if (k === 'name' || k === 'user') {
+    const fullName = r.name || r.user || '-';
+    return '<div style="display:flex;align-items:center;gap:7px">' +
+      renderGreqLetterAvatar(fullName, 24) +
+      '<span style="font-weight:600;font-size:12px;color:#1e293b">' + fullName + '</span>' +
+    '</div>';
+  }
+  if (k === 'dept') {
+    return '<span style="background:#f1f5f9;color:#334155;border:1px solid #e2e8f0;padding:2px 7px;border-radius:4px;font-size:11px;font-weight:600">' + (r.dept || '—') + '</span>';
+  }
+  if (k === 'title') {
+    return '<span style="font-weight:600;color:#1e293b;font-size:12px;cursor:pointer" title="Xem chi tiết đơn" onclick="viewEmpReq(\'' + r.id + '\')">' + (r.title || r.type || '') + '</span>';
+  }
+  if (k === 'type') {
+    let icon = 'fa-calendar-days', color = '#2E3191', bg = '#eef2ff';
+    if (r.typeCode === 'ATT_ADJ') { icon = 'fa-fingerprint'; color = '#ea580c'; bg = '#fff7ed'; }
+    else if (r.typeCode === 'OT') { icon = 'fa-business-time'; color = '#d97706'; bg = '#fef3c7'; }
+    else if (r.typeCode === 'BIZ') { icon = 'fa-plane-departure'; color = '#0284c7'; bg = '#f0f9ff'; }
+    else if (r.typeCode === 'WFH') { icon = 'fa-laptop-house'; color = '#7c3aed'; bg = '#f5f3ff'; }
+    else if (r.typeCode === 'LEAVE_PL') { icon = 'fa-user-clock'; color = '#059669'; bg = '#ecfdf5'; }
+    return '<span style="display:inline-flex;align-items:center;gap:5px;font-size:11px;font-weight:600;padding:2px 8px;border-radius:6px;background:' + bg + ';color:' + color + '">' +
+      '<i class="fa-solid ' + icon + '"></i> ' + (r.type || '') +
+    '</span>';
+  }
+  if (k === 'time') {
+    return '<span style="font-size:12px;color:#334155;font-weight:500">' + (r.time || '—') + '</span>';
+  }
+  if (k === 'reason') {
+    return '<span style="font-size:12px;color:#475569">' + (r.reason || '—') + '</span>';
+  }
+  if (k === 'approver') {
+    return '<span style="font-size:12px;color:#334155;font-weight:500"><i class="fa-solid fa-user-check text-[#15803d] mr-1"></i>' + (r.approver || '—') + '</span>';
+  }
+  if (k === 'status') {
+    let bg = '#f1f5f9', color = '#475569', border = '#cbd5e1', dot = '#94a3b8';
+    if (r.status === 'PENDING') { bg = '#fffbeb'; color = '#b45309'; border = '#fde68a'; dot = '#f59e0b'; }
+    else if (r.status === 'APPROVED') { bg = '#f0fdf4'; color = '#15803d'; border = '#bbf7d0'; dot = '#22c55e'; }
+    else if (r.status === 'PROCESSING') { bg = '#eff6ff'; color = '#1d4ed8'; border = '#bfdbfe'; dot = '#3b82f6'; }
+    else if (r.status === 'REJECTED') { bg = '#fef2f2'; color = '#b91c1c'; border = '#fecaca'; dot = '#ef4444'; }
+    return '<span style="display:inline-flex;align-items:center;gap:4px;font-size:11px;font-weight:700;padding:2px 8px;border-radius:9999px;background:' + bg + ';color:' + color + ';border:1px solid ' + border + '">' +
+      '<span style="width:6px;height:6px;border-radius:50%;background:' + dot + '"></span>' +
+      (r.statusText || r.status) +
+    '</span>';
+  }
+  /* CHỨC NĂNG Ở THAO TÁC: CHỈ CÓ CẬP NHẬT VÀ XEM CHI TIẾT - KHÔNG CÓ DUYỆT */
+  if (k === 'action') {
+    return '<div style="display:flex;align-items:center;justify-content:center;gap:6px">' +
+      '<button class="ctrl" style="color:#2E3191;cursor:pointer" title="Xem chi tiết đơn" onclick="viewEmpReq(\'' + r.id + '\')">' +
+        '<i class="fa-regular fa-eye"></i>' +
+      '</button>' +
+      '<button class="ctrl" style="color:#0284c7;cursor:pointer" title="Cập nhật đơn đề xuất" onclick="openEditEmpReq(\'' + r.id + '\')">' +
+        '<i class="fa-solid fa-pen-to-square"></i>' +
+      '</button>' +
+    '</div>';
+  }
+  return r[k] ?? '';
+}
+
+function switchEreqNavTab(tab, el) {
+  ereqCurrentNavTab = tab;
+  document.querySelectorAll('#pg-emp-requests .greq-nav-tab').forEach(b => b.classList.remove('active'));
+  if (el) el.classList.add('active');
+  initEmpReqTable();
+}
+
+function updateEreqTabBadges() {
+  const sentCount = empReqMasterData.filter(r => r.tabType === 'SENT').length;
+  const watchCount = empReqMasterData.filter(r => r.tabType === 'WATCHING').length;
+  const bSent = document.getElementById('badge-ereq-tab-sent');
+  const bWatch = document.getElementById('badge-ereq-tab-watching');
+  if (bSent) bSent.textContent = sentCount;
+  if (bWatch) bWatch.textContent = watchCount;
+}
+
+function toggleEreqCatMenu(e) {
+  if (e) e.stopPropagation();
+  const m = document.getElementById('ereq-cat-menu');
+  if (m) {
+    const isShow = m.style.display === 'block';
+    m.style.display = isShow ? 'none' : 'block';
+    if (!isShow) {
+      const inp = document.getElementById('ereq-cat-search-inp');
+      if (inp) { inp.value = ''; filterEreqCatOptions(''); setTimeout(() => inp.focus(), 50); }
+    }
+  }
+}
+
+function filterEreqCatOptions(q) {
+  const query = (q || '').toLowerCase().trim();
+  document.querySelectorAll('#ereq-cat-options-list .ereq-cat-opt').forEach(opt => {
+    const text = (opt.textContent + ' ' + (opt.getAttribute('data-name') || '')).toLowerCase();
+    opt.style.display = text.includes(query) ? 'flex' : 'none';
+  });
+}
+
+function setAllEreqCats(selectAll) {
+  ereqSelectedCats = [];
+  document.querySelectorAll('.chk-ereq-cat').forEach(cb => {
+    cb.checked = selectAll;
+    if (selectAll) ereqSelectedCats.push(cb.value);
+  });
+  renderEreqCatChips();
+  initEmpReqTable();
+}
+
+function onEreqCatCheckboxChange() {
+  ereqSelectedCats = [];
+  document.querySelectorAll('.chk-ereq-cat:checked').forEach(cb => {
+    ereqSelectedCats.push(cb.value);
+  });
+  renderEreqCatChips();
+  initEmpReqTable();
+}
+
+function renderEreqCatChips() {
+  const container = document.getElementById('ereq-cat-chips');
+  if (!container) return;
+  if (!ereqSelectedCats || ereqSelectedCats.length === 0) {
+    container.innerHTML = '<span style="color:#94a3b8;font-size:12px">Tất cả loại đề xuất</span>';
+    return;
+  }
+  const catNames = {
+    'LEAVE': 'Nghỉ phép năm',
+    'ATT_ADJ': 'Quên chấm công',
+    'OT': 'Làm thêm giờ',
+    'BIZ': 'Đi công tác',
+    'WFH': 'Làm việc ngoài VP',
+    'LEAVE_PL': 'Nghỉ việc riêng'
+  };
+  container.innerHTML = ereqSelectedCats.map(cat => {
+    return '<span class="badge" style="background:#eef2ff;color:#2E3191;border:1px solid #c7d2fe;font-size:11px;padding:2px 8px;border-radius:6px;display:inline-flex;align-items:center;gap:4px">' +
+      (catNames[cat] || cat) +
+      '<i class="fa-solid fa-xmark text-slate-400" style="cursor:pointer" onclick="event.stopPropagation(); removeEreqCatFilter(\'' + cat + '\')"></i>' +
+    '</span>';
+  }).join('');
+}
+
+function removeEreqCatFilter(cat) {
+  ereqSelectedCats = ereqSelectedCats.filter(c => c !== cat);
+  document.querySelectorAll('.chk-ereq-cat').forEach(cb => {
+    if (cb.value === cat) cb.checked = false;
+  });
+  renderEreqCatChips();
+  initEmpReqTable();
+}
+
+function toggleEreqStatusMenu(e) {
+  if (e) e.stopPropagation();
+  const m = document.getElementById('ereq-status-menu');
+  if (m) m.style.display = m.style.display === 'block' ? 'none' : 'block';
+}
+
+function onEreqStatusCheckboxChange() {
+  ereqSelectedStatuses = [];
+  document.querySelectorAll('.chk-ereq-st:checked').forEach(cb => {
+    ereqSelectedStatuses.push(cb.value);
+  });
+  renderEreqStatusChips();
+  initEmpReqTable();
+}
+
+function renderEreqStatusChips() {
+  const container = document.getElementById('ereq-status-chips');
+  if (!container) return;
+  if (!ereqSelectedStatuses || ereqSelectedStatuses.length === 0) {
+    container.innerHTML = '<span style="color:#94a3b8;font-size:12px">Tất cả trạng thái</span>';
+    return;
+  }
+  const statusLabels = {
+    'PENDING': 'Chờ duyệt',
+    'APPROVED': 'Đã duyệt',
+    'PROCESSING': 'Đang xử lý',
+    'REJECTED': 'Từ chối'
+  };
+  container.innerHTML = ereqSelectedStatuses.map(st => {
+    return '<span class="badge" style="background:#f1f5f9;color:#334155;border:1px solid #e2e8f0;font-size:11px;padding:2px 8px;border-radius:6px;display:inline-flex;align-items:center;gap:4px">' +
+      (statusLabels[st] || st) +
+      '<i class="fa-solid fa-xmark text-slate-400" style="cursor:pointer" onclick="event.stopPropagation(); removeEreqStatusFilter(\'' + st + '\')"></i>' +
+    '</span>';
+  }).join('');
+}
+
+function removeEreqStatusFilter(st) {
+  ereqSelectedStatuses = ereqSelectedStatuses.filter(s => s !== st);
+  document.querySelectorAll('.chk-ereq-st').forEach(cb => {
+    if (cb.value === st) cb.checked = false;
+  });
+  renderEreqStatusChips();
+  initEmpReqTable();
+}
+
+function applyEreqTopFilters() {
+  initEmpReqTable();
+}
+
+function resetEreqTopFilters() {
+  const kw = document.getElementById('ereq-kw-search');
+  if (kw) kw.value = '';
+  const fDate = document.getElementById('ereq-from-date');
+  if (fDate) fDate.value = '';
+  const tDate = document.getElementById('ereq-to-date');
+  if (tDate) tDate.value = '';
+  setAllEreqCats(false);
+  ereqSelectedStatuses = [];
+  document.querySelectorAll('.chk-ereq-st').forEach(cb => cb.checked = false);
+  renderEreqStatusChips();
+  initEmpReqTable();
+}
+
+function exportEmpRequestsExcel() {
+  E9toast('Đang xuất bảng dữ liệu Đơn từ nhân viên ra file Excel...');
+}
+
+/* XEM CHI TIẾT ĐƠN TỪ NHÂN VIÊN: CHỈ CÓ NÚT ĐÓNG & CẬP NHẬT, KHÔNG CÓ DUYỆT */
+function viewEmpReq(id) {
+  const r = empReqMasterData.find(x => x.id === id) || greqMasterData.find(x => x.id === id);
+  if (!r) return;
+  viewGlobalReq(id);
+  // Đổi tiêu đề modal thành Đơn từ nhân viên
+  const title = document.getElementById('g-view-title');
+  if (title) {
+    title.innerHTML = '<i class="fa-solid fa-file-lines text-[#2E3191] mr-1.5"></i>Chi tiết đơn đề xuất nhân viên: <b>' + r.id + '</b>';
+  }
+  // Cắt bỏ hoàn toàn các nút duyệt / từ chối, chỉ giữ nút Đóng và nút Cập nhật
+  const ft = document.getElementById('g-view-ft');
+  if (ft) {
+    ft.innerHTML = '<div style="display:flex;justify-content:space-between;width:100%;align-items:center">' +
+      '<button class="btn btn-o" onclick="E9closeMdl(\'mdl-global-view\')">Đóng</button>' +
+      '<button class="btn btn-p" onclick="E9closeMdl(\'mdl-global-view\');openEditEmpReq(\'' + r.id + '\')" style="background:#0284c7;border-color:#0284c7;color:#fff;display:inline-flex;align-items:center;gap:6px">' +
+        '<i class="fa-solid fa-pen-to-square"></i> Cập nhật đơn' +
+      '</button>' +
+    '</div>';
+  }
+}
+
+/* MODAL CẬP NHẬT ĐƠN ĐỀ XUẤT NHÂN VIÊN */
+let curEditingEmpReqId = null;
+
+function openEditEmpReq(id) {
+  const r = empReqMasterData.find(x => x.id === id) || greqMasterData.find(x => x.id === id);
+  if (!r) return;
+  curEditingEmpReqId = id;
+
+  const idEl = document.getElementById('ereq-edit-id');
+  if (idEl) idEl.textContent = r.id;
+
+  const nameEl = document.getElementById('ereq-edit-name');
+  if (nameEl) nameEl.textContent = r.name || r.user || 'Nhân viên';
+
+  const deptEl = document.getElementById('ereq-edit-dept-pap');
+  if (deptEl) deptEl.textContent = (r.pap || 'PAP') + ' · ' + (r.dept || 'Phòng ban');
+
+  const avEl = document.getElementById('ereq-edit-avatar');
+  if (avEl) {
+    const isHoai = (r.name || r.user || '').includes('Hoài');
+    avEl.textContent = isHoai ? 'NH' : (r.name || r.user || 'NV').split(' ').map(n=>n[0]).slice(-2).join('').toUpperCase();
+    avEl.style.background = isHoai ? '#54D7F6' : '#2E3191';
+    avEl.style.color = isHoai ? '#0f172a' : '#fff';
+  }
+
+  const timeEl = document.getElementById('ereq-edit-time');
+  if (timeEl) timeEl.value = r.time || '';
+
+  const reasonEl = document.getElementById('ereq-edit-reason');
+  if (reasonEl) reasonEl.value = r.reason || '';
+
+  const noteEl = document.getElementById('ereq-edit-hr-note');
+  if (noteEl) noteEl.value = r.hrNote || '';
+
+  E9openMdl('mdl-emp-req-edit');
+}
+
+function saveEditEmpReq() {
+  if (!curEditingEmpReqId) return;
+  const time = document.getElementById('ereq-edit-time')?.value;
+  const reason = document.getElementById('ereq-edit-reason')?.value;
+  const hrNote = document.getElementById('ereq-edit-hr-note')?.value;
+
+  if (!time || !time.trim()) {
+    E9toast('Vui lòng nhập thời gian áp dụng đề xuất!');
+    return;
+  }
+
+  const item = empReqMasterData.find(x => x.id === curEditingEmpReqId);
+  if (item) {
+    item.time = time.trim();
+    if (reason) item.reason = reason.trim();
+    if (hrNote) item.hrNote = hrNote.trim();
+  }
+
+  E9closeMdl('mdl-emp-req-edit');
+  E9toast('Đã lưu thay đổi đơn đề xuất ' + curEditingEmpReqId + ' thành công!');
+  initEmpReqTable();
 }
 
 </script>
@@ -21323,7 +22737,7 @@ function renderGreqApproverFlowCell(r) {
       <div id="g-sec-comp-fund" style="display:none;background:#f0fdf4;border:1px solid #bbf7d0;border-radius:8px;padding:9px 14px;margin-bottom:12px;align-items:center;justify-content:space-between">
         <div style="display:flex;align-items:center;gap:8px;font-size:12px">
           <i class="fa-solid fa-clock-rotate-left" style="color:#15803d"></i>
-          <span style="color:#166534">Quỹ nghỉ bù khả dụng: <b style="color:#15803d">20 giờ</b></span>
+          <span style="color:#166534">Quỹ nghỉ bù khả dụng: <b style="color:#15803d">2.5 ngày</b></span>
           <span style="color:#cbd5e1">|</span>
           <span style="color:#854d0e;font-weight:600"><i class="fa-regular fa-clock mr-1"></i>Hạn sử dụng: 30/06/2026</span>
         </div>
@@ -21418,12 +22832,34 @@ function renderGreqApproverFlowCell(r) {
           <div style="display:flex;align-items:center;gap:20px;padding:8px 14px;border:1px solid #e2e8f0;border-radius:8px;background:#f8fafc">
             <label style="display:inline-flex;align-items:center;gap:8px;font-size:12.5px;font-weight:600;color:#1e293b;cursor:pointer">
               <input type="radio" name="g-ot-reward-mode" id="g-ot-mode-pay" value="PAY" checked onchange="updateGlobalOtRewardSummary()" style="width:16px;height:16px;accent-color:#2E3191;cursor:pointer">
-              <span>Tính công</span>
+              <span>Tính công (Lương OT)</span>
             </label>
             <label style="display:inline-flex;align-items:center;gap:8px;font-size:12.5px;font-weight:600;color:#1e293b;cursor:pointer">
               <input type="radio" name="g-ot-reward-mode" id="g-ot-mode-comp" value="COMP" onchange="updateGlobalOtRewardSummary()" style="width:16px;height:16px;accent-color:#2E3191;cursor:pointer">
-              <span>Nghỉ bù</span>
+              <span>Nghỉ bù (Tích lũy ngày nghỉ)</span>
             </label>
+          </div>
+        </div>
+
+        <!-- KHỐI CHỌN SỐ NGÀY NGHỈ BÙ (HIỆN KHI CHỌN NGHỈ BÙ - KHÔNG CẦN QUY ĐỔI) -->
+        <div id="g-ot-comp-days-box" style="display:none;background:#f0f9ff;border:1px solid #bae6fd;border-radius:10px;padding:12px 16px;margin-bottom:14px">
+          <label class="fl" style="margin-bottom:6px;font-weight:700;font-size:12px;color:#0369a1">
+            <i class="fa-solid fa-calendar-plus mr-1"></i>Số ngày nghỉ bù đề xuất <span style="color:#ef4444">*</span>
+          </label>
+          <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap">
+            <div style="display:inline-flex;align-items:center;gap:6px;background:#fff;border:1px solid #7dd3fc;border-radius:8px;padding:3px 10px">
+              <input type="number" id="g-ot-comp-days-val" step="0.5" min="0.5" value="1.0" class="fi" style="width:65px;font-weight:700;color:#0284c7;text-align:center;font-size:14px;border:0;padding:4px 0" oninput="updateGlobalOtRewardSummary()">
+              <span style="font-weight:600;color:#0369a1;font-size:12.5px">ngày</span>
+            </div>
+            <div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap">
+              <button type="button" class="btn btn-o" onclick="setOtCompDays(0.5)" style="font-size:11px;padding:4px 10px;border-radius:6px;background:#fff;border-color:#7dd3fc;color:#0284c7;font-weight:600">0.5 ngày (Nửa ngày)</button>
+              <button type="button" class="btn btn-o" onclick="setOtCompDays(1.0)" style="font-size:11px;padding:4px 10px;border-radius:6px;background:#fff;border-color:#7dd3fc;color:#0284c7;font-weight:600">1.0 ngày (Cả ngày)</button>
+              <button type="button" class="btn btn-o" onclick="setOtCompDays(1.5)" style="font-size:11px;padding:4px 10px;border-radius:6px;background:#fff;border-color:#7dd3fc;color:#0284c7;font-weight:600">1.5 ngày</button>
+              <button type="button" class="btn btn-o" onclick="setOtCompDays(2.0)" style="font-size:11px;padding:4px 10px;border-radius:6px;background:#fff;border-color:#7dd3fc;color:#0284c7;font-weight:600">2.0 ngày</button>
+            </div>
+          </div>
+          <div style="font-size:11px;color:#0284c7;margin-top:8px;line-height:1.4">
+            <i class="fa-solid fa-circle-info mr-1"></i>Số ngày nghỉ bù đề xuất sẽ được cộng trực tiếp vào <b>Quỹ nghỉ bù M09</b> sau khi Quản lý &amp; HR phê duyệt (không tính toán quy đổi theo giờ). Khung giờ làm thêm bên trên dùng để Quản lý đối soát dữ liệu chấm công.
           </div>
         </div>
 
@@ -21441,13 +22877,23 @@ function renderGreqApproverFlowCell(r) {
             <span style="color:#475569">Loại ngày</span>
             <span style="background:#eef2ff;color:#2E3191;border:1px solid #c7d2fe;padding:2px 8px;border-radius:6px;font-weight:700;font-size:11px">Ngày thường</span>
           </div>
-          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
+          <!-- DÒNG KHI TÍNH CÔNG -->
+          <div id="g-ot-summary-pay-row" style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
             <span style="color:#475569">Giờ đề nghị</span>
             <span id="g-ot-sum-hours" style="font-weight:700;color:#2E3191">3 giờ</span>
           </div>
-          <div style="display:flex;justify-content:space-between;align-items:center">
+          <div id="g-ot-summary-rate-row" style="display:flex;justify-content:space-between;align-items:center">
             <span style="color:#475569">Hệ số tham chiếu</span>
             <span style="font-weight:700;color:#0f172a">150%</span>
+          </div>
+          <!-- DÒNG KHI NGHỈ BÙ (KHÔNG QUY ĐỔI) -->
+          <div id="g-ot-summary-comp-row" style="display:none;justify-content:space-between;align-items:center;margin-bottom:8px">
+            <span style="color:#475569">Số ngày tích lũy đề xuất</span>
+            <span id="g-ot-sum-comp-days" style="font-weight:700;color:#0284c7;font-size:13.5px">1.0 ngày</span>
+          </div>
+          <div id="g-ot-summary-comp-dest" style="display:none;justify-content:space-between;align-items:center">
+            <span style="color:#475569">Đích đến</span>
+            <span style="font-weight:600;color:#0369a1"><i class="fa-solid fa-arrow-right-to-bracket mr-1"></i>Quỹ nghỉ bù M09 (Hạn dùng 90 ngày)</span>
           </div>
         </div>
       </div>
@@ -22022,15 +23468,7 @@ function renderGreqApproverFlowCell(r) {
       <button class="btn btn-o" onclick="E9closeMdl('mdl-base-wf')"><i class="fa-solid fa-xmark"></i></button>
     </div>
 
-    <!-- TABS ĐIỀU HƯỚNG CẤU HÌNH: 1. QUY TRÌNH & TUYẾN DUYỆT | 2. CẤU HÌNH FORM ĐƠN -->
-    <div style="display:flex;gap:8px;padding:10px 20px 0;background:#f8fafc;border-bottom:1px solid #e2e8f0">
-      <button type="button" id="tab-modal-wf-setup" class="subtab active" onclick="switchModalWfTab('SETUP')" style="padding:8px 16px;font-size:12px;font-weight:600">
-        <i class="fa-solid fa-diagram-project mr-1.5"></i>1. Thông tin &amp; Quy trình duyệt
-      </button>
-      <button type="button" id="tab-modal-wf-form" class="subtab" onclick="switchModalWfTab('FORM')" style="padding:8px 16px;font-size:12px;font-weight:600">
-        <i class="fa-solid fa-file-invoice mr-1.5"></i>2. Đơn mẫu
-      </button>
-    </div>
+
 
     <div class="mdl-bd" style="padding:16px 20px;font-size:12px;max-height:75vh;overflow-y:auto">
       
@@ -22057,7 +23495,7 @@ function renderGreqApproverFlowCell(r) {
           <div>
             <label class="fl">Nhóm nghiệp vụ *</label>
             <select class="fi" id="bwf-cat" onchange="onBwfCatChange(this.value)">
-              <option value="LEAVE">Nghỉ phép &amp; Vắng mặt</option>
+              <option value="LEAVE">Nghỉ phép &amp; Công tác</option>
               <option value="ADJ">Giải trình công</option>
               <option value="OT">Làm thêm giờ (OT)</option>
             </select>
@@ -22152,10 +23590,7 @@ function renderGreqApproverFlowCell(r) {
                 <input type="radio" name="bwf-approval-method" value="PARALLEL" style="accent-color:#2E3191">
                 <span style="font-weight:600;color:#0f172a">Duyệt đồng thời</span>
               </label>
-              <label style="display:flex;align-items:center;gap:8px;background:#fff;border:1px solid #cbd5e1;padding:8px 12px;border-radius:6px;cursor:pointer">
-                <input type="radio" name="bwf-approval-method" value="ANY" style="accent-color:#2E3191">
-                <span style="font-weight:600;color:#0f172a">Chỉ cần 1 người duyệt</span>
-              </label>
+
             </div>
           </div>
         </div>
@@ -22181,52 +23616,33 @@ function renderGreqApproverFlowCell(r) {
           </div>
 
           <div id="box-base-advanced-settings" style="display:none;padding:16px;background:#fff;border-top:1px solid #e2e8f0">
-            <!-- 1. SỬ DỤNG QUỸ PHÉP (3 OPTIONS CÂN ĐỐI 1 DÒNG) -->
-            <div id="bwf-fund-row" style="margin-bottom:14px">
-              <label class="fl">Sử dụng quỹ phép *</label>
-              <div style="display:grid;grid-template-columns:repeat(3, 1fr);gap:10px;margin-top:4px">
-                <label style="display:flex;align-items:center;gap:8px;background:#fff;border:1px solid #cbd5e1;padding:8px 12px;border-radius:6px;cursor:pointer;font-size:12px;font-weight:600;color:#1e293b;transition:all .15s">
-                  <input type="radio" name="bwf-fund-priority" value="ANNUAL_LEAVE" checked style="accent-color:#2E3191;width:15px;height:15px">
-                  <span>Phép năm</span>
-                </label>
-                <label style="display:flex;align-items:center;gap:8px;background:#fff;border:1px solid #cbd5e1;padding:8px 12px;border-radius:6px;cursor:pointer;font-size:12px;font-weight:600;color:#1e293b;transition:all .15s">
-                  <input type="radio" name="bwf-fund-priority" value="COMP_LEAVE" style="accent-color:#2E3191;width:15px;height:15px">
-                  <span>Quỹ nghỉ bù</span>
-                </label>
-                <label style="display:flex;align-items:center;gap:8px;background:#fff;border:1px solid #cbd5e1;padding:8px 12px;border-radius:6px;cursor:pointer;font-size:12px;font-weight:600;color:#1e293b;transition:all .15s">
-                  <input type="radio" name="bwf-fund-priority" value="NO_DEDUCT" style="accent-color:#2E3191;width:15px;height:15px">
-                  <span>Không trừ quỹ</span>
-                </label>
-              </div>
-            </div>
+
 
             <!-- 2. CÁC TRƯỜNG THỜI HẠN, HẠN MỨC & SLA (4 CỘT CÂN ĐỐI TRÊN 1 DÒNG GỌN GÀNG) -->
-            <div style="display:grid;grid-template-columns:1.2fr 1.1fr 1.1fr 130px;gap:12px;margin-top:10px;align-items:start">
+            <div style="display:grid;grid-template-columns:1.1fr 1.1fr 1.1fr 130px;gap:12px;margin-top:10px;align-items:start">
               <div>
-                <label class="fl">Báo trước tối thiểu *</label>
+                <label class="fl">Báo trước tối thiểu</label>
                 <div style="display:flex;align-items:center;gap:6px">
-                  <input type="number" class="fi" id="bwf-lead-time-val" value="1" min="0" style="width:70px">
-                  <select class="fi" id="bwf-lead-time-unit" style="width:75px">
-                    <option value="ngày" selected>ngày</option>
-                    <option value="giờ">giờ</option>
-                  </select>
+                  <input type="number" class="fi" id="bwf-lead-time-val" value="" min="0" placeholder="" style="width:75px">
+                  <span style="color:#64748b;font-size:12px">giờ</span>
                 </div>
+                <div style="font-size:10.5px;color:#94a3b8;margin-top:2px">Trống sẽ không áp dụng</div>
               </div>
               <div>
                 <label class="fl">Giới hạn số ngày đề xuất</label>
                 <div style="display:flex;align-items:center;gap:6px">
-                  <input type="number" class="fi" id="bwf-day-limit-val" value="0" min="0" placeholder="0 nếu k.giới hạn" style="width:75px">
+                  <input type="number" class="fi" id="bwf-day-limit-val" value="" min="0" placeholder="" style="width:75px">
                   <span style="color:#64748b;font-size:12px">ngày</span>
                 </div>
-                <div style="font-size:10.5px;color:#94a3b8;margin-top:2px">0: Không giới hạn</div>
+                <div style="font-size:10.5px;color:#94a3b8;margin-top:2px">Trống sẽ không áp dụng</div>
               </div>
               <div>
                 <label class="fl">Giới hạn số đơn / tháng</label>
                 <div style="display:flex;align-items:center;gap:6px">
-                  <input type="number" class="fi" id="bwf-monthly-limit-val" value="3" min="0" placeholder="0 nếu k.giới hạn" style="width:75px">
+                  <input type="number" class="fi" id="bwf-monthly-limit-val" value="" min="0" placeholder="" style="width:75px">
                   <span style="color:#64748b;font-size:12px">đơn</span>
                 </div>
-                <div style="font-size:10.5px;color:#94a3b8;margin-top:2px">0: Không giới hạn</div>
+                <div style="font-size:10.5px;color:#94a3b8;margin-top:2px">Trống sẽ không áp dụng</div>
               </div>
               <div>
                 <label class="fl">Tổng SLA quy trình</label>
@@ -22271,13 +23687,7 @@ function renderGreqApproverFlowCell(r) {
 
       <!-- ======================================================== -->
       <!-- TAB 2: CẤU HÌNH FORM ĐƠN (CUSTOM FORM FIELDS BUILDER) -->
-      <!-- ======================================================== -->
-      <div id="pane-modal-wf-form" style="display:none">
-        <!-- ĐƠN MẪU CHUẨN HÓA CỐ ĐỊNH THEO QUY CHẾ -->
-        <div id="form-live-preview-box" style="background:#fff;border:1px solid #e2e8f0;border-radius:8px;padding:20px;box-shadow:0 1px 3px rgba(0,0,0,0.05)">
-          <!-- Rendered dynamically by updateFormPreview() -->
-        </div>
-      </div>
+
 
     </div>
     <div class="mdl-ft">
