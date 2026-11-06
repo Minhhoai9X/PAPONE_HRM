@@ -3810,12 +3810,12 @@ thead .sl,thead .sr{background:var(--pap)}
         </div>
       </div>
 
-      <!-- Khối 6: Cấu hình hạn phép bù (Tách riêng theo yêu cầu) -->
+      <!-- Khối 6: Cấu hình thời hạn phép bù kể từ ngày duyệt -->
       <div class="pol-card" style="background:#fff;border:1px solid #e2e8f0;border-radius:12px;padding:16px;box-shadow:0 1px 2px rgba(0,0,0,0.03)">
         <div style="display:flex;align-items:center;gap:10px;margin-bottom:14px;padding-bottom:10px;border-bottom:1px solid #f1f5f9">
           <span style="display:inline-flex;align-items:center;justify-content:center;width:24px;height:24px;border-radius:50%;background:#e0e7ff;color:#2E3191;font-size:12px;font-weight:700">6</span>
           <div>
-            <h4 style="margin:0;font-size:13px;font-weight:700;color:#1e293b">Cấu hình hạn phép bù (Tích lũy từ làm thêm giờ / OT)</h4>
+            <h4 style="margin:0;font-size:13px;font-weight:700;color:#1e293b">Cấu hình thời hạn phép bù kể từ ngày duyệt</h4>
           </div>
         </div>
         <div>
@@ -3823,7 +3823,6 @@ thead .sl,thead .sr{background:var(--pap)}
           <div style="display:flex;align-items:center;gap:8px">
             <input type="number" id="E9pol-f-comp-expire-val" class="fi" value="90" min="1" max="365" style="width:80px;text-align:center;font-weight:700;color:#1e1b4b">
             <span style="font-size:12px;font-weight:700;color:#0f172a">ngày</span>
-            <span style="font-size:11px;color:#64748b">(kể từ ngày phát sinh OT)</span>
           </div>
         </div>
       </div>
@@ -10006,10 +10005,61 @@ function E9render(id){
   if(si) st.query = si.value;
   const head = document.getElementById(id+'-head');
   if(!head) return;
+  const thead = head.parentElement;
+
+  const isLeda = (id === 'leda');
+  const curY = ((typeof E9selectedYear !== 'undefined' && E9selectedYear) ? E9selectedYear : 2026);
+  const prevY = curY - 1;
+
+  // 3 Cụm cột nghiệp vụ cho leda theo chuẩn giao diện người dùng
+  const ledaGroups = {
+    carry: {
+      title: 'Phép tồn chuyển từ ' + prevY,
+      keys: ['ton', 'ton_used', 'het_han', 'ton_remain']
+    },
+    annual: {
+      title: 'Quỹ phép năm ' + curY,
+      keys: ['nam', 'tn']
+    },
+    usage: {
+      title: 'Sử dụng & Số dư',
+      keys: ['used', 'remain']
+    }
+  };
+
+  const visCols = E9tvis(id);
+  const hasLedaGrouping = isLeda && visCols.some(c => c.group && ledaGroups[c.group]);
+
   head.innerHTML = '';
-  E9tvis(id).forEach(c => {
+  let subHead = document.getElementById(id+'-head-sub');
+  if(hasLedaGrouping) {
+    if(!subHead && thead){
+      subHead = document.createElement('tr');
+      subHead.id = id+'-head-sub';
+      subHead.style.cssText = 'background:#2E3191;color:#fff';
+      thead.appendChild(subHead);
+    }
+    if(subHead) {
+      subHead.innerHTML = '';
+      subHead.style.display = '';
+    }
+  } else if(subHead) {
+    subHead.innerHTML = '';
+    subHead.style.display = 'none';
+  }
+
+  function E9makeTh(c, isRowSpan2, isSubTh) {
     const th = document.createElement('th');
     th.style.position = 'relative';
+    if(isRowSpan2) {
+      th.rowSpan = 2;
+      th.style.verticalAlign = 'middle';
+    }
+    if(isSubTh) {
+      th.style.background = '#2E3191';
+      th.style.fontSize = '11.5px';
+      th.style.borderTop = '1px solid rgba(255,255,255,0.2)';
+    }
     if(c.sl || (c.pin && c.k==='stt')) th.className = 'sticky-l';
     else if(c.sr || (c.pin && c.k==='action')) th.className = 'sticky-r';
     else if(c.sl) th.className = 'sl';
@@ -10019,7 +10069,16 @@ function E9render(id){
     if(c.k !== 'stt' && c.k !== 'action') {
       s += `<span class="drag" draggable="true" title="Kéo đổi vị trí cột" data-k="${c.k}" style="cursor:grab;margin-right:2px"><svg width="8" height="14" viewBox="0 0 8 14" fill="currentColor"><circle cx="2" cy="2" r="1.1"/><circle cx="6" cy="2" r="1.1"/><circle cx="2" cy="7" r="1.1"/><circle cx="6" cy="7" r="1.1"/><circle cx="2" cy="12" r="1.1"/><circle cx="6" cy="12" r="1.1"/></svg></span>`;
     }
-    s += '<span>' + c.t + '</span>';
+    
+    // Dynamic sub-column titles
+    let colTitle = c.t;
+    if(c.k === 'used' && isLeda) {
+      colTitle = 'Đã dùng ' + curY;
+    } else if(c.k === 'remain' && isLeda) {
+      colTitle = 'Còn lại <i class="fa-solid fa-circle-info" title="Số dư khả dụng = Còn khả dụng (tồn) + Phép năm + Thâm niên - Đã dùng ' + curY + '" style="font-size:10px;opacity:0.85;margin-left:3px;cursor:pointer"></i>';
+    }
+
+    s += '<span>' + colTitle + '</span>';
     if(c.sort) s += `<button class="ctrl" title="Sắp xếp" onclick="E9sort('${id}','${c.k}')"><i class="fa-solid fa-sort"></i></button>`;
     if(c.search) s += `<button class="ctrl" title="Tìm" onclick="E9tCS('${id}','${c.k}')"><i class="fa-solid fa-magnifying-glass"></i></button>`;
     if(c.filter) s += `<button class="ctrl" title="Lọc" onclick="E9flt('${id}','${c.k}',event)"><i class="fa-solid fa-filter"></i></button>`;
@@ -10048,7 +10107,30 @@ function E9render(id){
         if(fromT === id && fromK && fromK !== c.k) E9swapCol(id, fromK, c.k);
       });
     }
-    head.appendChild(th);
+    return th;
+  }
+
+  const renderedGroups = {};
+  visCols.forEach(c => {
+    if(hasLedaGrouping && c.group && ledaGroups[c.group]) {
+      const gId = c.group;
+      const grp = ledaGroups[gId];
+      if(!renderedGroups[gId]) {
+        const grpVisCols = visCols.filter(col => col.group === gId);
+        const thGroup = document.createElement('th');
+        thGroup.colSpan = grpVisCols.length;
+        thGroup.style.cssText = 'text-align:center;background:#2E3191;border-bottom:1px solid rgba(255,255,255,0.25);font-size:12px;font-weight:700;padding:7px 10px;letter-spacing:0.3px;color:#fff;border-right:1px solid rgba(255,255,255,0.2)';
+        thGroup.innerHTML = '<span>' + grp.title + '</span>';
+        head.appendChild(thGroup);
+        renderedGroups[gId] = true;
+      }
+      if(subHead) {
+        subHead.appendChild(E9makeTh(c, false, true));
+      }
+      return;
+    }
+
+    head.appendChild(E9makeTh(c, hasLedaGrouping, false));
   });
   const body = document.getElementById(id+'-body');
   let rows = [...T.data];
@@ -10478,14 +10560,14 @@ const typesData=[
   {code:'OTHER',cat:'Nghỉ phép',name:'Các loại khác',sym:'BH',symColor:'#BE123C',symBg:'#FFF1F2',rate:75,src:'BHXH',srcText:'Bảo hiểm xã hội (BHXH) chi trả',deduct:'Không',deductAnnual:false,deductComp:false,attach:'Bắt buộc',checkIO:false,minUnit:'HALF_DAY',minUnitText:'0.5 ngày',law:'Luật BHXH 2014',desc:'Bao gồm các chế độ đặc thù hưởng trợ cấp BHXH: Nghỉ ốm đau bản thân (SL), Thai sản (ML), Dưỡng sức phục hồi sức khỏe (CVL). Không trừ quỹ phép.',status:'ACTIVE',created:'Admin HR • 01/01/2026',updated:'-'}
 ];
   const ledAnnualData=[
-  {pap:'PAP0001',nv:'Phạm Quốc Tuấn',ini:'PQT',color:'#2E3191',pb:'Ban TGĐ',chuc_vu:'Tổng Giám đốc',ngay_vao_lam:'15/01/2018',ngay_ky_hd:'15/03/2018',ngay_ky_hd:'15/03/2018',tham_nien_ct:'8 năm',ton:2,het_han:0,tn:1,nam:12,used:3,remain:12,year:2026,hist:[{id:'NP-2026-001',created:'08/02/2026',title:'Đơn xin nghỉ phép năm',type:'Phép năm',from:'10/02/2026',to:'11/02/2026',days:2,st:'Đã duyệt'},{id:'NP-2026-008',created:'22/04/2026',title:'Đơn xin nghỉ phép năm',type:'Phép năm',from:'25/04/2026',to:'25/04/2026',days:1,st:'Đã duyệt'}]},
-  {pap:'PAP0002',nv:'Nguyễn Văn B',ini:'NVB',color:'#0284c7',pb:'Kỹ thuật',chuc_vu:'Kỹ sư trưởng',ngay_vao_lam:'10/03/2021',ngay_ky_hd:'10/05/2021',tham_nien_ct:'5 năm',ton:2,het_han:1,tn:1,nam:12,used:2.5,remain:11.5,year:2026,hist:[{id:'NP-2026-003',created:'12/03/2026',title:'Đơn xin nghỉ phép năm',type:'Phép năm',from:'15/03/2026',to:'17/03/2026',days:2.5,st:'Đã duyệt'}]},
-  {pap:'PAP0009',nv:'Nguyễn Văn A',ini:'NVA',color:'#059669',pb:'PT Phần mềm',chuc_vu:'Chuyên viên phát triển',ngay_vao_lam:'01/06/2023',ngay_ky_hd:'01/08/2023',tham_nien_ct:'3 năm',ton:0,het_han:0,tn:0,nam:12,used:1,remain:11,year:2026,hist:[{id:'NP-2026-012',created:'28/04/2026',title:'Đơn xin nghỉ phép năm',type:'Phép năm',from:'02/05/2026',to:'02/05/2026',days:1,st:'Đã duyệt'}]},
-  {pap:'PAP0014',nv:'Trần Thị Hoa',ini:'TTH',color:'#d97706',pb:'Khai thác',chuc_vu:'Điều độ viên cảng',ngay_vao_lam:'12/08/2020',ngay_ky_hd:'12/10/2020',tham_nien_ct:'6 năm',ton:3,het_han:1,tn:1,nam:12,used:3,remain:12,year:2026,hist:[{id:'NP-2026-015',created:'05/01/2026',title:'Đơn xin nghỉ phép năm',type:'Phép năm',from:'08/01/2026',to:'11/01/2026',days:4,st:'Đã duyệt'}]},
-  {pap:'PAP0005',nv:'Lê Văn Thắng',ini:'LVT',color:'#7c3aed',pb:'Kỹ thuật',chuc_vu:'Kỹ thuật viên cơ điện',ngay_vao_lam:'05/04/2015',ngay_ky_hd:'05/06/2015',tham_nien_ct:'11 năm',ton:1,het_han:1,tn:2,nam:12,used:2,remain:12,year:2026,hist:[{id:'NP-2026-017',created:'10/04/2026',title:'Đơn xin nghỉ phép năm',type:'Phép năm',from:'14/04/2026',to:'15/04/2026',days:2,st:'Đã duyệt'}]},
-  {pap:'PAP0011',nv:'Phạm Thị Bình',ini:'PTB',color:'#db2777',pb:'Nhân sự',chuc_vu:'Chuyên viên nhân sự',ngay_vao_lam:'20/11/2022',ngay_ky_hd:'20/01/2023',ngay_ky_hd:'20/01/2023',tham_nien_ct:'3 năm',ton:1,het_han:0,tn:0,nam:12,used:0,remain:13,year:2026,hist:[]},
-  {pap:'PAP0001',nv:'Phạm Quốc Tuấn',ini:'PQT',color:'#2E3191',pb:'Ban TGĐ',chuc_vu:'Tổng Giám đốc',ngay_vao_lam:'15/01/2018',ngay_ky_hd:'15/03/2018',tham_nien_ct:'7 năm',ton:3,het_han:0,tn:1,nam:12,used:14,remain:2,year:2025,hist:[]},
-  {pap:'PAP0009',nv:'Nguyễn Văn A',ini:'NVA',color:'#059669',pb:'PT Phần mềm',chuc_vu:'Chuyên viên phát triển',ngay_vao_lam:'01/06/2023',ngay_ky_hd:'01/08/2023',tham_nien_ct:'2 năm',ton:0,het_han:0,tn:0,nam:12,used:12,remain:0,year:2025,hist:[]}
+  {pap:'PAP0001',nv:'Phạm Quốc Tuấn',ini:'PQT',color:'#2E3191',pb:'Ban TGĐ',chuc_vu:'Tổng Giám đốc',ngay_vao_lam:'15/01/2018',ngay_ky_hd:'15/03/2018',ngay_ky_hd:'15/03/2018',tham_nien_ct:'8 năm',ton:2,ton_used:2,het_han:0,ton_remain:0,nam:12,tn:1,used:3,remain:10,year:2026,hist:[{id:'NP-2026-001',created:'08/02/2026',title:'Đơn xin nghỉ phép năm',type:'Phép năm',from:'10/02/2026',to:'11/02/2026',days:2,st:'Đã duyệt'},{id:'NP-2026-008',created:'22/04/2026',title:'Đơn xin nghỉ phép năm',type:'Phép năm',from:'25/04/2026',to:'25/04/2026',days:1,st:'Đã duyệt'}]},
+  {pap:'PAP0002',nv:'Nguyễn Văn B',ini:'NVB',color:'#0284c7',pb:'Kỹ thuật',chuc_vu:'Kỹ sư trưởng',ngay_vao_lam:'10/03/2021',ngay_ky_hd:'10/05/2021',tham_nien_ct:'5 năm',ton:2,ton_used:1,het_han:1,ton_remain:0,nam:12,tn:1,used:2.5,remain:10.5,year:2026,hist:[{id:'NP-2026-003',created:'12/03/2026',title:'Đơn xin nghỉ phép năm',type:'Phép năm',from:'15/03/2026',to:'17/03/2026',days:2.5,st:'Đã duyệt'}]},
+  {pap:'PAP0009',nv:'Nguyễn Văn A',ini:'NVA',color:'#059669',pb:'PT Phần mềm',chuc_vu:'Chuyên viên phát triển',ngay_vao_lam:'01/06/2023',ngay_ky_hd:'01/08/2023',tham_nien_ct:'3 năm',ton:0,ton_used:0,het_han:0,ton_remain:0,nam:12,tn:0,used:1,remain:11,year:2026,hist:[{id:'NP-2026-012',created:'28/04/2026',title:'Đơn xin nghỉ phép năm',type:'Phép năm',from:'02/05/2026',to:'02/05/2026',days:1,st:'Đã duyệt'}]},
+  {pap:'PAP0014',nv:'Trần Thị Hoa',ini:'TTH',color:'#d97706',pb:'Khai thác',chuc_vu:'Điều độ viên cảng',ngay_vao_lam:'12/08/2020',ngay_ky_hd:'12/10/2020',tham_nien_ct:'6 năm',ton:3,ton_used:3,het_han:0,ton_remain:0,nam:12,tn:1,used:3,remain:10,year:2026,hist:[{id:'NP-2026-015',created:'05/01/2026',title:'Đơn xin nghỉ phép năm',type:'Phép năm',from:'08/01/2026',to:'11/01/2026',days:4,st:'Đã duyệt'}]},
+  {pap:'PAP0005',nv:'Lê Văn Thắng',ini:'LVT',color:'#7c3aed',pb:'Kỹ thuật',chuc_vu:'Kỹ thuật viên cơ điện',ngay_vao_lam:'05/04/2015',ngay_ky_hd:'05/06/2015',tham_nien_ct:'11 năm',ton:1,ton_used:1,het_han:0,ton_remain:0,nam:12,tn:2,used:2,remain:12,year:2026,hist:[{id:'NP-2026-017',created:'10/04/2026',title:'Đơn xin nghỉ phép năm',type:'Phép năm',from:'14/04/2026',to:'15/04/2026',days:2,st:'Đã duyệt'}]},
+  {pap:'PAP0011',nv:'Phạm Thị Bình',ini:'PTB',color:'#db2777',pb:'Nhân sự',chuc_vu:'Chuyên viên nhân sự',ngay_vao_lam:'20/11/2022',ngay_ky_hd:'20/01/2023',ngay_ky_hd:'20/01/2023',tham_nien_ct:'3 năm',ton:1,ton_used:0,het_han:0,ton_remain:1,nam:12,tn:0,used:0,remain:13,year:2026,hist:[]},
+  {pap:'PAP0001',nv:'Phạm Quốc Tuấn',ini:'PQT',color:'#2E3191',pb:'Ban TGĐ',chuc_vu:'Tổng Giám đốc',ngay_vao_lam:'15/01/2018',ngay_ky_hd:'15/03/2018',tham_nien_ct:'7 năm',ton:3,ton_used:3,het_han_date:'31/03/2025',het_han:0,tn:1,nam:12,used:14,remain:2,year:2025,hist:[]},
+  {pap:'PAP0009',nv:'Nguyễn Văn A',ini:'NVA',color:'#059669',pb:'PT Phần mềm',chuc_vu:'Chuyên viên phát triển',ngay_vao_lam:'01/06/2023',ngay_ky_hd:'01/08/2023',tham_nien_ct:'2 năm',ton:0,ton_used:0,het_han_date:'—',het_han:0,tn:0,nam:12,used:12,remain:0,year:2025,hist:[]}
   ];
 const ledCompData=[
   {
@@ -11190,12 +11272,14 @@ const ledaCols=[
   {k:'nv',t:'Tên nhân viên',vis:true,sort:true,search:true},
   {k:'pb',t:'Phòng ban/đơn vị',vis:true,sort:true,filter:true},
   {k:'chuc_vu',t:'Chức vụ',vis:true,sort:true,filter:true},
-  {k:'ton',t:'Phép tồn',vis:true,sort:true,center:true},
-  {k:'het_han',t:'Hết hạn',vis:true,sort:true,center:true},
-  {k:'tn',t:'Thâm niên',vis:true,sort:true,center:true},
-  {k:'nam',t:'Phép năm',vis:true,sort:true,center:true},
-  {k:'used',t:'Đã dùng',vis:true,sort:true,center:true},
-  {k:'remain',t:'Còn lại',vis:true,sort:true,center:true},
+  {k:'ton',t:'Chuyển sang',group:'carry',vis:true,sort:true,center:true},
+  {k:'ton_used',t:'Đã dùng',group:'carry',vis:true,sort:true,center:true},
+  {k:'het_han',t:'Hết hạn',group:'carry',vis:true,sort:true,center:true},
+  {k:'ton_remain',t:'Còn khả dụng',group:'carry',vis:true,sort:true,center:true},
+  {k:'nam',t:'Phép năm',group:'annual',vis:true,sort:true,center:true},
+  {k:'tn',t:'Thâm niên',group:'annual',vis:true,sort:true,center:true},
+  {k:'used',t:'Đã dùng',group:'usage',vis:true,sort:true,center:true},
+  {k:'remain',t:'Còn lại',group:'usage',vis:true,sort:true,center:true},
   {k:'ngay_vao_lam',t:'Ngày bắt đầu làm việc',vis:true,sort:true,center:true},
   {k:'ngay_ky_hd',t:'Ngày ký HĐ chính thức',vis:true,sort:true,center:true},
   {k:'tham_nien_ct',t:'Tính thâm niên',vis:true,sort:true,center:true},
@@ -11211,12 +11295,14 @@ const ledaCell={
     if(k==='nv') return `<div style="display:flex;align-items:center;gap:8px"><span style="width:28px;height:28px;border-radius:999px;background:${r.color||'#2E3191'};color:#fff;font-size:10px;font-weight:700;display:inline-flex;align-items:center;justify-content:center;flex-shrink:0">${r.ini||'NV'}</span><span style="font-weight:600;color:#1e293b">${r.nv}</span></div>`;
     if(k==='pb') return `<span>${r.pb}</span>`;
     if(k==='chuc_vu') return `<span style="color:#475569">${r.chuc_vu||'—'}</span>`;
-    if(k==='ton') return `<span>${r.ton}</span>`;
-    if(k==='het_han') return r.het_han > 0 ? `<span style="color:#d97706;font-weight:600">${r.het_han}</span>` : `<span style="color:#94a3b8">0</span>`;
+    if(k==='ton') return `<span style="font-weight:700;color:#1e293b">${r.ton ?? 0}</span>`;
+    if(k==='ton_used') return (r.ton_used > 0) ? `<span style="color:#e11d48;font-weight:600">${r.ton_used}</span>` : `<span style="color:#94a3b8">0</span>`;
+    if(k==='het_han') return (r.het_han > 0) ? `<span style="color:#94a3b8;font-weight:600">${r.het_han}</span>` : `<span style="color:#94a3b8">0</span>`;
+    if(k==='ton_remain') return (r.ton_remain > 0) ? `<span style="font-weight:700;color:#1e293b">${r.ton_remain}</span>` : `<span style="color:#94a3b8">0</span>`;
+    if(k==='nam') return `<span style="font-weight:700;color:#1e293b">${r.nam}</span>`;
     if(k==='tn') return `<span>${r.tn}</span>`;
-    if(k==='nam') return `<b>${r.nam}</b>`;
-    if(k==='used') return `<span style="color:#be123c;font-weight:600">${r.used}</span>`;
-    if(k==='remain') return `<span style="display:inline-block;padding:2px 8px;border-radius:999px;background:#ecfdf5;color:#047857;font-weight:700;border:1px solid #a7f3d0">${r.remain}</span>`;
+    if(k==='used') return (r.used > 0) ? `<span style="color:#e11d48;font-weight:600">${String(r.used).replace('.', ',')}</span>` : `<span style="color:#94a3b8">0</span>`;
+    if(k==='remain') return `<span style="display:inline-block;padding:3px 12px;border-radius:999px;background:#f0fdf4;color:#16a34a;font-weight:700;border:1px solid #bbf7d0;font-size:12px">${String(r.remain).replace('.', ',')} ngày</span>`;
     if(k==='ngay_vao_lam') return `<span style="color:#64748b;font-size:11.5px">${r.ngay_vao_lam||'—'}</span>`;
     if(k==='ngay_ky_hd') return `<span style="color:#64748b;font-size:11.5px">${r.ngay_ky_hd||'—'}</span>`;
     if(k==='tham_nien_ct') return `<span style="font-weight:600;color:#1e293b">${r.tham_nien_ct||'—'}</span>`;
@@ -14791,15 +14877,15 @@ function renderReqGroupsList(groups) {
     'GRP-OT': { icon: 'fa-stopwatch', color: '#047857', bg: '#ecfdf5', tag: 'Làm thêm giờ (OT)', desc: 'Tăng ca bốc dỡ tàu hàng • Tính lương OT hoặc nghỉ bù' }
   };
 
-  // 4 NHÓM NGHIỆP VỤ CHUẨN
+  // 3 NHÓM NGHIỆP VỤ CHUẨN (Gôm Đơn xin nghỉ & Công tác thành nhóm 1)
   const sections = [
     {
-      id: 'SEC_LEAVE',
-      title: '1. ĐƠN XIN NGHỈ',
+      id: 'SEC_LEAVE_BIZ',
+      title: '1. ĐƠN XIN NGHỈ & CÔNG TÁC',
       icon: 'fa-umbrella-beach',
       color: '#1d4ed8',
       bg: '#eff6ff',
-      codes: ['GRP-AL', 'GRP-COMP', 'GRP-PL', 'GRP-UL', 'GRP-OTHER']
+      codes: ['GRP-AL', 'GRP-COMP', 'GRP-PL', 'GRP-UL', 'GRP-OTHER', 'GRP-BT', 'GRP-WFH']
     },
     {
       id: 'SEC_PUNCH',
@@ -14816,14 +14902,6 @@ function renderReqGroupsList(groups) {
       color: '#047857',
       bg: '#ecfdf5',
       codes: ['GRP-OT']
-    },
-    {
-      id: 'SEC_MISSION',
-      title: '4. VẮNG MẶT LÀM VIỆC (CÔNG TÁC & NGOÀI VP)',
-      icon: 'fa-briefcase',
-      color: '#7c3aed',
-      bg: '#f5f3ff',
-      codes: ['GRP-BT', 'GRP-WFH']
     }
   ];
 
@@ -14855,9 +14933,8 @@ function renderReqGroupsList(groups) {
             '<i class="fa-solid ' + meta.icon + '"></i>' +
           '</div>' +
           '<div>' +
-            '<div style="font-weight:500;font-size:13px;color:#1e293b;display:flex;align-items:center;gap:8px">' +
-              '<span>' + g.name + '</span>' +
-              '<span class="badge" style="background:#f1f5f9;color:#475569;border:1px solid #e2e8f0;font-size:10px;padding:1px 6px;font-weight:500">' + meta.tag + '</span>' +
+            '<div style="font-weight:500;font-size:13px;color:#1e293b">' +
+              g.name +
             '</div>' +
             '<div style="font-size:11px;color:#64748b;margin-top:2px">' + meta.desc + '</div>' +
           '</div>' +
