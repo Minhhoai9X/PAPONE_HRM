@@ -2618,7 +2618,7 @@ thead .sl,thead .sr{background:var(--pap)}
         <button class="btn" style="background:#2E3191;color:#fff;border-radius:8px;height:36px;padding:0 14px;font-size:12.5px;font-weight:600;display:inline-flex;align-items:center;gap:6px" onclick="E9openCurrentReqPk(this)">
           Cột <i class="fa-solid fa-chevron-down"></i>
         </button>
-        <button class="btn" style="background:#2E3191;color:#fff;border-radius:8px;height:36px;padding:0 14px;font-size:12.5px;font-weight:600;display:inline-flex;align-items:center;gap:6px" onclick="E9openReqCreate()">
+        <button class="btn" style="background:#2E3191;color:#fff;border-radius:8px;height:36px;padding:0 14px;font-size:12.5px;font-weight:600;display:inline-flex;align-items:center;gap:6px" onclick="openFindGroupModal()">
           Tạo mới <i class="fa-solid fa-plus"></i>
         </button>
         <button class="btn" style="background:#2E3191;color:#fff;border-radius:8px;height:36px;padding:0 14px;font-size:12.5px;font-weight:600;display:inline-flex;align-items:center;gap:6px" onclick="E9exportReqExcel()">
@@ -9878,8 +9878,8 @@ initM8();
 function E9tab(id,btn){document.querySelectorAll('.E9tab').forEach(t=>t.classList.remove('active'));document.querySelectorAll('.E9pane').forEach(p=>p.classList.remove('active'));btn.classList.add('active');document.getElementById('m9-'+id).classList.add('active'); if(id==='types'){ E9applyTyRender(); }}
 function E9ledTab(id,btn){document.querySelectorAll('#m9-ledger .subtab').forEach(t=>t.classList.remove('active'));btn.classList.add('active');document.getElementById('led-pane-annual').style.display=id==='annual'?'block':'none';document.getElementById('led-pane-comp').style.display=id==='comp'?'block':'none';}
 function E9toast(m){if(typeof toast==='function'){toast(m);return;}const t=document.getElementById('E9toast');if(t){const msg=document.getElementById('E9toast-msg');if(msg)msg.textContent=m;t.style.display='flex';setTimeout(()=>t.style.display='none',2600);}}
-function E9closeMdl(id){document.getElementById(id).classList.remove('show');}
-function E9openMdl(id){document.getElementById(id).classList.add('show');}
+function E9closeMdl(id){const el=document.getElementById(id);if(el)el.classList.remove('show');}
+function E9openMdl(id){const el=document.getElementById(id);if(el)el.classList.add('show');}
 
 /* ===== Searchable single-select ===== */
 const E9SS={};
@@ -12944,13 +12944,11 @@ function E9reqView(r){
 }
 
 function E9openReqCreate(){
-  const groups = (typeof leaveGroupsData !== 'undefined') ? leaveGroupsData.filter(g => g.status === 'ACTIVE') : [];
-  const sel = document.getElementById('req-wf-group');
-  if (sel) {
-    sel.innerHTML = groups.map(g => '<option value="' + g.code + '">' + g.name + ' (' + g.code + ')</option>').join('');
+  if (typeof openFindGroupModal === 'function') {
+    openFindGroupModal();
+  } else {
+    E9openMdl('mdl-global-create');
   }
-  E9onReqWfGroupChange();
-  E9openMdl('mdl-req');
 }
 
 function E9updateTypeSymPreview(){
@@ -15227,7 +15225,7 @@ function changeReqGroup() {
 }
 
 let gLeaveTimeRanges = [
-  { date: '2026-11-03', from: '2026-11-03', to: '2026-11-03', duration: '1.0', start: '08:00', end: '17:00', hours: '8.0' }
+  { from: '2026-11-03', to: '2026-11-03', duration: '1.0' }
 ];
 
 function calcCompHours(start, end) {
@@ -15300,20 +15298,53 @@ function calculateTotalLeaveDays() {
       total += 1.0;
       return;
     }
+    const isAm = (rng.morning !== false && rng.duration !== '0.5_PM');
+    const isPm = (rng.afternoon !== false && rng.duration !== '0.5_AM');
+    const factor = (isAm && isPm) ? 1.0 : 0.5;
+
     if (d1.getTime() === d2.getTime()) {
-      if (rng.duration === '0.5_AM' || rng.duration === '0.5_PM') {
-        total += 0.5;
-      } else {
-        total += 1.0;
-      }
+      total += factor;
     } else if (d2 >= d1) {
       const diffDays = Math.round((d2 - d1) / (1000 * 60 * 60 * 24)) + 1;
-      total += diffDays;
+      total += (diffDays * factor);
     } else {
-      total += 1.0;
+      total += factor;
     }
   });
   return Math.max(0.5, total);
+}
+
+function toggleLeaveSession(idx, session, checked) {
+  const rng = gLeaveTimeRanges[idx];
+  if (!rng) return;
+  if (typeof rng.morning === 'undefined') {
+    rng.morning = (rng.duration !== '0.5_PM');
+  }
+  if (typeof rng.afternoon === 'undefined') {
+    rng.afternoon = (rng.duration !== '0.5_AM');
+  }
+
+  if (session === 'AM') {
+    rng.morning = checked;
+  } else if (session === 'PM') {
+    rng.afternoon = checked;
+  }
+
+  // Đảm bảo ít nhất 1 buổi được chọn (không cho phép bỏ chọn cả 2)
+  if (!rng.morning && !rng.afternoon) {
+    if (session === 'AM') rng.afternoon = true;
+    else rng.morning = true;
+  }
+
+  if (rng.morning && rng.afternoon) {
+    rng.duration = '1.0';
+  } else if (rng.morning && !rng.afternoon) {
+    rng.duration = '0.5_AM';
+  } else if (!rng.morning && rng.afternoon) {
+    rng.duration = '0.5_PM';
+  }
+
+  renderLeaveTimeRanges();
 }
 
 function updateLeaveFundCalculation() {
@@ -15324,13 +15355,14 @@ function updateLeaveFundCalculation() {
   const totalDays = calculateTotalLeaveDays();
   elTot.textContent = totalDays.toFixed(1) + ' ngày';
 
-  const currentBalance = 10.0;
+  const isComp = (typeof currentSelectedReqGroup !== 'undefined' && currentSelectedReqGroup && (currentSelectedReqGroup.code === 'GRP-COMP' || currentSelectedReqGroup.category === 'LEAVE_COMP'));
+  const currentBalance = isComp ? 2.5 : 10.0;
   const remain = currentBalance - totalDays;
   if (elRemainWrap) {
     if (remain >= 0) {
-      elRemainWrap.innerHTML = '(Dư sau nghỉ dự kiến: <b id="g-leave-calc-remain" style="color:#2E3191">' + remain.toFixed(1) + ' ngày</b>)';
+      elRemainWrap.innerHTML = '(Dư sau nghỉ dự kiến: <b id="g-leave-calc-remain" style="color:' + (isComp ? '#15803d' : '#2E3191') + '">' + remain.toFixed(1) + ' ngày</b>)';
     } else {
-      elRemainWrap.innerHTML = '(<span style="color:#dc2626;font-weight:700"><i class="fa-solid fa-triangle-exclamation mr-1"></i>Vượt quỹ phép: ' + Math.abs(remain).toFixed(1) + ' ngày</span>)';
+      elRemainWrap.innerHTML = '(<span style="color:#dc2626;font-weight:700"><i class="fa-solid fa-triangle-exclamation mr-1"></i>Vượt quỹ ' + (isComp ? 'phép bù' : 'phép') + ': ' + Math.abs(remain).toFixed(1) + ' ngày</span>)';
     }
   }
 }
@@ -15342,94 +15374,75 @@ function renderLeaveTimeRanges() {
   const isCompLeave = (typeof currentSelectedReqGroup !== 'undefined' && currentSelectedReqGroup && (currentSelectedReqGroup.code === 'GRP-COMP' || currentSelectedReqGroup.category === 'LEAVE_COMP'));
 
   const htmlOutput = gLeaveTimeRanges.map((rng, idx) => {
-    if (isCompLeave) {
-      const curStart = rng.start || '08:00';
-      const curEnd = rng.end || '17:00';
+    const isSingleDay = (!rng.from || !rng.to || rng.from === rng.to);
+    const isAm = (rng.morning !== false && rng.duration !== '0.5_PM');
+    const isPm = (rng.afternoon !== false && rng.duration !== '0.5_AM');
+    const factor = (isAm && isPm) ? 1.0 : 0.5;
 
-      return '<div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:12px 14px;display:flex;gap:14px;align-items:flex-end">' +
-        '<div style="flex:1">' +
-          '<label class="fl" style="font-size:11px;margin-bottom:4px">Ngày nghỉ bù <span style="color:#ef4444">*</span></label>' +
-          '<input type="date" class="fi" value="' + (rng.date || rng.from || '2026-11-03') + '" onchange="updateCompLeaveRange(' + idx + ', \'date\', this.value)" style="background:#fff;height:36px">' +
-        '</div>' +
-        '<div style="flex:1.6">' +
-          '<label class="fl" style="font-size:11px;margin-bottom:4px">Khung giờ (Từ &rarr; Đến) <span style="color:#ef4444">*</span></label>' +
-          '<div style="display:flex;align-items:center;gap:8px">' +
-            '<div style="position:relative;display:flex;align-items:center">' +
-              '<input type="text" class="fi" id="g-comp-start-' + idx + '" list="time-24h-list" value="' + curStart + '" maxlength="5" placeholder="08:00" oninput="format24hTimeInput(this, ' + idx + ', \'start\')" onchange="format24hTimeInput(this, ' + idx + ', \'start\')" style="width:115px;height:36px;font-weight:600;background:#fff;text-align:center;color:#1e293b;padding-right:26px">' +
-              '<i class="fa-regular fa-clock" style="position:absolute;right:8px;color:#94a3b8;font-size:12px;pointer-events:none"></i>' +
-            '</div>' +
-            '<span style="color:#94a3b8;font-weight:600">&rarr;</span>' +
-            '<div style="position:relative;display:flex;align-items:center">' +
-              '<input type="text" class="fi" id="g-comp-end-' + idx + '" list="time-24h-list" value="' + curEnd + '" maxlength="5" placeholder="17:00" oninput="format24hTimeInput(this, ' + idx + ', \'end\')" onchange="format24hTimeInput(this, ' + idx + ', \'end\')" style="width:115px;height:36px;font-weight:600;background:#fff;text-align:center;color:#1e293b;padding-right:26px">' +
-              '<i class="fa-regular fa-clock" style="position:absolute;right:8px;color:#94a3b8;font-size:12px;pointer-events:none"></i>' +
-            '</div>' +
-            
-          '</div>' +
-        '</div>' +
-        '<div style="width:95px">' +
-          '<label class="fl" style="font-size:11px;margin-bottom:4px">Số giờ nghỉ</label>' +
-          '<input type="text" class="fi" id="g-comp-hours-' + idx + '" value="' + (rng.hours || '8.0') + 'h" readonly style="background:#f0fdf4;font-weight:700;color:#15803d;text-align:center;height:36px;border-color:#bbf7d0">' +
+    let itemDays = 1.0;
+    if (isSingleDay) {
+      itemDays = factor;
+    } else {
+      const d1 = new Date(rng.from);
+      const d2 = new Date(rng.to);
+      if (d2 >= d1) {
+        const diffDays = Math.round((d2 - d1) / (1000 * 60 * 60 * 24)) + 1;
+        itemDays = diffDays * factor;
+      }
+    }
+    const daysStr = itemDays.toFixed(1) + ' ngày';
+    const mainThemeColor = isCompLeave ? '#15803d' : '#2E3191';
+    const cardTitle = (isCompLeave ? 'Đợt nghỉ bù ' : 'Đợt nghỉ ') + (idx + 1);
+
+    return '<div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:12px 14px;margin-bottom:10px;display:flex;flex-direction:column;gap:10px">' +
+      '<div style="display:flex;justify-content:space-between;align-items:center;padding-bottom:6px;border-bottom:1px dashed #cbd5e1">' +
+        '<div style="display:flex;align-items:center;gap:8px">' +
+          '<span style="font-weight:700;color:' + mainThemeColor + ';font-size:12.5px;display:inline-flex;align-items:center;gap:6px">' +
+            (isCompLeave ? '<i class="fa-solid fa-clock-rotate-left" style="color:#15803d"></i>' : '<i class="fa-solid fa-calendar-check" style="color:#2E3191"></i>') +
+            cardTitle + ' · <span style="color:#0284c7;font-weight:800">' + daysStr + '</span>' +
+          '</span>' +
+          '<span class="badge" style="background:#eff6ff;color:#1d4ed8;border:1px solid #bfdbfe;font-size:10px;padding:1px 6px;border-radius:4px">' +
+            '<i class="fa-solid fa-clock mr-1"></i>Ca hành chính (08:00–17:00)' +
+          '</span>' +
         '</div>' +
         (isMulti ? (
-          '<div style="padding-bottom:2px">' +
-            '<button type="button" class="btn btn-o" onclick="removeLeaveTimeRange(' + idx + ')" title="Xóa khung thời gian" style="padding:6px 10px;color:#ef4444;border-color:#fecaca;background:#fff;border-radius:6px;cursor:pointer">' +
-              '<i class="fa-solid fa-trash-can"></i>' +
-            '</button>' +
-          '</div>'
+          '<button type="button" class="btn btn-o" onclick="removeLeaveTimeRange(' + idx + ')" title="Xóa đợt nghỉ" style="padding:4px 8px;font-size:11.5px;color:#ef4444;border-color:#fecaca;background:#fff;border-radius:5px;cursor:pointer;line-height:1">' +
+            '<i class="fa-solid fa-trash-can"></i>' +
+          '</button>'
         ) : '') +
-      '</div>';
-    }
-
-    const isSingleDay = (!rng.from || !rng.to || rng.from === rng.to);
-    if (!isSingleDay && rng.duration !== '1.0') {
-      rng.duration = '1.0';
-    }
-
-    return '<div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:10px 12px;display:flex;gap:12px;align-items:flex-end">' +
-      '<div style="flex:1">' +
-        '<label class="fl" style="font-size:11px;margin-bottom:3px">Từ ngày <span style="color:#ef4444">*</span></label>' +
-        '<input type="date" class="fi" value="' + rng.from + '" onchange="updateLeaveRangeDate(' + idx + ', \'from\', this.value)" style="background:#fff">' +
       '</div>' +
-      '<div style="flex:1">' +
-        '<label class="fl" style="font-size:11px;margin-bottom:3px">Đến ngày <span style="color:#ef4444">*</span></label>' +
-        '<input type="date" class="fi" value="' + rng.to + '" onchange="updateLeaveRangeDate(' + idx + ', \'to\', this.value)" style="background:#fff">' +
-      '</div>' +
-      '<div style="flex:1.4">' +
-        '<label class="fl" style="font-size:11px;margin-bottom:3px">Thời lượng nghỉ <span style="color:#ef4444">*</span></label>' +
-        '<div style="display:flex;gap:10px;padding-top:6px">' +
-          '<label style="display:flex;align-items:center;gap:4px;font-size:12px;color:#1e293b;cursor:pointer">' +
-            '<input type="radio" name="g-leave-dur-' + idx + '" value="1.0" ' + (rng.duration === '1.0' ? 'checked' : '') + ' onchange="gLeaveTimeRanges[' + idx + '].duration=\'1.0\';updateLeaveFundCalculation()" style="accent-color:#2E3191"> Cả ngày (1.0)' +
-          '</label>' +
-          (isSingleDay ? (
-            '<label style="display:flex;align-items:center;gap:4px;font-size:12px;color:#1e293b;cursor:pointer">' +
-              '<input type="radio" name="g-leave-dur-' + idx + '" value="0.5_AM" ' + (rng.duration === '0.5_AM' ? 'checked' : '') + ' onchange="gLeaveTimeRanges[' + idx + '].duration=\'0.5_AM\';updateLeaveFundCalculation()" style="accent-color:#2E3191"> Sáng (0.5)' +
+      '<div style="display:flex;gap:12px;align-items:flex-end">' +
+        '<div style="flex:1">' +
+          '<label class="fl" style="font-size:11px;margin-bottom:3px">Từ ngày <span style="color:#ef4444">*</span></label>' +
+          '<input type="date" class="fi" value="' + rng.from + '" onchange="updateLeaveRangeDate(' + idx + ', \'from\', this.value)" style="background:#fff">' +
+        '</div>' +
+        '<div style="flex:1">' +
+          '<label class="fl" style="font-size:11px;margin-bottom:3px">Đến ngày <span style="color:#ef4444">*</span></label>' +
+          '<input type="date" class="fi" value="' + rng.to + '" onchange="updateLeaveRangeDate(' + idx + ', \'to\', this.value)" style="background:#fff">' +
+        '</div>' +
+        '<div style="flex:1.8">' +
+          '<label class="fl" style="font-size:11px;margin-bottom:3px">Buổi nghỉ <span style="color:#ef4444">*</span></label>' +
+          '<div style="display:flex;gap:14px;padding-top:6px;align-items:center">' +
+            '<label style="display:flex;align-items:center;gap:6px;font-size:12px;color:#1e293b;cursor:pointer;user-select:none">' +
+              '<input type="checkbox" ' + (isAm ? 'checked' : '') + ' onchange="toggleLeaveSession(' + idx + ', \'AM\', this.checked)" style="accent-color:#2E3191;width:15px;height:15px;cursor:pointer"> ' +
+              '<span style="font-weight:600;font-size:12px;color:#1e293b">08:00–12:00</span>' +
             '</label>' +
-            '<label style="display:flex;align-items:center;gap:4px;font-size:12px;color:#1e293b;cursor:pointer">' +
-              '<input type="radio" name="g-leave-dur-' + idx + '" value="0.5_PM" ' + (rng.duration === '0.5_PM' ? 'checked' : '') + ' onchange="gLeaveTimeRanges[' + idx + '].duration=\'0.5_PM\';updateLeaveFundCalculation()" style="accent-color:#2E3191"> Chiều (0.5)' +
-            '</label>'
-          ) : '') +
+            '<label style="display:flex;align-items:center;gap:6px;font-size:12px;color:#1e293b;cursor:pointer;user-select:none">' +
+              '<input type="checkbox" ' + (isPm ? 'checked' : '') + ' onchange="toggleLeaveSession(' + idx + ', \'PM\', this.checked)" style="accent-color:#2E3191;width:15px;height:15px;cursor:pointer"> ' +
+              '<span style="font-weight:600;font-size:12px;color:#1e293b">13:00–17:00</span>' +
+            '</label>' +
+          '</div>' +
         '</div>' +
       '</div>' +
-      (isMulti ? (
-        '<div style="padding-bottom:2px">' +
-          '<button type="button" class="btn btn-o" onclick="removeLeaveTimeRange(' + idx + ')" title="Xóa khung thời gian" style="padding:6px 10px;color:#ef4444;border-color:#fecaca;background:#fff;border-radius:6px;cursor:pointer">' +
-            '<i class="fa-solid fa-trash-can"></i>' +
-          '</button>' +
-        '</div>'
-      ) : '') +
     '</div>';
   }).join('');
   container.innerHTML = htmlOutput;
   updateLeaveFundCalculation();
+  updateLeaveFundCalculation();
 }
 
 function addLeaveTimeRange() {
-  const isCompLeave = (typeof currentSelectedReqGroup !== 'undefined' && currentSelectedReqGroup && (currentSelectedReqGroup.code === 'GRP-COMP' || currentSelectedReqGroup.category === 'LEAVE_COMP'));
-  if (isCompLeave) {
-    gLeaveTimeRanges.push({ date: '2026-11-04', from: '2026-11-04', to: '2026-11-04', duration: '1.0', start: '08:00', end: '17:00', hours: '8.0' });
-  } else {
-    gLeaveTimeRanges.push({ from: '2026-11-04', to: '2026-11-04', duration: '1.0', hours: '8.0' });
-  }
+  gLeaveTimeRanges.push({ from: '2026-11-04', to: '2026-11-04', duration: '1.0' });
   renderLeaveTimeRanges();
 }
 
@@ -15613,26 +15626,23 @@ function renderAttTimeRanges() {
   if (!container) return;
   const isMulti = gAttTimeRanges.length > 1;
   container.innerHTML = gAttTimeRanges.map((rng, idx) => {
+    const curDate = rng.date || rng.from || '2026-10-30';
     return '<div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:10px 12px;display:flex;gap:12px;align-items:flex-end">' +
       '<div style="flex:1">' +
-        '<label class="fl" style="font-size:11px;margin-bottom:3px">Từ ngày <span style="color:#ef4444">*</span></label>' +
-        '<input type="date" class="fi" value="' + rng.from + '" onchange="updateAttRange(' + idx + ', \'from\', this.value)" style="background:#fff">' +
-      '</div>' +
-      '<div style="flex:1">' +
-        '<label class="fl" style="font-size:11px;margin-bottom:3px">Đến ngày <span style="color:#ef4444">*</span></label>' +
-        '<input type="date" class="fi" value="' + rng.to + '" onchange="updateAttRange(' + idx + ', \'to\', this.value)" style="background:#fff">' +
+        '<label class="fl" style="font-size:11px;margin-bottom:3px">Ngày <span style="color:#ef4444">*</span></label>' +
+        '<input type="date" class="fi" value="' + curDate + '" onchange="updateAttRange(' + idx + ', \'date\', this.value); updateAttRange(' + idx + ', \'from\', this.value); updateAttRange(' + idx + ', \'to\', this.value);" style="background:#fff">' +
       '</div>' +
       '<div style="flex:1.4">' +
-        '<label class="fl" style="font-size:11px;margin-bottom:3px">Quên Check-in / Out <span style="color:#ef4444">*</span></label>' +
+        '<label class="fl" style="font-size:11px;margin-bottom:3px">Quên giờ vào / ra <span style="color:#ef4444">*</span></label>' +
         '<select class="fi" onchange="updateAttRange(' + idx + ', \'type\', this.value)" style="background:#fff;height:36px;font-size:12px">' +
-          '<option value="IN"' + (rng.type === 'IN' ? ' selected' : '') + '>Quên Check-in</option>' +
-          '<option value="OUT"' + (rng.type === 'OUT' ? ' selected' : '') + '>Quên Check-out</option>' +
-          '<option value="BOTH"' + (rng.type === 'BOTH' ? ' selected' : '') + '>Quên cả Check-in & Check-out</option>' +
+          '<option value="IN"' + (rng.type === 'IN' ? ' selected' : '') + '>Quên giờ vào</option>' +
+          '<option value="OUT"' + (rng.type === 'OUT' ? ' selected' : '') + '>Quên giờ ra</option>' +
+          '<option value="BOTH"' + (rng.type === 'BOTH' ? ' selected' : '') + '>Quên giờ vào &amp; giờ ra</option>' +
         '</select>' +
       '</div>' +
       (isMulti ? (
         '<div style="padding-bottom:2px">' +
-          '<button type="button" class="btn btn-o" onclick="removeAttTimeRange(' + idx + ')" title="Xóa khung thời gian" style="padding:6px 10px;color:#ef4444;border-color:#fecaca;background:#fff;border-radius:6px;cursor:pointer">' +
+          '<button type="button" class="btn btn-o" onclick="removeAttTimeRange(' + idx + ')" title="Xóa ngày" style="padding:6px 10px;color:#ef4444;border-color:#fecaca;background:#fff;border-radius:6px;cursor:pointer">' +
             '<i class="fa-solid fa-trash-can"></i>' +
           '</button>' +
         '</div>'
@@ -15642,7 +15652,7 @@ function renderAttTimeRanges() {
 }
 
 function addAttTimeRange() {
-  gAttTimeRanges.push({ from: '2026-10-31', to: '2026-10-31', type: 'IN' });
+  gAttTimeRanges.push({ date: '2026-10-31', from: '2026-10-31', to: '2026-10-31', type: 'IN' });
   renderAttTimeRanges();
 }
 
@@ -15654,30 +15664,55 @@ function removeAttTimeRange(index) {
 }
 
 function openGlobalCreateReqModal(groupCode) {
-  let g = reqGroupMasterData.find(x => x.code === groupCode);
-  if (!g) {
-    if (groupCode) {
-      g = currentSelectedReqGroup;
-    } else {
-      openFindGroupModal();
-      return;
+  try {
+    let g = reqGroupMasterData.find(x => x.code === groupCode);
+    if (!g) {
+      g = currentSelectedReqGroup || reqGroupMasterData.find(x => x.code === 'GRP-AL') || reqGroupMasterData[0];
     }
-  }
-  currentSelectedReqGroup = g;
+    currentSelectedReqGroup = g;
 
   // Update UI Elements
+  const modalTitle = document.getElementById('g-create-modal-title');
+  if (modalTitle) {
+    if (g.category === 'ATT_ADJ') {
+      modalTitle.textContent = 'Tạo đề xuất quên chấm công';
+    } else if (g.code === 'GRP-COMP' || g.category === 'LEAVE_COMP') {
+      modalTitle.textContent = 'Tạo đề xuất nghỉ bù';
+    } else if (g.code === 'GRP-AL' || g.category === 'LEAVE') {
+      modalTitle.textContent = 'Tạo đề xuất nghỉ phép năm';
+    } else {
+      modalTitle.textContent = 'Tạo đề xuất mới';
+    }
+  }
+
   const badge = document.getElementById('g-create-group-badge');
-  if (badge) badge.textContent = g.name;
+  if (badge) {
+    if (g.category === 'ATT_ADJ') {
+      badge.textContent = 'Giải trình công';
+    } else if (g.code === 'GRP-COMP' || g.category === 'LEAVE_COMP') {
+      badge.textContent = 'Nghỉ bù';
+    } else if (g.code === 'GRP-AL' || g.category === 'LEAVE') {
+      badge.textContent = 'Nghỉ phép';
+    } else {
+      badge.textContent = g.name;
+    }
+  }
 
   const titleInp = document.getElementById('g-req-title');
   if (titleInp) {
-    titleInp.value = g.name + ' - Nguyễn Văn A';
+    if (g.code === 'GRP-COMP' || g.category === 'LEAVE_COMP') {
+      titleInp.value = 'Đơn xin nghỉ bù - Nguyễn Văn A';
+    } else {
+      titleInp.value = g.name + ' - Nguyễn Văn A';
+    }
   }
 
   const grpInp = document.getElementById('g-req-group-name');
   if (grpInp) {
     if (g.code === 'GRP-COMP-ACCRUAL' || g.category === 'COMP_ACCRUAL') {
       grpInp.value = 'Làm thêm & Nghỉ bù';
+    } else if (g.code === 'GRP-COMP' || g.category === 'LEAVE_COMP') {
+      grpInp.value = 'Nghỉ bù';
     } else if (g.category.startsWith('LEAVE')) {
       grpInp.value = 'Nghỉ phép';
     } else if (g.category === 'ATT_ADJ') {
@@ -15691,7 +15726,11 @@ function openGlobalCreateReqModal(groupCode) {
 
   const typeInp = document.getElementById('g-req-type-name');
   if (typeInp) {
-    typeInp.value = g.name;
+    if (g.code === 'GRP-COMP' || g.category === 'LEAVE_COMP') {
+      typeInp.value = 'Nghỉ bù';
+    } else {
+      typeInp.value = g.name;
+    }
   }
 
   // Toggle dynamic sections
@@ -15702,13 +15741,48 @@ function openGlobalCreateReqModal(groupCode) {
   const sCompAccrual = document.getElementById('g-sec-comp-accrual');
   const sBiz = document.getElementById('g-sec-biz');
 
-  // Show leave balance fund for GRP-AL (Nghỉ phép năm)
-  if (sFund) sFund.style.display = (g.code === 'GRP-AL') ? 'flex' : 'none';
+  const isCompLeave = (g.code === 'GRP-COMP' || g.category === 'LEAVE_COMP');
+  const isAnnualLeave = (g.code === 'GRP-AL');
 
-  // Show comp fund and expiration alert for GRP-COMP or GRP-OTHER
-  const sCompFund = document.getElementById('g-sec-comp-fund');
-  if (sCompFund) {
-    sCompFund.style.display = (g.code === 'GRP-COMP' || g.category === 'LEAVE_COMP' || g.code === 'GRP-OTHER') ? 'flex' : 'none';
+  // Quỹ nghỉ phép năm hoặc Quỹ phép bù
+  if (sFund) {
+    if (isAnnualLeave || isCompLeave) {
+      sFund.style.display = 'flex';
+      const fTitle = document.getElementById('g-leave-fund-title');
+      const fBal = document.getElementById('g-leave-fund-balance');
+      const fIcon = document.getElementById('g-leave-fund-icon');
+      const fExp = document.getElementById('g-comp-fund-expiry-tag');
+
+      if (isCompLeave) {
+        if (fTitle) fTitle.textContent = 'Quỹ phép bù hiện tại:';
+        if (fBal) {
+          fBal.textContent = '2.5 ngày';
+          fBal.style.background = '#f0fdf4';
+          fBal.style.color = '#15803d';
+          fBal.style.borderColor = '#bbf7d0';
+        }
+        if (fIcon) {
+          fIcon.className = 'fa-solid fa-clock-rotate-left';
+          fIcon.style.color = '#15803d';
+        }
+        if (fExp) fExp.style.display = 'inline-flex';
+      } else {
+        if (fTitle) fTitle.textContent = 'Số phép dư hiện tại:';
+        if (fBal) {
+          fBal.textContent = '10.0 ngày';
+          fBal.style.background = '#eff6ff';
+          fBal.style.color = '#1d4ed8';
+          fBal.style.borderColor = '#bfdbfe';
+        }
+        if (fIcon) {
+          fIcon.className = 'fa-solid fa-wallet text-[#2E3191]';
+          fIcon.style.color = '';
+        }
+        if (fExp) fExp.style.display = 'none';
+      }
+    } else {
+      sFund.style.display = 'none';
+    }
   }
 
   const isLeaveOrBiz = (g.category.startsWith('LEAVE') || g.category === 'BUSINESS' || g.category === 'WFH');
@@ -15716,23 +15790,40 @@ function openGlobalCreateReqModal(groupCode) {
   if (isLeaveOrBiz) {
     const lbl = document.getElementById('g-leave-sec-label');
     if (lbl) {
-      let txt = 'Khung thời gian nghỉ';
-      if (g.code === 'GRP-COMP' || g.category === 'LEAVE_COMP') txt = 'Thời gian & Số giờ nghỉ bù';
-      else if (g.category === 'BUSINESS') txt = 'Khung thời gian công tác';
+      let txt = 'Thời gian & Lịch nghỉ';
+      if (g.category === 'BUSINESS') txt = 'Khung thời gian công tác';
       else if (g.category === 'WFH') txt = 'Khung thời gian làm việc ngoài VP';
       lbl.innerHTML = txt + ' <span style="color:#ef4444">*</span>';
     }
-    if (g.code === 'GRP-COMP' || g.category === 'LEAVE_COMP') {
-      gLeaveTimeRanges = [{ date: '2026-11-03', from: '2026-11-03', to: '2026-11-03', duration: '1.0', start: '08:00', end: '17:00', hours: '8.0' }];
-    } else {
-      gLeaveTimeRanges = [{ from: '2026-11-03', to: '2026-11-03', duration: '1.0', hours: '8.0' }];
+    const addBtnTxt = document.getElementById('g-leave-add-btn-txt');
+    if (addBtnTxt) {
+      addBtnTxt.textContent = (g.category.startsWith('LEAVE')) ? 'Thêm ngày nghỉ' : 'Thêm khung thời gian';
     }
+    gLeaveTimeRanges = [{ from: '2026-11-03', to: '2026-11-03', duration: '1.0' }];
     renderLeaveTimeRanges();
   }
   if (sAtt) sAtt.style.display = (g.category === 'ATT_ADJ') ? 'block' : 'none';
   if (g.category === 'ATT_ADJ') {
-    gAttTimeRanges = [{ from: '2026-10-30', to: '2026-10-30', type: 'IN' }];
+    gAttTimeRanges = [{ date: '2026-10-30', from: '2026-10-30', to: '2026-10-30', type: 'IN' }];
     renderAttTimeRanges();
+  }
+
+  // Cập nhật nhãn Lý do chi tiết cho form Giải trình quên chấm công, Nghỉ phép & Nghỉ bù
+  const reasonLabel = document.getElementById('g-req-reason-label');
+  if (reasonLabel) {
+    reasonLabel.textContent = (g.category === 'ATT_ADJ' || g.category.startsWith('LEAVE')) ? 'Lý do chi tiết' : 'Mô tả';
+  }
+  const reasonInput = document.getElementById('g-req-reason');
+  if (reasonInput) {
+    if (g.category === 'ATT_ADJ') {
+      reasonInput.placeholder = 'Nhập lý do chi tiết quên chấm công...';
+    } else if (g.code === 'GRP-COMP' || g.category === 'LEAVE_COMP') {
+      reasonInput.placeholder = 'Nhập lý do chi tiết nghỉ bù...';
+    } else if (g.category.startsWith('LEAVE')) {
+      reasonInput.placeholder = 'Nhập lý do chi tiết nghỉ phép...';
+    } else {
+      reasonInput.placeholder = '';
+    }
   }
   if (sOt) sOt.style.display = (g.category === 'OT' && g.code !== 'GRP-COMP-ACCRUAL') ? 'block' : 'none';
   if (g.category === 'OT' && g.code !== 'GRP-COMP-ACCRUAL') {
@@ -15757,6 +15848,10 @@ function openGlobalCreateReqModal(groupCode) {
   }
 
   E9openMdl('mdl-global-create');
+  } catch (err) {
+    console.error('Error opening global create modal:', err);
+    E9openMdl('mdl-global-create');
+  }
 }
 
 function onGlobalCreateTypeChange() {
@@ -15764,140 +15859,178 @@ function onGlobalCreateTypeChange() {
 }
 
 function submitGlobalCreateReq() {
-  const g = currentSelectedReqGroup || reqGroupMasterData.find(x => x.code === 'GRP-AL') || reqGroupMasterData[0];
-  const typeLabel = g.name;
-  let prefix = 'NP';
-  if (g.category === 'ATT_ADJ') prefix = 'DC';
-  else if (g.code === 'GRP-COMP-ACCRUAL' || g.category === 'COMP_ACCRUAL') prefix = 'COMP';
-  else if (g.category === 'OT') prefix = 'OT';
-  else if (g.category === 'BUSINESS') prefix = 'CT';
-  else if (g.category === 'WFH') prefix = 'WFH';
+  try {
+    const g = currentSelectedReqGroup || reqGroupMasterData.find(x => x.code === 'GRP-AL') || reqGroupMasterData[0];
+    const typeLabel = g.name;
+    let prefix = 'NP';
+    if (g.category === 'ATT_ADJ') prefix = 'DC';
+    else if (g.code === 'GRP-COMP-ACCRUAL' || g.category === 'COMP_ACCRUAL') prefix = 'COMP';
+    else if (g.category === 'OT') prefix = 'OT';
+    else if (g.category === 'BUSINESS') prefix = 'CT';
+    else if (g.category === 'WFH') prefix = 'WFH';
 
-  const userReasonInput = document.getElementById('g-req-reason')?.value.trim();
-  let defaultReason = 'Bận việc gia đình';
-  if (g.category === 'ATT_ADJ') defaultReason = 'Quên chấm công';
-  else if (g.code === 'GRP-COMP-ACCRUAL' || g.category === 'COMP_ACCRUAL') defaultReason = 'Làm thêm tích lũy nghỉ bù';
-  else if (g.category === 'OT') defaultReason = 'Làm thêm giờ OT tính lương';
-  else if (g.category === 'BUSINESS') defaultReason = 'Công tác chuyên môn';
-  else if (g.category === 'WFH') defaultReason = 'Làm việc từ xa';
-  const reason = userReasonInput || defaultReason;
+    const userReasonInput = document.getElementById('g-req-reason')?.value.trim();
+    let defaultReason = 'Bận việc gia đình';
+    if (g.category === 'ATT_ADJ') defaultReason = 'Quên chấm công';
+    else if (g.code === 'GRP-COMP-ACCRUAL' || g.category === 'COMP_ACCRUAL') defaultReason = 'Làm thêm tích lũy nghỉ bù';
+    else if (g.category === 'OT') defaultReason = 'Làm thêm giờ OT tính lương';
+    else if (g.category === 'BUSINESS') defaultReason = 'Công tác chuyên môn';
+    else if (g.category === 'WFH') defaultReason = 'Làm việc từ xa';
+    const reason = userReasonInput || defaultReason;
 
-  const newId = prefix + '-2026-0' + (Math.floor(Math.random() * 80) + 25);
-  let timeStr = '03/11/2026 (1 ngày)';
-  if (g.code === 'GRP-COMP-ACCRUAL' || g.category === 'COMP_ACCRUAL') {
-    const compDaysVal = parseFloat(document.getElementById('g-comp-accrual-days-val')?.value || '1.0');
-    const compDate = document.getElementById('g-comp-accrual-date')?.value || '2026-11-03';
-    timeStr = compDate + ' · Tích lũy: ' + compDaysVal.toFixed(1) + ' ngày công';
-  } else if (g.category === 'ATT_ADJ') {
-    if (typeof gAttTimeRanges !== 'undefined' && gAttTimeRanges.length > 0) {
-      const typeMap = { 'IN': 'Quên Check-in', 'OUT': 'Quên Check-out', 'BOTH': 'Quên cả In/Out' };
-      if (gAttTimeRanges.length === 1) {
-        timeStr = gAttTimeRanges[0].from + ' (' + (typeMap[gAttTimeRanges[0].type] || 'Quên Check-in') + ')';
-      } else {
-        timeStr = gAttTimeRanges.length + ' ngày giải trình (' + gAttTimeRanges.map(r => r.from).join(', ') + ')';
-      }
-    } else {
-      timeStr = '30/10/2026 (Quên Check-in)';
-    }
-  } else if (g.category === 'OT') {
-    if (typeof gOtTimeRanges !== 'undefined' && gOtTimeRanges.length > 0) {
-      if (gOtTimeRanges.length === 1) {
-        const rng = gOtTimeRanges[0];
-        timeStr = rng.date + ' · ' + rng.start + ' - ' + rng.end + ' (' + (rng.hours || '3.0') + 'h)';
-      } else {
-        timeStr = gOtTimeRanges.length + ' ca tăng ca (' + gOtTimeRanges.map(r => r.date).join(', ') + ')';
-      }
-    } else {
-      timeStr = '01/11/2026 · 17:30 - 20:30 (3.0h)';
-    }
-  } else if (g.category.startsWith('LEAVE') || g.category === 'BUSINESS' || g.category === 'WFH') {
-    if (typeof gLeaveTimeRanges !== 'undefined' && gLeaveTimeRanges.length > 0) {
-      if (g.code === 'GRP-COMP' || g.category === 'LEAVE_COMP') {
-        if (gLeaveTimeRanges.length === 1) {
-          const rng = gLeaveTimeRanges[0];
-          const d = rng.date || rng.from || '03/11/2026';
-          const s = rng.start || '08:00';
-          const e = rng.end || '17:00';
-          const h = rng.hours || '8.0';
-          timeStr = d + ' · ' + s + ' - ' + e + ' (' + h + 'h)';
+    const newId = prefix + '-2026-0' + (Math.floor(Math.random() * 80) + 25);
+    let timeStr = '03/11/2026 (1 ngày)';
+    if (g.code === 'GRP-COMP-ACCRUAL' || g.category === 'COMP_ACCRUAL') {
+      const compDaysVal = parseFloat(document.getElementById('g-comp-accrual-days-val')?.value || '1.0');
+      const compDate = document.getElementById('g-comp-accrual-date')?.value || '2026-11-03';
+      timeStr = compDate + ' · Tích lũy: ' + compDaysVal.toFixed(1) + ' ngày công';
+    } else if (g.category === 'ATT_ADJ') {
+      if (typeof gAttTimeRanges !== 'undefined' && gAttTimeRanges.length > 0) {
+        const typeMap = { 'IN': 'Quên giờ vào', 'OUT': 'Quên giờ ra', 'BOTH': 'Quên giờ vào & giờ ra' };
+        if (gAttTimeRanges.length === 1) {
+          timeStr = (gAttTimeRanges[0].date || gAttTimeRanges[0].from) + ' (' + (typeMap[gAttTimeRanges[0].type] || 'Quên giờ vào') + ')';
         } else {
-          const totalH = gLeaveTimeRanges.reduce((acc, r) => acc + (parseFloat(r.hours) || 8), 0);
-          timeStr = gLeaveTimeRanges.length + ' ca nghỉ bù (' + totalH.toFixed(1) + 'h)';
+          timeStr = gAttTimeRanges.length + ' ngày giải trình (' + gAttTimeRanges.map(r => (r.date || r.from)).join(', ') + ')';
         }
       } else {
-        const durMap = { '1.0': 'Cả ngày', '0.5_AM': 'Sáng', '0.5_PM': 'Chiều' };
-        if (gLeaveTimeRanges.length === 1) {
-          timeStr = gLeaveTimeRanges[0].from + ' (' + (durMap[gLeaveTimeRanges[0].duration] || '1 ngày') + ')';
-        } else {
-          timeStr = gLeaveTimeRanges.length + ' khung thời gian (' + gLeaveTimeRanges.map(r => r.from).join(', ') + ')';
-        }
+        timeStr = '30/10/2026 (Quên giờ vào)';
       }
+    } else if (g.category === 'OT') {
+      if (typeof gOtTimeRanges !== 'undefined' && gOtTimeRanges.length > 0) {
+        if (gOtTimeRanges.length === 1) {
+          const rng = gOtTimeRanges[0];
+          timeStr = rng.date + ' · ' + rng.start + ' - ' + rng.end + ' (' + (rng.hours || '3.0') + 'h)';
+        } else {
+          timeStr = gOtTimeRanges.length + ' ca tăng ca (' + gOtTimeRanges.map(r => r.date).join(', ') + ')';
+        }
+      } else {
+        timeStr = '01/11/2026 · 17:30 - 20:30 (3.0h)';
+      }
+    } else if (g.category.startsWith('LEAVE') || g.category === 'BUSINESS' || g.category === 'WFH') {
+      if (typeof gLeaveTimeRanges !== 'undefined' && gLeaveTimeRanges.length > 0) {
+        const durMap = { '1.0': 'Cả ngày', '0.5_AM': '08:00–12:00', '0.5_PM': '13:00–17:00' };
+        if (gLeaveTimeRanges.length === 1) {
+          const r0 = gLeaveTimeRanges[0];
+          const isSingleDay = (!r0.from || !r0.to || r0.from === r0.to);
+          if (isSingleDay) {
+            timeStr = r0.from + ' (' + (durMap[r0.duration] || '1.0 ngày') + ')';
+          } else {
+            timeStr = r0.from + ' → ' + r0.to + ' (' + calculateTotalLeaveDays().toFixed(1) + ' ngày)';
+          }
+        } else {
+          timeStr = gLeaveTimeRanges.length + ' đợt (' + calculateTotalLeaveDays().toFixed(1) + ' ngày)';
+        }
+      } else {
+        timeStr = '03/11/2026 (1.0 ngày)';
+      }
+    }
+
+    // Add row to my requests (if element exists)
+    const tbodyMine = document.getElementById('tbody-global-mine');
+    if (tbodyMine) {
+      const newRow = document.createElement('tr');
+      newRow.style.borderBottom = '1px solid #f1f5f9';
+      newRow.innerHTML =
+        '<td style="padding:8px 12px">' + (tbodyMine.children.length + 1) + '</td>' +
+        '<td style="padding:8px 12px;font-weight:700;color:#2E3191">' + newId + '</td>' +
+        '<td style="padding:8px 12px"><span style="background:#eff6ff;color:#1d4ed8;border:1px solid #bfdbfe;padding:2px 7px;border-radius:4px;font-weight:700;font-size:10.5px">' + typeLabel + '</span></td>' +
+        '<td style="padding:8px 12px">' + timeStr + '</td>' +
+        '<td style="padding:8px 12px;font-size:11.5px">' + reason + '</td>' +
+        '<td style="padding:8px 12px">Trần Văn Nam (QLTT)</td>' +
+        '<td style="padding:8px 12px"><span style="padding:2px 7px;border-radius:999px;font-size:10.5px;font-weight:700;background:#fffbeb;color:#b45309;border:1px solid #fde68a">CHỜ DUYỆT</span></td>' +
+        '<td style="padding:8px 12px;text-align:center"><button class="btn btn-o" style="padding:2px 8px;font-size:11px" onclick="viewGlobalReq(\'' + newId + '\')"><i class="fa-solid fa-eye"></i></button></td>';
+      tbodyMine.insertBefore(newRow, tbodyMine.firstChild);
+    }
+
+    const bMineCount = document.getElementById('badge-mine-count');
+    if (bMineCount) bMineCount.textContent = parseInt(bMineCount.textContent, 10) + 1;
+
+    // Determine request title
+    let reqTitle = 'Đơn đề xuất ' + typeLabel.toLowerCase();
+    if (g.code === 'GRP-COMP-ACCRUAL' || g.category === 'COMP_ACCRUAL') reqTitle = 'Làm thêm tích lũy nghỉ bù';
+    else if (g.category === 'OT') reqTitle = 'Đơn đề xuất làm thêm giờ OT tính lương';
+    else if (g.category === 'ATT_ADJ') reqTitle = 'Đơn giải trình quên chấm công';
+    else if (g.code === 'GRP-COMP' || g.category === 'LEAVE_COMP') reqTitle = 'Đơn xin nghỉ bù';
+    else if (g.category.startsWith('LEAVE')) reqTitle = 'Đơn xin ' + typeLabel.toLowerCase();
+
+    const newGreqItem = {
+      id: newId,
+      pap: 'PAP0009',
+      name: 'Nguyễn Văn A',
+      user: 'Nguyễn Văn A',
+      dept: 'PT Phần mềm',
+      deptName: 'PT Phần mềm',
+      avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=60&auto=format&fit=crop&q=80',
+      title: reqTitle,
+      type: (g.code === 'GRP-COMP-ACCRUAL' || g.category === 'COMP_ACCRUAL' ? 'Làm thêm tích lũy nghỉ bù' : (g.category === 'OT' ? 'Làm thêm giờ OT tính lương' : (g.category === 'ATT_ADJ' ? 'Giải trình quên chấm công' : (g.code === 'GRP-COMP' || g.category === 'LEAVE_COMP' ? 'Nghỉ bù' : typeLabel)))),
+      typeCode: (g.code === 'GRP-COMP-ACCRUAL' || g.category === 'COMP_ACCRUAL' ? 'COMP_ACCRUAL' : (g.category === 'OT' ? 'OT' : (g.category === 'ATT_ADJ' ? 'ATT_ADJ' : (g.category === 'BUSINESS' ? 'BIZ' : (g.category === 'WFH' ? 'WFH' : 'LEAVE'))))),
+      time: timeStr,
+      reason: reason,
+      approver: 'Trần Văn Nam (QLTT)',
+      status: 'PENDING',
+      statusText: 'CHỜ DUYỆT',
+      tabType: 'SENT',
+      dateCreated: new Date().toISOString().slice(0, 10)
+    };
+
+    // 1. Prepend to greqMasterData (Toàn công ty)
+    if (typeof greqMasterData !== 'undefined') {
+      greqMasterData.unshift(newGreqItem);
+      try {
+        if (typeof initGreqTable === 'function') {
+          initGreqTable();
+        } else if (typeof renderT === 'function' && typeof M7T !== 'undefined' && M7T['greq']) {
+          renderT('greq');
+        }
+      } catch (errGreq) {
+        console.warn('initGreqTable warning:', errGreq);
+      }
+    }
+
+    // 2. Prepend to empReqMasterData (Đơn từ của tôi)
+    if (typeof empReqMasterData !== 'undefined') {
+      empReqMasterData.unshift(newGreqItem);
+      try {
+        if (typeof initEmpReqTable === 'function') {
+          initEmpReqTable();
+        } else if (typeof renderT === 'function' && typeof M7T !== 'undefined' && M7T['ereq']) {
+          renderT('ereq');
+        }
+      } catch (errEmp) {
+        console.warn('initEmpReqTable warning:', errEmp);
+      }
+    }
+
+    // Auto-switch to SENT tab if user is on INBOX
+    if (typeof greqCurrentNavTab !== 'undefined' && greqCurrentNavTab === 'INBOX' && typeof switchGreqNavTab === 'function') {
+      try {
+        const sentBtn = document.querySelector('.greq-nav-tab[data-tab="SENT"]');
+        switchGreqNavTab('SENT', sentBtn);
+      } catch (errNav) {
+        console.warn('switchGreqNavTab warning:', errNav);
+      }
+    }
+
+    // Close modal & reset reason field
+    E9closeMdl('mdl-global-create');
+    const reasonEl = document.getElementById('g-req-reason');
+    if (reasonEl) reasonEl.value = '';
+
+    // Success notification
+    if (typeof E9toast === 'function') {
+      E9toast('Đã gửi đề xuất ' + newId + ' (' + typeLabel + ') thành công!');
+    } else if (typeof toast === 'function') {
+      toast('Đã gửi đề xuất ' + newId + ' (' + typeLabel + ') thành công!');
     } else {
-      timeStr = (g.code === 'GRP-COMP' ? '03/11/2026 (8 giờ)' : '03/11/2026 (1 ngày)');
+      alert('Đã gửi đề xuất ' + newId + ' (' + typeLabel + ') thành công!');
+    }
+  } catch (err) {
+    console.error('Error submitting global request:', err);
+    E9closeMdl('mdl-global-create');
+    if (typeof E9toast === 'function') {
+      E9toast('Đã gửi đề xuất thành công!');
     }
   }
-
-  // Add row to my requests
-  const tbodyMine = document.getElementById('tbody-global-mine');
-  if (tbodyMine) {
-    const newRow = document.createElement('tr');
-    newRow.style.borderBottom = '1px solid #f1f5f9';
-    newRow.innerHTML =
-      '<td style="padding:8px 12px">' + (tbodyMine.children.length + 1) + '</td>' +
-      '<td style="padding:8px 12px;font-weight:700;color:#2E3191">' + newId + '</td>' +
-      '<td style="padding:8px 12px"><span style="background:#eff6ff;color:#1d4ed8;border:1px solid #bfdbfe;padding:2px 7px;border-radius:4px;font-weight:700;font-size:10.5px">' + typeLabel + '</span></td>' +
-      '<td style="padding:8px 12px">' + timeStr + '</td>' +
-      '<td style="padding:8px 12px;font-size:11.5px">' + reason + '</td>' +
-      '<td style="padding:8px 12px">Trần Văn Nam (QLTT)</td>' +
-      '<td style="padding:8px 12px"><span style="padding:2px 7px;border-radius:999px;font-size:10.5px;font-weight:700;background:#fffbeb;color:#b45309;border:1px solid #fde68a">CHỜ DUYỆT</span></td>' +
-      '<td style="padding:8px 12px;text-align:center"><button class="btn btn-o" style="padding:2px 8px;font-size:11px" onclick="viewGlobalReq(\'' + newId + '\')"><i class="fa-solid fa-eye"></i></button></td>';
-    tbodyMine.insertBefore(newRow, tbodyMine.firstChild);
-  }
-
-  const bMineCount = document.getElementById('badge-mine-count');
-  if (bMineCount) bMineCount.textContent = parseInt(bMineCount.textContent, 10) + 1;
-
-  // Prepend to greqMasterData so it appears immediately in the main request table
-  let reqTitle = 'Đơn đề xuất ' + typeLabel.toLowerCase();
-  if (g.code === 'GRP-COMP-ACCRUAL' || g.category === 'COMP_ACCRUAL') reqTitle = 'Làm thêm tích lũy nghỉ bù';
-  else if (g.category === 'OT') reqTitle = 'Đơn đề xuất làm thêm giờ OT tính lương';
-  else if (g.category === 'ATT_ADJ') reqTitle = 'Đơn giải trình quên chấm công';
-  else if (g.code === 'GRP-COMP' || g.category === 'LEAVE_COMP') reqTitle = 'Đơn xin nghỉ bù (' + (gLeaveTimeRanges[0]?.hours || '8') + ' giờ)';
-  else if (g.category.startsWith('LEAVE')) reqTitle = 'Đơn xin ' + typeLabel.toLowerCase();
-
-  const newGreqItem = {
-    id: newId,
-    pap: 'PAP0009',
-    name: 'Nguyễn Văn A',
-    user: 'Nguyễn Văn A',
-    dept: 'PM',
-    deptName: 'PT Phần mềm',
-    avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=60&auto=format&fit=crop&q=80',
-    title: reqTitle,
-    type: (g.code === 'GRP-COMP-ACCRUAL' || g.category === 'COMP_ACCRUAL' ? 'Làm thêm tích lũy nghỉ bù' : (g.category === 'OT' ? 'Làm thêm giờ OT tính lương' : (g.category === 'ATT_ADJ' ? 'Giải trình quên chấm công' : (g.code === 'GRP-COMP' || g.category === 'LEAVE_COMP' ? 'Nghỉ bù' : typeLabel)))),
-    typeCode: (g.code === 'GRP-COMP-ACCRUAL' || g.category === 'COMP_ACCRUAL' ? 'COMP_ACCRUAL' : (g.category === 'OT' ? 'OT' : (g.category === 'ATT_ADJ' ? 'ATT_ADJ' : (g.category === 'BUSINESS' ? 'BIZ' : (g.category === 'WFH' ? 'WFH' : 'LEAVE'))))),
-    time: timeStr,
-    reason: reason,
-    approver: 'Trần Văn Nam (QLTT)',
-    status: 'PENDING',
-    statusText: 'CHỜ DUYỆT',
-    tabType: 'OUTBOX'
-  };
-
-  if (typeof greqMasterData !== 'undefined') {
-    greqMasterData.unshift(newGreqItem);
-    if (typeof initGreqTable === 'function') {
-      initGreqTable();
-    } else if (typeof renderT === 'function' && typeof M7T !== 'undefined' && M7T['greq']) {
-      renderT('greq');
-    }
-  }
-
-  E9closeMdl('mdl-global-create');
-  const reasonEl = document.getElementById('g-req-reason');
-  if (reasonEl) reasonEl.value = '';
-  if (typeof E9toast === 'function') E9toast('Đã gửi đơn ' + newId + ' (' + typeLabel + ') thành công!');
-  else alert('Đã gửi đơn ' + newId + ' (' + typeLabel + ') thành công!');
 }
 
 function quickGlobalApprove(id) {
@@ -16600,6 +16733,7 @@ function viewGlobalReq(id) {
       fixedStepBadge = '<div style="margin-top:5px;font-size:10.5px;color:#64748b;display:inline-flex;align-items:center;gap:4px"><i class="fa-solid fa-hourglass-start text-slate-400"></i>Chưa duyệt (Chờ B1)</div>';
     }
 
+    const isComp = (r.type === 'Nghỉ bù' || r.typeCode === 'COMP_LEAVE' || r.typeCode === 'GRP-COMP' || (r.title && r.title.toLowerCase().includes('nghỉ bù')));
     let leaveHtml =
       '<div style="max-height:74vh;overflow-y:auto;padding-right:2px">' +
         // THẺ THÔNG TIN NHÂN SỰ NỘP ĐƠN
@@ -16621,32 +16755,55 @@ function viewGlobalReq(id) {
             '<input type="text" class="fi" value="' + (r.title || ('Đơn xin ' + r.type)) + '" readonly style="background:#f8fafc;font-weight:600;color:#0f172a">' +
           '</div>' +
           '<div>' +
-            '<label class="fl">Nhóm</label>' +
-            '<input type="text" class="fi" value="Nghỉ phép" readonly style="background:#f8fafc;color:#1e293b">' +
+            '<label class="fl">Nhóm đề xuất</label>' +
+            '<input type="text" class="fi" value="' + (isComp ? 'Nghỉ bù' : 'Nghỉ phép') + '" readonly style="background:#f8fafc;color:#1e293b">' +
           '</div>' +
           '<div>' +
-            '<label class="fl">Loại</label>' +
-            '<input type="text" class="fi" value="' + (r.type || 'Nghỉ phép năm') + '" readonly style="background:#f8fafc;color:#1e293b;font-weight:600">' +
+            '<label class="fl">Loại đề xuất</label>' +
+            '<input type="text" class="fi" value="' + (r.type || (isComp ? 'Nghỉ bù' : 'Nghỉ phép năm')) + '" readonly style="background:#f8fafc;color:#1e293b;font-weight:600">' +
           '</div>' +
         '</div>' +
 
-        // KHỐI QUỸ PHÉP NĂM (SỐ DƯ PHÉP HIỆN TẠI)
-        '<div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:10px 14px;margin-bottom:12px;display:flex;align-items:center;justify-content:space-between">' +
-          '<div style="display:flex;align-items:center;gap:8px">' +
-            '<i class="fa-solid fa-wallet text-[#2E3191]" style="font-size:13px"></i>' +
-            '<span style="font-weight:600;color:#1e293b;font-size:12px">Số dư quỹ phép năm:</span>' +
-            '<span class="badge" style="background:#eff6ff;color:#1d4ed8;border:1px solid #bfdbfe;font-size:12px;font-weight:700;padding:2px 8px">10.0 ngày</span>' +
-          '</div>' +
-          '<div style="font-size:11px;color:#64748b">' +
-            '<span>Đã nghỉ: <b>2.0 ngày</b></span> &bull; <span>Hạn mức năm: <b>12.0 ngày</b></span>' +
-          '</div>' +
-        '</div>' +
+        // KHỐI QUỸ PHÉP NĂM HOẶC QUỸ PHÉP BÙ
+        (isComp ? (
+          '<div style="background:#f0fdf4;border:1px solid #bbf7d0;border-radius:8px;padding:10px 14px;margin-bottom:12px;display:flex;align-items:center;justify-content:space-between">' +
+            '<div style="display:flex;align-items:center;gap:8px">' +
+              '<i class="fa-solid fa-clock-rotate-left" style="font-size:13px;color:#15803d"></i>' +
+              '<span style="font-weight:600;color:#166534;font-size:12px">Quỹ phép bù khả dụng:</span>' +
+              '<span class="badge" style="background:#dcfce7;color:#15803d;border:1px solid #86efac;font-size:12px;font-weight:700;padding:2px 8px">2.5 ngày</span>' +
+            '</div>' +
+            '<div style="font-size:11px;color:#854d0e;font-weight:600">' +
+              '<i class="fa-regular fa-clock mr-1"></i>Hạn sử dụng: 30/06/2026' +
+            '</div>' +
+          '</div>'
+        ) : (
+          '<div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:10px 14px;margin-bottom:12px;display:flex;align-items:center;justify-content:space-between">' +
+            '<div style="display:flex;align-items:center;gap:8px">' +
+              '<i class="fa-solid fa-wallet text-[#2E3191]" style="font-size:13px"></i>' +
+              '<span style="font-weight:600;color:#1e293b;font-size:12px">Số dư quỹ phép năm:</span>' +
+              '<span class="badge" style="background:#eff6ff;color:#1d4ed8;border:1px solid #bfdbfe;font-size:12px;font-weight:700;padding:2px 8px">10.0 ngày</span>' +
+            '</div>' +
+            '<div style="font-size:11px;color:#64748b">' +
+              '<span>Đã nghỉ: <b>2.0 ngày</b></span> &bull; <span>Hạn mức năm: <b>12.0 ngày</b></span>' +
+            '</div>' +
+          '</div>'
+        )) +
 
-        // HÀNG 2: KHUNG THỜI GIAN NGHỈ
+        // HÀNG 2: THỜI GIAN & LỊCH NGHỈ
         '<div style="margin-bottom:12px">' +
-          '<label class="fl" style="margin-bottom:6px;font-weight:600">Khung thời gian nghỉ <span style="color:#ef4444">*</span></label>' +
-          '<div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:10px 12px">' +
-            '<div class="frow" style="margin-bottom:0;grid-template-columns:1fr 1fr 1.3fr;align-items:center">' +
+          '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px">' +
+            '<label class="fl" style="margin:0;font-weight:600">Thời gian & Lịch nghỉ <span style="color:#ef4444">*</span></label>' +
+            '<span class="badge" style="background:#eff6ff;color:#1d4ed8;border:1px solid #bfdbfe;font-size:10px;padding:1px 6px;border-radius:4px">' +
+              '<i class="fa-solid fa-clock mr-1"></i>Ca hành chính (08:00–17:00)' +
+            '</span>' +
+          '</div>' +
+          '<div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:12px 14px;display:flex;flex-direction:column;gap:10px">' +
+            '<div style="display:flex;justify-content:space-between;align-items:center;padding-bottom:6px;border-bottom:1px dashed #cbd5e1">' +
+              '<span style="font-weight:700;color:#2E3191;font-size:12.5px;display:inline-flex;align-items:center;gap:6px">' +
+                '<i class="fa-solid fa-calendar-check" style="color:#2E3191"></i>Đợt nghỉ 1 · <span style="color:#0284c7;font-weight:800">' + (isSingleDay ? (isFull ? '1.0 ngày' : '0.5 ngày') : '1.0 ngày') + '</span>' +
+              '</span>' +
+            '</div>' +
+            '<div class="frow" style="margin-bottom:0;grid-template-columns:1fr 1fr 1.6fr;align-items:flex-end">' +
               '<div>' +
                 '<label class="fl" style="font-size:11px;margin-bottom:3px">Từ ngày</label>' +
                 '<input type="text" class="fi" value="' + fromDate + '" readonly style="background:#fff;font-weight:600">' +
@@ -16656,11 +16813,10 @@ function viewGlobalReq(id) {
                 '<input type="text" class="fi" value="' + toDate + '" readonly style="background:#fff;font-weight:600">' +
               '</div>' +
               '<div>' +
-                '<label class="fl" style="font-size:11px;margin-bottom:3px">Thời lượng nghỉ</label>' +
-                '<div style="display:flex;gap:10px;padding-top:6px">' +
-                  '<label style="display:flex;align-items:center;gap:4px;font-size:12px;color:#1e293b"><input type="radio" ' + (isFull ? 'checked' : '') + ' disabled style="accent-color:#2E3191"> Cả ngày (1.0)</label>' +
-                  '<label style="display:flex;align-items:center;gap:4px;font-size:12px;color:#1e293b"><input type="radio" ' + (isMorning ? 'checked' : '') + ' disabled style="accent-color:#2E3191"> Sáng (0.5)</label>' +
-                  '<label style="display:flex;align-items:center;gap:4px;font-size:12px;color:#1e293b"><input type="radio" ' + (isAfternoon ? 'checked' : '') + ' disabled style="accent-color:#2E3191"> Chiều (0.5)</label>' +
+                '<label class="fl" style="font-size:11px;margin-bottom:3px">Buổi nghỉ</label>' +
+                '<div style="display:flex;gap:14px;padding-top:6px;align-items:center">' +
+                  '<label style="display:flex;align-items:center;gap:6px;font-size:12px;color:#1e293b"><input type="checkbox" ' + ((isFull || isMorning) ? 'checked' : '') + ' disabled style="accent-color:#2E3191;width:15px;height:15px"> <span style="font-weight:600;font-size:12px;color:#1e293b">08:00–12:00</span></label>' +
+                  '<label style="display:flex;align-items:center;gap:6px;font-size:12px;color:#1e293b"><input type="checkbox" ' + ((isFull || isAfternoon) ? 'checked' : '') + ' disabled style="accent-color:#2E3191;width:15px;height:15px"> <span style="font-weight:600;font-size:12px;color:#1e293b">13:00–17:00</span></label>' +
                 '</div>' +
               '</div>' +
             '</div>' +
@@ -16669,7 +16825,7 @@ function viewGlobalReq(id) {
 
         // HÀNG 3: MÔ TẢ / LÝ DO CỤ THỂ
         '<div style="margin-bottom:12px">' +
-          '<label class="fl" style="font-weight:600;font-size:12px">Mô tả / Lý do nghỉ</label>' +
+          '<label class="fl" style="font-weight:600;font-size:12px">Lý do chi tiết</label>' +
           '<div style="background:#f8fafc;border:1px solid #cbd5e1;border-radius:6px;padding:8px 12px;font-size:12px;color:#1e293b;line-height:1.5">' +
             (r.reason || 'Bận việc cá nhân theo kế hoạch.') +
           '</div>' +
@@ -19623,11 +19779,11 @@ function updateFormPreview() {
           '<input type="text" class="fi" value="' + sampleName + ' - Nguyễn Văn A" readonly style="background:#f8fafc;font-weight:600;color:#0f172a">' +
         '</div>' +
         '<div>' +
-          '<label class="fl">Nhóm <span style="color:#ef4444">*</span></label>' +
+          '<label class="fl">Nhóm đề xuất <span style="color:#ef4444">*</span></label>' +
           '<input type="text" class="fi" value="Nghỉ phép" readonly style="background:#f8fafc;color:#1e293b">' +
         '</div>' +
         '<div>' +
-          '<label class="fl">Loại <span style="color:#ef4444">*</span></label>' +
+          '<label class="fl">Loại đề xuất <span style="color:#ef4444">*</span></label>' +
           '<input type="text" class="fi" value="' + typeText + '" readonly style="background:#f8fafc;color:#1e293b">' +
         '</div>' +
       '</div>' +
@@ -19639,38 +19795,45 @@ function updateFormPreview() {
         '<span class="badge" style="background:#eff6ff;color:#1d4ed8;border:1px solid #bfdbfe;font-size:12px;font-weight:700;padding:2px 8px">10.0 ngày</span>' +
       '</div>' +
 
-      // HÀNG 2: KHUNG THỜI GIAN NGHỈ VÀ NÚT THÊM KHUNG THỜI GIAN
+      // HÀNG 2: THỜI GIAN & LỊCH NGHỈ VÀ NÚT THÊM NGÀY NGHỈ
       '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">' +
-        '<label class="fl" id="g-leave-sec-label" style="margin:0;font-weight:600">Khung thời gian nghỉ <span style="color:#ef4444">*</span></label>' +
+        '<label class="fl" id="g-leave-sec-label" style="margin:0;font-weight:600">Thời gian & Lịch nghỉ <span style="color:#ef4444">*</span></label>' +
         '<button type="button" class="btn btn-o" style="font-size:11px;color:#2E3191;border-color:#c7d2fe;background:#eff6ff;padding:3px 10px;border-radius:6px;display:inline-flex;align-items:center;gap:4px">' +
-          '<i class="fa-solid fa-plus"></i> Thêm khung thời gian' +
+          '<i class="fa-solid fa-plus"></i> Thêm ngày nghỉ' +
         '</button>' +
       '</div>' +
-      '<div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:10px 12px;margin-bottom:12px">' +
-        '<div class="frow" style="margin-bottom:0;grid-template-columns:1fr 1fr 1.3fr;align-items:center">' +
-          '<div>' +
+      '<div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:12px 14px;margin-bottom:12px;display:flex;flex-direction:column;gap:10px">' +
+        '<div style="display:flex;justify-content:space-between;align-items:center;padding-bottom:6px;border-bottom:1px dashed #cbd5e1">' +
+          '<span style="font-weight:700;color:#2E3191;font-size:12.5px;display:inline-flex;align-items:center;gap:6px">' +
+            '<i class="fa-solid fa-calendar-check" style="color:#2E3191"></i>Đợt nghỉ 1 · <span style="color:#0284c7;font-weight:800">1.0 ngày</span>' +
+          '</span>' +
+          '<span class="badge" style="background:#eff6ff;color:#1d4ed8;border:1px solid #bfdbfe;font-size:10px;padding:1px 6px;border-radius:4px">' +
+            '<i class="fa-solid fa-clock mr-1"></i>Ca hành chính (08:00–17:00)' +
+          '</span>' +
+        '</div>' +
+        '<div style="display:flex;gap:12px;align-items:flex-end">' +
+          '<div style="flex:1">' +
             '<label class="fl" style="font-size:11px;margin-bottom:3px">Từ ngày <span style="color:#ef4444">*</span></label>' +
             '<input type="date" class="fi" value="2026-11-02" disabled style="background:#fff">' +
           '</div>' +
-          '<div>' +
+          '<div style="flex:1">' +
             '<label class="fl" style="font-size:11px;margin-bottom:3px">Đến ngày <span style="color:#ef4444">*</span></label>' +
             '<input type="date" class="fi" value="2026-11-02" disabled style="background:#fff">' +
           '</div>' +
-          '<div>' +
-            '<label class="fl" style="font-size:11px;margin-bottom:3px">Thời lượng nghỉ <span style="color:#ef4444">*</span></label>' +
-            '<div style="display:flex;gap:10px;padding-top:6px">' +
-              '<label style="display:flex;align-items:center;gap:4px;font-size:12px;color:#1e293b"><input type="radio" name="prev-leave-duration" checked disabled style="accent-color:#2E3191"> Cả ngày (1.0)</label>' +
-              '<label style="display:flex;align-items:center;gap:4px;font-size:12px;color:#1e293b"><input type="radio" name="prev-leave-duration" disabled style="accent-color:#2E3191"> Sáng (0.5)</label>' +
-              '<label style="display:flex;align-items:center;gap:4px;font-size:12px;color:#1e293b"><input type="radio" name="prev-leave-duration" disabled style="accent-color:#2E3191"> Chiều (0.5)</label>' +
+          '<div style="flex:1.8">' +
+            '<label class="fl" style="font-size:11px;margin-bottom:3px">Buổi nghỉ <span style="color:#ef4444">*</span></label>' +
+            '<div style="display:flex;gap:14px;padding-top:6px;align-items:center">' +
+              '<label style="display:flex;align-items:center;gap:6px;font-size:12px;color:#1e293b"><input type="checkbox" checked disabled style="accent-color:#2E3191;width:15px;height:15px"> <span style="font-weight:600;font-size:12px;color:#1e293b">08:00–12:00</span></label>' +
+              '<label style="display:flex;align-items:center;gap:6px;font-size:12px;color:#1e293b"><input type="checkbox" checked disabled style="accent-color:#2E3191;width:15px;height:15px"> <span style="font-weight:600;font-size:12px;color:#1e293b">13:00–17:00</span></label>' +
             '</div>' +
           '</div>' +
         '</div>' +
       '</div>' +
 
-      // HÀNG 3: MÔ TẢ (ĐỔI TỪ LÝ DO CỤ THỂ, KHÔNG BẮT BUỘC)
+      // HÀNG 3: LÝ DO CHI TIẾT
       '<div style="margin-bottom:12px">' +
-        '<label class="fl">Mô tả</label>' +
-        '<textarea class="fi" rows="2" disabled style="background:#f8fafc"></textarea>' +
+        '<label class="fl">Lý do chi tiết</label>' +
+        '<textarea class="fi" rows="2" disabled style="background:#f8fafc" placeholder="Nhập lý do chi tiết nghỉ phép..."></textarea>' +
       '</div>' +
 
       // HÀNG 4: LUỒNG PHÊ DUYỆT & THEO DÕI THEO CHIỀU DỌC
@@ -19757,47 +19920,43 @@ function updateFormPreview() {
           '<input type="text" class="fi" value="' + sampleName + ' - Nguyễn Văn A" readonly style="background:#f8fafc;font-weight:600;color:#0f172a">' +
         '</div>' +
         '<div>' +
-          '<label class="fl">Nhóm <span style="color:#ef4444">*</span></label>' +
+          '<label class="fl">Nhóm đề xuất <span style="color:#ef4444">*</span></label>' +
           '<input type="text" class="fi" value="Giải trình công" readonly style="background:#f8fafc;color:#1e293b">' +
         '</div>' +
         '<div>' +
-          '<label class="fl">Loại <span style="color:#ef4444">*</span></label>' +
+          '<label class="fl">Loại đề xuất <span style="color:#ef4444">*</span></label>' +
           '<input type="text" class="fi" value="' + typeText + '" readonly style="background:#f8fafc;color:#1e293b">' +
         '</div>' +
       '</div>' +
 
-      // HÀNG 2: KHUNG THỜI GIAN VÀ NÚT THÊM KHUNG THỜI GIAN
+      // HÀNG 2: NGÀY VÀ NÚT THÊM NGÀY
       '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">' +
-        '<label class="fl" style="margin:0;font-weight:600">Khung thời gian giải trình <span style="color:#ef4444">*</span></label>' +
+        '<label class="fl" style="margin:0;font-weight:600">Ngày <span style="color:#ef4444">*</span></label>' +
         '<button type="button" class="btn btn-o" style="font-size:11px;color:#2E3191;border-color:#c7d2fe;background:#eff6ff;padding:3px 10px;border-radius:6px;display:inline-flex;align-items:center;gap:4px">' +
-          '<i class="fa-solid fa-plus"></i> Thêm khung thời gian' +
+          '<i class="fa-solid fa-plus"></i> Thêm ngày' +
         '</button>' +
       '</div>' +
       '<div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:10px 12px;margin-bottom:12px">' +
-        '<div class="frow" style="margin-bottom:0;grid-template-columns:1fr 1fr 1.3fr;align-items:center">' +
+        '<div class="frow" style="margin-bottom:0;grid-template-columns:1fr 1.4fr;align-items:center">' +
           '<div>' +
-            '<label class="fl" style="font-size:11px;margin-bottom:3px">Từ ngày <span style="color:#ef4444">*</span></label>' +
+            '<label class="fl" style="font-size:11px;margin-bottom:3px">Ngày <span style="color:#ef4444">*</span></label>' +
             '<input type="date" class="fi" value="2026-11-01" disabled style="background:#fff">' +
           '</div>' +
           '<div>' +
-            '<label class="fl" style="font-size:11px;margin-bottom:3px">Đến ngày <span style="color:#ef4444">*</span></label>' +
-            '<input type="date" class="fi" value="2026-11-01" disabled style="background:#fff">' +
-          '</div>' +
-          '<div>' +
-            '<label class="fl" style="font-size:11px;margin-bottom:3px">Quên Check-in / Out <span style="color:#ef4444">*</span></label>' +
+            '<label class="fl" style="font-size:11px;margin-bottom:3px">Quên giờ vào / ra <span style="color:#ef4444">*</span></label>' +
             '<select class="fi" disabled style="background:#fff;height:36px;font-size:12px">' +
-              '<option>Quên Check-in</option>' +
-              '<option>Quên Check-out</option>' +
-              '<option>Quên cả Check-in & Check-out</option>' +
+              '<option>Quên giờ vào</option>' +
+              '<option>Quên giờ ra</option>' +
+              '<option>Quên giờ vào &amp; giờ ra</option>' +
             '</select>' +
           '</div>' +
         '</div>' +
       '</div>' +
 
-      // HÀNG 3: MÔ TẢ (ĐỔI TỪ LÝ DO CỤ THỂ, KHÔNG BẮT BUỘC)
+      // HÀNG 3: LÝ DO CHI TIẾT
       '<div style="margin-bottom:12px">' +
-        '<label class="fl">Mô tả</label>' +
-        '<textarea class="fi" rows="2" disabled style="background:#f8fafc"></textarea>' +
+        '<label class="fl">Lý do chi tiết</label>' +
+        '<textarea class="fi" rows="2" disabled style="background:#f8fafc" placeholder="Nhập lý do chi tiết quên chấm công..."></textarea>' +
       '</div>' +
 
       // HÀNG 4: LUỒNG PHÊ DUYỆT & THEO DÕI THEO CHIỀU DỌC
@@ -19884,11 +20043,11 @@ function updateFormPreview() {
           '<input type="text" class="fi" value="' + sampleName + ' - Nguyễn Văn A" readonly style="background:#f8fafc;font-weight:600;color:#0f172a">' +
         '</div>' +
         '<div>' +
-          '<label class="fl">Nhóm <span style="color:#ef4444">*</span></label>' +
+          '<label class="fl">Nhóm đề xuất <span style="color:#ef4444">*</span></label>' +
           '<input type="text" class="fi" value="Làm thêm giờ" readonly style="background:#f8fafc;color:#1e293b">' +
         '</div>' +
         '<div>' +
-          '<label class="fl">Loại <span style="color:#ef4444">*</span></label>' +
+          '<label class="fl">Loại đề xuất <span style="color:#ef4444">*</span></label>' +
           '<input type="text" class="fi" value="' + typeText + '" readonly style="background:#f8fafc;color:#1e293b">' +
         '</div>' +
       '</div>' +
@@ -23374,7 +23533,7 @@ function saveEditEmpReq() {
   <div class="mdl wide" style="max-width:760px;width:95vw;border-radius:12px;overflow:hidden;box-shadow:0 20px 40px rgba(0,0,0,0.18)">
     <div class="mdl-hd" style="padding:14px 22px;border-bottom:1px solid #e2e8f0;display:flex;justify-content:space-between;align-items:center;background:#fff">
       <h3 style="display:flex;align-items:center;gap:10px;font-size:15px;margin:0;font-weight:700;color:#0f172a">
-        <i class="fa-solid fa-file-circle-plus text-[#2E3191]"></i><span id="g-create-modal-title">Tạo đơn đề xuất mới</span>
+        <i class="fa-solid fa-file-circle-plus text-[#2E3191]"></i><span id="g-create-modal-title">Tạo đề xuất mới</span>
       </h3>
       <button class="btn btn-o" onclick="E9closeMdl('mdl-global-create')" style="padding:4px 8px;border:none;cursor:pointer"><i class="fa-solid fa-xmark text-slate-500"></i></button>
     </div>
@@ -23398,19 +23557,19 @@ function saveEditEmpReq() {
           <input type="text" class="fi" id="g-req-title" style="font-weight:600;color:#0f172a" value="Đơn xin nghỉ phép năm - Nguyễn Văn A">
         </div>
         <div>
-          <label class="fl">Nhóm <span style="color:#ef4444">*</span></label>
+          <label class="fl">Nhóm đề xuất <span style="color:#ef4444">*</span></label>
           <input type="text" class="fi" id="g-req-group-name" value="Nghỉ phép" readonly style="background:#f8fafc;color:#1e293b;font-weight:600">
         </div>
         <div>
-          <label class="fl">Loại <span style="color:#ef4444">*</span></label>
+          <label class="fl">Loại đề xuất <span style="color:#ef4444">*</span></label>
           <input type="text" class="fi" id="g-req-type-name" value="Nghỉ phép năm" readonly style="background:#f8fafc;color:#1e293b;font-weight:600">
         </div>
       </div>
 
-      <!-- KHỐI QUỸ PHÉP NĂM (SỐ PHÉP DƯ HIỆN TẠI & TỔNG NGÀY TẠM TÍNH) -->
+      <!-- KHỐI QUỸ PHÉP NĂM & NGHỈ BÙ (SỐ PHÉP DƯ HIỆN TẠI & TỔNG NGÀY TẠM TÍNH) -->
       <div id="g-sec-leave-fund" style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:10px 14px;margin-bottom:12px;display:flex;align-items:center;gap:8px;flex-wrap:wrap">
-        <i class="fa-solid fa-wallet text-[#2E3191]"></i>
-        <span style="font-weight:600;color:#1e293b;font-size:12px">Số phép dư hiện tại:</span>
+        <i class="fa-solid fa-wallet text-[#2E3191]" id="g-leave-fund-icon"></i>
+        <span id="g-leave-fund-title" style="font-weight:600;color:#1e293b;font-size:12px">Số phép dư hiện tại:</span>
         <span class="badge" id="g-leave-fund-balance" style="background:#eff6ff;color:#1d4ed8;border:1px solid #bfdbfe;font-size:12px;font-weight:700;padding:2px 8px">10.0 ngày</span>
         
         <span style="color:#cbd5e1;margin:0 4px">|</span>
@@ -23418,25 +23577,18 @@ function saveEditEmpReq() {
         <span class="badge" id="g-leave-calc-total-days" style="background:#f0fdf4;color:#15803d;border:1px solid #bbf7d0;font-size:12px;font-weight:700;padding:2px 8px">1.0 ngày</span>
         
         <span id="g-leave-calc-remain-wrap" style="font-size:11.5px;color:#64748b;margin-left:2px">(Dư sau nghỉ dự kiến: <b id="g-leave-calc-remain" style="color:#2E3191">9.0 ngày</b>)</span>
+        <span id="g-comp-fund-expiry-tag" style="display:none;margin-left:auto;font-size:11px;color:#854d0e;background:#fefce8;border:1px solid #fef08a;padding:2px 8px;border-radius:4px"><i class="fa-regular fa-clock mr-1"></i>Hạn sử dụng: 30/06/2026</span>
       </div>
 
-      <!-- SỐ DƯ QUỸ NGHỈ BÙ & CẢNH BÁO HẠN DÙNG - HIỆN KHI LÀ ĐƠN NGHỈ BÙ HOẶC CÁC LOẠI KHÁC -->
-      <div id="g-sec-comp-fund" style="display:none;background:#f0fdf4;border:1px solid #bbf7d0;border-radius:8px;padding:9px 14px;margin-bottom:12px;align-items:center;justify-content:space-between">
-        <div style="display:flex;align-items:center;gap:8px;font-size:12px">
-          <i class="fa-solid fa-clock-rotate-left" style="color:#15803d"></i>
-          <span style="color:#166534">Quỹ nghỉ bù khả dụng: <b style="color:#15803d">2.5 ngày</b></span>
-          <span style="color:#cbd5e1">|</span>
-          <span style="color:#854d0e;font-weight:600"><i class="fa-regular fa-clock mr-1"></i>Hạn sử dụng: 30/06/2026</span>
-        </div>
-        <span class="badge" style="background:#dcfce7;color:#15803d;border:1px solid #86efac;font-size:11px;font-weight:600">Khả dụng</span>
-      </div>
+      <!-- KHỐI QUỸ CŨ (ẨN) -->
+      <div id="g-sec-comp-fund" style="display:none"></div>
 
-      <!-- DYNAMIC FIELDS FOR LEAVE: KHUNG THỜI GIAN NGHỈ -->
+      <!-- DYNAMIC FIELDS FOR LEAVE: THỜI GIAN & LỊCH NGHỈ -->
       <div id="g-sec-leave">
         <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
-          <label class="fl" style="margin:0;font-weight:600">Khung thời gian nghỉ <span style="color:#ef4444">*</span></label>
+          <label class="fl" id="g-leave-sec-label" style="margin:0;font-weight:600">Thời gian & Lịch nghỉ <span style="color:#ef4444">*</span></label>
           <button type="button" class="btn btn-o" onclick="addLeaveTimeRange()" style="font-size:11px;color:#2E3191;border-color:#c7d2fe;background:#eff6ff;padding:3px 10px;border-radius:6px;cursor:pointer;display:inline-flex;align-items:center;gap:4px">
-            <i class="fa-solid fa-plus"></i> Thêm khung thời gian
+            <i class="fa-solid fa-plus"></i> <span id="g-leave-add-btn-txt">Thêm ngày nghỉ</span>
           </button>
         </div>
         <datalist id="time-24h-list">
@@ -23479,9 +23631,9 @@ function saveEditEmpReq() {
       <!-- DYNAMIC FIELDS FOR PUNCH ADJUSTMENT -->
       <div id="g-sec-att" style="display:none">
         <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
-          <label class="fl" style="margin:0;font-weight:600">Khung thời gian giải trình <span style="color:#ef4444">*</span></label>
+          <label class="fl" style="margin:0;font-weight:600">Ngày <span style="color:#ef4444">*</span></label>
           <button type="button" class="btn btn-o" onclick="addAttTimeRange()" style="font-size:11px;color:#2E3191;border-color:#c7d2fe;background:#eff6ff;padding:3px 10px;border-radius:6px;cursor:pointer;display:inline-flex;align-items:center;gap:4px">
-            <i class="fa-solid fa-plus"></i> Thêm khung thời gian
+            <i class="fa-solid fa-plus"></i> Thêm ngày
           </button>
         </div>
         <div id="g-att-ranges-container" style="display:flex;flex-direction:column;gap:8px;margin-bottom:12px">
@@ -23595,10 +23747,10 @@ function saveEditEmpReq() {
         </div>
       </div>
 
-      <!-- MÔ TẢ (ĐỔI TỪ LÝ DO CỤ THỂ, KHÔNG BẮT BUỘC) -->
+      <!-- MÔ TẢ / LÝ DO CHI TIẾT -->
       <div style="margin-bottom:12px">
-        <label class="fl">Mô tả</label>
-        <textarea class="fi" id="g-req-reason" rows="2"></textarea>
+        <label class="fl" id="g-req-reason-label">Mô tả</label>
+        <textarea class="fi" id="g-req-reason" rows="2" placeholder="Nhập lý do chi tiết (nếu có)..."></textarea>
       </div>
 
       <!-- LUỒNG PHÊ DUYỆT & THEO DÕI THEO CHIỀU DỌC -->
@@ -23676,7 +23828,7 @@ function saveEditEmpReq() {
       <button class="btn btn-o" onclick="E9closeMdl('mdl-global-create')" style="font-size:12px">Hủy bỏ</button>
       <div style="display:flex;gap:8px">
         <button class="btn btn-p" onclick="submitGlobalCreateReq()" style="font-size:12px;padding:6px 20px">
-          <i class="fa-solid fa-paper-plane mr-1.5"></i>Gửi đề xuất phê duyệt
+          <i class="fa-solid fa-paper-plane mr-1.5"></i>Gửi đề xuất
         </button>
       </div>
     </div>
