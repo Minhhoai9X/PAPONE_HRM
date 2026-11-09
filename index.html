@@ -15469,6 +15469,20 @@ function calcOtHours(start, end) {
   return (diff / 60).toFixed(1);
 }
 
+function updateOtSummary() {
+  let totalH = 0;
+  gOtTimeRanges.forEach(r => {
+    const s = r.start || '17:30';
+    const e = r.end || '20:30';
+    const h = r.hours ? parseFloat(r.hours) : parseFloat(calcOtHours(s, e));
+    totalH += (isNaN(h) ? 3.0 : h);
+  });
+  const sumH = document.getElementById('g-ot-sum-hours');
+  if (sumH) {
+    sumH.textContent = totalH.toFixed(1).replace('.0', '') + ' giờ';
+  }
+}
+
 function updateOtRange(idx, field, val) {
   if (gOtTimeRanges[idx]) {
     gOtTimeRanges[idx][field] = val;
@@ -15479,11 +15493,7 @@ function updateOtRange(idx, field, val) {
       gOtTimeRanges[idx].hours = calcH;
       const hEl = document.getElementById('g-ot-hours-' + idx);
       if (hEl) hEl.value = calcH + 'h';
-
-      let totalH = 0;
-      gOtTimeRanges.forEach(r => totalH += (parseFloat(r.hours) || 3.0));
-      const sumH = document.getElementById('g-ot-sum-hours');
-      if (sumH) sumH.textContent = totalH.toFixed(1).replace('.0', '') + ' giờ';
+      updateOtSummary();
     }
   }
 }
@@ -15504,42 +15514,56 @@ function renderOtTimeRanges() {
   container.innerHTML = gOtTimeRanges.map((rng, idx) => {
     const curStart = rng.start || '17:30';
     const curEnd = rng.end || '20:30';
-    return '<div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:12px 14px;display:flex;gap:14px;align-items:flex-end">' +
-      '<div style="flex:1">' +
-        '<label class="fl" style="font-size:11px;margin-bottom:4px">Ngày làm thêm <span style="color:#ef4444">*</span></label>' +
-        '<input type="date" class="fi" value="' + (rng.date || '2026-11-03') + '" onchange="updateOtRange(' + idx + ', \'date\', this.value)" style="background:#fff;height:36px">' +
-      '</div>' +
-      '<div style="flex:1.6">' +
-        '<label class="fl" style="font-size:11px;margin-bottom:4px">Khung giờ (Từ &rarr; Đến) <span style="color:#ef4444">*</span></label>' +
-        '<div style="display:flex;align-items:center;gap:8px">' +
-          '<div style="position:relative;display:flex;align-items:center">' +
-            '<input type="text" class="fi" id="g-ot-start-' + idx + '" list="time-24h-list" value="' + curStart + '" maxlength="5" placeholder="17:30" oninput="format24hOtTimeInput(this, ' + idx + ', \'start\')" onchange="format24hOtTimeInput(this, ' + idx + ', \'start\')" style="width:115px;height:36px;font-weight:600;background:#fff;text-align:center;color:#1e293b;padding-right:26px">' +
-            '<i class="fa-regular fa-clock" style="position:absolute;right:8px;color:#94a3b8;font-size:12px;pointer-events:none"></i>' +
-          '</div>' +
-          '<span style="color:#94a3b8">&rarr;</span>' +
-          '<div style="position:relative;display:flex;align-items:center">' +
-            '<input type="text" class="fi" id="g-ot-end-' + idx + '" list="time-24h-list" value="' + curEnd + '" maxlength="5" placeholder="20:30" oninput="format24hOtTimeInput(this, ' + idx + ', \'end\')" onchange="format24hOtTimeInput(this, ' + idx + ', \'end\')" style="width:115px;height:36px;font-weight:600;background:#fff;text-align:center;color:#1e293b;padding-right:26px">' +
-            '<i class="fa-regular fa-clock" style="position:absolute;right:8px;color:#94a3b8;font-size:12px;pointer-events:none"></i>' +
+    return '<div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:12px 14px;margin-bottom:8px">' +
+      '<div style="display:flex;gap:14px;align-items:flex-end">' +
+        '<div style="flex:1">' +
+          '<label class="fl" style="font-size:11px;margin-bottom:4px">Ngày làm thêm <span style="color:#ef4444">*</span></label>' +
+          '<input type="date" class="fi" value="' + (rng.date || '2026-11-03') + '" onchange="updateOtRange(' + idx + ', \'date\', this.value)" style="background:#fff;height:36px">' +
+        '</div>' +
+        '<div style="flex:1.6">' +
+          '<label class="fl" style="font-size:11px;margin-bottom:4px">Khung giờ (Từ &rarr; Đến) <span style="color:#ef4444">*</span></label>' +
+          '<div style="display:flex;align-items:center;gap:8px">' +
+            '<div style="position:relative;display:flex;align-items:center">' +
+              '<input type="text" class="fi" id="g-ot-start-' + idx + '" list="time-24h-list" value="' + curStart + '" maxlength="5" placeholder="17:30" oninput="format24hOtTimeInput(this, ' + idx + ', \'start\')" onchange="format24hOtTimeInput(this, ' + idx + ', \'start\')" style="width:115px;height:36px;font-weight:600;background:#fff;text-align:center;color:#1e293b;padding-right:26px">' +
+              '<i class="fa-regular fa-clock" style="position:absolute;right:8px;color:#94a3b8;font-size:12px;pointer-events:none"></i>' +
+            '</div>' +
+            '<span style="color:#94a3b8">&rarr;</span>' +
+            '<div style="position:relative;display:flex;align-items:center">' +
+              '<input type="text" class="fi" id="g-ot-end-' + idx + '" list="time-24h-list" value="' + curEnd + '" maxlength="5" placeholder="20:30" oninput="format24hOtTimeInput(this, ' + idx + ', \'end\')" onchange="format24hOtTimeInput(this, ' + idx + ', \'end\')" style="width:115px;height:36px;font-weight:600;background:#fff;text-align:center;color:#1e293b;padding-right:26px">' +
+              '<i class="fa-regular fa-clock" style="position:absolute;right:8px;color:#94a3b8;font-size:12px;pointer-events:none"></i>' +
+            '</div>' +
           '</div>' +
         '</div>' +
+        '<div style="width:85px">' +
+          '<label class="fl" style="font-size:11px;margin-bottom:4px">Số giờ</label>' +
+          '<input type="text" class="fi" id="g-ot-hours-' + idx + '" value="' + (rng.hours || '3.0') + 'h" readonly style="background:#f0f9ff;font-weight:700;color:#0284c7;text-align:center;height:36px">' +
+        '</div>' +
+        (isMulti ? (
+          '<div style="padding-bottom:2px">' +
+            '<button type="button" class="btn btn-o" onclick="removeOtTimeRange(' + idx + ')" title="Xóa khung thời gian" style="padding:6px 10px;color:#ef4444;border-color:#fecaca;background:#fff;border-radius:6px;cursor:pointer;height:36px">' +
+              '<i class="fa-solid fa-trash-can"></i>' +
+            '</button>' +
+          '</div>'
+        ) : '') +
       '</div>' +
-      '<div style="width:85px">' +
-        '<label class="fl" style="font-size:11px;margin-bottom:4px">Số giờ</label>' +
-        '<input type="text" class="fi" id="g-ot-hours-' + idx + '" value="' + (rng.hours || '3.0') + 'h" readonly style="background:#f0f9ff;font-weight:700;color:#0284c7;text-align:center;height:36px">' +
+      '<div style="margin-top:8px;padding-top:6px;border-top:1px dashed #e2e8f0;display:flex;justify-content:space-between;align-items:center;font-size:11.5px;color:#64748b">' +
+        '<span>Ca làm việc: <strong style="color:#1e293b">Hành chính (08:00–17:00)</strong></span>' +
+        '<span><i class="fa-solid fa-fingerprint mr-1" style="color:#059669;font-size:11px"></i>Chấm công thực tế: <strong style="color:#047857">08:00–20:00</strong></span>' +
       '</div>' +
-      (isMulti ? (
-        '<div style="padding-bottom:2px">' +
-          '<button type="button" class="btn btn-o" onclick="removeOtTimeRange(' + idx + ')" title="Xóa khung thời gian" style="padding:6px 10px;color:#ef4444;border-color:#fecaca;background:#fff;border-radius:6px;cursor:pointer;height:36px">' +
-            '<i class="fa-solid fa-trash-can"></i>' +
-          '</button>' +
-        '</div>'
-      ) : '') +
     '</div>';
   }).join('');
+  updateOtSummary();
 }
 
 function addOtTimeRange() {
-  gOtTimeRanges.push({ date: '2026-11-03', start: '17:30', end: '20:30', hours: '3.0' });
+  const lastDate = gOtTimeRanges.length > 0 ? gOtTimeRanges[gOtTimeRanges.length - 1].date : '2026-11-03';
+  let nextDate = lastDate;
+  try {
+    const dt = new Date(lastDate);
+    dt.setDate(dt.getDate() + 1);
+    nextDate = dt.toISOString().split('T')[0];
+  } catch(e) {}
+  gOtTimeRanges.push({ date: nextDate, start: '17:30', end: '20:30', hours: '3.0' });
   renderOtTimeRanges();
 }
 
@@ -15558,19 +15582,103 @@ function setOtCompDays(days) {
   }
 }
 
-function setCompAccrualDays(days) {
-  const inp = document.getElementById('g-comp-accrual-days-val');
-  if (inp) {
-    inp.value = days.toFixed(1);
+let gCompAccrualRanges = [{ date: '2026-11-03', days: 1.0 }];
+
+function renderCompAccrualRanges() {
+  const container = document.getElementById('g-comp-accrual-container');
+  if (!container) return;
+  const isMulti = gCompAccrualRanges.length > 1;
+  container.innerHTML = gCompAccrualRanges.map((rng, idx) => {
+    const curDate = rng.date || '2026-11-03';
+    const curDays = parseFloat(rng.days || 1.0);
+    const isHalf = (Math.abs(curDays - 0.5) < 0.01);
+    const isFull = (Math.abs(curDays - 1.0) < 0.01);
+    return '<div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:10px 12px;margin-bottom:8px">' +
+      '<div style="display:flex;gap:12px;align-items:flex-end">' +
+        '<div style="flex:1">' +
+          '<label class="fl" style="font-size:11px;margin-bottom:3px;font-weight:600">Ngày làm thêm <span style="color:#ef4444">*</span></label>' +
+          '<input type="date" class="fi" value="' + curDate + '" onchange="updateCompAccrualRowDate(' + idx + ', this.value)" style="background:#fff;height:36px;width:100%;box-sizing:border-box">' +
+        '</div>' +
+        '<div style="flex:1.4">' +
+          '<label class="fl" style="font-size:11px;margin-bottom:3px;font-weight:600">Mức tích lũy đề xuất <span style="color:#ef4444">*</span></label>' +
+          '<div style="display:flex;align-items:center;gap:6px">' +
+            '<div style="display:inline-flex;align-items:center;gap:4px;background:#fff;border:1px solid #cbd5e1;border-radius:6px;padding:2px 8px;height:36px;box-sizing:border-box">' +
+              '<input type="number" step="0.5" min="0.5" max="3.0" value="' + curDays.toFixed(1) + '" oninput="updateCompAccrualRowDaysInput(' + idx + ', this.value)" style="width:45px;font-weight:700;color:#0284c7;text-align:center;font-size:13px;border:0;background:transparent;outline:none;padding:0">' +
+              '<span style="font-size:12px;color:#64748b;font-weight:600">ngày</span>' +
+            '</div>' +
+            '<button type="button" class="btn btn-o" onclick="setCompAccrualRowDays(' + idx + ', 0.5)" style="font-size:11.5px;padding:6px 10px;border-radius:6px;font-weight:600;height:36px;white-space:nowrap;' + (isHalf ? 'background:#0284c7;border-color:#0284c7;color:#fff' : 'background:#fff;border-color:#cbd5e1;color:#334155') + '">0.5 ngày</button>' +
+            '<button type="button" class="btn btn-o" onclick="setCompAccrualRowDays(' + idx + ', 1.0)" style="font-size:11.5px;padding:6px 10px;border-radius:6px;font-weight:600;height:36px;white-space:nowrap;' + (isFull ? 'background:#0284c7;border-color:#0284c7;color:#fff' : 'background:#fff;border-color:#cbd5e1;color:#334155') + '">1.0 ngày</button>' +
+          '</div>' +
+        '</div>' +
+        (isMulti ? (
+          '<div style="padding-bottom:1px">' +
+            '<button type="button" class="btn btn-o" onclick="removeCompAccrualRange(' + idx + ')" title="Xóa ngày" style="height:36px;padding:0 10px;color:#ef4444;border-color:#fecaca;background:#fff;border-radius:6px;cursor:pointer;display:flex;align-items:center;justify-content:center">' +
+              '<i class="fa-solid fa-trash-can"></i>' +
+            '</button>' +
+          '</div>'
+        ) : '') +
+      '</div>' +
+      '<div style="margin-top:8px;padding-top:6px;border-top:1px dashed #e2e8f0;display:flex;justify-content:space-between;align-items:center;font-size:11.5px;color:#64748b">' +
+        '<span>Ca làm việc: <strong style="color:#1e293b">Hành chính (08:00–17:00)</strong></span>' +
+        '<span><i class="fa-solid fa-fingerprint mr-1" style="color:#059669;font-size:11px"></i>Chấm công thực tế: <strong style="color:#047857">08:00–21:30</strong></span>' +
+      '</div>' +
+    '</div>';
+  }).join('');
+  updateCompAccrualSummary();
+}
+
+function updateCompAccrualRowDate(idx, val) {
+  if (gCompAccrualRanges[idx]) {
+    gCompAccrualRanges[idx].date = val;
+  }
+}
+
+function updateCompAccrualRowDaysInput(idx, val) {
+  const d = parseFloat(val);
+  if (!isNaN(d) && gCompAccrualRanges[idx]) {
+    gCompAccrualRanges[idx].days = d;
     updateCompAccrualSummary();
   }
 }
 
+function setCompAccrualRowDays(idx, days) {
+  if (gCompAccrualRanges[idx]) {
+    gCompAccrualRanges[idx].days = days;
+    renderCompAccrualRanges();
+  }
+}
+
+function setCompAccrualDays(days) {
+  if (gCompAccrualRanges.length > 0) {
+    gCompAccrualRanges[0].days = days;
+  }
+  renderCompAccrualRanges();
+}
+
+function addCompAccrualRange() {
+  const lastDate = gCompAccrualRanges.length > 0 ? gCompAccrualRanges[gCompAccrualRanges.length - 1].date : '2026-11-03';
+  let nextDate = lastDate;
+  try {
+    const dt = new Date(lastDate);
+    dt.setDate(dt.getDate() + 1);
+    nextDate = dt.toISOString().split('T')[0];
+  } catch(e) {}
+  gCompAccrualRanges.push({ date: nextDate, days: 1.0 });
+  renderCompAccrualRanges();
+}
+
+function removeCompAccrualRange(idx) {
+  if (gCompAccrualRanges.length > 1) {
+    gCompAccrualRanges.splice(idx, 1);
+    renderCompAccrualRanges();
+  }
+}
+
 function updateCompAccrualSummary() {
-  const compDaysVal = parseFloat(document.getElementById('g-comp-accrual-days-val')?.value || '1.0');
+  const total = gCompAccrualRanges.reduce((acc, r) => acc + (parseFloat(r.days) || 0), 0);
   const span = document.getElementById('g-comp-accrual-sum-days');
   if (span) {
-    span.textContent = compDaysVal.toFixed(1) + ' ngày công';
+    span.textContent = total.toFixed(1) + ' ngày';
   }
 }
 
@@ -15680,6 +15788,10 @@ function openGlobalCreateReqModal(groupCode) {
       modalTitle.textContent = 'Tạo đề xuất nghỉ bù';
     } else if (g.code === 'GRP-AL' || g.category === 'LEAVE') {
       modalTitle.textContent = 'Tạo đề xuất nghỉ phép năm';
+    } else if (g.code === 'GRP-COMP-ACCRUAL' || g.category === 'COMP_ACCRUAL') {
+      modalTitle.textContent = 'Tạo đề xuất tích lũy nghỉ bù';
+    } else if (g.category === 'OT') {
+      modalTitle.textContent = 'Tạo đề xuất làm thêm giờ';
     } else {
       modalTitle.textContent = 'Tạo đề xuất mới';
     }
@@ -15693,6 +15805,10 @@ function openGlobalCreateReqModal(groupCode) {
       badge.textContent = 'Nghỉ bù';
     } else if (g.code === 'GRP-AL' || g.category === 'LEAVE') {
       badge.textContent = 'Nghỉ phép';
+    } else if (g.code === 'GRP-COMP-ACCRUAL' || g.category === 'COMP_ACCRUAL') {
+      badge.textContent = 'Tích lũy nghỉ bù';
+    } else if (g.category === 'OT') {
+      badge.textContent = 'Làm thêm giờ';
     } else {
       badge.textContent = g.name;
     }
@@ -15702,6 +15818,10 @@ function openGlobalCreateReqModal(groupCode) {
   if (titleInp) {
     if (g.code === 'GRP-COMP' || g.category === 'LEAVE_COMP') {
       titleInp.value = 'Đơn xin nghỉ bù - Nguyễn Văn A';
+    } else if (g.code === 'GRP-COMP-ACCRUAL' || g.category === 'COMP_ACCRUAL') {
+      titleInp.value = 'Đề xuất tích lũy nghỉ bù - Nguyễn Văn A';
+    } else if (g.category === 'OT') {
+      titleInp.value = 'Đề xuất làm thêm giờ - Nguyễn Văn A';
     } else {
       titleInp.value = g.name + ' - Nguyễn Văn A';
     }
@@ -15710,7 +15830,7 @@ function openGlobalCreateReqModal(groupCode) {
   const grpInp = document.getElementById('g-req-group-name');
   if (grpInp) {
     if (g.code === 'GRP-COMP-ACCRUAL' || g.category === 'COMP_ACCRUAL') {
-      grpInp.value = 'Làm thêm & Nghỉ bù';
+      grpInp.value = 'Tích lũy nghỉ bù';
     } else if (g.code === 'GRP-COMP' || g.category === 'LEAVE_COMP') {
       grpInp.value = 'Nghỉ bù';
     } else if (g.category.startsWith('LEAVE')) {
@@ -15808,10 +15928,10 @@ function openGlobalCreateReqModal(groupCode) {
     renderAttTimeRanges();
   }
 
-  // Cập nhật nhãn Lý do chi tiết cho form Giải trình quên chấm công, Nghỉ phép & Nghỉ bù
+  // Cập nhật nhãn Lý do chi tiết cho form Giải trình quên chấm công, Nghỉ phép, Nghỉ bù, Tích lũy nghỉ bù & Làm thêm giờ
   const reasonLabel = document.getElementById('g-req-reason-label');
   if (reasonLabel) {
-    reasonLabel.textContent = (g.category === 'ATT_ADJ' || g.category.startsWith('LEAVE')) ? 'Lý do chi tiết' : 'Mô tả';
+    reasonLabel.textContent = (g.category === 'ATT_ADJ' || g.category.startsWith('LEAVE') || g.code === 'GRP-COMP-ACCRUAL' || g.category === 'COMP_ACCRUAL' || g.category === 'OT') ? 'Lý do chi tiết' : 'Mô tả';
   }
   const reasonInput = document.getElementById('g-req-reason');
   if (reasonInput) {
@@ -15821,6 +15941,10 @@ function openGlobalCreateReqModal(groupCode) {
       reasonInput.placeholder = 'Nhập lý do chi tiết nghỉ bù...';
     } else if (g.category.startsWith('LEAVE')) {
       reasonInput.placeholder = 'Nhập lý do chi tiết nghỉ phép...';
+    } else if (g.code === 'GRP-COMP-ACCRUAL' || g.category === 'COMP_ACCRUAL') {
+      reasonInput.placeholder = 'Nhập lý do chi tiết tích lũy nghỉ bù...';
+    } else if (g.category === 'OT') {
+      reasonInput.placeholder = 'Nhập lý do chi tiết làm thêm giờ...';
     } else {
       reasonInput.placeholder = '';
     }
@@ -15832,7 +15956,8 @@ function openGlobalCreateReqModal(groupCode) {
   }
   if (sCompAccrual) sCompAccrual.style.display = (g.code === 'GRP-COMP-ACCRUAL' || g.category === 'COMP_ACCRUAL') ? 'block' : 'none';
   if (g.code === 'GRP-COMP-ACCRUAL' || g.category === 'COMP_ACCRUAL') {
-    setCompAccrualDays(1.0);
+    gCompAccrualRanges = [{ date: '2026-11-03', days: 1.0 }];
+    renderCompAccrualRanges();
   }
 
   // Update approver badge based on category
@@ -15881,9 +16006,12 @@ function submitGlobalCreateReq() {
     const newId = prefix + '-2026-0' + (Math.floor(Math.random() * 80) + 25);
     let timeStr = '03/11/2026 (1 ngày)';
     if (g.code === 'GRP-COMP-ACCRUAL' || g.category === 'COMP_ACCRUAL') {
-      const compDaysVal = parseFloat(document.getElementById('g-comp-accrual-days-val')?.value || '1.0');
-      const compDate = document.getElementById('g-comp-accrual-date')?.value || '2026-11-03';
-      timeStr = compDate + ' · Tích lũy: ' + compDaysVal.toFixed(1) + ' ngày công';
+      const totalDays = gCompAccrualRanges.reduce((acc, r) => acc + (parseFloat(r.days) || 0), 0);
+      if (gCompAccrualRanges.length === 1) {
+        timeStr = (gCompAccrualRanges[0].date || '2026-11-03') + ' · Tích lũy: ' + totalDays.toFixed(1) + ' ngày';
+      } else {
+        timeStr = gCompAccrualRanges.length + ' ngày tích lũy (' + totalDays.toFixed(1) + ' ngày)';
+      }
     } else if (g.category === 'ATT_ADJ') {
       if (typeof gAttTimeRanges !== 'undefined' && gAttTimeRanges.length > 0) {
         const typeMap = { 'IN': 'Quên giờ vào', 'OUT': 'Quên giờ ra', 'BOTH': 'Quên giờ vào & giờ ra' };
@@ -15897,14 +16025,17 @@ function submitGlobalCreateReq() {
       }
     } else if (g.category === 'OT') {
       if (typeof gOtTimeRanges !== 'undefined' && gOtTimeRanges.length > 0) {
+        let totalH = 0;
+        gOtTimeRanges.forEach(r => totalH += (parseFloat(r.hours) || 3.0));
+        const totalHStr = totalH.toFixed(1).replace('.0', '') + 'h';
         if (gOtTimeRanges.length === 1) {
           const rng = gOtTimeRanges[0];
-          timeStr = rng.date + ' · ' + rng.start + ' - ' + rng.end + ' (' + (rng.hours || '3.0') + 'h)';
+          timeStr = rng.date + ' · ' + rng.start + ' - ' + rng.end + ' (' + totalHStr + ')';
         } else {
-          timeStr = gOtTimeRanges.length + ' ca tăng ca (' + gOtTimeRanges.map(r => r.date).join(', ') + ')';
+          timeStr = gOtTimeRanges.length + ' ca tăng ca (Tổng ' + totalHStr + ')';
         }
       } else {
-        timeStr = '01/11/2026 · 17:30 - 20:30 (3.0h)';
+        timeStr = '01/11/2026 · 17:30 - 20:30 (3h)';
       }
     } else if (g.category.startsWith('LEAVE') || g.category === 'BUSINESS' || g.category === 'WFH') {
       if (typeof gLeaveTimeRanges !== 'undefined' && gLeaveTimeRanges.length > 0) {
@@ -16709,6 +16840,7 @@ function viewGlobalReq(id) {
       fromDate = rawTime.split(' ')[0];
       toDate = fromDate;
     }
+    const isSingleDay = (fromDate === toDate);
     const isFull = !isMorning && !isAfternoon;
 
     // Approval indicators
@@ -18585,8 +18717,8 @@ function greqCell(r, k, i) {
     const isInboxPending = r.status === 'PENDING' && (r.tabType === 'INBOX' || (typeof greqCurrentNavTab !== 'undefined' && greqCurrentNavTab === 'INBOX'));
     let btns = '<div style="display:flex;align-items:center;justify-content:center;gap:6px">';
     if (isInboxPending) {
-      // Tại tab Gửi đến tôi, đơn chờ duyệt: đổi icon mắt thành icon cây bút để mở ra duyệt
-      btns += '<button class="ctrl" style="color:#2E3191;cursor:pointer" title="Mở duyệt đơn" onclick="viewGlobalReq(\'' + r.id + '\')"><i class="fa-solid fa-pen-to-square"></i></button>';
+      // Tại tab Gửi đến tôi, đơn chờ duyệt: đổi icon mắt thành icon cây bút để mở ra duyệt / cập nhật
+      btns += '<button class="ctrl" style="color:#2E3191;cursor:pointer" title="Cập nhật / Xem xét đơn" onclick="viewGlobalReq(\'' + r.id + '\')"><i class="fa-solid fa-pen-to-square"></i></button>';
       // Dấu tích duyệt nhanh mở popup confirm duyệt
       btns += ' <button class="ctrl" style="color:#16a34a;cursor:pointer" title="Phê duyệt nhanh" onclick="confirmQuickGlobalApprove(\'' + r.id + '\')"><i class="fa-solid fa-check"></i></button>';
       btns += ' <button class="ctrl" style="color:#dc2626;cursor:pointer" title="Từ chối" onclick="openGlobalRejectModal(\'' + r.id + '\')"><i class="fa-solid fa-xmark"></i></button>';
@@ -19929,9 +20061,9 @@ function updateFormPreview() {
         '</div>' +
       '</div>' +
 
-      // HÀNG 2: NGÀY VÀ NÚT THÊM NGÀY
+      // HÀNG 2: NGÀY QUÊN CHẤM CÔNG VÀ NÚT THÊM NGÀY
       '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">' +
-        '<label class="fl" style="margin:0;font-weight:600">Ngày <span style="color:#ef4444">*</span></label>' +
+        '<label class="fl" style="margin:0;font-weight:600">Ngày quên chấm công <span style="color:#ef4444">*</span></label>' +
         '<button type="button" class="btn btn-o" style="font-size:11px;color:#2E3191;border-color:#c7d2fe;background:#eff6ff;padding:3px 10px;border-radius:6px;display:inline-flex;align-items:center;gap:4px">' +
           '<i class="fa-solid fa-plus"></i> Thêm ngày' +
         '</button>' +
@@ -22673,7 +22805,7 @@ function viewEmpReq(id) {
   // Cắt bỏ hoàn toàn các nút duyệt / từ chối, chỉ giữ nút Đóng và nút Cập nhật
   const ft = document.getElementById('g-view-ft');
   if (ft) {
-    ft.innerHTML = '<div style="display:flex;justify-content:space-between;width:100%;align-items:center">' +
+    ft.innerHTML = '<div style="display:flex;justify-content:flex-end;width:100%;align-items:center;gap:10px">' +
       '<button class="btn btn-o" onclick="E9closeMdl(\'mdl-global-view\')">Đóng</button>' +
       '<button class="btn btn-p" onclick="E9closeMdl(\'mdl-global-view\');openEditEmpReq(\'' + r.id + '\')" style="background:#0284c7;border-color:#0284c7;color:#fff;display:inline-flex;align-items:center;gap:6px">' +
         '<i class="fa-solid fa-pen-to-square"></i> Cập nhật đơn' +
@@ -23631,7 +23763,7 @@ function saveEditEmpReq() {
       <!-- DYNAMIC FIELDS FOR PUNCH ADJUSTMENT -->
       <div id="g-sec-att" style="display:none">
         <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
-          <label class="fl" style="margin:0;font-weight:600">Ngày <span style="color:#ef4444">*</span></label>
+          <label class="fl" style="margin:0;font-weight:600">Ngày quên chấm công <span style="color:#ef4444">*</span></label>
           <button type="button" class="btn btn-o" onclick="addAttTimeRange()" style="font-size:11px;color:#2E3191;border-color:#c7d2fe;background:#eff6ff;padding:3px 10px;border-radius:6px;cursor:pointer;display:inline-flex;align-items:center;gap:4px">
             <i class="fa-solid fa-plus"></i> Thêm ngày
           </button>
@@ -23643,18 +23775,6 @@ function saveEditEmpReq() {
 
       <!-- DYNAMIC FIELDS FOR OT (LÀM THÊM GIỜ OT TÍNH LƯƠNG) -->
       <div id="g-sec-ot" style="display:none">
-        <!-- KHỐI CA LÀM VIỆC & CHẤM CÔNG THỰC TẾ -->
-        <div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:10px;padding:12px 16px;margin-bottom:14px;font-size:12.5px">
-          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
-            <span style="color:#64748b">Ca làm việc</span>
-            <span style="font-weight:600;color:#1e293b">08:00–17:00</span>
-          </div>
-          <div style="display:flex;justify-content:space-between;align-items:center">
-            <span style="color:#64748b">Chấm công thực tế</span>
-            <span style="font-weight:700;color:#047857"><i class="fa-solid fa-fingerprint mr-1" style="font-size:11px"></i>08:00–20:00</span>
-          </div>
-        </div>
-
         <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
           <label class="fl" style="margin:0;font-weight:600">Khung thời gian tăng ca <span style="color:#ef4444">*</span></label>
           <button type="button" class="btn btn-o" onclick="addOtTimeRange()" style="font-size:11px;color:#2E3191;border-color:#c7d2fe;background:#eff6ff;padding:3px 10px;border-radius:6px;cursor:pointer;display:inline-flex;align-items:center;gap:4px">
@@ -23665,84 +23785,44 @@ function saveEditEmpReq() {
           <!-- Rendered dynamically by renderOtTimeRanges() -->
         </div>
 
-        <!-- BẢNG TÓM TẮT THÔNG TIN CHÍNH SÁCH & QUY ĐỔI TÍNH LƯƠNG -->
-        <div style="background:#f1f5f9;border:1px solid #e2e8f0;border-left:4px solid #047857;border-radius:10px;padding:12px 16px;margin-bottom:14px;font-size:12.5px">
-          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
-            <span style="color:#475569">Chính sách</span>
-            <span style="font-weight:700;color:#0f172a">Chính sách tăng ca</span>
-          </div>
+        <!-- BẢNG TÓM TẮT THÔNG TIN LÀM THÊM GIỜ -->
+        <div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:12px 14px;margin-bottom:14px;font-size:12.5px">
           <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
             <span style="color:#475569">Hình thức ghi nhận</span>
-            <span style="background:#ecfdf5;color:#047857;border:1px solid #a7f3d0;padding:2px 8px;border-radius:6px;font-weight:700;font-size:11px">Tính lương OT</span>
+            <span style="font-weight:600;color:#1e293b">Tính lương OT</span>
           </div>
           <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
             <span style="color:#475569">Loại ngày</span>
-            <span style="background:#eef2ff;color:#2E3191;border:1px solid #c7d2fe;padding:2px 8px;border-radius:6px;font-weight:700;font-size:11px">Ngày thường (Hệ số 150%)</span>
+            <span style="font-weight:600;color:#1e293b">Ngày thường (Hệ số 150%)</span>
           </div>
-          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
+          <div style="display:flex;justify-content:space-between;align-items:center">
             <span style="color:#475569">Giờ đề nghị</span>
-            <span id="g-ot-sum-hours" style="font-weight:700;color:#2E3191">3 giờ</span>
-          </div>
-          <div style="display:flex;justify-content:space-between;align-items:center;padding-top:8px;border-top:1px dashed #cbd5e1">
-            <span style="color:#475569">Đích đến dữ liệu</span>
-            <span style="font-weight:700;color:#047857"><i class="fa-solid fa-money-bill-wave mr-1"></i>Bảng công M06 để tính lương OT</span>
+            <span id="g-ot-sum-hours" style="font-weight:700;color:#1e293b">3 giờ</span>
           </div>
         </div>
       </div>
 
       <!-- DYNAMIC FIELDS FOR COMP ACCRUAL (LÀM THÊM TÍCH LŨY NGHỈ BÙ) -->
       <div id="g-sec-comp-accrual" style="display:none">
-        <!-- KHỐI LỊCH LÀM VIỆC & ĐỐI CHIẾU CHẤM CÔNG THỰC TẾ -->
-        <div style="background:#f0f9ff;border:1px solid #bae6fd;border-radius:10px;padding:12px 16px;margin-bottom:14px;font-size:12.5px">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
+          <label class="fl" style="margin:0;font-weight:600">Ngày làm thêm &amp; Mức tích lũy <span style="color:#ef4444">*</span></label>
+          <button type="button" class="btn btn-o" onclick="addCompAccrualRange()" style="font-size:11px;color:#2E3191;border-color:#c7d2fe;background:#eff6ff;padding:3px 10px;border-radius:6px;cursor:pointer;display:inline-flex;align-items:center;gap:4px">
+            <i class="fa-solid fa-plus"></i> Thêm ngày
+          </button>
+        </div>
+        <div id="g-comp-accrual-container" style="display:flex;flex-direction:column;gap:8px;margin-bottom:14px">
+          <!-- Rendered dynamically by renderCompAccrualRanges() -->
+        </div>
+
+        <!-- BẢNG TÓM TẮT THÔNG TIN TÍCH LŨY -->
+        <div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:12px 14px;margin-bottom:14px;font-size:12.5px">
           <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
-            <span style="color:#0369a1;font-weight:600"><i class="fa-solid fa-calendar-check mr-1.5"></i>Lịch làm việc nhân viên</span>
-            <span style="font-weight:700;color:#0369a1;background:#fff;border:1px solid #7dd3fc;padding:2px 8px;border-radius:6px">Hành chính (08:00–17:00)</span>
+            <span style="color:#475569">Hình thức ghi nhận</span>
+            <span style="font-weight:600;color:#1e293b">Tích lũy nghỉ bù</span>
           </div>
           <div style="display:flex;justify-content:space-between;align-items:center">
-            <span style="color:#64748b">Chấm công thực tế ca làm thêm</span>
-            <span style="font-weight:700;color:#047857"><i class="fa-solid fa-fingerprint mr-1" style="font-size:11px"></i>08:00–21:30 (Thực tế có làm thêm)</span>
-          </div>
-        </div>
-
-        <!-- NGÀY LÀM THÊM TÍCH LŨY -->
-        <div style="margin-bottom:14px">
-          <label class="fl" style="margin-bottom:5px;font-weight:600">Ngày làm thêm <span style="color:#ef4444">*</span></label>
-          <input type="date" id="g-comp-accrual-date" class="fi" value="2026-11-03" style="background:#fff;height:36px;width:100%;box-sizing:border-box">
-        </div>
-
-        <!-- KHỐI CHỌN MỨC TÍCH LŨY THEO LỊCH LÀM VIỆC -->
-        <div style="background:#fff;border:1px solid #bae6fd;border-radius:10px;padding:14px 16px;margin-bottom:14px">
-          <label class="fl" style="margin-bottom:8px;font-weight:700;font-size:12.5px;color:#0369a1">
-            <i class="fa-solid fa-calendar-plus mr-1.5"></i>Mức tích lũy nghỉ bù đề xuất (Theo lịch làm việc) <span style="color:#ef4444">*</span>
-          </label>
-          <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:8px">
-            <div style="display:inline-flex;align-items:center;gap:6px;background:#f0f9ff;border:1px solid #7dd3fc;border-radius:8px;padding:3px 10px">
-              <input type="number" id="g-comp-accrual-days-val" step="0.5" min="0.5" max="2.0" value="1.0" class="fi" style="width:65px;font-weight:800;color:#0284c7;text-align:center;font-size:14px;border:0;background:transparent;padding:4px 0" oninput="updateCompAccrualSummary()">
-              <span style="font-weight:700;color:#0369a1;font-size:12.5px">ngày công</span>
-            </div>
-            <div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap">
-              <button type="button" class="btn btn-o" onclick="setCompAccrualDays(0.5)" style="font-size:11.5px;padding:5px 12px;border-radius:6px;background:#fff;border-color:#7dd3fc;color:#0284c7;font-weight:700">0.5 ngày (Nửa ngày)</button>
-              <button type="button" class="btn btn-o" onclick="setCompAccrualDays(1.0)" style="font-size:11.5px;padding:5px 12px;border-radius:6px;background:#0284c7;border-color:#0284c7;color:#fff;font-weight:700">1.0 ngày (Cả ngày)</button>
-            </div>
-          </div>
-          <div style="font-size:11.5px;color:#0369a1;line-height:1.5;background:#f0f9ff;border-radius:6px;padding:8px 12px">
-            <i class="fa-solid fa-circle-info mr-1"></i><b>Quy chuẩn Cảng Phước An:</b> Đơn vị tính theo lịch làm việc (Hành chính: 0.5 hoặc 1.0 ngày; Theo ca: 0.5 hoặc 1.0 ca). <b>Tuyệt đối không tính theo giờ, không áp dụng hệ số</b>.
-          </div>
-        </div>
-
-        <!-- BẢNG TÓM TẮT THÔNG TIN CHÍNH SÁCH & ĐÍCH ĐẾN -->
-        <div style="background:#f8fafc;border:1px solid #e2e8f0;border-left:4px solid #0284c7;border-radius:10px;padding:12px 16px;margin-bottom:14px;font-size:12.5px">
-          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
-            <span style="color:#475569">Hình thức ghi nhận:</span>
-            <span style="background:#f0f9ff;color:#0284c7;border:1px solid #bae6fd;padding:2px 8px;border-radius:6px;font-weight:700;font-size:11px">Tích lũy nghỉ bù</span>
-          </div>
-          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
-            <span style="color:#475569">Mức tích lũy đề xuất:</span>
-            <span id="g-comp-accrual-sum-days" style="font-weight:800;color:#0284c7;font-size:13.5px">1.0 ngày công</span>
-          </div>
-          <div style="display:flex;justify-content:space-between;align-items:center;padding-top:8px;border-top:1px dashed #e2e8f0">
-            <span style="color:#475569">Đích đến &amp; Hạn dùng:</span>
-            <span style="font-weight:600;color:#0369a1"><i class="fa-solid fa-arrow-right-to-bracket mr-1"></i>Quỹ nghỉ bù M09 (Hạn 90 ngày)</span>
+            <span style="color:#475569">Mức tích lũy đề xuất</span>
+            <span id="g-comp-accrual-sum-days" style="font-weight:700;color:#1e293b">1.0 ngày</span>
           </div>
         </div>
       </div>
@@ -23824,13 +23904,11 @@ function saveEditEmpReq() {
       </div>
 
     </div>
-    <div class="mdl-ft" style="padding:10px 22px;background:#f8fafc;border-top:1px solid #e2e8f0;display:flex;justify-content:space-between;align-items:center">
-      <button class="btn btn-o" onclick="E9closeMdl('mdl-global-create')" style="font-size:12px">Hủy bỏ</button>
-      <div style="display:flex;gap:8px">
-        <button class="btn btn-p" onclick="submitGlobalCreateReq()" style="font-size:12px;padding:6px 20px">
-          <i class="fa-solid fa-paper-plane mr-1.5"></i>Gửi đề xuất
-        </button>
-      </div>
+    <div class="mdl-ft" style="padding:10px 22px;background:#f8fafc;border-top:1px solid #e2e8f0;display:flex;justify-content:flex-end;align-items:center;gap:10px">
+      <button class="btn btn-o" onclick="E9closeMdl('mdl-global-create')" style="font-size:12px;padding:6px 16px">Hủy</button>
+      <button class="btn btn-p" onclick="submitGlobalCreateReq()" style="font-size:12px;padding:6px 20px">
+        <i class="fa-solid fa-paper-plane mr-1.5"></i>Gửi đề xuất
+      </button>
     </div>
   </div>
 </div>
