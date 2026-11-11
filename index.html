@@ -58,6 +58,67 @@
   .picker{position:absolute;z-index:90;width:300px;background:#fff;border:1px solid #dbe3ef;border-radius:.75rem;box-shadow:0 12px 28px rgba(15,23,42,.18);padding:.75rem}.picker[hidden]{display:none}
   .pitem{display:flex;align-items:center;justify-content:space-between;padding:.45rem .25rem;border-bottom:1px solid #f1f5f9}
   .btn{font-size:12px;border-radius:.6rem;padding:.4rem .8rem;cursor:pointer}.btn-p{background:#2E3191;color:#fff}.btn-o{background:#fff;border:1px solid #cbd5e1;color:#334155}
+  
+  /* ===== TABS ĐƠN TỪ & PHÊ DUYỆT (THIẾT KẾ DẠNG CAPSULE / PILL CHUẨN UI NGƯỜI DÙNG YÊU CẦU) ===== */
+  .greq-nav-track {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: transparent;
+    padding: 0;
+  }
+  .greq-nav-tab {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    padding: 6px 14px;
+    border-radius: 9999px;
+    font-size: 12.5px;
+    font-weight: 600;
+    color: #1e293b;
+    background: #ffffff;
+    border: 1px solid #cbd5e1;
+    cursor: pointer;
+    transition: all 0.15s ease-in-out;
+    outline: none;
+    white-space: nowrap;
+    user-select: none;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
+  }
+  .greq-nav-tab:hover:not(.active) {
+    background: #f8fafc;
+    border-color: #94a3b8;
+    color: #0f172a;
+  }
+  .greq-nav-tab.active {
+    background: #EEF2FF !important;
+    color: #2E3191 !important;
+    font-weight: 700 !important;
+    border: 1.5px solid #2E3191 !important;
+    box-shadow: 0 1px 3px rgba(46, 49, 145, 0.15);
+  }
+  .greq-nav-tab.active i {
+    color: #2E3191 !important;
+  }
+  .greq-nav-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 11px;
+    font-weight: 700;
+    padding: 2px 7.5px;
+    border-radius: 9999px;
+    background: #f1f5f9;
+    color: #0f172a;
+    line-height: 1.25;
+    min-width: 20px;
+    transition: all 0.15s ease;
+  }
+  .greq-nav-tab.active .greq-nav-badge {
+    background: #2E3191 !important;
+    color: #ffffff !important;
+  }
+
   .tab{padding:.5rem .8rem;border-radius:.5rem;font-size:12px;font-weight:600;cursor:pointer;background:#fff;border:1px solid #e2e8f0}.tab.active{background:#2E3191;color:#fff;border-color:#2E3191}
   .toggle{cursor:pointer;width:14px;display:inline-block;color:#64748b}
   .card{background:#fff;border:1px solid #cbd5e1;border-radius:.75rem;box-shadow:0 1px 3px rgba(0,0,0,.08)}
@@ -147,9 +208,18 @@
     <div class="side-item" data-pg="m04" onclick="nav('m04',this)"><span><i class="fa-solid fa-users ico"></i> Danh sách nhân viên</span><span class="badge">M04</span></div>
     <div class="side-item" data-pg="m05" onclick="nav('m05',this)"><span><i class="fa-solid fa-id-card ico"></i> Hồ sơ nhân viên</span><span class="badge">M05</span></div>
     <div class="side-sec">Đơn từ &amp; Quy trình</div>
-    <div class="side-item" id="side-requests" data-pg="requests" onclick="nav('requests',this)"><span><i class="fa-solid fa-file-signature ico" style="color:#2E3191"></i> Đơn từ &amp; Phê duyệt</span></div>
-    <div class="side-item" id="side-emp-requests" data-pg="emp-requests" onclick="nav('emp-requests',this)"><span><i class="fa-solid fa-users-rectangle ico" style="color:#2E3191"></i> Đơn từ nhân viên</span></div>
-    <div class="side-item" id="side-workflows" data-pg="workflows" onclick="nav('workflows',this)"><span><i class="fa-solid fa-diagram-project ico" style="color:#2E3191"></i> Quy trình phê duyệt</span></div>
+    <div class="side-item" id="side-requests" data-pg="requests" onclick="nav('requests',this)">
+      <span><i class="fa-solid fa-file-signature ico" style="color:#2E3191"></i> Đơn từ &amp; Phê duyệt</span>
+      <span class="badge" style="background:#fef2f2;color:#dc2626;border-color:#fecaca;font-weight:700">8 cần duyệt</span>
+    </div>
+    <div class="side-item" id="side-emp-requests" data-pg="emp-requests" onclick="nav('emp-requests',this)">
+      <span><i class="fa-solid fa-users-rectangle ico" style="color:#0284c7"></i> Đơn từ nhân viên</span>
+      <span class="badge" style="background:#eef2ff;color:#2E3191;border-color:#c7d2fe">Cá nhân</span>
+    </div>
+    <div class="side-item" id="side-workflows" data-pg="workflows" onclick="nav('workflows',this)">
+      <span><i class="fa-solid fa-diagram-project ico" style="color:#7c3aed"></i> Quy trình phê duyệt</span>
+      <span class="badge" style="background:#f8fafc;color:#64748b;border-color:#e2e8f0">Cấu hình</span>
+    </div>
     <div class="side-sec">Chấm công & Ca kíp</div>
     <div class="side-item" id="side-m07" data-pg="m07" onclick="toggleSub('m07',event)"><span><i class="fa-solid fa-calendar-days ico"></i> Quản lý lịch làm việc</span><span style="display:flex;align-items:center;gap:4px"><span class="badge">M07</span><i class="fa-solid fa-chevron-down side-chev" id="chev-m07" style="font-size:9px;color:#94a3b8;transition:transform .2s" title="Thu gọn / Mở rộng"></i></span></div>
     <div id="m07-submenu">
@@ -428,7 +498,7 @@
               </div>
 
               <!-- 1. KHỐI KPI CHUẨN HÓA THEO 3 CỤM CỘT NGOÀI DANH SÁCH -->
-              <div style="display:grid;grid-template-columns:1.4fr 0.9fr 0.9fr;gap:10px;margin-bottom:16px">
+              <div style="display:grid;grid-template-columns:1.2fr 1.2fr 0.8fr;gap:10px;margin-bottom:16px">
                 <!-- Cụm 1: Phép tồn chuyển từ năm trước -->
                 <div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:10px 12px">
                   <div style="font-size:11px;font-weight:700;color:#475569;margin-bottom:8px;display:flex;align-items:center;gap:5px">
@@ -448,18 +518,18 @@
                       <b style="font-size:14.5px;color:#d97706">0</b>
                     </div>
                     <div style="background:#fff;border:1px solid #e2e8f0;border-radius:6px;padding:6px 2px">
-                      <div style="font-size:10.5px;color:#64748b;margin-bottom:2px">Còn khả dụng</div>
+                      <div style="font-size:10.5px;color:#64748b;margin-bottom:2px">Còn lại</div>
                       <b style="font-size:14.5px;color:#047857">0</b>
                     </div>
                   </div>
                 </div>
 
-                <!-- Cụm 2: Quỹ phép năm hiện tại -->
+                <!-- Cụm 2: Quỹ phép năm 2026 (4 cột đối xứng) -->
                 <div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:10px 12px">
                   <div style="font-size:11px;font-weight:700;color:#475569;margin-bottom:8px;display:flex;align-items:center;gap:5px">
                     <i class="fa-solid fa-calendar text-slate-500"></i><span>QUỸ PHÉP NĂM 2026</span>
                   </div>
-                  <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:6px;text-align:center">
+                  <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:6px;text-align:center">
                     <div style="background:#fff;border:1px solid #e2e8f0;border-radius:6px;padding:6px 2px">
                       <div style="font-size:10.5px;color:#64748b;margin-bottom:2px">Phép năm</div>
                       <b style="font-size:14.5px;color:#0f172a">12</b>
@@ -468,23 +538,24 @@
                       <div style="font-size:10.5px;color:#64748b;margin-bottom:2px">Thâm niên</div>
                       <b style="font-size:14.5px;color:#0284c7">1</b>
                     </div>
+                    <div style="background:#fff;border:1px solid #e2e8f0;border-radius:6px;padding:6px 2px">
+                      <div style="font-size:10.5px;color:#64748b;margin-bottom:2px" title="Số ngày đã dùng trừ vào quỹ năm 2026, không gồm phép tồn">Đã dùng</div>
+                      <b style="font-size:14.5px;color:#be123c">3</b>
+                    </div>
+                    <div style="background:#fff;border:1px solid #e2e8f0;border-radius:6px;padding:6px 2px">
+                      <div style="font-size:10.5px;color:#64748b;margin-bottom:2px">Còn lại</div>
+                      <b style="font-size:14.5px;color:#047857">10</b>
+                    </div>
                   </div>
                 </div>
 
-                <!-- Cụm 3: Sử dụng & Số dư -->
-                <div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:10px 12px">
-                  <div style="font-size:11px;font-weight:700;color:#475569;margin-bottom:8px;display:flex;align-items:center;gap:5px">
-                    <i class="fa-solid fa-chart-pie text-slate-500"></i><span>SỬ DỤNG &amp; SỐ DƯ</span>
+                <!-- Cụm 3: Số dư khả dụng (Chốt tổng) -->
+                <div style="background:#f0fdf4;border:1px solid #bbf7d0;border-radius:8px;padding:10px 12px;display:flex;flex-direction:column;justify-content:center;text-align:center">
+                  <div style="font-size:11px;font-weight:700;color:#166534;margin-bottom:6px;display:flex;align-items:center;justify-content:center;gap:5px">
+                    <i class="fa-solid fa-wallet text-emerald-600"></i><span>SỐ DƯ KHẢ DỤNG</span>
                   </div>
-                  <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:6px;text-align:center">
-                    <div style="background:#fff;border:1px solid #e2e8f0;border-radius:6px;padding:6px 2px">
-                      <div style="font-size:10.5px;color:#64748b;margin-bottom:2px" title="Số ngày đã dùng trừ vào quỹ năm 2026, không gồm phép tồn">Đã dùng (2026)</div>
-                      <b style="font-size:14.5px;color:#be123c">3</b>
-                    </div>
-                    <div style="background:#fff;border:1px solid #cbd5e1;border-radius:6px;padding:6px 2px">
-                      <div style="font-size:10.5px;color:#2E3191;font-weight:700;margin-bottom:2px">Còn lại</div>
-                      <span style="display:inline-block;padding:2px 8px;border-radius:999px;background:#f0fdf4;color:#16a34a;font-weight:700;border:1px solid #bbf7d0;font-size:12px">10 ngày</span>
-                    </div>
+                  <div>
+                    <b style="font-size:18px;color:#15803d">10 ngày</b>
                   </div>
                 </div>
               </div>
@@ -562,7 +633,7 @@
               </div>
 
               <!-- 3 Cụm thẻ KPI chuẩn hóa -->
-              <div style="display:grid;grid-template-columns:1.4fr 0.9fr 0.9fr;gap:10px;margin-bottom:16px">
+              <div style="display:grid;grid-template-columns:1.2fr 1.2fr 0.8fr;gap:10px;margin-bottom:16px">
                 <!-- Cụm 1: Bù tồn chuyển từ 2025 -->
                 <div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:10px 12px">
                   <div style="font-size:11px;font-weight:700;color:#475569;margin-bottom:8px;display:flex;align-items:center;gap:5px">
@@ -582,18 +653,18 @@
                       <b style="font-size:14.5px;color:#d97706">0.5</b>
                     </div>
                     <div style="background:#fff;border:1px solid #e2e8f0;border-radius:6px;padding:6px 2px">
-                      <div style="font-size:10.5px;color:#64748b;margin-bottom:2px">Còn khả dụng</div>
+                      <div style="font-size:10.5px;color:#64748b;margin-bottom:2px">Còn lại</div>
                       <b style="font-size:14.5px;color:#047857">0</b>
                     </div>
                   </div>
                 </div>
 
-                <!-- Cụm 2: Tích lũy năm 2026 -->
+                <!-- Cụm 2: Tích lũy năm 2026 (4 cột đối xứng) -->
                 <div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:10px 12px">
                   <div style="font-size:11px;font-weight:700;color:#475569;margin-bottom:8px;display:flex;align-items:center;gap:5px">
                     <i class="fa-solid fa-calendar-plus text-slate-500"></i><span>TÍCH LŨY NĂM 2026</span>
                   </div>
-                  <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:6px;text-align:center">
+                  <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:6px;text-align:center">
                     <div style="background:#fff;border:1px solid #e2e8f0;border-radius:6px;padding:6px 2px">
                       <div style="font-size:10.5px;color:#64748b;margin-bottom:2px">Tích lũy</div>
                       <b style="font-size:14.5px;color:#0f172a">3</b>
@@ -602,23 +673,24 @@
                       <div style="font-size:10.5px;color:#64748b;margin-bottom:2px">Hết hạn</div>
                       <b style="font-size:14.5px;color:#d97706">0.5</b>
                     </div>
+                    <div style="background:#fff;border:1px solid #e2e8f0;border-radius:6px;padding:6px 2px">
+                      <div style="font-size:10.5px;color:#64748b;margin-bottom:2px">Đã dùng</div>
+                      <b style="font-size:14.5px;color:#be123c">0.5</b>
+                    </div>
+                    <div style="background:#fff;border:1px solid #e2e8f0;border-radius:6px;padding:6px 2px">
+                      <div style="font-size:10.5px;color:#64748b;margin-bottom:2px">Còn lại</div>
+                      <b style="font-size:14.5px;color:#047857">2</b>
+                    </div>
                   </div>
                 </div>
 
-                <!-- Cụm 3: Sử dụng & Số dư -->
-                <div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:10px 12px">
-                  <div style="font-size:11px;font-weight:700;color:#475569;margin-bottom:8px;display:flex;align-items:center;gap:5px">
-                    <i class="fa-solid fa-chart-pie text-slate-500"></i><span>SỬ DỤNG &amp; SỐ DƯ</span>
+                <!-- Cụm 3: Số dư khả dụng (Chốt tổng) -->
+                <div style="background:#f0fdf4;border:1px solid #bbf7d0;border-radius:8px;padding:10px 12px;display:flex;flex-direction:column;justify-content:center;text-align:center">
+                  <div style="font-size:11px;font-weight:700;color:#166534;margin-bottom:6px;display:flex;align-items:center;justify-content:center;gap:5px">
+                    <i class="fa-solid fa-wallet text-emerald-600"></i><span>SỐ DƯ KHẢ DỤNG</span>
                   </div>
-                  <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:6px;text-align:center">
-                    <div style="background:#fff;border:1px solid #e2e8f0;border-radius:6px;padding:6px 2px">
-                      <div style="font-size:10.5px;color:#64748b;margin-bottom:2px" title="Số ngày đã dùng trừ vào quỹ tích lũy 2026, không gồm bù tồn">Đã dùng (2026)</div>
-                      <b style="font-size:14.5px;color:#be123c">0.5</b>
-                    </div>
-                    <div style="background:#fff;border:1px solid #cbd5e1;border-radius:6px;padding:6px 2px">
-                      <div style="font-size:10.5px;color:#2E3191;font-weight:700;margin-bottom:2px">Còn lại</div>
-                      <span style="display:inline-block;padding:2px 8px;border-radius:999px;background:#f0fdf4;color:#16a34a;font-weight:700;border:1px solid #bbf7d0;font-size:12px">2 ngày</span>
-                    </div>
+                  <div>
+                    <b style="font-size:18px;color:#15803d">2 ngày</b>
                   </div>
                 </div>
               </div>
@@ -750,214 +822,6 @@
       </div>
     </section>
 
-    <!-- ============ M03-M09: PLACEHOLDER ============ -->
-    <section id="pg-m03" class="page">
-      <div class="card" style="padding:14px 18px;margin-bottom:14px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px">
-        <div style="display:flex;align-items:center;gap:10px"><span style="width:36px;height:36px;border-radius:10px;background:#eff6ff;color:#2E3191;display:flex;align-items:center;justify-content:center"><i class="fa-solid fa-building"></i></span><div><h2 style="margin:0;font-size:16px" class="pap-text">THÔNG TIN CÔNG TY</h2><p style="margin:3px 0 0;font-size:12px;color:#64748b">Hồ sơ pháp nhân, giấy phép kinh doanh & nhận diện thương hiệu Cảng Phước An</p></div></div>
-        <div style="display:flex;gap:8px"><button class="btn btn-o" onclick="cEdit(true)"><i class="fa-solid fa-pen mr-1"></i>Chỉnh sửa</button><button class="btn btn-p" onclick="cSave()"><i class="fa-solid fa-floppy-disk mr-1"></i>Lưu hồ sơ</button></div>
-      </div>
-      <div style="display:grid;grid-template-columns:1fr 2fr;gap:16px;align-items:start">
-        <div style="display:flex;flex-direction:column;gap:16px">
-          <div class="card" style="padding:16px"><div style="font-size:11px;font-weight:700;text-transform:uppercase;color:#334155;padding-bottom:8px;border-bottom:1px solid #f1f5f9;margin-bottom:12px"><i class="fa-solid fa-image" style="color:#64748b"></i> Logo & Biểu trưng</div><div style="display:flex;flex-direction:column;align-items:center;gap:8px;padding:16px;border:2px dashed #e2e8f0;border-radius:12px;background:#f8fafc"><img src="https://www.phuocanport.com/wp-content/uploads/2025/04/logo-svg.svg" onerror="this.style.display='none'" style="height:46px"><span style="font-size:11px;font-weight:700" class="pap-text">CẢNG PHƯỚC AN — PHUOC AN PORT</span></div></div>
-          <div class="card" style="padding:16px"><div style="font-size:11px;font-weight:700;text-transform:uppercase;color:#334155;padding-bottom:8px;border-bottom:1px solid #f1f5f9;margin-bottom:12px"><i class="fa-solid fa-star" style="color:#64748b"></i> Người đại diện pháp luật</div><div style="display:flex;flex-direction:column;gap:10px;font-size:12px"><div><label style="display:block;font-weight:600;margin-bottom:3px">Họ và tên <span style="color:#e11d48">*</span></label><input class="cinp" value="Ông Phạm Quốc Tuấn" readonly style="width:100%;padding:7px 10px;border:1px solid #e2e8f0;background:#f8fafc;border-radius:8px;font-size:12px"></div><div><label style="display:block;font-weight:600;margin-bottom:3px">Chức danh</label><input class="cinp" value="Tổng Giám đốc" readonly style="width:100%;padding:7px 10px;border:1px solid #e2e8f0;background:#f8fafc;border-radius:8px;font-size:12px"></div><div><label style="display:block;font-weight:600;margin-bottom:3px">Số CCCD / Định danh</label><input class="cinp" value="079085001234" readonly style="width:100%;padding:7px 10px;border:1px solid #e2e8f0;background:#f8fafc;border-radius:8px;font-size:12px"></div></div></div>
-          <div class="card" style="padding:16px"><div style="font-size:11px;font-weight:700;text-transform:uppercase;color:#334155;padding-bottom:8px;border-bottom:1px solid #f1f5f9;margin-bottom:12px"><i class="fa-solid fa-gear" style="color:#64748b"></i> Thông tin vận hành</div><div style="display:flex;flex-direction:column;gap:10px;font-size:12px"><div><label style="display:block;font-weight:600;margin-bottom:3px">Trạng thái hoạt động</label><input class="cinp" value="● Đang hoạt động" readonly style="width:100%;padding:7px 10px;border:1px solid #e2e8f0;background:#f8fafc;border-radius:8px;font-size:12px"></div><div style="display:grid;grid-template-columns:1fr 1fr;gap:10px"><div><label style="display:block;font-weight:600;margin-bottom:3px">Ngày tạo</label><input class="cinp" value="08/06/2026 10:37" readonly style="width:100%;padding:7px 10px;border:1px solid #e2e8f0;background:#f8fafc;border-radius:8px;font-size:12px"></div><div><label style="display:block;font-weight:600;margin-bottom:3px">Cập nhật cuối</label><input class="cinp" value="27/06/2026 14:45" readonly style="width:100%;padding:7px 10px;border:1px solid #e2e8f0;background:#f8fafc;border-radius:8px;font-size:12px"></div></div></div></div>
-        </div>
-        <div style="display:flex;flex-direction:column;gap:16px">
-          <div class="card" style="padding:16px"><div style="font-size:11px;font-weight:700;text-transform:uppercase;color:#334155;padding-bottom:8px;border-bottom:1px solid #f1f5f9;margin-bottom:12px"><i class="fa-solid fa-clipboard-list" style="color:#64748b"></i> Thông tin Pháp lý & Đăng ký Doanh nghiệp</div>
-            <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;font-size:12px">
-              <div style="grid-column:1/-1"><label style="display:block;font-weight:600;margin-bottom:3px">Tên doanh nghiệp <span style="color:#e11d48">*</span></label><input class="cinp" value="CÔNG TY CỔ PHẦN CẢNG PHƯỚC AN" readonly style="width:100%;padding:7px 10px;border:1px solid #e2e8f0;background:#f8fafc;border-radius:8px;font-size:12px"></div>
-              <div style="grid-column:1/-1"><label style="display:block;font-weight:600;margin-bottom:3px">Tên quốc tế</label><input class="cinp" value="PHUOC AN PORT JOINT STOCK COMPANY" readonly style="width:100%;padding:7px 10px;border:1px solid #e2e8f0;background:#f8fafc;border-radius:8px;font-size:12px"></div>
-              <div><label style="display:block;font-weight:600;margin-bottom:3px">Mã số thuế <span style="color:#e11d48">*</span></label><input class="cinp" value="3601042767" readonly style="width:100%;padding:7px 10px;border:1px solid #e2e8f0;background:#f8fafc;border-radius:8px;font-size:12px"></div>
-              <div><label style="display:block;font-weight:600;margin-bottom:3px">Tên viết tắt</label><input class="cinp" value="PAP / PHUOC AN PORT" readonly style="width:100%;padding:7px 10px;border:1px solid #e2e8f0;background:#f8fafc;border-radius:8px;font-size:12px"></div>
-              <div><label style="display:block;font-weight:600;margin-bottom:3px">Loại hình</label><input class="cinp" value="Công ty CP ngoài NN" readonly style="width:100%;padding:7px 10px;border:1px solid #e2e8f0;background:#f8fafc;border-radius:8px;font-size:12px"></div>
-              <div><label style="display:block;font-weight:600;margin-bottom:3px">Số GCN ĐKKD</label><input class="cinp" value="3601042767" readonly style="width:100%;padding:7px 10px;border:1px solid #e2e8f0;background:#f8fafc;border-radius:8px;font-size:12px"></div>
-              <div><label style="display:block;font-weight:600;margin-bottom:3px">Nơi cấp ĐKKD</label><input class="cinp" value="Sở KH&ĐT Tỉnh Đồng Nai" readonly style="width:100%;padding:7px 10px;border:1px solid #e2e8f0;background:#f8fafc;border-radius:8px;font-size:12px"></div>
-              <div><label style="display:block;font-weight:600;margin-bottom:3px">Ngày cấp ĐKKD lần đầu</label><input class="cinp" value="29/04/2008" readonly style="width:100%;padding:7px 10px;border:1px solid #e2e8f0;background:#f8fafc;border-radius:8px;font-size:12px"></div>
-              <div><label style="display:block;font-weight:600;margin-bottom:3px">Ngày thành lập doanh nghiệp</label><input class="cinp" value="29/04/2008" readonly style="width:100%;padding:7px 10px;border:1px solid #e2e8f0;background:#f8fafc;border-radius:8px;font-size:12px"></div>
-            </div>
-          </div>
-          <div class="card" style="padding:16px"><div style="font-size:11px;font-weight:700;text-transform:uppercase;color:#334155;padding-bottom:8px;border-bottom:1px solid #f1f5f9;margin-bottom:12px"><i class="fa-solid fa-location-dot" style="color:#64748b"></i> Địa chỉ & liên hệ</div>
-            <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;font-size:12px">
-              <div style="grid-column:1/-1"><label style="display:block;font-weight:600;margin-bottom:3px">Địa chỉ trụ sở</label><input class="cinp" value="Khu Bến cảng Phước An" readonly style="width:100%;padding:7px 10px;border:1px solid #e2e8f0;background:#f8fafc;border-radius:8px;font-size:12px"></div>
-              <div><label style="display:block;font-weight:600;margin-bottom:3px">Tỉnh/TP <span style="color:#e11d48">*</span></label><input class="cinp" value="Tỉnh Đồng Nai" readonly style="width:100%;padding:7px 10px;border:1px solid #e2e8f0;background:#f8fafc;border-radius:8px;font-size:12px"></div>
-              <div><label style="display:block;font-weight:600;margin-bottom:3px">Phường/Xã <span style="color:#e11d48">*</span></label><input class="cinp" value="Xã Phước An" readonly style="width:100%;padding:7px 10px;border:1px solid #e2e8f0;background:#f8fafc;border-radius:8px;font-size:12px"></div>
-              <div><label style="display:block;font-weight:600;margin-bottom:3px">Số điện thoại <span style="color:#e11d48">*</span></label><input class="cinp" value="0251.3569.888" readonly style="width:100%;padding:7px 10px;border:1px solid #e2e8f0;background:#f8fafc;border-radius:8px;font-size:12px"></div>
-              <div><label style="display:block;font-weight:600;margin-bottom:3px">Email</label><input class="cinp" value="contact@phuocanport.com" readonly style="width:100%;padding:7px 10px;border:1px solid #e2e8f0;background:#f8fafc;border-radius:8px;font-size:12px"></div>
-              <div><label style="display:block;font-weight:600;margin-bottom:3px">Website</label><input class="cinp" value="https://www.phuocanport.com" readonly style="width:100%;padding:7px 10px;border:1px solid #e2e8f0;background:#f8fafc;border-radius:8px;font-size:12px"></div>
-              <div><label style="display:block;font-weight:600;margin-bottom:3px">Mã bưu điện</label><input class="cinp" value="810000" readonly style="width:100%;padding:7px 10px;border:1px solid #e2e8f0;background:#f8fafc;border-radius:8px;font-size:12px"></div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-    <section id="pg-m04" class="page">
-      <div class="card" style="padding:14px 18px;margin-bottom:14px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px">
-        <div style="display:flex;align-items:center;gap:10px"><span style="width:36px;height:36px;border-radius:10px;background:#eff6ff;color:#2E3191;display:flex;align-items:center;justify-content:center"><i class="fa-solid fa-users"></i></span><div><h2 style="margin:0;font-size:16px" class="pap-text">DANH SÁCH NHÂN VIÊN</h2><p style="margin:3px 0 0;font-size:12px;color:#64748b">Quản lý nhân sự toàn Cảng Phước An — 245 nhân viên</p></div></div>
-      </div>
-      <div class="bal-grid" id="emp-kpi" style="margin-bottom:12px"></div>
-      <div style="display:flex;gap:8px;margin-bottom:12px;flex-wrap:wrap;align-items:center">
-        <div style="position:relative"><i class="fa-solid fa-magnifying-glass" style="position:absolute;left:9px;top:8px;color:#94a3b8;font-size:12px"></i><input id="e-q" oninput="renderEmp()" placeholder="Tìm họ tên, mã PAP, chức danh…" style="padding:6px 10px 6px 28px;border:1px solid #cbd5e1;border-radius:8px;font-size:12px;width:230px"></div>
-        <select id="e-unit" onchange="renderEmp()" style="border:1px solid #cbd5e1;border-radius:8px;padding:6px 10px;font-size:12px"><option value="">Tất cả đơn vị</option><option>Phòng Phát triển Phần mềm</option><option>Phòng Khai thác</option><option>Khối Tài chính - Kế toán</option></select>
-        <select id="e-status" onchange="renderEmp()" style="border:1px solid #cbd5e1;border-radius:8px;padding:6px 10px;font-size:12px"><option value="">Tất cả trạng thái</option><option>Đang làm việc</option><option>Đang nghỉ thai sản</option><option>Tạm ngưng công tác</option><option>Đã nghỉ việc</option></select>
-        <span style="flex:1"></span>
-        <button class="btn btn-p" onclick="openEmpPicker(this)"><i class="fa-solid fa-table-columns mr-1"></i>Cột</button>
-        <button class="btn btn-p" onclick="document.getElementById('emp-add').style.display='flex'"><i class="fa-solid fa-user-plus mr-1"></i>Thêm nhân viên</button>
-        <button class="btn btn-p" onclick="document.getElementById('emp-import').style.display='flex'"><i class="fa-solid fa-file-import mr-1"></i>Import Excel</button>
-        <button class="btn btn-o" onclick="toast('Đang xuất Excel danh sách nhân viên')"><i class="fa-solid fa-download mr-1"></i>Tải xuống</button>
-      </div>
-      <div class="pap-frame"><table class="pap"><thead><tr id="emp-head"></tr></thead><tbody id="emp-body"></tbody></table>
-        <div style="display:flex;justify-content:space-between;padding:10px 16px;font-size:12px;color:#64748b;border-top:1px solid #e2e8f0"><div style="display:flex;align-items:center;gap:8px"><span>Hiển thị</span><select id="e-ps" onchange="empState.pageSize=+this.value;empState.page=1;renderEmp()" style="border:1px solid #cbd5e1;border-radius:6px;padding:3px 6px"><option value="10" selected>10 dòng/trang</option><option value="20">20</option></select><span id="e-range"></span></div><div id="e-pager" style="display:flex;align-items:center;gap:6px"></div></div>
-      </div>
-    </section>
-    <section id="pg-m05" class="page">
-      <div class="card" style="padding:12px 18px;margin-bottom:14px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px">
-        <div style="display:flex;align-items:center;gap:12px;font-size:12px"><button class="btn btn-o" onclick="nav('m04',document.querySelector('[data-pg=m04]'))"><i class="fa-solid fa-arrow-left mr-1"></i>Danh sách nhân viên</button><span style="color:#cbd5e1">|</span><span>Chi tiết hồ sơ: <b>Lê Văn Thắng</b> <span class="pap-text" style="font-weight:700">(PAP0009)</span></span></div>
-        <div style="display:flex;gap:8px"><button class="btn btn-o" onclick="toast('Đã gửi email đặt lại mật khẩu cho Lê Văn Thắng')"><i class="fa-solid fa-key mr-1"></i>Đặt lại mật khẩu</button><button class="btn btn-p" onclick="toast('Đang tạo và tải xuống Hồ sơ nhân viên dạng PDF...')"><i class="fa-solid fa-file-lines mr-1"></i>Xuất Hồ sơ PDF</button></div>
-      </div>
-      <div style="display:grid;grid-template-columns:320px 1fr;gap:18px;align-items:start">
-        <div class="card" style="padding:20px">
-          <div style="text-align:center;padding-bottom:14px;border-bottom:1px solid #f1f5f9">
-            <div style="width:80px;height:80px;border-radius:999px;background:#2E3191;color:#fff;font-weight:700;font-size:24px;display:flex;align-items:center;justify-content:center;margin:0 auto 10px;position:relative">LT<span style="position:absolute;right:4px;bottom:4px;width:14px;height:14px;border-radius:999px;background:#22c55e;border:2px solid #fff"></span></div>
-            <h2 style="margin:0;font-size:15px">Lê Văn Thắng</h2><div class="pap-text" style="font-size:12px;font-weight:700;margin-top:2px">PAP0009</div><div style="font-size:12px;color:#475569;margin-top:4px">Kỹ sư Phát triển Phần mềm</div>
-            <div style="margin-top:8px;display:flex;gap:6px;justify-content:center;flex-wrap:wrap"><span style="font-size:10px;padding:2px 8px;border-radius:999px;font-weight:600;background:#dcfce7;color:#15803d">● Đang làm việc</span><span style="font-size:10px;padding:2px 8px;border-radius:999px;font-weight:600;background:#f1f5f9;color:#475569;border:1px solid #e2e8f0">HĐLĐ xác định thời hạn</span></div>
-          </div>
-          <div style="font-size:12px;margin-top:12px;display:flex;flex-direction:column;gap:9px">
-            <div style="display:flex;justify-content:space-between;gap:12px"><span style="color:#94a3b8">Phòng ban/đơn vị:</span><b style="text-align:right">Phòng Phát triển Phần mềm</b></div>
-            <div style="display:flex;justify-content:space-between;gap:12px"><span style="color:#94a3b8">Chức vụ:</span><b class="pap-text" style="text-align:right">Trưởng phòng</b></div>
-            <div style="display:flex;justify-content:space-between;gap:12px"><span style="color:#94a3b8">Quản lý trực tiếp:</span><span style="text-align:right">Tạ Quang Hưng</span></div>
-            <div style="display:flex;justify-content:space-between;gap:12px"><span style="color:#94a3b8">Email nội bộ:</span><span style="text-align:right">thanglv@phuocanport.com</span></div>
-            <div style="display:flex;justify-content:space-between;gap:12px"><span style="color:#94a3b8">Hotline di động:</span><span style="text-align:right">0908 123 456</span></div>
-            <div style="display:flex;justify-content:space-between;gap:12px"><span style="color:#94a3b8">Ngày bắt đầu:</span><span style="text-align:right">15/01/2026</span></div>
-            <div style="display:flex;justify-content:space-between;gap:12px"><span style="color:#94a3b8">Ngày ký hợp đồng:</span><span style="text-align:right">15/01/2026</span></div>
-            <div style="display:flex;justify-content:space-between;align-items:center;gap:12px"><span style="color:#94a3b8">Thâm niên:</span><span style="font-size:11px;font-weight:700;background:#dcfce7;color:#15803d;padding:2px 10px;border-radius:999px">9 tháng</span></div>
-            <div style="display:flex;justify-content:space-between;gap:12px"><span style="color:#94a3b8">Nơi làm việc:</span><span style="text-align:right">Trụ sở Cảng Phước An</span></div>
-            <div style="display:flex;justify-content:space-between;align-items:center;gap:12px"><span style="color:#94a3b8">Kỹ năng chính:</span><span style="font-size:11px;font-weight:700;background:#fef9c3;color:#854d0e;border:1px solid #fde68a;padding:2px 10px;border-radius:8px;text-align:right">Quản trị Cơ sở Hạ t…</span></div>
-          </div>
-          <div style="margin-top:14px;padding:12px;background:#eef2ff;border:1px solid #c7d2fe;border-radius:10px;font-size:11px">
-            <div style="display:flex;justify-content:space-between;align-items:center;gap:8px"><b style="color:#2E3191"><i class="fa-solid fa-shield-halved mr-1"></i>Miễn chấm công</b><span style="font-size:10px;font-weight:700;color:#15803d;background:#dcfce7;padding:2px 8px;border-radius:999px">Đang miễn chấm công</span></div>
-            <div style="color:#475569;margin-top:6px">Hiệu lực: 01/03/2025 ~ 31/12/2027 · Chỉ xem tại hồ sơ</div>
-          </div>
-        </div>
-        <div>
-          <div class="card" style="padding:6px;margin-bottom:14px;display:flex;gap:6px;overflow-x:auto">
-            <button class="p5tab" data-k="personal" onclick="p5(this,'personal')" style="padding:8px 14px;border-radius:10px;font-size:12px;font-weight:600;cursor:pointer;background:#2E3191;color:#fff;border:0;white-space:nowrap"><i class="fa-solid fa-user mr-1"></i>Cá nhân</button>
-            <button class="p5tab" data-k="work" onclick="p5(this,'work')" style="padding:8px 14px;border-radius:10px;font-size:12px;font-weight:600;cursor:pointer;background:none;color:#334155;border:0;white-space:nowrap"><i class="fa-solid fa-briefcase mr-1"></i>Công việc</button>
-            <button class="p5tab" data-k="skills" onclick="p5(this,'skills')" style="padding:8px 14px;border-radius:10px;font-size:12px;font-weight:600;cursor:pointer;background:none;color:#334155;border:0;white-space:nowrap"><i class="fa-solid fa-bullseye mr-1"></i>Kỹ năng</button>
-            <button class="p5tab" data-k="att" onclick="p5(this,'att')" style="padding:8px 14px;border-radius:10px;font-size:12px;font-weight:600;cursor:pointer;background:none;color:#334155;border:0;white-space:nowrap"><i class="fa-regular fa-clock mr-1"></i>Hình thức chấm công</button>
-            <button class="p5tab" data-k="leave" onclick="p5(this,'leave')" style="padding:8px 14px;border-radius:10px;font-size:12px;font-weight:600;cursor:pointer;background:none;color:#334155;border:0;white-space:nowrap"><i class="fa-solid fa-umbrella-beach mr-1"></i>Phép năm</button>
-          </div>
-          <div id="p5-personal" class="p5pane">
-            <div class="card" style="padding:18px;margin-bottom:14px"><div style="display:flex;justify-content:space-between;align-items:flex-start;gap:12px;flex-wrap:wrap;padding-bottom:12px;border-bottom:1px solid #f1f5f9;margin-bottom:14px"><div><div style="font-size:13px;font-weight:700;display:flex;align-items:center;gap:8px"><i class="fa-solid fa-camera" style="color:#334155"></i>Quét Thẻ Căn cước Công dân (OCR CCCD)<span style="font-size:10px;font-weight:600;background:#dcfce7;color:#15803d;border:1px solid #bbf7d0;padding:2px 8px;border-radius:6px">Tự động trích xuất</span></div><div style="font-size:12px;color:#475569;margin-top:4px">Tải ảnh mặt trước &amp; mặt sau của CCCD gắn chip để hệ thống AI nhận dạng và tự động điền form</div></div><div style="display:flex;gap:8px;flex-shrink:0"><button class="btn" style="background:#059669;color:#fff;font-weight:600" onclick="toast('Đang quét OCR CCCD...')"><i class="fa-solid fa-bolt mr-1"></i>Quét OCR</button><button id="p5-personal-editbtn" class="btn btn-p" style="font-weight:600" onclick="openEmpPersonalEdit()"><i class="fa-solid fa-pen-to-square mr-1"></i>Cập nhật</button></div></div><div style="display:grid;grid-template-columns:1fr 1fr;gap:14px"><div style="border:2px dashed #e2e8f0;border-radius:12px;padding:18px;text-align:center"><div style="width:46px;height:46px;border-radius:999px;background:#f8fafc;border:1px solid #e2e8f0;display:flex;align-items:center;justify-content:center;margin:0 auto 8px;color:#64748b"><i class="fa-solid fa-id-card"></i></div><div style="font-size:12px;font-weight:600;color:#334155">Ảnh CCCD Mặt trước</div><div style="font-size:11px;color:#94a3b8;margin-top:3px">Kéo thả ảnh hoặc click để chọn file (JPG, PNG)</div><div style="display:inline-block;margin-top:8px;font-size:10px;font-weight:600;color:#15803d;background:#dcfce7;border:1px solid #bbf7d0;padding:3px 8px;border-radius:6px">✓ Đã đính kèm ảnh gốc</div></div><div style="border:2px dashed #e2e8f0;border-radius:12px;padding:18px;text-align:center"><div style="width:46px;height:46px;border-radius:999px;background:#f8fafc;border:1px solid #e2e8f0;display:flex;align-items:center;justify-content:center;margin:0 auto 8px;color:#64748b"><i class="fa-solid fa-arrows-rotate"></i></div><div style="font-size:12px;font-weight:600;color:#334155">Ảnh CCCD Mặt sau</div><div style="font-size:11px;color:#94a3b8;margin-top:3px">Chứa vân tay, đặc điểm nhận dạng và mã vạch MRZ</div><div style="display:inline-block;margin-top:8px;font-size:10px;font-weight:600;color:#15803d;background:#dcfce7;border:1px solid #bbf7d0;padding:3px 8px;border-radius:6px">✓ Đã đính kèm ảnh gốc</div></div></div></div>
-            <div class="card" style="padding:18px;margin-bottom:14px"><div style="font-size:11px;font-weight:700;text-transform:uppercase;padding-bottom:8px;border-bottom:1px solid #f1f5f9;margin-bottom:12px"><i class="fa-solid fa-id-card" style="color:#64748b"></i> Thông tin cá nhân & CCCD</div><div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;font-size:12px"><div><label style="display:block;font-weight:600;margin-bottom:3px">Mã nhân viên</label><input value="PAP0009" readonly style="width:100%;padding:7px 10px;border:1px solid #e2e8f0;background:#eef2ff;border-radius:8px;font-size:12px;font-weight:700;color:#2E3191"></div><div style="grid-column:2/-1"><label style="display:block;font-weight:600;margin-bottom:3px">Họ và tên</label><input value="LÊ VĂN THẮNG" readonly style="width:100%;padding:7px 10px;border:1px solid #e2e8f0;background:#f8fafc;border-radius:8px;font-size:12px;font-weight:700"></div><div><label style="display:block;font-weight:600;margin-bottom:3px">Số CCCD</label><input value="079090001234" readonly style="width:100%;padding:7px 10px;border:1px solid #e2e8f0;background:#f8fafc;border-radius:8px;font-size:12px"></div><div><label style="display:block;font-weight:600;margin-bottom:3px">Giới tính</label><input value="Nam" readonly style="width:100%;padding:7px 10px;border:1px solid #e2e8f0;background:#f8fafc;border-radius:8px;font-size:12px"></div><div><label style="display:block;font-weight:600;margin-bottom:3px">Ngày sinh</label><input value="10/05/1990" readonly style="width:100%;padding:7px 10px;border:1px solid #e2e8f0;background:#f8fafc;border-radius:8px;font-size:12px"></div><div><label style="display:block;font-weight:600;margin-bottom:3px">Ngày cấp CCCD</label><input value="12/08/2021" readonly style="width:100%;padding:7px 10px;border:1px solid #e2e8f0;background:#f8fafc;border-radius:8px;font-size:12px"></div><div><label style="display:block;font-weight:600;margin-bottom:3px">Ngày hết hạn</label><input value="10/05/2030" readonly style="width:100%;padding:7px 10px;border:1px solid #e2e8f0;background:#f8fafc;border-radius:8px;font-size:12px"></div><div><label style="display:block;font-weight:600;margin-bottom:3px">Nơi cấp</label><input value="Cục CS QLHC về TTXH" readonly style="width:100%;padding:7px 10px;border:1px solid #e2e8f0;background:#f8fafc;border-radius:8px;font-size:12px"></div><div><label style="display:block;font-weight:600;margin-bottom:3px">Dân tộc</label><input value="Kinh" readonly style="width:100%;padding:7px 10px;border:1px solid #e2e8f0;background:#f8fafc;border-radius:8px;font-size:12px"></div><div><label style="display:block;font-weight:600;margin-bottom:3px">Quốc tịch</label><input value="Việt Nam" readonly style="width:100%;padding:7px 10px;border:1px solid #e2e8f0;background:#f8fafc;border-radius:8px;font-size:12px"></div><div><label style="display:block;font-weight:600;margin-bottom:3px">Tình trạng hôn nhân</label><input value="Đã kết hôn" readonly style="width:100%;padding:7px 10px;border:1px solid #e2e8f0;background:#f8fafc;border-radius:8px;font-size:12px"></div><div><label style="display:block;font-weight:600;margin-bottom:3px">Nơi thường trú (Tỉnh/TP)</label><input value="TP. Hồ Chí Minh" readonly style="width:100%;padding:7px 10px;border:1px solid #e2e8f0;background:#f8fafc;border-radius:8px;font-size:12px"></div><div><label style="display:block;font-weight:600;margin-bottom:3px">Phường/Xã</label><input value="Phường An Phú" readonly style="width:100%;padding:7px 10px;border:1px solid #e2e8f0;background:#f8fafc;border-radius:8px;font-size:12px"></div><div><label style="display:block;font-weight:600;margin-bottom:3px">Địa chỉ chi tiết</label><input value="Số 12, Đường số 5, TP. Thủ Đức" readonly style="width:100%;padding:7px 10px;border:1px solid #e2e8f0;background:#f8fafc;border-radius:8px;font-size:12px"></div></div></div>
-            <div class="card" style="padding:18px;margin-bottom:14px"><div style="font-size:11px;font-weight:700;text-transform:uppercase;padding-bottom:8px;border-bottom:1px solid #f1f5f9;margin-bottom:12px"><i class="fa-solid fa-phone" style="color:#64748b"></i> Thông tin liên hệ</div><div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;font-size:12px"><div><label style="display:block;font-weight:600;margin-bottom:3px">Điện thoại di động</label><input value="0908 123 456" readonly style="width:100%;padding:7px 10px;border:1px solid #e2e8f0;background:#f8fafc;border-radius:8px;font-size:12px"></div><div><label style="display:block;font-weight:600;margin-bottom:3px">Email cá nhân</label><input value="thang.le@gmail.com" readonly style="width:100%;padding:7px 10px;border:1px solid #e2e8f0;background:#f8fafc;border-radius:8px;font-size:12px"></div><div><label style="display:block;font-weight:600;margin-bottom:3px">Người liên hệ khẩn cấp</label><input value="Nguyễn Thị Hoa (Vợ)" readonly style="width:100%;padding:7px 10px;border:1px solid #e2e8f0;background:#f8fafc;border-radius:8px;font-size:12px"></div><div><label style="display:block;font-weight:600;margin-bottom:3px">SĐT liên hệ khẩn cấp</label><input value="0912 888 777" readonly style="width:100%;padding:7px 10px;border:1px solid #e2e8f0;background:#f8fafc;border-radius:8px;font-size:12px"></div><div style="grid-column:1/-1"><label style="display:block;font-weight:600;margin-bottom:6px">Địa chỉ tạm trú hiện tại</label><div style="display:grid;grid-template-columns:1fr 1fr;gap:10px"><div><label style="display:block;font-weight:500;color:#64748b;font-size:11px;margin-bottom:3px">Tỉnh/Thành phố</label><input value="TP. Hồ Chí Minh" readonly style="width:100%;padding:7px 10px;border:1px solid #e2e8f0;background:#f8fafc;border-radius:8px;font-size:12px"></div><div><label style="display:block;font-weight:500;color:#64748b;font-size:11px;margin-bottom:3px">Phường/Xã</label><input value="Phường Thủ Thiêm" readonly style="width:100%;padding:7px 10px;border:1px solid #e2e8f0;background:#f8fafc;border-radius:8px;font-size:12px"></div><div style="grid-column:1/-1"><label style="display:block;font-weight:500;color:#64748b;font-size:11px;margin-bottom:3px">Địa chỉ chi tiết (số nhà, đường, thôn/tổ...)</label><input value="Chung cư Vinhomes Grand Park, TP. Thủ Đức" readonly style="width:100%;padding:7px 10px;border:1px solid #e2e8f0;background:#f8fafc;border-radius:8px;font-size:12px"></div></div></div></div></div>
-            <div class="card" style="padding:18px;margin-bottom:14px"><div style="font-size:11px;font-weight:700;text-transform:uppercase;padding-bottom:8px;border-bottom:1px solid #f1f5f9;margin-bottom:12px"><i class="fa-solid fa-building-columns" style="color:#64748b"></i> Tài khoản ngân hàng</div><div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;font-size:12px"><div><label style="display:block;font-weight:600;margin-bottom:3px">Số tài khoản Ngân hàng</label><input value="0011000888999" readonly style="width:100%;padding:7px 10px;border:1px solid #e2e8f0;background:#f8fafc;border-radius:8px;font-size:12px;font-weight:700"></div><div><label style="display:block;font-weight:600;margin-bottom:3px">Tên chủ tài khoản</label><input value="LE VAN THANG" readonly style="width:100%;padding:7px 10px;border:1px solid #e2e8f0;background:#f8fafc;border-radius:8px;font-size:12px;font-weight:700;text-transform:uppercase"></div><div><label style="display:block;font-weight:600;margin-bottom:3px">Ngân hàng thụ hưởng</label><input value="Vietcombank (Ngân hàng TMCP Ngoại thương Việt Nam)" readonly style="width:100%;padding:7px 10px;border:1px solid #e2e8f0;background:#f8fafc;border-radius:8px;font-size:12px"></div><div><label style="display:block;font-weight:600;margin-bottom:3px">Chi nhánh Ngân hàng</label><input value="CN Kỳ Đồng (TP.HCM)" readonly style="width:100%;padding:7px 10px;border:1px solid #e2e8f0;background:#f8fafc;border-radius:8px;font-size:12px"></div></div></div>
-            <div class="card" style="padding:18px;margin-bottom:14px"><div style="font-size:11px;font-weight:700;text-transform:uppercase;padding-bottom:8px;border-bottom:1px solid #f1f5f9;margin-bottom:12px"><i class="fa-solid fa-shield-halved" style="color:#64748b"></i> Thuế và bảo hiểm</div><div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;font-size:12px"><div><label style="display:block;font-weight:600;margin-bottom:3px">Mã số thuế TNCN</label><input value="8012345678" readonly style="width:100%;padding:7px 10px;border:1px solid #e2e8f0;background:#f8fafc;border-radius:8px;font-size:12px"></div><div><label style="display:block;font-weight:600;margin-bottom:3px">Số sổ BHXH</label><input value="7900112233" readonly style="width:100%;padding:7px 10px;border:1px solid #e2e8f0;background:#f8fafc;border-radius:8px;font-size:12px"></div><div><label style="display:block;font-weight:600;margin-bottom:3px">Mã thẻ BHYT</label><input value="DN4790011223344" readonly style="width:100%;padding:7px 10px;border:1px solid #e2e8f0;background:#f8fafc;border-radius:8px;font-size:12px"></div></div></div>
-          </div>
-          <div id="p5-work" class="p5pane" style="display:none">
-            <div class="card" style="padding:18px;margin-bottom:14px"><div style="display:flex;justify-content:space-between;align-items:center;padding-bottom:8px;border-bottom:1px solid #f1f5f9;margin-bottom:12px"><b style="font-size:13px">💼 Vị trí Công tác Hiện tại</b><button class="btn btn-p" onclick="openEmpWorkEdit()"><i class="fa-solid fa-pen mr-1"></i>Cập nhật</button></div><div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;font-size:12px">
-              <div><label style="display:block;font-weight:600;margin-bottom:3px">Văn phòng làm việc chính</label><input value="Trụ sở Điều hành Cảng Phước An" readonly style="width:100%;padding:7px 10px;border:1px solid #e2e8f0;background:#f8fafc;border-radius:8px;font-size:12px"></div>
-              <div><label style="display:block;font-weight:600;margin-bottom:3px">Phòng ban / đơn vị</label><input value="Phòng Phát triển Phần mềm" readonly style="width:100%;padding:7px 10px;border:1px solid #e2e8f0;background:#f8fafc;border-radius:8px;font-size:12px"></div>
-              <div><label style="display:block;font-weight:600;margin-bottom:3px">Chức vụ</label><input value="Trưởng phòng" readonly style="width:100%;padding:7px 10px;border:1px solid #e2e8f0;background:#f8fafc;border-radius:8px;font-size:12px"></div>
-              <div><label style="display:block;font-weight:600;margin-bottom:3px">Chức danh</label><input value="Kỹ sư Phát triển Phần mềm" readonly style="width:100%;padding:7px 10px;border:1px solid #e2e8f0;background:#f8fafc;border-radius:8px;font-size:12px"></div>
-              <div><label style="display:block;font-weight:600;margin-bottom:3px">Loại hợp đồng</label><input value="HĐLĐ xác định thời hạn" readonly style="width:100%;padding:7px 10px;border:1px solid #e2e8f0;background:#f8fafc;border-radius:8px;font-size:12px"></div>
-              <div><label style="display:block;font-weight:600;margin-bottom:3px">Trạng thái</label><input value="● Đang làm việc" readonly style="width:100%;padding:7px 10px;border:1px solid #e2e8f0;background:#f8fafc;border-radius:8px;font-size:12px"></div>
-              <div><label style="display:block;font-weight:600;margin-bottom:3px">Ngày bắt đầu làm việc</label><input value="15/01/2026" readonly style="width:100%;padding:7px 10px;border:1px solid #e2e8f0;background:#f8fafc;border-radius:8px;font-size:12px"></div>
-              <div><label style="display:block;font-weight:600;margin-bottom:3px">Ngày ký hợp đồng</label><input value="15/01/2026" readonly style="width:100%;padding:7px 10px;border:1px solid #e2e8f0;background:#f8fafc;border-radius:8px;font-size:12px"></div>
-              <div><label style="display:block;font-weight:600;margin-bottom:3px">Email công ty</label><input value="thanglv@phuocanport.com" readonly style="width:100%;padding:7px 10px;border:1px solid #e2e8f0;background:#f8fafc;border-radius:8px;font-size:12px"></div>
-              <div><label style="display:block;font-weight:600;margin-bottom:3px">Số điện thoại</label><input value="0908 123 456" readonly style="width:100%;padding:7px 10px;border:1px solid #e2e8f0;background:#f8fafc;border-radius:8px;font-size:12px"></div>
-              <div><label style="display:block;font-weight:600;margin-bottom:3px">Quản lý trực tiếp</label><input value="Tạ Quang Hưng" readonly style="width:100%;padding:7px 10px;border:1px solid #e2e8f0;background:#f8fafc;border-radius:8px;font-size:12px"></div>
-              <div><label style="display:block;font-weight:600;margin-bottom:3px">Tài khoản đăng nhập <span style="color:#059669;font-size:10px">✓ Đã liên kết</span></label><input value="pap0009@phuocanport.com" readonly style="width:100%;padding:7px 10px;border:1px solid #e2e8f0;background:#f8fafc;border-radius:8px;font-size:12px"></div>
-            </div></div>
-            <div class="card" style="padding:18px"><div style="display:flex;justify-content:space-between;align-items:center;padding-bottom:8px;border-bottom:1px solid #f1f5f9;margin-bottom:12px"><b style="font-size:13px">⏱️ Lịch làm việc được gán <span style="font-size:10px;background:#eef2ff;color:#2E3191;padding:2px 8px;border-radius:999px">Hành chính</span></b><button class="btn btn-p" onclick="openEmpSchedAssign()"><i class="fa-solid fa-pen mr-1"></i>Gán / đổi lịch</button></div>
-              <p style="font-size:11px;color:#64748b;margin:0 0 12px">Mỗi NV gán 1 lịch: Hành chính (từ mẫu) hoặc Theo ca (phân ca trực tiếp). Nguồn: M07.</p>
-              <div style="background:#eef2ff;border:1px solid #c7d2fe;border-radius:12px;padding:14px;display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap"><div><div style="display:flex;align-items:center;gap:8px"><span style="font-size:18px">🏢</span><b style="font-size:13px">Lịch Hành chính Văn phòng</b><span style="font-size:10px;padding:2px 8px;border-radius:5px;background:#fff;border:1px solid #c7d2fe;color:#2E3191;font-weight:700">[VP-STANDARD]</span></div><div style="font-size:11px;color:#475569;margin-top:4px">Giờ hành chính cố định, nghỉ T7-CN.</div></div><div style="text-align:right;background:#fff;border:1px solid #c7d2fe;border-radius:10px;padding:8px 12px"><div style="font-size:9px;color:#94a3b8;text-transform:uppercase">Định mức tuần</div><b class="pap-text" style="font-size:13px">40.0h / tuần</b> <span style="color:#059669;font-size:11px;font-weight:600">(5.0 công)</span></div></div>
-              <div style="margin-top:14px"><div style="font-size:10.5px;font-weight:700;text-transform:uppercase;color:#94a3b8;letter-spacing:.5px;margin-bottom:8px;display:flex;justify-content:space-between"><span>Chu kỳ phân bổ ca Thứ Hai ➔ Chủ Nhật (Tuần hoàn vĩnh viễn):</span><span style="color:#047857;font-weight:600">✓ Tự động kế thừa qua mọi tuần</span></div>
-                <div style="display:grid;grid-template-columns:repeat(7,1fr);gap:8px;font-size:12px">
-                  <div style="padding:10px;border-radius:12px;border:1px solid #e2e8f0;background:#fff"><div style="font-size:10.5px;font-weight:700;color:#334155">Thứ Hai</div><span style="font-size:10px;padding:2px 8px;border-radius:5px;background:#eff6ff;color:#2E3191;border:1px solid #bfdbfe;font-weight:700;display:inline-block;margin-top:6px">[HC]</span><div style="font-size:10.5px;color:#334155;margin-top:4px">Ca Hành chính</div><div style="border-top:1px solid #f1f5f9;margin-top:6px;padding-top:5px;font-size:10px;color:#334155">08:00 - 17:00</div></div>
-                  <div style="padding:10px;border-radius:12px;border:1px solid #e2e8f0;background:#fff"><div style="font-size:10.5px;font-weight:700;color:#334155">Thứ Ba</div><span style="font-size:10px;padding:2px 8px;border-radius:5px;background:#eff6ff;color:#2E3191;border:1px solid #bfdbfe;font-weight:700;display:inline-block;margin-top:6px">[HC]</span><div style="font-size:10.5px;color:#334155;margin-top:4px">Ca Hành chính</div><div style="border-top:1px solid #f1f5f9;margin-top:6px;padding-top:5px;font-size:10px;color:#334155">08:00 - 17:00</div></div>
-                  <div style="padding:10px;border-radius:12px;border:1px solid #e2e8f0;background:#fff"><div style="font-size:10.5px;font-weight:700;color:#334155">Thứ Tư</div><span style="font-size:10px;padding:2px 8px;border-radius:5px;background:#eff6ff;color:#2E3191;border:1px solid #bfdbfe;font-weight:700;display:inline-block;margin-top:6px">[HC]</span><div style="font-size:10.5px;color:#334155;margin-top:4px">Ca Hành chính</div><div style="border-top:1px solid #f1f5f9;margin-top:6px;padding-top:5px;font-size:10px;color:#334155">08:00 - 17:00</div></div>
-                  <div style="padding:10px;border-radius:12px;border:1px solid #e2e8f0;background:#fff"><div style="font-size:10.5px;font-weight:700;color:#334155">Thứ Năm</div><span style="font-size:10px;padding:2px 8px;border-radius:5px;background:#eff6ff;color:#2E3191;border:1px solid #bfdbfe;font-weight:700;display:inline-block;margin-top:6px">[HC]</span><div style="font-size:10.5px;color:#334155;margin-top:4px">Ca Hành chính</div><div style="border-top:1px solid #f1f5f9;margin-top:6px;padding-top:5px;font-size:10px;color:#334155">08:00 - 17:00</div></div>
-                  <div style="padding:10px;border-radius:12px;border:1px solid #e2e8f0;background:#fff"><div style="font-size:10.5px;font-weight:700;color:#334155">Thứ Sáu</div><span style="font-size:10px;padding:2px 8px;border-radius:5px;background:#eff6ff;color:#2E3191;border:1px solid #bfdbfe;font-weight:700;display:inline-block;margin-top:6px">[HC]</span><div style="font-size:10.5px;color:#334155;margin-top:4px">Ca Hành chính</div><div style="border-top:1px solid #f1f5f9;margin-top:6px;padding-top:5px;font-size:10px;color:#334155">08:00 - 17:00</div></div>
-                  <div style="padding:10px;border-radius:12px;border:1px solid #e2e8f0;background:#fff"><div style="font-size:10.5px;font-weight:700;color:#b45309">Thứ Bảy</div><span style="font-size:10px;padding:2px 8px;border-radius:5px;background:#eff6ff;color:#2E3191;border:1px solid #bfdbfe;font-weight:700;display:inline-block;margin-top:6px">[HC]</span><div style="font-size:10.5px;color:#334155;margin-top:4px">Ca Hành chính</div><div style="border-top:1px solid #f1f5f9;margin-top:6px;padding-top:5px;font-size:10px;color:#334155">08:00 - 17:00</div></div>
-                  <div style="padding:10px;border-radius:12px;border:1px solid #e2e8f0;background:#fff"><div style="font-size:10.5px;font-weight:700;color:#b91c1c">Chủ Nhật</div><span style="font-size:10px;padding:2px 8px;border-radius:5px;background:#eff6ff;color:#2E3191;border:1px solid #bfdbfe;font-weight:700;display:inline-block;margin-top:6px">[HC]</span><div style="font-size:10.5px;color:#334155;margin-top:4px">Ca Hành chính</div><div style="border-top:1px solid #f1f5f9;margin-top:6px;padding-top:5px;font-size:10px;color:#334155">08:00 - 17:00</div></div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div id="p5-skills" class="p5pane" style="display:none"><div class="card" style="padding:18px"><div style="display:flex;justify-content:space-between;align-items:center;padding-bottom:8px;border-bottom:1px solid #f1f5f9;margin-bottom:12px"><b style="font-size:13px"><i class="fa-solid fa-bullseye" style="color:#64748b"></i> Danh sách Kỹ năng</b><button class="btn btn-p" onclick="openSkillM5()"><i class="fa-solid fa-plus mr-1"></i>Thêm kỹ năng</button></div>
-            <div style="overflow:auto;border:1px solid #e2e8f0;border-radius:10px"><table class="pap" style="width:100%"><thead><tr><th style="width:40px;text-align:center">STT</th><th style="text-align:center;width:90px">Phân loại</th><th>Tên kỹ năng</th><th style="text-align:center">Cấp bậc</th><th style="text-align:center">Kinh nghiệm</th><th>Chứng chỉ</th><th style="text-align:center;width:70px">Thao tác</th></tr></thead><tbody>
-              <tr><td style="text-align:center">1</td><td style="text-align:center"><span style="font-size:10px;padding:2px 8px;border-radius:999px;background:#fef3c7;color:#b45309">Chính</span></td><td><b>Quản trị TOS/ERP</b><div style="font-size:10px;color:#94a3b8">SK-IT-01</div></td><td style="text-align:center">Chuyên gia</td><td style="text-align:center">8 năm</td><td>Oracle OCM & Cisco CCNP</td><td style="text-align:center"><button class="ctrl" style="color:#64748b" onclick="openSkillM5('edit')"><i class="fa-solid fa-pen"></i></button></td></tr>
-              <tr><td style="text-align:center">2</td><td style="text-align:center"><span style="font-size:10px;padding:2px 8px;border-radius:999px;background:#eef2ff;color:#2E3191">Phụ</span></td><td><b>Tích hợp API EDIFACT/BAPLIE</b><div style="font-size:10px;color:#94a3b8">SK-IT-02</div></td><td style="text-align:center">Thành thạo</td><td style="text-align:center">5 năm</td><td>EDI Integration Specialist</td><td style="text-align:center"><button class="ctrl" style="color:#64748b" onclick="openSkillM5('edit')"><i class="fa-solid fa-pen"></i></button></td></tr>
-            </tbody></table></div>
-            <p style="font-size:11px;color:#94a3b8;margin-top:10px"><i class="fa-solid fa-circle-info mr-1"></i>Tên kỹ năng chọn từ danh mục M01; cấp bậc/kinh nghiệm/chứng chỉ nhập theo nhân sự.</p></div></div>
-          <div id="p5-att" class="p5pane" style="display:none"><div class="card" style="padding:18px"><div style="display:flex;justify-content:space-between;align-items:center;padding-bottom:8px;border-bottom:1px solid #f1f5f9;margin-bottom:12px"><b style="font-size:13px"><i class="fa-regular fa-clock" style="color:#64748b"></i> Thiết lập hình thức chấm công</b><button class="btn btn-p" onclick="openGpsM5()"><i class="fa-solid fa-plus mr-1"></i>Thiết lập</button></div>
-            <p style="font-size:11px;color:#64748b;margin:0 0 12px">Hình thức chấm công áp dụng cho nhân viên. Phương thức, vị trí & bán kính do danh mục chấm công định nghĩa — chỉ gán vào NV ở đây, không chỉnh bán kính tại màn này.</p>
-            <div style="display:flex;flex-direction:column;gap:10px;font-size:12px">
-              <div style="display:flex;justify-content:space-between;align-items:center;padding:12px;border:1px solid #e2e8f0;border-radius:10px"><div><b><i class="fa-solid fa-location-dot pap-text"></i> Trụ sở Điều hành Cảng Phước An</b><div style="font-size:11px;color:#94a3b8;margin-top:2px">Mobile GPS · 10.6521, 106.9021 · Bán kính 150m <span style="color:#be123c;font-weight:600">· GPS bắt buộc</span></div></div><span style="font-size:10px;padding:2px 9px;border-radius:999px;background:#ecfdf5;color:#047857;font-weight:600"><i class="fa-solid fa-circle-check" style="font-size:9px;margin-right:3px"></i>Tự động ghi nhận công</span></div>
-              <div style="display:flex;justify-content:space-between;align-items:center;padding:12px;border:1px solid #e2e8f0;border-radius:10px"><div><b><i class="fa-solid fa-location-dot pap-text"></i> Khu Cầu tàu & Bến phao</b><div style="font-size:11px;color:#94a3b8;margin-top:2px">Mobile GPS · 10.6489, 106.9105 · Bán kính 300m <span style="color:#a16207;font-weight:600">· GPS tùy chọn</span></div></div><span style="font-size:10px;padding:2px 9px;border-radius:999px;background:#fffbeb;color:#b45309;font-weight:600"><i class="fa-solid fa-user-clock" style="font-size:9px;margin-right:3px"></i>Yêu cầu phê duyệt (ngoài phạm vi)</span></div>
-            </div>
-            <div style="margin-top:12px;padding:12px;background:#eff6ff;border:1px solid #bfdbfe;border-radius:10px;font-size:11px;color:#1e40af"><i class="fa-solid fa-circle-info mr-1"></i><b>Quy tắc ghi nhận:</b> Chấm công <b>trong phạm vi + đúng GPS bắt buộc</b> → <b>tự động ghi nhận công</b>. Chấm công <b>ngoài phạm vi</b> (hoặc GPS tùy chọn) → sinh <b>yêu cầu phê duyệt</b> gửi quản lý trực tiếp, chỉ tính công sau khi được duyệt.</div></div></div>
-          <div id="p5-leave" class="p5pane" style="display:none">
-            <div class="card" style="padding:18px;margin-bottom:14px"><div style="display:flex;justify-content:space-between;align-items:center;padding-bottom:8px;border-bottom:1px solid #f1f5f9;margin-bottom:12px"><b style="font-size:13px">📋 Chính sách nghỉ phép</b><div><button class="btn btn-o" onclick="nav('m09',document.querySelector('[data-pg=m09]'))"><i class="fa-solid fa-gear mr-1"></i>Danh mục chính sách</button> <button class="btn btn-p" onclick="toast('Đã lưu chính sách nghỉ phép áp dụng cho nhân viên')"><i class="fa-solid fa-floppy-disk mr-1"></i>Lưu</button></div></div>
-              <p style="font-size:11px;color:#94a3b8;margin:0 0 12px">Dữ liệu chính sách lấy từ M09. Mọi thay đổi số dư do M09 quản lý.</p>
-              <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;font-size:12px"><div><label style="display:block;font-weight:600;margin-bottom:3px">Chính sách nghỉ phép</label><select style="width:100%;padding:7px 10px;border:1px solid #cbd5e1;border-radius:8px;font-size:12px"><option>LP-STANDARD — Phép năm tiêu chuẩn (12 ngày)</option><option>LP-SENIOR — Phép thâm niên</option></select></div><div><label style="display:block;font-weight:600;margin-bottom:3px">Ngày áp dụng chính sách</label><input type="date" value="2026-01-01" style="width:100%;padding:6px 10px;border:1px solid #cbd5e1;border-radius:8px;font-size:12px"></div><div><label style="display:block;font-weight:600;margin-bottom:3px">Số ngày phép ban đầu</label><input value="0.00 ngày" style="width:100%;padding:7px 10px;border:1px solid #cbd5e1;border-radius:8px;font-size:12px"></div><div><label style="display:block;font-weight:600;margin-bottom:3px">Ngày áp dụng phép ban đầu</label><input type="date" value="2026-01-01" style="width:100%;padding:6px 10px;border:1px solid #cbd5e1;border-radius:8px;font-size:12px"></div></div>
-            </div>
-            <div class="card" style="padding:18px"><b style="font-size:13px;display:block;padding-bottom:8px;border-bottom:1px solid #f1f5f9;margin-bottom:12px">🏖️ Hạn mức & Số dư Phép năm 2026</b>
-              <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:8px;font-size:12px"><div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:10px;padding:10px;text-align:center"><div style="font-size:10px;color:#64748b">Phép chuẩn</div><div style="font-size:18px;font-weight:700">12</div></div><div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:10px;padding:10px;text-align:center"><div style="font-size:10px;color:#64748b">Thâm niên</div><div style="font-size:18px;font-weight:700">+0</div></div><div style="background:#fffbeb;border:1px solid #fde68a;border-radius:10px;padding:10px;text-align:center"><div style="font-size:10px;color:#b45309">Tồn trước</div><div style="font-size:18px;font-weight:700;color:#b45309">+2</div></div><div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:10px;padding:10px;text-align:center"><div style="font-size:10px;color:#64748b">Đã dùng</div><div style="font-size:18px;font-weight:700">2</div></div><div style="background:#ecfdf5;border:1px solid #a7f3d0;border-radius:10px;padding:10px;text-align:center"><div style="font-size:10px;color:#047857">Còn lại</div><div style="font-size:18px;font-weight:700;color:#059669">12</div></div></div>
-              <div style="margin-top:16px;display:flex;justify-content:space-between;align-items:center"><b style="font-size:12px"><i class="fa-solid fa-calendar-days pap-text mr-1"></i>Lịch sử quỹ phép các niên độ</b><button class="btn btn-o" onclick="toast('Đang xuất sổ phép năm 2026...')"><i class="fa-solid fa-download mr-1"></i>Xuất sổ phép</button></div>
-              <div style="overflow:auto;border:1px solid #e2e8f0;border-radius:10px;margin-top:10px"><table class="pap" style="width:100%"><thead><tr><th style="text-align:center">Năm</th><th style="text-align:center">Phép chuẩn</th><th style="text-align:center">Thâm niên</th><th style="text-align:center">Tồn trước</th><th style="text-align:center">Tổng quỹ</th><th style="text-align:center">Đã dùng</th><th style="text-align:center">Hết hạn</th><th style="text-align:center">Tồn chuyển</th><th style="text-align:center">Trạng thái</th><th style="text-align:center">Thao tác</th></tr></thead><tbody>
-                <tr><td style="text-align:center">2026</td><td style="text-align:center">12</td><td style="text-align:center">+0</td><td style="text-align:center">+2</td><td style="text-align:center;font-weight:700" class="pap-text">14</td><td style="text-align:center;color:#b91c1c">2</td><td style="text-align:center">0</td><td style="text-align:center;color:#059669">12</td><td style="text-align:center"><span style="font-size:10px;padding:2px 8px;border-radius:999px;background:#eef2ff;color:#2E3191">Đang mở</span></td><td style="text-align:center"><button class="ctrl" style="color:#64748b" onclick="openLeaveM5('2026')"><i class="fa-solid fa-eye"></i></button></td></tr>
-                <tr><td style="text-align:center">2025</td><td style="text-align:center">12</td><td style="text-align:center">+0</td><td style="text-align:center">0</td><td style="text-align:center;font-weight:700" class="pap-text">12</td><td style="text-align:center;color:#b91c1c">10</td><td style="text-align:center">0</td><td style="text-align:center;color:#059669">2</td><td style="text-align:center"><span style="font-size:10px;padding:2px 8px;border-radius:999px;background:#dcfce7;color:#15803d">Đã chốt</span></td><td style="text-align:center"><button class="ctrl" style="color:#64748b" onclick="openLeaveM5('2025')"><i class="fa-solid fa-eye"></i></button></td></tr>
-              </tbody></table></div>
-              <div style="margin-top:12px;padding:12px;background:#fffbeb;border:1px solid #fde68a;border-radius:10px;font-size:11px;color:#92400e"><i class="fa-solid fa-lightbulb mr-1"></i><b>Quy định chuyển phép:</b> phép chưa nghỉ bảo lưu tối đa đến 31/03 năm kế tiếp; sau đó hết hiệu lực hoặc tất toán theo quy chế lương.</div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-    
-<style id="style-greq-nav">
-.greq-nav-tab {
-  background: #fff;
-  border: 1px solid #e2e8f0;
-  border-radius: 9999px;
-  padding: 6px 14px;
-  font-size: 12px;
-  font-weight: 600;
-  color: #334155;
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  cursor: pointer;
-  transition: all 0.15s ease;
-}
-.greq-nav-tab:hover {
-  background: #f8fafc;
-  border-color: #cbd5e1;
-}
-.greq-nav-tab.active {
-  background: #eef2ff;
-  border-color: #2E3191;
-  color: #2E3191;
-  font-weight: 700;
-  box-shadow: 0 1px 3px rgba(46,49,145,0.12);
-}
-.greq-nav-badge {
-  background: #f1f5f9;
-  color: #334155;
-  font-size: 11px;
-  font-weight: 700;
-  padding: 1px 7px;
-  border-radius: 9999px;
-  min-width: 20px;
-  text-align: center;
-}
-.greq-nav-tab.active .greq-nav-badge {
-  background: #2E3191;
-  color: #fff;
-}
-</style>
-
     <section id="pg-requests" class="page">
   <!-- TOP FILTER CARD THEO THIẾT KẾ MẪU 2 HÀNG -->
   <div class="card" style="padding:16px 20px;margin-bottom:14px;background:#fff;border-radius:12px;border:1px solid #e2e8f0;box-shadow:0 1px 3px rgba(0,0,0,0.05)">
@@ -1048,8 +912,8 @@
 
     <!-- HÀNG 2: 5 TABS (TẤT CẢ ĐƠN, TÔI GỬI ĐI, GỬI ĐẾN TÔI, DUYỆT BỞI TÔI, ĐANG THEO DÕI) + MỤC ĐÃ LƯU + 3 NÚT THAO TÁC -->
     <div style="display:flex;align-items:center;justify-content:space-between;gap:8px;padding-top:12px;border-top:1px solid #f1f5f9">
-      <!-- 5 TABS BÊN TRÁI -->
-      <div style="display:flex;align-items:center;gap:6px;flex-shrink:0">
+      <!-- 5 TABS BÊN TRÁI (DẠNG CAPSULE PILL ĐỘC LẬP TÁCH BẠCH) -->
+      <div class="greq-nav-track" style="flex-shrink:0">
         <button type="button" class="greq-nav-tab active" id="tab-greq-all" onclick="switchGreqNavTab('ALL', this)">
           <i class="fa-solid fa-list-check" style="font-size:12px"></i>
           <span>Tất cả đơn</span>
@@ -1216,7 +1080,7 @@
     <!-- HÀNG 2: 2 TABS TINH GỌN (TÔI GỬI ĐI & ĐANG THEO DÕI) — ĐÃ BỎ: TẤT CẢ, GỬI ĐẾN TÔI, DUYỆT BỞI TÔI -->
     <div style="display:flex;align-items:center;justify-content:space-between;gap:8px;padding-top:12px;border-top:1px solid #f1f5f9">
       <!-- 2 TABS BÊN TRÁI -->
-      <div style="display:flex;align-items:center;gap:6px;flex-shrink:0">
+      <div class="greq-nav-track" style="flex-shrink:0">
         <button type="button" class="greq-nav-tab active" id="tab-ereq-sent" onclick="switchEreqNavTab('SENT', this)">
           <i class="fa-solid fa-paper-plane" style="font-size:12px;color:#0284c7"></i>
           <span>Tôi gửi đi</span>
@@ -3498,47 +3362,48 @@ thead .sl,thead .sr{background:var(--pap)}
             <input type="number" step="0.5" min="0" class="fi" id="led-edit-het-han" oninput="E9calcLedRemainPreview()" style="color:#64748b;font-weight:600">
           </div>
           <div>
-            <label class="fl">Còn khả dụng</label>
-            <input type="text" class="fi" id="led-edit-ton-remain" readonly style="background:#f1f5f9;border-color:#cbd5e1;font-weight:700;color:#1e293b;text-align:center">
+            <label class="fl">Còn lại (tồn)</label>
+            <input type="text" class="fi" id="led-edit-ton-remain" readonly style="background:#f1f5f9;border-color:#cbd5e1;font-weight:700;color:#047857;text-align:center">
           </div>
         </div>
       </div>
 
-      <!-- CỤM 2: QUỸ PHÉP NĂM [NĂM] / TÍCH LŨY NĂM [NĂM] -->
+      <!-- CỤM 2: QUỸ PHÉP NĂM [NĂM] / TÍCH LŨY NĂM [NĂM] (4 Ô ĐỐI XỨNG) -->
       <div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:12px;margin-bottom:12px">
         <div style="font-size:12px;font-weight:700;color:#2E3191;margin-bottom:8px;display:flex;align-items:center;gap:6px">
           <i class="fa-solid fa-calendar-days"></i>
           <span id="led-edit-c2-title">Quỹ phép năm 2026</span>
         </div>
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px" id="led-edit-c2-grid">
+        <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:10px" id="led-edit-c2-grid">
           <div id="led-edit-nam-wrap">
-            <label class="fl" id="led-edit-nam-lbl">Phép năm chuẩn *</label>
+            <label class="fl" id="led-edit-nam-lbl">Phép năm *</label>
             <input type="number" step="0.5" min="0" class="fi" id="led-edit-nam" oninput="E9calcLedRemainPreview()" style="font-weight:700">
           </div>
           <div id="led-edit-tn-wrap">
             <label class="fl" id="led-edit-tn-lbl">Phép thâm niên *</label>
             <input type="number" step="0.5" min="0" class="fi" id="led-edit-tn" oninput="E9calcLedRemainPreview()">
           </div>
+          <div>
+            <label class="fl" id="led-edit-used-lbl">Đã dùng (năm) *</label>
+            <input type="number" step="0.5" min="0" class="fi" id="led-edit-used" oninput="E9calcLedRemainPreview()" style="color:#e11d48;font-weight:700">
+          </div>
+          <div>
+            <label class="fl">Còn lại (năm)</label>
+            <input type="text" class="fi" id="led-edit-ann-remain" readonly style="background:#f1f5f9;border-color:#cbd5e1;font-weight:700;color:#047857;text-align:center">
+          </div>
         </div>
       </div>
 
-      <!-- CỤM 3: SỬ DỤNG & SỐ DƯ -->
-      <div style="background:#f0fdf4;border:1px solid #bbf7d0;border-radius:8px;padding:12px;margin-bottom:12px">
-        <div style="font-size:12px;font-weight:700;color:#166534;margin-bottom:8px;display:flex;align-items:center;gap:6px">
-          <i class="fa-solid fa-chart-pie"></i>
-          <span>Sử dụng &amp; Số dư</span>
+      <!-- CỤM 3: SỐ DƯ KHẢ DỤNG (CHỐT TỔNG) -->
+      <div style="background:#f0fdf4;border:1px solid #bbf7d0;border-radius:8px;padding:12px 14px;margin-bottom:12px;display:flex;align-items:center;justify-content:space-between">
+        <div>
+          <div style="font-size:12px;font-weight:700;color:#166534;display:flex;align-items:center;gap:6px">
+            <i class="fa-solid fa-wallet text-emerald-600"></i>
+            <span>Số dư khả dụng</span>
+          </div>
         </div>
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;align-items:center">
-          <div>
-            <label class="fl" id="led-edit-used-lbl" style="color:#166534">Đã dùng năm 2026 *</label>
-            <input type="number" step="0.5" min="0" class="fi" id="led-edit-used" oninput="E9calcLedRemainPreview()" style="color:#e11d48;font-weight:700;background:#fff">
-          </div>
-          <div>
-            <label class="fl" style="color:#166534">Còn lại sau điều chỉnh</label>
-            <div style="margin-top:2px">
-              <span id="led-edit-remain-pill" style="display:inline-block;padding:5px 16px;border-radius:999px;background:#fff;color:#16a34a;font-weight:700;border:1px solid #bbf7d0;font-size:14px;box-shadow:0 1px 2px rgba(0,0,0,0.05)">10 ngày</span>
-            </div>
-          </div>
+        <div>
+          <span id="led-edit-remain-pill" style="display:inline-block;padding:6px 18px;border-radius:999px;background:#fff;color:#15803d;font-weight:800;border:1px solid #86efac;font-size:15px;box-shadow:0 1px 3px rgba(0,0,0,0.06)">10 ngày</span>
         </div>
       </div>
 
@@ -9289,145 +9154,17 @@ function m8subtab(id,btn){
 }
 function openM8Mdl(id){const el=document.getElementById(id);if(el)el.style.display='flex';}
 /* Modal CHI TIẾT đề xuất OT (read-only) */
+/* Modal CHI TIẾT đề xuất OT — Đồng nhất 100% với form chi tiết đã duyệt của hệ thống */
 function openM8ReqView(r) {
-  const el = document.getElementById('m8req-view');
-  if (!el) return;
-
-  const dt = r.loai_ngay || ({ WEEKDAY: 'Ngày làm việc bình thường', WEEKEND: 'Ngày nghỉ hằng tuần', HOLIDAY: 'Ngày lễ, Tết' }[r.loai] || r.loai || 'Ngày thường');
-  const coef = r.he_so ? (String(r.he_so).includes('%') ? r.he_so : r.he_so + '%') : (r.loai === 'HOLIDAY' ? '300%' : r.loai === 'WEEKEND' ? '200%' : '150%');
-  const ben = r.huo === 'LEAVE_COMP' ? 'Nghỉ bù' : 'Tính công (Lương OT)';
-  const statusBadge = (r.status === 'APPROVED' || !r.status)
-    ? '<span style="background:#ecfdf5;color:#047857;border:1px solid #a7f3d0;padding:2px 10px;border-radius:9999px;font-size:11px;font-weight:700"><i class="fa-solid fa-check mr-1"></i>Đã phê duyệt</span>'
-    : (typeof m8chipStatus === 'function' ? m8chipStatus(r.status) : `<span class="badge">${r.status}</span>`);
-
-  const titleBadge = document.getElementById('m8rv-badge-status');
-  if (titleBadge) {
-    titleBadge.innerHTML = statusBadge;
+  if (!r) return;
+  const id = typeof r === 'string' ? r : (r.code || r.id || r.ma_don);
+  if (id) {
+    viewGlobalReq(id);
   }
-
-  const reason = r.reason || 'Thực hiện nhiệm vụ tăng ca đột xuất theo yêu cầu vận hành của Cảng.';
-  const quyDoiText = r.quy_doi || '';
-
-  const bodyEl = document.getElementById('m8rv-body');
-  if (bodyEl) {
-    bodyEl.innerHTML = `
-      <!-- THÔNG TIN CHUNG ĐƠN & NHÂN SỰ -->
-      <div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:10px;padding:12px 16px;margin-bottom:14px">
-        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;padding-bottom:8px;border-bottom:1px dashed #cbd5e1">
-          <div>
-            <span style="font-size:11px;color:#64748b;text-transform:uppercase;font-weight:600">Mã đơn đề xuất</span>
-            <div style="font-family:inherit;font-size:15px;font-weight:800;color:#2E3191;letter-spacing:0.3px">${r.code}</div>
-          </div>
-          <div>${statusBadge}</div>
-        </div>
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px 16px;font-size:12px">
-          <div><span style="color:#64748b">Họ và tên:</span> <strong style="color:#0f172a">${r.nv}</strong></div>
-          <div><span style="color:#64748b">Mã nhân viên:</span> <strong style="font-family:monospace;color:#2E3191">${r.pap || ''}</strong></div>
-          <div><span style="color:#64748b">Phòng ban:</span> <span style="font-weight:600;color:#334155">${r.phong || ''}</span></div>
-          <div><span style="color:#64748b">Chức vụ:</span> <span style="font-weight:600;color:#334155">${r.chuc_vu || 'Nhân viên'}</span></div>
-        </div>
-      </div>
-
-      <!-- CHI TIẾT THỜI GIAN VÀ HỆ SỐ TÍNH CÔNG -->
-      <div style="border:1px solid #e2e8f0;border-radius:10px;padding:12px 16px;margin-bottom:14px;background:#fff">
-        <div style="font-size:12.5px;font-weight:700;color:#0f172a;margin-bottom:10px;display:flex;align-items:center;gap:6px">
-          <i class="fa-regular fa-clock" style="color:#2E3191"></i>
-          <span>Chi tiết ca làm việc & hệ số</span>
-        </div>
-        <div style="display:grid;grid-template-columns:repeat(2, 1fr);gap:10px 16px;font-size:12px">
-          <div><span style="color:#64748b">Ngày tăng ca:</span> <strong style="color:#0f172a">${r.ngay}</strong></div>
-          <div><span style="color:#64748b">Khung giờ:</span> <strong style="color:#0f172a;font-family:monospace">${r.gio}</strong></div>
-          <div><span style="color:#64748b">Số giờ tăng ca:</span> <strong style="color:#2E3191;font-size:13px">${r.hours}</strong></div>
-          <div><span style="color:#64748b">Loại ngày:</span> <span style="font-weight:600;color:#0f172a">${dt}</span></div>
-          <div><span style="color:#64748b">Hệ số tính lương:</span> <strong style="color:#d97706">${coef}</strong></div>
-          <div><span style="color:#64748b">Hình thức ghi nhận:</span> <strong style="color:#047857">${ben}</strong></div>
-        </div>
-        ${quyDoiText ? `<div style="margin-top:10px;padding-top:8px;border-top:1px dashed #e2e8f0;font-size:12px;display:flex;justify-content:space-between">
-          <span style="color:#64748b">Giờ quy đổi thanh toán:</span>
-          <strong style="color:#2E3191;font-size:13px">${quyDoiText}</strong>
-        </div>` : ''}
-      </div>
-
-      <!-- LÝ DO TĂNG CA -->
-      <div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:10px;padding:12px 16px;margin-bottom:14px">
-        <div style="font-size:11px;font-weight:700;color:#64748b;text-transform:uppercase;margin-bottom:4px">Lý do tăng ca</div>
-        <div style="font-size:12.5px;color:#334155;line-height:1.5">${reason}</div>
-      </div>
-
-      <!-- TIẾN TRÌNH PHÊ DUYỆT -->
-      <div style="background:#fff;border:1px solid #e2e8f0;border-radius:10px;padding:12px 16px">
-        <div style="font-size:12px;font-weight:700;color:#0f172a;margin-bottom:10px;display:flex;align-items:center;gap:6px">
-          <i class="fa-solid fa-timeline" style="color:#2E3191"></i>
-          <span>Tiến trình phê duyệt</span>
-        </div>
-        <div style="display:flex;flex-direction:column;gap:8px;font-size:11.5px">
-          <div style="display:flex;justify-content:space-between;align-items:center;padding:6px 10px;background:#f8fafc;border-radius:6px">
-            <div>
-              <span style="font-weight:600;color:#0f172a">1. Người đề xuất: ${r.nv}</span>
-              <span style="color:#94a3b8;margin-left:6px">${r.ngay} · 14:00</span>
-            </div>
-            <span style="color:#047857;background:#ecfdf5;font-size:10.5px;font-weight:700;padding:1px 8px;border-radius:999px">Đã gửi</span>
-          </div>
-          <div style="display:flex;justify-content:space-between;align-items:center;padding:6px 10px;background:#f8fafc;border-radius:6px">
-            <div>
-              <span style="font-weight:600;color:#0f172a">2. Quản lý trực tiếp: Trưởng phòng (${r.phong || 'Đơn vị'})</span>
-              <span style="color:#94a3b8;margin-left:6px">${r.ngay} · 16:30</span>
-            </div>
-            <span style="color:#047857;background:#ecfdf5;font-size:10.5px;font-weight:700;padding:1px 8px;border-radius:999px">Đã duyệt</span>
-          </div>
-          <div style="display:flex;justify-content:space-between;align-items:center;padding:6px 10px;background:#f8fafc;border-radius:6px">
-            <div>
-              <span style="font-weight:600;color:#0f172a">3. Phòng Nhân sự (C&B): Chuyên viên chấm công</span>
-              <span style="color:#94a3b8;margin-left:6px">${r.ngay} · 17:00</span>
-            </div>
-            <span style="color:#2E3191;background:#eef2ff;font-size:10.5px;font-weight:700;padding:1px 8px;border-radius:999px">Đã đồng bộ vào bảng công</span>
-          </div>
-        </div>
-      </div>
-    `;
-  }
-  el.style.display = 'flex';
 }
 
 function openM8RequestFromDetail(maDon, empPap, ngay) {
-  const emp = (typeof m8otsumData !== 'undefined' ? m8otsumData : []).find(e => e.pap === empPap) || 
-              (typeof m8otsumData !== 'undefined' ? m8otsumData[0] : null);
-  const items = emp ? (emp.items || []) : [];
-  const item = items.find(it => it.ma_don === maDon || it.ngay === ngay) || {
-    ma_don: maDon || 'OT-2026-001',
-    ngay: ngay || '02/10/2026',
-    loai_ngay: 'Ngày làm việc bình thường (Ca HC)',
-    thoi_gian: '17:30–20:30',
-    gio_ot: 3.0,
-    he_so: 150,
-    gio_quy_doi: 4.5
-  };
-
-  const reasonMap = {
-    'Kỹ thuật Cơ điện': 'Sửa chữa, bảo trì khẩn cấp hệ thống cẩu trục STS bến số 1 phục vụ giải phóng tàu container đúng tiến độ.',
-    'Khai thác': 'Tăng cường điều độ bốc dỡ hàng container bãi bến và giải tỏa ùn tắc cầu tàu theo yêu cầu hãng tàu.',
-    'PT Phần mềm': 'Hỗ trợ kỹ thuật người dùng nghiệm thu hệ thống phần mềm HRM và xử lý phát sinh vận hành ca cao điểm.'
-  };
-
-  const reqObj = {
-    code: item.ma_don || maDon,
-    nv: emp ? emp.nv : 'Nguyễn Văn An',
-    pap: emp ? emp.pap : 'PAP0007',
-    phong: emp ? emp.phong : 'Kỹ thuật Cơ điện',
-    chuc_vu: emp ? emp.chuc_vu : 'Kỹ sư Cơ điện',
-    ngay: item.ngay,
-    gio: item.thoi_gian,
-    hours: item.gio_ot + ' giờ',
-    loai: item.loai_code || 'WEEKDAY',
-    loai_ngay: item.loai_ngay,
-    he_so: item.he_so + '%',
-    quy_doi: (item.gio_quy_doi || (item.gio_ot * (item.he_so / 100))).toFixed(1) + ' giờ',
-    huo: 'SALARY',
-    status: 'APPROVED',
-    reason: reasonMap[emp?.phong] || 'Thực hiện công việc đột xuất ngoài giờ theo điều động của đơn vị.'
-  };
-
-  openM8ReqView(reqObj);
+  viewGlobalReq(maDon);
 }
 /* Modal CHI TIẾT OT của 1 NV (tab Tổng hợp) */
 window.m8otsumQuickFilter = 'ALL';
@@ -9816,7 +9553,7 @@ function openM8SumDetailModal(r) {
         <td style="padding:9px 12px;text-align:right;font-weight:700;color:#0f172a">${it.gio_ot}</td>
         <td style="padding:9px 12px;text-align:center;font-weight:700;color:#2E3191">${it.he_so}%</td>
         <td style="padding:9px 12px;text-align:center">
-          <button type="button" class="btn btn-o" onclick="openM8RequestFromDetail('${it.ma_don}', '${r.pap}', '${it.ngay}')" style="background:#fff;color:#2E3191;border:1px solid #cbd5e1;padding:3px 8px;border-radius:6px;font-family:monospace;font-weight:700;font-size:11.5px;cursor:pointer;display:inline-flex;align-items:center;gap:4px;box-shadow:0 1px 2px rgba(0,0,0,0.03)" title="Bấm để xem lại đơn đề xuất ${it.ma_don}" onmouseover="this.style.background='#eef2ff';this.style.borderColor='#2E3191'" onmouseout="this.style.background='#fff';this.style.borderColor='#cbd5e1'">
+          <button type="button" class="btn btn-o" onclick="openM8RequestFromDetail('${it.ma_don}', '${r.pap}', '${it.ngay}')" style="background:#fff;color:#2E3191;border:1px solid #cbd5e1;padding:3px 8px;border-radius:6px;font-family:monospace;font-weight:700;font-size:11.5px;cursor:pointer;display:inline-flex;align-items:center;gap:4px;box-shadow:0 1px 2px rgba(0,0,0,0.03)" title="Bấm để xem chi tiết đơn ${it.ma_don}" onmouseover="this.style.background='#eef2ff';this.style.borderColor='#2E3191'" onmouseout="this.style.background='#fff';this.style.borderColor='#cbd5e1'">
             <i class="fa-regular fa-file-lines" style="font-size:11px"></i><span>${it.ma_don}</span>
           </button>
         </td>
@@ -11513,11 +11250,7 @@ function E9render(id){
     },
     annual: {
       title: 'Quỹ phép năm ' + curY,
-      keys: ['nam', 'tn']
-    },
-    usage: {
-      title: 'Sử dụng & Số dư',
-      keys: ['used', 'remain']
+      keys: ['nam', 'tn', 'used', 'remain']
     }
   } : (isLedc ? {
     comp_carry: {
@@ -11526,11 +11259,7 @@ function E9render(id){
     },
     comp_earned: {
       title: 'Tích lũy năm ' + curY,
-      keys: ['earned', 'earned_expired']
-    },
-    comp_usage: {
-      title: 'Sử dụng & Số dư',
-      keys: ['used', 'remain']
+      keys: ['earned', 'earned_expired', 'used', 'remain']
     }
   } : null);
 
@@ -11588,9 +11317,9 @@ function E9render(id){
     } else if(c.k === 'used' && isLedc) {
       colTitle = 'Đã dùng ' + curY + ' <i class="fa-solid fa-circle-info" title="Số ngày nghỉ bù đã dùng trừ vào tích lũy năm ' + curY + ' (không bao gồm ngày đã trừ vào bù tồn chuyển sang)" style="font-size:10px;opacity:0.85;margin-left:3px;cursor:pointer"></i>';
     } else if(c.k === 'remain' && isLeda) {
-      colTitle = 'Còn lại <i class="fa-solid fa-circle-info" title="Số dư khả dụng = Còn khả dụng (tồn) + Phép năm + Thâm niên - Đã dùng ' + curY + '" style="font-size:10px;opacity:0.85;margin-left:3px;cursor:pointer"></i>';
+      colTitle = 'Còn lại <i class="fa-solid fa-circle-info" title="Số ngày phép năm ' + curY + ' còn lại = Phép năm + Thâm niên - Đã dùng ' + curY + '" style="font-size:10px;opacity:0.85;margin-left:3px;cursor:pointer"></i>';
     } else if(c.k === 'remain' && isLedc) {
-      colTitle = 'Còn lại <i class="fa-solid fa-circle-info" title="Số dư khả dụng = Còn khả dụng (bù tồn) + Tích lũy nghỉ bù ' + curY + ' - Hết hạn tích lũy - Đã dùng ' + curY + '" style="font-size:10px;opacity:0.85;margin-left:3px;cursor:pointer"></i>';
+      colTitle = 'Còn lại <i class="fa-solid fa-circle-info" title="Số ngày tích lũy năm ' + curY + ' còn lại = Tích lũy - Hết hạn - Đã dùng" style="font-size:9.5px;opacity:0.85;cursor:pointer"></i>';
     }
 
     s += '<span>' + colTitle + '</span>';
@@ -12802,11 +12531,12 @@ const ledaCols=[
   {k:'ton',t:'Chuyển sang',group:'carry',vis:true,sort:true,center:true},
   {k:'ton_used',t:'Đã dùng',group:'carry',vis:true,sort:true,center:true},
   {k:'het_han',t:'Hết hạn',group:'carry',vis:true,sort:true,center:true},
-  {k:'ton_remain',t:'Còn khả dụng',group:'carry',vis:true,sort:true,center:true},
+  {k:'ton_remain',t:'Còn lại',group:'carry',vis:true,sort:true,center:true},
   {k:'nam',t:'Phép năm',group:'annual',vis:true,sort:true,center:true},
   {k:'tn',t:'Thâm niên',group:'annual',vis:true,sort:true,center:true},
-  {k:'used',t:'Đã dùng',group:'usage',vis:true,sort:true,center:true},
-  {k:'remain',t:'Còn lại',group:'usage',vis:true,sort:true,center:true},
+  {k:'used',t:'Đã dùng',group:'annual',vis:true,sort:true,center:true},
+  {k:'remain',t:'Còn lại',group:'annual',vis:true,sort:true,center:true},
+  {k:'total_remain',t:'Số dư khả dụng',vis:true,sort:true,center:true},
   {k:'ngay_vao_lam',t:'Ngày bắt đầu làm việc',vis:true,sort:true,center:true},
   {k:'ngay_ky_hd',t:'Ngày ký HĐ chính thức',vis:true,sort:true,center:true},
   {k:'tham_nien_ct',t:'Tính thâm niên',vis:true,sort:true,center:true},
@@ -12829,7 +12559,11 @@ const ledaCell={
     if(k==='nam') return `<span style="font-weight:700;color:#1e293b">${r.nam}</span>`;
     if(k==='tn') return `<span>${r.tn}</span>`;
     if(k==='used') return (r.used > 0) ? `<span style="color:#e11d48;font-weight:600">${String(r.used)}</span>` : `<span style="color:#94a3b8">0</span>`;
-    if(k==='remain') return `<span style="display:inline-block;padding:3px 12px;border-radius:999px;background:#f0fdf4;color:#16a34a;font-weight:700;border:1px solid #bbf7d0;font-size:12px">${String(r.remain)} ngày</span>`;
+    if(k==='remain') return `<span style="font-weight:700;color:#1e293b">${String(r.remain)}</span>`;
+    if(k==='total_remain') {
+      const tot = (typeof r.total_remain !== 'undefined' && !isNaN(r.total_remain)) ? r.total_remain : ((parseFloat(r.ton_remain || 0)) + (parseFloat(r.remain || 0)));
+      return `<span style="display:inline-block;padding:2px 8px;border-radius:999px;background:#f0fdf4;color:#15803d;font-weight:800;border:1px solid #86efac;font-size:11px;box-shadow:0 1px 2px rgba(0,0,0,0.03);white-space:nowrap">${String(tot)} ngày</span>`;
+    }
     if(k==='ngay_vao_lam') return `<span style="color:#64748b;font-size:11.5px">${r.ngay_vao_lam||'—'}</span>`;
     if(k==='ngay_ky_hd') return `<span style="color:#64748b;font-size:11.5px">${r.ngay_ky_hd||'—'}</span>`;
     if(k==='tham_nien_ct') return `<span style="font-weight:600;color:#1e293b">${r.tham_nien_ct||'—'}</span>`;
@@ -12845,23 +12579,24 @@ const ledcCols=[
   {k:'ton',t:'Chuyển sang',group:'comp_carry',vis:true,sort:true,center:true},
   {k:'ton_used',t:'Đã dùng',group:'comp_carry',vis:true,sort:true,center:true},
   {k:'het_han',t:'Hết hạn',group:'comp_carry',vis:true,sort:true,center:true},
-  {k:'ton_remain',t:'Còn khả dụng',group:'comp_carry',vis:true,sort:true,center:true},
-  {k:'earned',t:'Tích lũy nghỉ bù',group:'comp_earned',vis:true,sort:true,center:true},
+  {k:'ton_remain',t:'Còn lại',group:'comp_carry',vis:true,sort:true,center:true},
+  {k:'earned',t:'Tích lũy',group:'comp_earned',vis:true,sort:true,center:true},
   {k:'earned_expired',t:'Hết hạn',group:'comp_earned',vis:true,sort:true,center:true},
-  {k:'used',t:'Đã dùng',group:'comp_usage',vis:true,sort:true,center:true},
-  {k:'remain',t:'Còn lại',group:'comp_usage',vis:true,sort:true,center:true},
+  {k:'used',t:'Đã dùng',group:'comp_earned',vis:true,sort:true,center:true},
+  {k:'remain',t:'Còn lại',group:'comp_earned',vis:true,sort:true,center:true},
+  {k:'total_remain',t:'Số dư khả dụng',vis:true,sort:true,center:true},
   {k:'action',t:'Hành động',sr:true,pin:true,vis:true,center:true}
 ];
 const ledcCell={
   actionRender:r=>`<div style="display:flex;align-items:center;justify-content:center;gap:4px">
-    <button class="btn btn-o" style="font-size:11px;padding:3px 7px;color:#2E3191;border-color:#cbd5e1" title="Xem chi tiết sổ phép bù" onclick='E9ledView(${JSON.stringify(r)},"comp")'><i class="fa-solid fa-eye"></i></button>
-    <button class="btn btn-o" style="font-size:11px;padding:3px 7px;color:#0284c7;border-color:#cbd5e1" title="Cập nhật quỹ phép bù" onclick='E9ledOpenEdit(${JSON.stringify(r)},"comp")'><i class="fa-solid fa-pen-to-square"></i></button>
+    <button class="btn btn-o" style="font-size:11px;padding:3px 6px;color:#2E3191;border-color:#cbd5e1" title="Xem chi tiết sổ phép bù" onclick='E9ledView(${JSON.stringify(r)},"comp")'><i class="fa-solid fa-eye"></i></button>
+    <button class="btn btn-o" style="font-size:10px;padding:2px 5px;color:#0284c7;border-color:#cbd5e1" title="Cập nhật quỹ phép bù" onclick='E9ledOpenEdit(${JSON.stringify(r)},"comp")'><i class="fa-solid fa-pen-to-square"></i></button>
   </div>`,
   render:(k,r)=>{
-    if(k==='pap') return `<b>${r.pap}</b>`;
-    if(k==='nv') return `<div style="display:flex;align-items:center;gap:8px"><span style="width:28px;height:28px;border-radius:999px;background:${r.color||'#2E3191'};color:#fff;font-size:10px;font-weight:700;display:inline-flex;align-items:center;justify-content:center;flex-shrink:0">${r.ini||'NV'}</span><span style="font-weight:600;color:#1e293b">${r.nv}</span></div>`;
-    if(k==='pb') return `<span>${r.pb}</span>`;
-    if(k==='chuc_vu') return `<span style="color:#475569">${r.chuc_vu||'—'}</span>`;
+    if(k==='pap') return `<b style="font-size:11.5px;letter-spacing:0.2px">${r.pap}</b>`;
+    if(k==='nv') return `<div style="display:flex;align-items:center;gap:6px"><span style="width:22px;height:22px;border-radius:999px;background:${r.color||'#2E3191'};color:#fff;font-size:9px;font-weight:700;display:inline-flex;align-items:center;justify-content:center;flex-shrink:0">${r.ini||'NV'}</span><span style="font-weight:600;color:#1e293b;font-size:11.5px;white-space:nowrap">${r.nv}</span></div>`;
+    if(k==='pb') return `<span style="font-size:11px;color:#334155;white-space:nowrap">${r.pb}</span>`;
+    if(k==='chuc_vu') return `<span style="font-size:11px;color:#475569;white-space:nowrap">${r.chuc_vu||'—'}</span>`;
     if(k==='ton') return `<span style="font-weight:700;color:#1e293b">${String(r.ton ?? 0)}</span>`;
     if(k==='ton_used') return (r.ton_used > 0) ? `<span style="color:#e11d48;font-weight:600">${String(r.ton_used)}</span>` : `<span style="color:#94a3b8">0</span>`;
     if(k==='het_han') return (r.het_han > 0) ? `<span style="color:#94a3b8;font-weight:600">${String(r.het_han)}</span>` : `<span style="color:#94a3b8">0</span>`;
@@ -12869,7 +12604,11 @@ const ledcCell={
     if(k==='earned') return `<span style="font-weight:700;color:#1e293b">${String(r.earned)}</span>`;
     if(k==='earned_expired') return (r.earned_expired > 0) ? `<span style="color:#94a3b8;font-weight:600">${String(r.earned_expired)}</span>` : `<span style="color:#94a3b8">0</span>`;
     if(k==='used') return (r.used > 0) ? `<span style="color:#e11d48;font-weight:600">${String(r.used)}</span>` : `<span style="color:#94a3b8">0</span>`;
-    if(k==='remain') return `<span style="display:inline-block;padding:3px 12px;border-radius:999px;background:#f0fdf4;color:#16a34a;font-weight:700;border:1px solid #bbf7d0;font-size:12px">${String(r.remain)} ngày</span>`;
+    if(k==='remain') return `<span style="font-weight:700;color:#1e293b">${String(r.remain)}</span>`;
+    if(k==='total_remain') {
+      const tot = (typeof r.total_remain !== 'undefined' && !isNaN(r.total_remain)) ? r.total_remain : ((parseFloat(r.ton_remain || 0)) + (parseFloat(r.remain || 0)));
+      return `<span style="display:inline-block;padding:2px 8px;border-radius:999px;background:#f0fdf4;color:#15803d;font-weight:800;border:1px solid #86efac;font-size:11px;box-shadow:0 1px 2px rgba(0,0,0,0.03);white-space:nowrap">${String(tot)} ngày</span>`;
+    }
     return r[k]??"";
   }
 };
@@ -13813,8 +13552,8 @@ function E9ledView(r,fund){
       </div>
     </div>
 
-    <!-- 2. KHỐI KPI CHUẨN HÓA THEO 3 CỤM CỘT NGOÀI DANH SÁCH (ĐỒNG NHẤT QUỸ PHÉP NĂM) -->
-    <div style="display:grid;grid-template-columns:1.4fr 0.9fr 0.9fr;gap:10px;margin-bottom:14px">
+    <!-- 2. KHỐI KPI CHUẨN HÓA ĐỒNG BỘ: BÙ TỒN, TÍCH LŨY NĂM VÀ SỐ DƯ KHẢ DỤNG -->
+    <div style="display:grid;grid-template-columns:1.2fr 1.2fr 0.8fr;gap:10px;margin-bottom:14px">
       <!-- Cụm 1: Bù tồn chuyển từ năm trước -->
       <div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:10px 12px">
         <div style="font-size:11px;font-weight:700;color:#475569;margin-bottom:8px;display:flex;align-items:center;gap:5px">
@@ -13834,18 +13573,18 @@ function E9ledView(r,fund){
             <b style="font-size:14.5px;color:#d97706">${fmtCompNum(tonHetHanVal)}</b>
           </div>
           <div style="background:#fff;border:1px solid #e2e8f0;border-radius:6px;padding:6px 2px">
-            <div style="font-size:10.5px;color:#64748b;margin-bottom:2px">Còn khả dụng</div>
+            <div style="font-size:10.5px;color:#64748b;margin-bottom:2px">Còn lại</div>
             <b style="font-size:14.5px;color:#047857">${fmtCompNum(r.ton_remain ?? 0)}</b>
           </div>
         </div>
       </div>
 
-      <!-- Cụm 2: Tích lũy năm hiện tại -->
+      <!-- Cụm 2: Tích lũy năm hiện tại (4 cột đối xứng) -->
       <div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:10px 12px">
         <div style="font-size:11px;font-weight:700;color:#475569;margin-bottom:8px;display:flex;align-items:center;gap:5px">
           <i class="fa-solid fa-calendar-plus text-slate-500"></i><span>TÍCH LŨY NĂM ${curY}</span>
         </div>
-        <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:6px;text-align:center">
+        <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:6px;text-align:center">
           <div style="background:#fff;border:1px solid #e2e8f0;border-radius:6px;padding:6px 2px">
             <div style="font-size:10.5px;color:#64748b;margin-bottom:2px">Tích lũy</div>
             <b style="font-size:14.5px;color:#0f172a">${fmtCompNum(earnedVal)}</b>
@@ -13854,23 +13593,24 @@ function E9ledView(r,fund){
             <div style="font-size:10.5px;color:#64748b;margin-bottom:2px">Hết hạn</div>
             <b style="font-size:14.5px;color:#d97706">${fmtCompNum(r.earned_expired ?? 0)}</b>
           </div>
+          <div style="background:#fff;border:1px solid #e2e8f0;border-radius:6px;padding:6px 2px">
+            <div style="font-size:10.5px;color:#64748b;margin-bottom:2px">Đã dùng</div>
+            <b style="font-size:14.5px;color:#be123c">${fmtCompNum(usedVal)}</b>
+          </div>
+          <div style="background:#fff;border:1px solid #e2e8f0;border-radius:6px;padding:6px 2px">
+            <div style="font-size:10.5px;color:#64748b;margin-bottom:2px">Còn lại</div>
+            <b style="font-size:14.5px;color:#047857">${fmtCompNum(calcRemainVal)}</b>
+          </div>
         </div>
       </div>
 
-      <!-- Cụm 3: Sử dụng & Số dư -->
-      <div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:10px 12px">
-        <div style="font-size:11px;font-weight:700;color:#475569;margin-bottom:8px;display:flex;align-items:center;gap:5px">
-          <i class="fa-solid fa-chart-pie text-slate-500"></i><span>SỬ DỤNG &amp; SỐ DƯ</span>
+      <!-- Cụm 3: Số dư khả dụng (Chốt tổng) -->
+      <div style="background:#f0fdf4;border:1px solid #bbf7d0;border-radius:8px;padding:10px 12px;display:flex;flex-direction:column;justify-content:center;text-align:center">
+        <div style="font-size:11px;font-weight:700;color:#166534;margin-bottom:6px;display:flex;align-items:center;justify-content:center;gap:5px">
+          <i class="fa-solid fa-wallet text-emerald-600"></i><span>SỐ DƯ KHẢ DỤNG</span>
         </div>
-        <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:6px;text-align:center">
-          <div style="background:#fff;border:1px solid #e2e8f0;border-radius:6px;padding:6px 2px">
-            <div style="font-size:10.5px;color:#64748b;margin-bottom:2px" title="Số ngày đã dùng trừ vào tích lũy năm ${curY}, không gồm bù tồn">Đã dùng (${curY})</div>
-            <b style="font-size:14.5px;color:#be123c">${fmtCompNum(usedVal)}</b>
-          </div>
-          <div style="background:#fff;border:1px solid #cbd5e1;border-radius:6px;padding:6px 2px">
-            <div style="font-size:10.5px;color:#2E3191;font-weight:700;margin-bottom:2px">Còn lại</div>
-            <b style="font-size:15px;color:#2E3191">${fmtCompNum(calcRemainVal)}</b>
-          </div>
+        <div>
+          <b style="font-size:18px;color:#15803d">${fmtCompNum(tonRemainVal + calcRemainVal)} ngày</b>
         </div>
       </div>
     </div>
@@ -14022,7 +13762,7 @@ function E9ledView(r,fund){
     </div>
     
     <!-- KHỐI KPI CHUẨN HÓA THEO 3 CỤM CỘT NGOÀI DANH SÁCH (ĐỒNG BỘ PHÉP TỒN, QUỸ NĂM, SỬ DỤNG & SỐ DƯ) -->
-    <div style="display:grid;grid-template-columns:1.4fr 0.9fr 0.9fr;gap:10px;margin-bottom:14px">
+    <div style="display:grid;grid-template-columns:1.2fr 1.2fr 0.8fr;gap:10px;margin-bottom:14px">
       <!-- Cụm 1: Phép tồn chuyển từ năm trước -->
       <div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:10px 12px">
         <div style="font-size:11px;font-weight:700;color:#475569;margin-bottom:8px;display:flex;align-items:center;gap:5px">
@@ -14042,18 +13782,18 @@ function E9ledView(r,fund){
             <b style="font-size:14.5px;color:#d97706">${r.het_han ?? 0}</b>
           </div>
           <div style="background:#fff;border:1px solid #e2e8f0;border-radius:6px;padding:6px 2px">
-            <div style="font-size:10.5px;color:#64748b;margin-bottom:2px">Còn khả dụng</div>
+            <div style="font-size:10.5px;color:#64748b;margin-bottom:2px">Còn lại</div>
             <b style="font-size:14.5px;color:#047857">${r.ton_remain ?? 0}</b>
           </div>
         </div>
       </div>
 
-      <!-- Cụm 2: Quỹ phép năm hiện tại -->
+      <!-- Cụm 2: Quỹ phép năm ${curY} (4 cột đối xứng) -->
       <div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:10px 12px">
         <div style="font-size:11px;font-weight:700;color:#475569;margin-bottom:8px;display:flex;align-items:center;gap:5px">
           <i class="fa-solid fa-calendar text-slate-500"></i><span>QUỸ PHÉP NĂM ${curY}</span>
         </div>
-        <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:6px;text-align:center">
+        <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:6px;text-align:center">
           <div style="background:#fff;border:1px solid #e2e8f0;border-radius:6px;padding:6px 2px">
             <div style="font-size:10.5px;color:#64748b;margin-bottom:2px">Phép năm</div>
             <b style="font-size:14.5px;color:#0f172a">${r.nam ?? 12}</b>
@@ -14062,23 +13802,24 @@ function E9ledView(r,fund){
             <div style="font-size:10.5px;color:#64748b;margin-bottom:2px">Thâm niên</div>
             <b style="font-size:14.5px;color:#0284c7">${r.tn ?? 0}</b>
           </div>
+          <div style="background:#fff;border:1px solid #e2e8f0;border-radius:6px;padding:6px 2px">
+            <div style="font-size:10.5px;color:#64748b;margin-bottom:2px" title="Số ngày đã dùng trừ vào quỹ năm ${curY}, không gồm phép tồn">Đã dùng</div>
+            <b style="font-size:14.5px;color:#be123c">${r.used ?? 0}</b>
+          </div>
+          <div style="background:#fff;border:1px solid #e2e8f0;border-radius:6px;padding:6px 2px">
+            <div style="font-size:10.5px;color:#64748b;margin-bottom:2px">Còn lại</div>
+            <b style="font-size:14.5px;color:#047857">${r.remain ?? 0}</b>
+          </div>
         </div>
       </div>
 
-      <!-- Cụm 3: Sử dụng & Số dư -->
-      <div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:10px 12px">
-        <div style="font-size:11px;font-weight:700;color:#475569;margin-bottom:8px;display:flex;align-items:center;gap:5px">
-          <i class="fa-solid fa-chart-pie text-slate-500"></i><span>SỬ DỤNG &amp; SỐ DƯ</span>
+      <!-- Cụm 3: Số dư khả dụng (Chốt tổng) -->
+      <div style="background:#f0fdf4;border:1px solid #bbf7d0;border-radius:8px;padding:10px 12px;display:flex;flex-direction:column;justify-content:center;text-align:center">
+        <div style="font-size:11px;font-weight:700;color:#166534;margin-bottom:6px;display:flex;align-items:center;justify-content:center;gap:5px">
+          <i class="fa-solid fa-wallet text-emerald-600"></i><span>SỐ DƯ KHẢ DỤNG</span>
         </div>
-        <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:6px;text-align:center">
-          <div style="background:#fff;border:1px solid #e2e8f0;border-radius:6px;padding:6px 2px">
-            <div style="font-size:10.5px;color:#64748b;margin-bottom:2px" title="Số ngày đã dùng trừ vào quỹ năm ${curY}, không gồm phép tồn">Đã dùng (${curY})</div>
-            <b style="font-size:14.5px;color:#be123c">${r.used ?? 0}</b>
-          </div>
-          <div style="background:#fff;border:1px solid #cbd5e1;border-radius:6px;padding:6px 2px">
-            <div style="font-size:10.5px;color:#2E3191;font-weight:700;margin-bottom:2px">Còn lại</div>
-            <b style="font-size:15px;color:#2E3191">${r.remain ?? 0} ngày</b>
-          </div>
+        <div>
+          <b style="font-size:18px;color:#15803d">${parseFloat(((parseFloat(r.ton_remain || 0)) + (parseFloat(r.remain || 0))).toFixed(1))} ngày</b>
         </div>
       </div>
     </div>
@@ -14226,9 +13967,9 @@ function E9ledOpenEdit(r, fund){
     document.getElementById('led-edit-tn').value = r.tn ?? 0;
   }
 
-  // Cụm 3: Sử dụng & Số dư
+  // Cụm 2: Đã dùng trong năm
   const usedLbl = document.getElementById('led-edit-used-lbl');
-  if(usedLbl) usedLbl.textContent = isComp ? ('Đã dùng năm ' + curY + ' (tích lũy) *') : ('Đã dùng năm ' + curY + ' (quỹ mới) *');
+  if(usedLbl) usedLbl.textContent = 'Đã dùng *';
   document.getElementById('led-edit-used').value = r.used ?? 0;
 
   document.getElementById('led-edit-reason').value = '';
@@ -14243,26 +13984,30 @@ function E9calcLedRemainPreview(){
   const tonUsed = parseFloat(document.getElementById('led-edit-ton-used').value) || 0;
   const hetHan = parseFloat(document.getElementById('led-edit-het-han').value) || 0;
   
-  // Tính Còn khả dụng tồn
+  // Tính Còn lại tồn
   const tonRemain = Math.max(0, ton - tonUsed - hetHan);
   const tonRemEl = document.getElementById('led-edit-ton-remain');
   if(tonRemEl) tonRemEl.value = String(tonRemain);
 
-  let remain = 0;
+  let curRemain = 0;
   if(fund === 'comp'){
     const earned = parseFloat(document.getElementById('led-edit-nam').value) || 0;
     const earnedExpired = parseFloat(document.getElementById('led-edit-tn').value) || 0;
     const used = parseFloat(document.getElementById('led-edit-used').value) || 0;
-    remain = Math.max(0, (tonRemain + earned - earnedExpired) - used);
+    curRemain = Math.max(0, earned - earnedExpired - used);
   } else {
     const nam = parseFloat(document.getElementById('led-edit-nam').value) || 0;
     const tn = parseFloat(document.getElementById('led-edit-tn').value) || 0;
     const used = parseFloat(document.getElementById('led-edit-used').value) || 0;
-    remain = Math.max(0, (tonRemain + nam + tn) - used);
+    curRemain = Math.max(0, (nam + tn) - used);
   }
 
+  const annRemEl = document.getElementById('led-edit-ann-remain');
+  if(annRemEl) annRemEl.value = String(curRemain);
+
+  const totalRemain = tonRemain + curRemain;
   const pillEl = document.getElementById('led-edit-remain-pill');
-  if(pillEl) pillEl.textContent = String(remain) + ' ngày';
+  if(pillEl) pillEl.textContent = String(totalRemain) + ' ngày';
 }
 
 function E9ledSaveEdit(){
@@ -14300,8 +14045,9 @@ function E9ledSaveEdit(){
       item.earned = nam;
       item.earned_expired = tn;
       item.used = used;
-      item.remain = Math.max(0, (tonRemain + nam - tn) - used);
-      item.bal = item.remain;
+      item.remain = Math.max(0, (nam - tn) - used);
+      item.total_remain = item.ton_remain + item.remain;
+      item.bal = item.total_remain;
       if(!item.hist) item.hist = [];
       item.hist.unshift({
         date: today,
@@ -16710,10 +16456,10 @@ const reqGroupMasterData = [
   },
   {
     code: 'GRP-OT',
-    name: 'Làm thêm giờ OT tính lương',
+    name: 'Làm thêm giờ tính lương',
     category: 'OT',
     nameGuide: 'Đặt tên đề xuất làm thêm giờ tính lương:',
-    formatGuide: 'Họ tên - Phòng Ban - Làm thêm giờ OT [Ngày/Ca]',
+    formatGuide: 'Họ tên - Phòng Ban - Làm thêm giờ [Ngày/Ca]',
     policy: 'Đăng ký làm thêm giờ tính lương theo giờ thực tế và hệ số luật định (150% - 350%). Hạn mức: Tối đa 4h/ca, 40h/tháng, 200h/năm theo Luật Lao động. Dữ liệu sau duyệt chuyển sang Bảng công tổng hợp M06.',
     stepsText: '<div style="display:inline-flex;align-items:center;gap:6px"><span style="background:#eff6ff;color:#1d4ed8;padding:2px 6px;border-radius:4px;font-weight:600;font-size:11px"><i class="fa-solid fa-user-check mr-1"></i>B1: QLTT</span><i class="fa-solid fa-arrow-right" style="font-size:9px;color:#94a3b8"></i><span style="background:#fae8ff;color:#86198f;padding:2px 6px;border-radius:4px;font-weight:600;font-size:11px"><i class="fa-solid fa-user-shield mr-1"></i>B2: GĐ Khai thác</span></div>'
   },
@@ -16771,8 +16517,8 @@ function renderReqGroupsList(groups) {
     'GRP-UL': { icon: 'fa-file-contract', color: '#d97706', bg: '#fffbeb', tag: 'Nghỉ không lương', desc: 'Việc riêng khi đã sử dụng hết quỹ ngày phép năm' },
     'GRP-OTHER': { icon: 'fa-notes-medical', color: '#db2777', bg: '#fdf2f8', tag: 'Chế độ khác', desc: 'Chế độ ốm đau / thai sản / dưỡng sức • BHXH chi trả' },
     'GRP-PUNCH': { icon: 'fa-fingerprint', color: '#b45309', bg: '#fef3c7', tag: 'Giải trình công', desc: 'Quên chấm công vào/ra' },
-    'GRP-OT': { icon: 'fa-stopwatch', color: '#047857', bg: '#ecfdf5', tag: 'Làm thêm giờ (OT)', desc: 'Tăng ca bốc dỡ tàu hàng • Tính lương theo giờ & hệ số (150% - 350%)' },
-    'GRP-COMP-ACCRUAL': { icon: 'fa-calendar-plus', color: '#0284c7', bg: '#f0f9ff', tag: 'Tích lũy nghỉ bù', desc: 'Tăng ca tích lũy ngày nghỉ • Tích lũy 0.5 ngày hoặc 1 ngày vào Quỹ nghỉ bù theo lịch làm việc' }
+    'GRP-OT': { icon: 'fa-stopwatch', color: '#047857', bg: '#ecfdf5', tag: 'Làm thêm giờ', desc: '' },
+    'GRP-COMP-ACCRUAL': { icon: 'fa-calendar-plus', color: '#0284c7', bg: '#f0f9ff', tag: 'Tích lũy nghỉ bù', desc: '' }
   };
 
   // 3 NHÓM NGHIỆP VỤ CHUẨN (Gôm Đơn xin nghỉ & Công tác thành nhóm 1)
@@ -16834,7 +16580,7 @@ function renderReqGroupsList(groups) {
             '<div style="font-weight:500;font-size:13px;color:#1e293b">' +
               g.name +
             '</div>' +
-            '<div style="font-size:11px;color:#64748b;margin-top:2px">' + meta.desc + '</div>' +
+            (meta.desc ? '<div style="font-size:11px;color:#64748b;margin-top:2px">' + meta.desc + '</div>' : '') +
           '</div>' +
         '</div>' +
         '<div style="display:flex;align-items:center;gap:8px;color:#94a3b8">' +
@@ -17585,7 +17331,6 @@ function openGlobalCreateReqModal(groupCode) {
       const fTitle = document.getElementById('g-leave-fund-title');
       const fBal = document.getElementById('g-leave-fund-balance');
       const fIcon = document.getElementById('g-leave-fund-icon');
-      const fExp = document.getElementById('g-comp-fund-expiry-tag');
 
       if (isCompLeave) {
         if (fTitle) fTitle.textContent = 'Quỹ phép bù hiện tại:';
@@ -17599,7 +17344,6 @@ function openGlobalCreateReqModal(groupCode) {
           fIcon.className = 'fa-solid fa-clock-rotate-left';
           fIcon.style.color = '#15803d';
         }
-        if (fExp) fExp.style.display = 'inline-flex';
       } else {
         if (fTitle) fTitle.textContent = 'Số phép dư hiện tại:';
         if (fBal) {
@@ -17612,7 +17356,6 @@ function openGlobalCreateReqModal(groupCode) {
           fIcon.className = 'fa-solid fa-wallet text-[#2E3191]';
           fIcon.style.color = '';
         }
-        if (fExp) fExp.style.display = 'none';
       }
     } else {
       sFund.style.display = 'none';
@@ -17712,7 +17455,7 @@ function submitGlobalCreateReq() {
     let defaultReason = 'Bận việc gia đình';
     if (g.category === 'ATT_ADJ') defaultReason = 'Quên chấm công';
     else if (g.code === 'GRP-COMP-ACCRUAL' || g.category === 'COMP_ACCRUAL') defaultReason = 'Làm thêm tích lũy nghỉ bù';
-    else if (g.category === 'OT') defaultReason = 'Làm thêm giờ OT tính lương';
+    else if (g.category === 'OT') defaultReason = 'Làm thêm giờ tính lương';
     else if (g.category === 'BUSINESS') defaultReason = 'Công tác chuyên môn';
     else if (g.category === 'WFH') defaultReason = 'Làm việc từ xa';
     const reason = userReasonInput || defaultReason;
@@ -17798,7 +17541,7 @@ function submitGlobalCreateReq() {
     // Determine request title
     let reqTitle = 'Đơn đề xuất ' + typeLabel.toLowerCase();
     if (g.code === 'GRP-COMP-ACCRUAL' || g.category === 'COMP_ACCRUAL') reqTitle = 'Làm thêm tích lũy nghỉ bù';
-    else if (g.category === 'OT') reqTitle = 'Đơn đề xuất làm thêm giờ OT tính lương';
+    else if (g.category === 'OT') reqTitle = 'Đơn đề xuất làm thêm giờ tính lương';
     else if (g.category === 'ATT_ADJ') reqTitle = 'Đơn giải trình quên chấm công';
     else if (g.code === 'GRP-COMP' || g.category === 'LEAVE_COMP') reqTitle = 'Đơn xin nghỉ bù';
     else if (g.category.startsWith('LEAVE')) reqTitle = 'Đơn xin ' + typeLabel.toLowerCase();
@@ -17812,7 +17555,7 @@ function submitGlobalCreateReq() {
       deptName: 'PT Phần mềm',
       avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=60&auto=format&fit=crop&q=80',
       title: reqTitle,
-      type: (g.code === 'GRP-COMP-ACCRUAL' || g.category === 'COMP_ACCRUAL' ? 'Làm thêm tích lũy nghỉ bù' : (g.category === 'OT' ? 'Làm thêm giờ OT tính lương' : (g.category === 'ATT_ADJ' ? 'Giải trình quên chấm công' : (g.code === 'GRP-COMP' || g.category === 'LEAVE_COMP' ? 'Nghỉ bù' : typeLabel)))),
+      type: (g.code === 'GRP-COMP-ACCRUAL' || g.category === 'COMP_ACCRUAL' ? 'Làm thêm tích lũy nghỉ bù' : (g.category === 'OT' ? 'Làm thêm giờ tính lương' : (g.category === 'ATT_ADJ' ? 'Giải trình quên chấm công' : (g.code === 'GRP-COMP' || g.category === 'LEAVE_COMP' ? 'Nghỉ bù' : typeLabel)))),
       typeCode: (g.code === 'GRP-COMP-ACCRUAL' || g.category === 'COMP_ACCRUAL' ? 'COMP_ACCRUAL' : (g.category === 'OT' ? 'OT' : (g.category === 'ATT_ADJ' ? 'ATT_ADJ' : (g.category === 'BUSINESS' ? 'BIZ' : (g.category === 'WFH' ? 'WFH' : 'LEAVE'))))),
       time: timeStr,
       reason: reason,
@@ -18233,6 +17976,67 @@ function viewGlobalReq(id) {
       }
     }
   }
+  if (!r && typeof m8otsumData !== 'undefined') {
+    for (const emp of m8otsumData) {
+      const match = emp.items && emp.items.find(it => it.ma_don === id);
+      if (match) {
+        const isComp = match.huo === 'LEAVE_COMP' || match.hinh_thuc === 'LEAVE_COMP';
+        r = {
+          id: match.ma_don,
+          name: emp.nv,
+          pap: emp.pap,
+          dept: emp.phong,
+          empTitle: emp.chuc_vu || 'Trưởng phòng Kỹ thuật',
+          title: 'Đơn đề xuất tăng ca',
+          type: isComp ? 'Làm thêm tích lũy nghỉ bù' : 'Làm thêm giờ tính lương',
+          typeCode: 'OT',
+          time: match.ngay + ' · ' + match.thoi_gian,
+          dateCreated: match.ngay ? match.ngay.split('/').reverse().join('-') : '2026-10-05',
+          hours: match.gio_ot + 'h',
+          approvedHours: match.gio_ot,
+          he_so: match.he_so ? (String(match.he_so).includes('%') ? match.he_so : match.he_so + '%') : '150%',
+          quy_doi: (match.gio_quy_doi || (match.gio_ot * ((match.he_so || 150) / 100))).toFixed(1) + ' giờ',
+          huo: isComp ? 'LEAVE_COMP' : 'SALARY',
+          loai: match.loai_code || 'WEEKDAY',
+          loai_ngay: match.loai_ngay || 'Ngày làm việc bình thường (Ca HC)',
+          reason: 'Thực hiện công việc đột xuất ngoài giờ theo điều động của đơn vị.',
+          approver: (emp.chuc_vu && emp.chuc_vu.includes('Trưởng')) ? 'Ban Giám đốc (BGĐ)' : 'Trưởng phòng (PHÒNG KỸ THUẬT)',
+          status: 'APPROVED',
+          statusText: 'ĐÃ DUYỆT'
+        };
+        break;
+      }
+    }
+  }
+  if (!r && typeof m8reqData !== 'undefined') {
+    const match = m8reqData.find(x => x.code === id || x.id === id);
+    if (match) {
+      const isComp = match.huo === 'LEAVE_COMP' || match.huo === 'COMP';
+      const isApv = match.status === 'APPROVED' || match.status === 'LOCKED';
+      r = {
+        id: match.code || match.id,
+        name: match.nv,
+        pap: match.pap,
+        dept: match.phong,
+        empTitle: match.chuc_vu || (match.phong === 'PT Phần mềm' ? 'Kỹ sư phần mềm' : 'Chuyên viên kỹ thuật'),
+        title: 'Đơn đề xuất tăng ca',
+        type: isComp ? 'Làm thêm tích lũy nghỉ bù' : 'Làm thêm giờ tính lương',
+        typeCode: 'OT',
+        time: (match.ngay ? (match.ngay.includes('-') ? match.ngay.split('-').reverse().join('/') : match.ngay) : '18/10/2026') + ' · ' + (match.gio || '17:30–20:30'),
+        dateCreated: match.ngay || '2026-10-18',
+        hours: match.hours || '3.0h',
+        approvedHours: parseFloat(match.hours) || 3.0,
+        he_so: match.he_so ? (String(match.he_so).includes('%') ? match.he_so : match.he_so + '%') : '150%',
+        huo: isComp ? 'LEAVE_COMP' : 'SALARY',
+        loai: match.loai || 'WEEKDAY',
+        loai_ngay: match.loai_ngay || (match.loai === 'WEEKEND' ? 'Ngày nghỉ cuối tuần' : 'Ngày làm việc bình thường (Ca HC)'),
+        reason: match.reason || 'Thực hiện công việc đột xuất ngoài giờ theo điều động của đơn vị.',
+        approver: 'Trần Văn Nam (QLTT)',
+        status: isApv ? 'APPROVED' : 'PENDING',
+        statusText: isApv ? 'ĐÃ DUYỆT' : 'CHỜ DUYỆT'
+      };
+    }
+  }
   if (!r) {
     r = {
       id: id,
@@ -18305,7 +18109,7 @@ function viewGlobalReq(id) {
         '</div>' +
         '<div>' +
           '<label class="fl" style="font-size:11px;font-weight:600;color:#64748b;margin-bottom:4px;display:block">Nhóm đề xuất</label>' +
-          '<input type="text" readonly class="fi" value="Làm thêm & Nghỉ bù" style="background:#f8fafc;color:#1e293b;font-weight:600;border:1px solid #cbd5e1;border-radius:6px;height:34px;padding:0 10px;width:100%;box-sizing:border-box">' +
+          '<input type="text" readonly class="fi" value="Tích lũy nghỉ bù" style="background:#f8fafc;color:#1e293b;font-weight:600;border:1px solid #cbd5e1;border-radius:6px;height:34px;padding:0 10px;width:100%;box-sizing:border-box">' +
         '</div>' +
         '<div>' +
           '<label class="fl" style="font-size:11px;font-weight:600;color:#64748b;margin-bottom:4px;display:block">Loại đề xuất</label>' +
@@ -18448,9 +18252,9 @@ function viewGlobalReq(id) {
     const approvedHoursNum = r.approvedHours ? parseFloat(r.approvedHours) : otHoursNum;
 
     const isNight = startHour >= '21:00' || endHour <= '07:00' || timeStr.includes('22:00') || timeStr.includes('06:00');
-    const dayTypeLabel = isNight ? 'Ca đêm (22:00–06:00)' : 'Ngày thường (08:00–17:00)';
-    const rateVal = isNight ? 2.0 : 1.5;
-    const rateCoef = isNight ? '200%' : '150%';
+    const dayTypeLabel = r.loai_ngay || (isNight ? 'Ca đêm (22:00–06:00)' : 'Ngày thường (08:00–17:00)');
+    const rateCoef = r.he_so ? (String(r.he_so).includes('%') ? r.he_so : r.he_so + '%') : (isNight ? '200%' : '150%');
+    const rateVal = (parseFloat(rateCoef) / 100) || (isNight ? 2.0 : 1.5);
     const shiftInfo = isNight ? '22:00–06:00 (Ca 3)' : '08:00–17:00 (Hành chính)';
 
     // Dynamic checkIn and checkOut matching the OT proposal
@@ -18692,9 +18496,6 @@ function viewGlobalReq(id) {
               '<span style="font-weight:600;color:#166534;font-size:12px">Quỹ phép bù khả dụng:</span>' +
               '<span class="badge" style="background:#dcfce7;color:#15803d;border:1px solid #86efac;font-size:12px;font-weight:700;padding:2px 8px">2.5 ngày</span>' +
             '</div>' +
-            '<div style="font-size:11px;color:#854d0e;font-weight:600">' +
-              '<i class="fa-regular fa-clock mr-1"></i>Hạn sử dụng: 30/06/2026' +
-            '</div>' +
           '</div>'
         ) : (
           '<div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:10px 14px;margin-bottom:12px;display:flex;align-items:center;justify-content:space-between">' +
@@ -18811,23 +18612,39 @@ function viewGlobalReq(id) {
     const modalEl = document.querySelector('#mdl-global-view .mdl');
     if (modalEl) modalEl.style.maxWidth = '720px';
 
-    const rawTime = (r.time || '31/10/2026').trim();
-    let fromDate = rawTime;
-    let toDate = rawTime;
-    if (rawTime.includes('-')) {
-      const parts = rawTime.split('-').map(s => s.trim().split(' ')[0]);
-      if (parts.length >= 2) {
-        fromDate = parts[0];
-        toDate = parts[1];
+    const rawTime = (r.time || '30/10/2026').trim();
+    let adjDate = rawTime;
+    let punchDetail = 'Giờ vào: 08:05';
+    let missingPunchType = 'Quên giờ vào';
+
+    if (rawTime.includes('·')) {
+      const parts = rawTime.split('·');
+      adjDate = parts[0].trim();
+      const right = parts[1].trim();
+      punchDetail = right.includes(':') ? right : (right.toLowerCase().includes('ra') ? 'Giờ ra: ' + right : 'Giờ vào: ' + right);
+      if (right.toLowerCase().includes('vào') && right.toLowerCase().includes('ra')) {
+        missingPunchType = 'Quên cả giờ vào & giờ ra';
+      } else if (right.toLowerCase().includes('ra') || right.toLowerCase().includes('về') || right.toLowerCase().includes('out')) {
+        missingPunchType = 'Quên giờ ra';
+      } else {
+        missingPunchType = 'Quên giờ vào';
       }
-    } else {
-      fromDate = rawTime.split(' ')[0];
-      toDate = fromDate;
+    } else if (rawTime.includes('-')) {
+      adjDate = rawTime.split('-')[0].trim();
+    }
+
+    const textToCheck = ((r.punchType || '') + ' ' + (r.title || '') + ' ' + (r.reason || '') + ' ' + rawTime).toLowerCase();
+    if ((textToCheck.includes('vào') && textToCheck.includes('ra')) || textToCheck.includes('cả 2') || textToCheck.includes('both')) {
+      missingPunchType = 'Quên cả giờ vào & giờ ra';
+    } else if (textToCheck.includes('ra') || textToCheck.includes('về') || textToCheck.includes('out') || textToCheck.includes('cuối ca')) {
+      missingPunchType = 'Quên giờ ra';
+    } else if (textToCheck.includes('vào') || textToCheck.includes('sáng') || textToCheck.includes('đầu ca')) {
+      missingPunchType = 'Quên giờ vào';
     }
 
     // Approval indicators
-    const approvalDate1 = r.dateCreated ? r.dateCreated.replace(/(\d{4})-(\d{2})-(\d{2})/, '$3/$2/$1') : '31/10/2026';
-    const approvalDate2 = r.time ? r.time.split(' ')[0] : '01/11/2026';
+    const approvalDate1 = r.dateCreated ? (r.dateCreated.includes('-') ? r.dateCreated.replace(/(\d{4})-(\d{2})-(\d{2})/, '$3/$2/$1') : r.dateCreated) : '30/10/2026';
+    const approvalDate2 = adjDate || '31/10/2026';
 
     let qlttStepBadge = '';
     let fixedStepBadge = '';
@@ -18847,17 +18664,6 @@ function viewGlobalReq(id) {
       fixedStepBadge = '<div style="margin-top:5px;font-size:10.5px;color:#64748b;display:inline-flex;align-items:center;gap:4px"><i class="fa-solid fa-hourglass-start text-slate-400"></i>Chưa duyệt (Chờ B1)</div>';
     }
 
-    // Xác định kiểu quên chấm công chuẩn hóa (Quên giờ vào / Quên giờ ra / Quên cả giờ vào & giờ ra)
-    let missingPunchType = 'Quên giờ vào';
-    const textToCheck = ((r.punchType || '') + ' ' + (r.title || '') + ' ' + (r.reason || '') + ' ' + (r.time || '')).toLowerCase();
-    if ((textToCheck.includes('vào') && textToCheck.includes('ra')) || textToCheck.includes('cả 2') || textToCheck.includes('both')) {
-      missingPunchType = 'Quên cả giờ vào & giờ ra';
-    } else if (textToCheck.includes('ra') || textToCheck.includes('về') || textToCheck.includes('out') || textToCheck.includes('cuối ca')) {
-      missingPunchType = 'Quên giờ ra';
-    } else {
-      missingPunchType = 'Quên giờ vào';
-    }
-
     let adjHtml =
       '<div style="max-height:74vh;overflow-y:auto;padding-right:2px">' +
         // THẺ THÔNG TIN NHÂN SỰ NỘP ĐƠN
@@ -18866,52 +18672,57 @@ function viewGlobalReq(id) {
             renderGreqLetterAvatar(r.name || r.user, 36) +
             '<div>' +
               '<div style="font-weight:700;font-size:13px;color:#0f172a">' + (r.name || r.user || 'Nhân sự') + '</div>' +
-              '<div style="font-size:11px;color:#64748b"><span style="font-family:inherit;font-weight:600;color:#2E3191;letter-spacing:0.3px">' + (r.pap || 'PAP0009') + '</span> &bull; ' + deptName + ' &bull; Ngày nộp: ' + ((r.dateCreated || '2026-10-31').replace(/(\d{4})-(\d{2})-(\d{2})/, '$3/$2/$1')) + '</div>' +
+              '<div style="font-size:11px;color:#64748b"><span style="font-family:inherit;font-weight:600;color:#2E3191;letter-spacing:0.3px">' + (r.pap || 'PAP0009') + '</span> &bull; ' + deptName + ' &bull; Ngày nộp: ' + (approvalDate1) + '</div>' +
             '</div>' +
           '</div>' +
           statusBadge +
         '</div>' +
 
-        // HÀNG 1: TIÊU ĐỀ - NHÓM - LOẠI
+        // HÀNG 1: TIÊU ĐỀ ĐỀ XUẤT - NHÓM ĐỀ XUẤT - LOẠI ĐỀ XUẤT (ĐỒNG BỘ 100% VỚI FORM TẠO MỚI)
         '<div class="frow" style="margin-bottom:12px;grid-template-columns:1.2fr 1fr 1fr">' +
           '<div>' +
-            '<label class="fl">Tiêu đề đề xuất</label>' +
-            '<input type="text" class="fi" value="' + (r.title || 'Đơn giải trình quên chấm công') + '" readonly style="background:#f8fafc;font-weight:600;color:#0f172a">' +
+            '<label class="fl" style="font-size:11px;font-weight:600;color:#64748b;margin-bottom:4px;display:block">Tiêu đề đề xuất</label>' +
+            '<input type="text" class="fi" value="' + (r.title || ('Đơn giải trình quên chấm công - ' + (r.name || r.user))) + '" readonly style="background:#f8fafc;font-weight:600;color:#0f172a;border:1px solid #cbd5e1;border-radius:6px;height:34px;padding:0 10px;width:100%;box-sizing:border-box">' +
           '</div>' +
           '<div>' +
-            '<label class="fl">Nhóm</label>' +
-            '<input type="text" class="fi" value="Giải trình công" readonly style="background:#f8fafc;color:#1e293b">' +
+            '<label class="fl" style="font-size:11px;font-weight:600;color:#64748b;margin-bottom:4px;display:block">Nhóm đề xuất</label>' +
+            '<input type="text" class="fi" value="Giải trình công" readonly style="background:#f8fafc;color:#1e293b;font-weight:600;border:1px solid #cbd5e1;border-radius:6px;height:34px;padding:0 10px;width:100%;box-sizing:border-box">' +
           '</div>' +
           '<div>' +
-            '<label class="fl">Loại</label>' +
-            '<input type="text" class="fi" value="Giải trình quên chấm công" readonly style="background:#f8fafc;color:#1e293b;font-weight:600">' +
+            '<label class="fl" style="font-size:11px;font-weight:600;color:#64748b;margin-bottom:4px;display:block">Loại đề xuất</label>' +
+            '<input type="text" class="fi" value="Giải trình quên chấm công" readonly style="background:#f8fafc;color:#b45309;font-weight:700;border:1px solid #cbd5e1;border-radius:6px;height:34px;padding:0 10px;width:100%;box-sizing:border-box">' +
           '</div>' +
         '</div>' +
 
-        // HÀNG 2: KHUNG THỜI GIAN GIẢI TRÌNH
+        // HÀNG 2: NGÀY QUÊN CHẤM CÔNG (ĐỒNG BỘ 100% VỚI FORM TẠO MỚI - ĐÚNG KHUNG NGÀY & LOẠI QUÊN VÀO/RA)
         '<div style="margin-bottom:12px">' +
-          '<label class="fl" style="margin-bottom:6px;font-weight:600">Khung thời gian giải trình <span style="color:#ef4444">*</span></label>' +
-          '<div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:10px 12px">' +
-            '<div class="frow" style="margin-bottom:0;grid-template-columns:1fr 1fr 1.3fr;align-items:center">' +
-              '<div>' +
-                '<label class="fl" style="font-size:11px;margin-bottom:3px">Từ ngày</label>' +
-                '<input type="text" class="fi" value="' + fromDate + '" readonly style="background:#fff;font-weight:600">' +
+          '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">' +
+            '<label class="fl" style="margin:0;font-weight:700;font-size:12.5px;color:#0f172a">Ngày quên chấm công <span style="color:#ef4444">*</span></label>' +
+            '<span class="badge" style="background:#fef3c7;color:#b45309;border:1px solid #fde68a;font-size:11px;font-weight:700;padding:2px 8px;border-radius:4px"><i class="fa-solid fa-clock-rotate-left mr-1"></i>Giải trình công</span>' +
+          '</div>' +
+          '<div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:12px 14px;display:flex;gap:12px;align-items:flex-end">' +
+            '<div style="flex:1">' +
+              '<label class="fl" style="font-size:11px;margin-bottom:4px;font-weight:600;color:#64748b">Ngày <span style="color:#ef4444">*</span></label>' +
+              '<div style="background:#fff;font-weight:600;color:#0f172a;height:36px;border:1px solid #cbd5e1;border-radius:6px;padding:0 10px;display:flex;align-items:center;gap:6px">' +
+                '<i class="fa-regular fa-calendar text-[#b45309]"></i><span>' + adjDate + '</span>' +
               '</div>' +
-              '<div>' +
-                '<label class="fl" style="font-size:11px;margin-bottom:3px">Đến ngày</label>' +
-                '<input type="text" class="fi" value="' + toDate + '" readonly style="background:#fff;font-weight:600">' +
-              '</div>' +
-              '<div>' +
-                '<label class="fl" style="font-size:11px;margin-bottom:3px">Quên giờ vào / ra</label>' +
-                '<input type="text" class="fi" value="' + missingPunchType + '" readonly style="background:#fff;font-weight:600;color:#b45309">' +
+            '</div>' +
+            '<div style="flex:1.4">' +
+              '<label class="fl" style="font-size:11px;margin-bottom:4px;font-weight:600;color:#64748b">Quên giờ vào / ra <span style="color:#ef4444">*</span></label>' +
+              '<div style="background:#fff;font-weight:700;color:#b45309;height:36px;border:1px solid #cbd5e1;border-radius:6px;padding:0 10px;display:flex;align-items:center;gap:6px">' +
+                '<i class="fa-regular fa-clock text-[#b45309]"></i><span>' + missingPunchType + '</span>' +
               '</div>' +
             '</div>' +
           '</div>' +
+          '<div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:6px;padding:8px 12px;font-size:11.5px;color:#475569;display:flex;justify-content:space-between;align-items:center;margin-top:6px">' +
+            '<span>Ca làm việc: <strong style="color:#1e293b">Hành chính (08:00–17:00)</strong></span>' +
+            '<span>Thời gian đề xuất ghi nhận: <strong style="color:#047857"><i class="fa-solid fa-fingerprint mr-1"></i>' + punchDetail + '</strong></span>' +
+          '</div>' +
         '</div>' +
 
-        // HÀNG 3: MÔ TẢ / LÝ DO GIẢI TRÌNH
+        // HÀNG 3: LÝ DO CHI TIẾT (ĐỒNG BỘ 100% VỚI FORM TẠO MỚI)
         '<div style="margin-bottom:12px">' +
-          '<label class="fl" style="font-weight:600;font-size:12px">Mô tả / Lý do giải trình</label>' +
+          '<label class="fl" style="font-weight:600;font-size:12px;color:#334155;margin-bottom:4px;display:block">Lý do chi tiết</label>' +
           '<div style="background:#f8fafc;border:1px solid #cbd5e1;border-radius:6px;padding:8px 12px;font-size:12px;color:#1e293b;line-height:1.5">' +
             (r.reason || 'Quên chấm công đầu ca do vào ca gấp tiếp nhận tàu tại cầu bến.') +
           '</div>' +
@@ -18928,7 +18739,7 @@ function viewGlobalReq(id) {
 
         // HÀNG 5: TÀI LIỆU ĐÍNH KÈM
         '<div style="margin-bottom:12px">' +
-          '<label class="fl" style="font-size:12px;font-weight:600">Tài liệu đính kèm</label>' +
+          '<label class="fl" style="font-size:12px;font-weight:600;color:#334155;margin-bottom:4px;display:block">Tài liệu đính kèm</label>' +
           '<div style="border:1px dashed #cbd5e1;padding:8px 12px;border-radius:6px;background:#f8fafc;font-size:11px;color:#64748b;display:flex;align-items:center;gap:8px">' +
             '<i class="fa-solid fa-paperclip text-slate-400" style="font-size:13px"></i>' +
             '<span>Không có tài liệu đính kèm</span>' +
@@ -18937,12 +18748,12 @@ function viewGlobalReq(id) {
 
         // HÀNG 6: NHẬN XÉT PHÊ DUYỆT (KHÔNG BẮT BUỘC)
         '<div style="margin-bottom:6px">' +
-          '<label class="fl" style="font-size:12px;font-weight:600;display:flex;align-items:center;gap:6px">' +
+          '<label class="fl" style="font-size:12px;font-weight:600;display:flex;align-items:center;gap:6px;margin-bottom:4px">' +
             '<span>Nhận xét phê duyệt</span>' +
             '<span style="font-size:11px;font-weight:normal;color:#64748b">' + (isPending ? '(Không bắt buộc)' : '') + '</span>' +
           '</label>' +
           (isPending 
-            ? '<textarea id="g-adj-approval-comment" class="fi" rows="2" placeholder="Nhập nhận xét phê duyệt (nếu có)..." style="background:#fff;border:1px solid #cbd5e1;border-radius:6px;font-size:12px"></textarea>'
+            ? '<textarea id="g-adj-approval-comment" class="fi" rows="2" placeholder="Nhập nhận xét phê duyệt (nếu có)..." style="background:#fff;border:1px solid #cbd5e1;border-radius:6px;font-size:12px;width:100%;box-sizing:border-box;padding:8px 10px"></textarea>'
             : '<div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:6px;padding:8px 12px;font-size:12px;color:#334155;line-height:1.4">' + (r.approvalComment || 'Đã đối soát ca làm việc và xác nhận bổ sung giờ vào/ra hợp lệ.') + '</div>'
           ) +
         '</div>' +
@@ -19230,19 +19041,19 @@ let greqCurrentPill = 'APPROVAL';
 let greqSelectedRowIds = new Set();
 
 const greqCols = [
-  { k: 'ck', t: '<input type="checkbox" id="greq-ck-all" onchange="toggleGreqCheckAll(this.checked)" title="Chọn tất cả" style="width:15px;height:15px;cursor:pointer;accent-color:#2E3191">', label: 'Chọn', pin: true, sl: true, vis: false, w: 36, center: true },
+  { k: 'ck', t: '<input type="checkbox" id="greq-ck-all" onchange="toggleGreqCheckAll(this.checked)" title="Chọn tất cả" style="width:15px;height:15px;cursor:pointer;accent-color:#2E3191">', label: 'Chọn', pin: true, sl: true, vis: false, w: 34, center: true },
   { k: 'stt', t: 'STT', sl: true, vis: true, w: 36 },
-  { k: 'id', t: 'Mã đơn', sort: true, search: true, vis: true, w: 95 },
-  { k: 'pap', t: 'Mã NV', sort: true, search: true, vis: true, w: 80 },
-  { k: 'name', t: 'Họ và tên', sort: true, search: true, vis: true, w: 140 },
-  { k: 'dept', t: 'Phòng ban / đơn vị', sort: true, filter: true, vis: true, w: 125 },
-  { k: 'title', t: 'Tên đề xuất', sort: true, search: true, vis: true, w: 160 },
-  { k: 'type', t: 'Loại đề xuất', sort: true, filter: true, vis: true, w: 125 },
-  { k: 'time', t: 'Thời gian áp dụng', sort: true, vis: true, w: 125 },
-  { k: 'reason', t: 'Lý do', search: true, vis: true, w: 120 },
-  { k: 'approver', t: 'Người duyệt', vis: true, w: 170 },
-  { k: 'status', t: 'Trạng thái', filter: true, sort: true, vis: true, w: 95 },
-  { k: 'action', t: 'Thao tác', sr: true, vis: true, w: 75, center: true }
+  { k: 'id', t: 'Mã đơn', sort: true, search: true, vis: true, w: 90 },
+  { k: 'pap', t: 'Mã NV', sort: true, search: true, vis: true, w: 75 },
+  { k: 'name', t: 'Họ và tên', sort: true, search: true, vis: true, w: 125 },
+  { k: 'dept', t: 'Phòng ban / đơn vị', sort: true, filter: true, vis: true, w: 110 },
+  { k: 'title', t: 'Tên đề xuất', sort: true, search: true, vis: true, w: 145 },
+  { k: 'type', t: 'Loại đề xuất', sort: true, filter: true, vis: true, w: 120 },
+  { k: 'time', t: 'Thời gian áp dụng', sort: true, vis: true, w: 130 },
+  { k: 'reason', t: 'Lý do', search: true, vis: true, w: 110 },
+  { k: 'approver', t: 'Người duyệt', vis: true, w: 130 },
+  { k: 'status', t: 'Trạng thái', filter: true, sort: true, vis: true, w: 90 },
+  { k: 'action', t: 'Thao tác', sr: true, vis: true, w: 70, center: true }
 ];
 
 let greqCurrentNavTab = 'ALL';
@@ -19325,8 +19136,13 @@ function renderGreqCatChips() {
 
 
 let greqMasterData = [
+  /* =========================================================================
+     TAB: TÔI GỬI ĐI (SENT - 13 ĐƠN)
+     Đồng bộ 100% với Sổ Phép năm (M09, M05), Sổ Nghỉ bù (M09, M05), Tăng ca (M08) & Chấm công (M06)
+     Của nhân sự: Nguyễn Văn A (PAP0009 - PT Phần mềm)
+     ========================================================================= */
   {
-    "id": "NP-2026-081",
+    "id": "NP-2026-001",
     "user": "Nguyễn Văn A",
     "name": "Nguyễn Văn A",
     "pap": "PAP0009",
@@ -19334,16 +19150,196 @@ let greqMasterData = [
     "avatar": "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=60&auto=format&fit=crop&q=80",
     "type": "Nghỉ phép năm",
     "typeCode": "LEAVE",
-    "time": "03/11/2026",
-    "reason": "Bận việc gia đình",
+    "time": "10/02/2026 - 11/02/2026",
+    "reason": "Việc gia đình",
+    "approver": "Trần Văn Nam",
+    "slaInfo": "Hoàn tất đúng hạn",
+    "status": "APPROVED",
+    "statusText": "ĐÃ DUYỆT",
+    "tabType": "SENT",
+    "dateCreated": "2026-02-08",
+    "isSaved": false,
+    "title": "Đơn xin nghỉ phép năm"
+  },
+  {
+    "id": "OT-2026-0012",
+    "user": "Nguyễn Văn A",
+    "name": "Nguyễn Văn A",
+    "pap": "PAP0009",
+    "dept": "PM",
+    "avatar": "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=60&auto=format&fit=crop&q=80",
+    "type": "Làm thêm giờ (OT)",
+    "typeCode": "OT",
+    "time": "10/01/2026 · 18:00 - 22:00",
+    "reason": "Trực đêm TOS",
+    "approver": "Trần Văn Nam",
+    "slaInfo": "Hoàn tất đúng hạn",
+    "status": "APPROVED",
+    "statusText": "ĐÃ DUYỆT",
+    "tabType": "SENT",
+    "dateCreated": "2026-01-09",
+    "isSaved": false,
+    "title": "Làm thêm trực đêm TOS"
+  },
+  {
+    "id": "NP-2026-0031",
+    "user": "Nguyễn Văn A",
+    "name": "Nguyễn Văn A",
+    "pap": "PAP0009",
+    "dept": "PM",
+    "avatar": "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=60&auto=format&fit=crop&q=80",
+    "type": "Nghỉ bù",
+    "typeCode": "LEAVE_COMP",
+    "time": "02/02/2026",
+    "reason": "Nghỉ bù ca trực",
+    "approver": "Trần Văn Nam",
+    "slaInfo": "Hoàn tất đúng hạn",
+    "status": "APPROVED",
+    "statusText": "ĐÃ DUYỆT",
+    "tabType": "SENT",
+    "dateCreated": "2026-02-02",
+    "isSaved": false,
+    "title": "Đơn nghỉ bù sau ca trực TOS"
+  },
+  {
+    "id": "OT-2026-0045",
+    "user": "Nguyễn Văn A",
+    "name": "Nguyễn Văn A",
+    "pap": "PAP0009",
+    "dept": "PM",
+    "avatar": "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=60&auto=format&fit=crop&q=80",
+    "type": "Làm thêm giờ (OT)",
+    "typeCode": "OT",
+    "time": "15/02/2026 · 08:00 - 17:00",
+    "reason": "Bảo trì mạng core",
+    "approver": "Trần Văn Nam",
+    "slaInfo": "Hoàn tất đúng hạn",
+    "status": "APPROVED",
+    "statusText": "ĐÃ DUYỆT",
+    "tabType": "SENT",
+    "dateCreated": "2026-02-14",
+    "isSaved": false,
+    "title": "Làm thêm bảo trì mạng core"
+  },
+  {
+    "id": "NP-2026-0042",
+    "user": "Nguyễn Văn A",
+    "name": "Nguyễn Văn A",
+    "pap": "PAP0009",
+    "dept": "PM",
+    "avatar": "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=60&auto=format&fit=crop&q=80",
+    "type": "Nghỉ bù",
+    "typeCode": "LEAVE_COMP",
+    "time": "20/04/2026",
+    "reason": "Nghỉ bù sau bảo trì",
+    "approver": "Trần Văn Nam",
+    "slaInfo": "Hoàn tất đúng hạn",
+    "status": "APPROVED",
+    "statusText": "ĐÃ DUYỆT",
+    "tabType": "SENT",
+    "dateCreated": "2026-04-20",
+    "isSaved": false,
+    "title": "Đơn xin nghỉ bù sau ca bảo trì"
+  },
+  {
+    "id": "NP-2026-008",
+    "user": "Nguyễn Văn A",
+    "name": "Nguyễn Văn A",
+    "pap": "PAP0009",
+    "dept": "PM",
+    "avatar": "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=60&auto=format&fit=crop&q=80",
+    "type": "Nghỉ phép năm",
+    "typeCode": "LEAVE",
+    "time": "25/04/2026",
+    "reason": "Việc gia đình",
+    "approver": "Trần Văn Nam",
+    "slaInfo": "Hoàn tất đúng hạn",
+    "status": "APPROVED",
+    "statusText": "ĐÃ DUYỆT",
+    "tabType": "SENT",
+    "dateCreated": "2026-04-22",
+    "isSaved": false,
+    "title": "Đơn xin nghỉ phép năm"
+  },
+  {
+    "id": "NP-2026-015",
+    "user": "Nguyễn Văn A",
+    "name": "Nguyễn Văn A",
+    "pap": "PAP0009",
+    "dept": "PM",
+    "avatar": "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=60&auto=format&fit=crop&q=80",
+    "type": "Nghỉ phép năm",
+    "typeCode": "LEAVE",
+    "time": "15/06/2026 - 16/06/2026",
+    "reason": "Khám sức khỏe",
+    "approver": "Trần Văn Nam",
+    "slaInfo": "Hoàn tất đúng hạn",
+    "status": "APPROVED",
+    "statusText": "ĐÃ DUYỆT",
+    "tabType": "SENT",
+    "dateCreated": "2026-06-12",
+    "isSaved": false,
+    "title": "Đơn xin nghỉ phép năm"
+  },
+  {
+    "id": "WFH-2026-004",
+    "user": "Nguyễn Văn A",
+    "name": "Nguyễn Văn A",
+    "pap": "PAP0009",
+    "dept": "PM",
+    "avatar": "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=60&auto=format&fit=crop&q=80",
+    "type": "Làm việc ngoài VP",
+    "typeCode": "WFH",
+    "time": "12/10/2026",
+    "reason": "Làm việc WFH",
+    "approver": "Trần Văn Nam",
+    "slaInfo": "Hoàn tất đúng hạn",
+    "status": "APPROVED",
+    "statusText": "ĐÃ DUYỆT",
+    "tabType": "SENT",
+    "dateCreated": "2026-10-11",
+    "isSaved": false,
+    "title": "Đơn làm việc ngoài văn phòng"
+  },
+  {
+    "id": "DC-2026-008",
+    "user": "Nguyễn Văn A",
+    "name": "Nguyễn Văn A",
+    "pap": "PAP0009",
+    "dept": "PM",
+    "avatar": "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=60&auto=format&fit=crop&q=80",
+    "type": "Giải trình quên chấm công",
+    "typeCode": "ATT_ADJ",
+    "time": "15/10/2026 · Vào 08:05",
+    "reason": "Quên quẹt thẻ",
+    "approver": "Trần Văn Nam",
+    "slaInfo": "Hoàn tất đúng hạn",
+    "status": "APPROVED",
+    "statusText": "ĐÃ DUYỆT",
+    "tabType": "SENT",
+    "dateCreated": "2026-10-15",
+    "isSaved": false,
+    "title": "Đơn giải trình quên chấm công"
+  },
+  {
+    "id": "CT-2026-018",
+    "user": "Nguyễn Văn A",
+    "name": "Nguyễn Văn A",
+    "pap": "PAP0009",
+    "dept": "PM",
+    "avatar": "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=60&auto=format&fit=crop&q=80",
+    "type": "Đi công tác",
+    "typeCode": "BIZ",
+    "time": "05/11/2026 - 06/11/2026",
+    "reason": "Công tác đối tác",
     "approver": "Trần Văn Nam",
     "slaInfo": "Còn 18h SLA",
     "status": "PENDING",
     "statusText": "CHỜ DUYỆT",
     "tabType": "SENT",
-    "dateCreated": "2026-11-01",
+    "dateCreated": "2026-10-28",
     "isSaved": true,
-    "title": "Đơn xin nghỉ phép năm"
+    "title": "Đơn đề xuất đi công tác"
   },
   {
     "id": "DC-2026-015",
@@ -19354,7 +19350,7 @@ let greqMasterData = [
     "avatar": "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=60&auto=format&fit=crop&q=80",
     "type": "Giải trình quên chấm công",
     "typeCode": "ATT_ADJ",
-    "time": "30/10/2026",
+    "time": "30/10/2026 · Ra 17:30",
     "reason": "Quên chấm công",
     "approver": "Trần Văn Nam",
     "slaInfo": "Còn 6h SLA",
@@ -19372,10 +19368,10 @@ let greqMasterData = [
     "pap": "PAP0009",
     "dept": "PM",
     "avatar": "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=60&auto=format&fit=crop&q=80",
-    "type": "Làm thêm giờ OT tính lương",
+    "type": "Làm thêm giờ (OT)",
     "typeCode": "OT",
     "time": "01/11/2026 · 17:30 - 21:30",
-    "reason": "Làm thêm giờ OT tính lương",
+    "reason": "Nâng cấp máy chủ",
     "approver": "Trần Văn Nam",
     "slaInfo": "Còn 12h SLA",
     "status": "PENDING",
@@ -19383,51 +19379,10 @@ let greqMasterData = [
     "tabType": "SENT",
     "dateCreated": "2026-10-31",
     "isSaved": false,
-    "title": "Đơn đề xuất làm thêm giờ OT tính lương"
+    "title": "Đơn làm thêm giờ tính lương"
   },
   {
-    "id": "COMP-2026-022",
-    "user": "Nguyễn Văn A",
-    "name": "Nguyễn Văn A",
-    "pap": "PAP0009",
-    "dept": "PM",
-    "avatar": "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=60&auto=format&fit=crop&q=80",
-    "type": "Làm thêm tích lũy nghỉ bù",
-    "typeCode": "COMP_ACCRUAL",
-    "time": "02/11/2026 (Tích lũy: 1.0 ngày công)",
-    "reason": "Làm thêm hỗ trợ giải phóng tàu hàng cảng đêm",
-    "approver": "Trần Văn Nam",
-    "slaInfo": "Còn 14h SLA",
-    "status": "PENDING",
-    "statusText": "CHỜ DUYỆT",
-    "tabType": "SENT",
-    "dateCreated": "2026-11-01",
-    "isSaved": false,
-    "title": "Làm thêm tích lũy nghỉ bù"
-  },
-  {
-    "id": "CT-2026-018",
-    "user": "Nguyễn Văn A",
-    "name": "Nguyễn Văn A",
-    "pap": "PAP0009",
-    "dept": "PM",
-    "avatar": "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=60&auto=format&fit=crop&q=80",
-    "type": "Đi công tác",
-    "typeCode": "BIZ",
-    "time": "05/11/2026 - 06/11/2026",
-    "reason": "Đi công tác",
-    "approver": "Trần Văn Nam",
-    "slaInfo": "Còn 18h SLA",
-    "status": "PENDING",
-    "statusText": "CHỜ DUYỆT",
-    "currentStep": 2,
-    "tabType": "SENT",
-    "dateCreated": "2026-10-28",
-    "isSaved": true,
-    "title": "Đơn đề xuất đi công tác"
-  },
-  {
-    "id": "NP-2026-065",
+    "id": "NP-2026-081",
     "user": "Nguyễn Văn A",
     "name": "Nguyễn Văn A",
     "pap": "PAP0009",
@@ -19435,175 +19390,59 @@ let greqMasterData = [
     "avatar": "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=60&auto=format&fit=crop&q=80",
     "type": "Nghỉ phép năm",
     "typeCode": "LEAVE",
-    "time": "20/10/2026",
-    "reason": "Bận việc gia đình",
+    "time": "03/11/2026 - 04/11/2026",
+    "reason": "Việc gia đình",
     "approver": "Trần Văn Nam",
-    "slaInfo": "Hoàn tất đúng hạn",
-    "status": "APPROVED",
-    "statusText": "ĐÃ DUYỆT",
+    "slaInfo": "Còn 18h SLA",
+    "status": "PENDING",
+    "statusText": "CHỜ DUYỆT",
     "tabType": "SENT",
-    "dateCreated": "2026-10-18",
-    "isSaved": false,
+    "dateCreated": "2026-11-01",
+    "isSaved": true,
     "title": "Đơn xin nghỉ phép năm"
   },
+
+  /* =========================================================================
+     TAB: GỬI ĐẾN TÔI (INBOX - 10 ĐƠN)
+     Đơn từ cấp dưới gửi đến Nguyễn Văn A duyệt
+     ========================================================================= */
   {
-    "id": "DC-2026-008",
-    "user": "Nguyễn Văn A",
-    "name": "Nguyễn Văn A",
-    "pap": "PAP0009",
-    "dept": "PM",
-    "avatar": "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=60&auto=format&fit=crop&q=80",
-    "type": "Giải trình quên chấm công",
-    "typeCode": "ATT_ADJ",
-    "time": "15/10/2026",
-    "reason": "Quên chấm công",
-    "approver": "Trần Văn Nam",
-    "slaInfo": "Hoàn tất đúng hạn",
-    "status": "APPROVED",
-    "statusText": "ĐÃ DUYỆT",
-    "tabType": "SENT",
-    "dateCreated": "2026-10-15",
-    "isSaved": false,
-    "title": "Đơn giải trình quên chấm công"
-  },
-  {
-    "id": "WFH-2026-004",
-    "user": "Nguyễn Văn A",
-    "name": "Nguyễn Văn A",
-    "pap": "PAP0009",
-    "dept": "PM",
-    "avatar": "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=60&auto=format&fit=crop&q=80",
-    "type": "Làm việc ngoài VP",
-    "typeCode": "WFH",
-    "time": "12/10/2026",
-    "reason": "Làm việc ngoài văn phòng",
-    "approver": "Trần Văn Nam",
-    "slaInfo": "Hoàn tất đúng hạn",
-    "status": "APPROVED",
-    "statusText": "ĐÃ DUYỆT",
-    "tabType": "SENT",
-    "dateCreated": "2026-10-11",
-    "isSaved": false,
-    "title": "Đơn làm việc ngoài văn phòng"
-  },
-  {
-    "id": "OT-2026-028",
-    "user": "Nguyễn Văn A",
-    "name": "Nguyễn Văn A",
-    "pap": "PAP0009",
-    "dept": "PM",
-    "avatar": "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=60&auto=format&fit=crop&q=80",
-    "type": "Làm thêm giờ (OT)",
-    "typeCode": "OT",
-    "time": "08/10/2026 · 17:30 - 20:30",
-    "reason": "Làm thêm giờ",
-    "approver": "Trần Văn Nam",
-    "slaInfo": "Hoàn tất đúng hạn",
-    "status": "APPROVED",
-    "statusText": "ĐÃ DUYỆT",
-    "tabType": "SENT",
-    "dateCreated": "2026-10-07",
-    "isSaved": false,
-    "title": "Đơn đề xuất làm thêm giờ"
-  },
-  {
-    "id": "NP-2026-041",
-    "user": "Nguyễn Văn A",
-    "name": "Nguyễn Văn A",
-    "pap": "PAP0009",
-    "dept": "PM",
-    "avatar": "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=60&auto=format&fit=crop&q=80",
-    "type": "Nghỉ cá nhân",
-    "typeCode": "LEAVE_PL",
-    "time": "05/10/2026",
-    "reason": "Bận việc gia đình",
-    "approver": "Trần Văn Nam",
-    "slaInfo": "Hoàn tất đúng hạn",
-    "status": "APPROVED",
-    "statusText": "ĐÃ DUYỆT",
-    "tabType": "SENT",
-    "dateCreated": "2026-10-03",
-    "isSaved": false,
-    "title": "Đơn xin nghỉ việc riêng"
-  },
-  {
-    "id": "DC-2026-003",
-    "user": "Nguyễn Văn A",
-    "name": "Nguyễn Văn A",
-    "pap": "PAP0009",
-    "dept": "PM",
-    "avatar": "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=60&auto=format&fit=crop&q=80",
-    "type": "Giải trình quên chấm công",
-    "typeCode": "ATT_ADJ",
-    "time": "02/10/2026",
-    "reason": "Quên chấm công",
-    "approver": "Trần Văn Nam",
-    "slaInfo": "Hoàn tất đúng hạn",
-    "status": "APPROVED",
-    "statusText": "ĐÃ DUYỆT",
-    "tabType": "SENT",
-    "dateCreated": "2026-10-02",
-    "isSaved": false,
-    "title": "Đơn giải trình quên chấm công"
-  },
-  {
-    "id": "NP-2026-011",
-    "user": "Nguyễn Văn A",
-    "name": "Nguyễn Văn A",
-    "pap": "PAP0009",
-    "dept": "PM",
-    "avatar": "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=60&auto=format&fit=crop&q=80",
-    "type": "Nghỉ không lương",
-    "typeCode": "LEAVE_PL",
-    "time": "25/09/2026",
-    "reason": "Bận việc gia đình",
-    "approver": "Trần Văn Nam",
-    "slaInfo": "Không đủ nhân sự trực ca",
-    "status": "REJECTED",
-    "statusText": "TỪ CHỐI",
-    "tabType": "SENT",
-    "dateCreated": "2026-09-22",
-    "isSaved": false,
-    "title": "Đơn xin nghỉ không lương"
-  },
-  {
-    "id": "OT-2026-019",
-    "user": "Nguyễn Văn A",
-    "name": "Nguyễn Văn A",
-    "pap": "PAP0009",
-    "dept": "PM",
-    "avatar": "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=60&auto=format&fit=crop&q=80",
-    "type": "Làm thêm giờ (OT)",
-    "typeCode": "OT",
-    "time": "18/09/2026 · 17:30 - 20:30",
-    "reason": "Làm thêm giờ",
-    "approver": "Trần Văn Nam",
-    "slaInfo": "Hoàn tất đúng hạn",
-    "status": "APPROVED",
-    "statusText": "ĐÃ DUYỆT",
-    "tabType": "SENT",
-    "dateCreated": "2026-09-17",
-    "isSaved": false,
-    "title": "Đơn đề xuất làm thêm giờ"
+    "id": "COMP-2026-022",
+    "user": "Phạm Quốc Hùng",
+    "name": "Phạm Quốc Hùng",
+    "pap": "PAP0018",
+    "dept": "KT",
+    "avatar": "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=60&auto=format&fit=crop&q=80",
+    "type": "Tích lũy nghỉ bù",
+    "typeCode": "COMP_ACCRUAL",
+    "time": "02/11/2026 · 1.0 ngày",
+    "reason": "Trực đêm xếp dỡ tàu",
+    "approver": "Nguyễn Văn A",
+    "slaInfo": "Còn 14h SLA",
+    "status": "PENDING",
+    "statusText": "CHỜ DUYỆT",
+    "tabType": "INBOX",
+    "dateCreated": "2026-11-02",
+    "title": "Đề xuất tích lũy nghỉ bù",
+    "approvedDays": 1.0
   },
   {
     "id": "NP-2026-092",
     "user": "Trần Thị B",
     "name": "Trần Thị B",
     "pap": "PAP0012",
-    "dept": "PM",
-    "avatar": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=60&auto=format&fit=crop&q=80",
+    "dept": "KT",
+    "avatar": "https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=60&auto=format&fit=crop&q=80",
     "type": "Nghỉ phép năm",
     "typeCode": "LEAVE",
-    "time": "04/11/2026",
-    "reason": "Bận việc gia đình",
-    "approver": "Trần Văn Nam (QLTT)",
+    "time": "04/11/2026 - 05/11/2026",
+    "reason": "Việc gia đình",
+    "approver": "Nguyễn Văn A",
     "slaInfo": "Còn 20h SLA",
     "status": "PENDING",
     "statusText": "CHỜ DUYỆT",
     "tabType": "INBOX",
-    "dateCreated": "2026-11-01",
-    "isSaved": true,
+    "dateCreated": "2026-11-02",
     "title": "Đơn xin nghỉ phép năm"
   },
   {
@@ -19612,18 +19451,17 @@ let greqMasterData = [
     "name": "Lê Văn C",
     "pap": "PAP0015",
     "dept": "PM",
-    "avatar": "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=60&auto=format&fit=crop&q=80",
+    "avatar": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=60&auto=format&fit=crop&q=80",
     "type": "Giải trình quên chấm công",
     "typeCode": "ATT_ADJ",
-    "time": "31/10/2026",
+    "time": "31/10/2026 · Vào 08:15",
     "reason": "Quên chấm công",
-    "approver": "Trần Văn Nam (QLTT)",
-    "slaInfo": "Còn 14h SLA",
+    "approver": "Nguyễn Văn A",
+    "slaInfo": "Còn 8h SLA",
     "status": "PENDING",
     "statusText": "CHỜ DUYỆT",
     "tabType": "INBOX",
-    "dateCreated": "2026-10-31",
-    "isSaved": false,
+    "dateCreated": "2026-11-01",
     "title": "Đơn giải trình quên chấm công"
   },
   {
@@ -19631,59 +19469,56 @@ let greqMasterData = [
     "user": "Phạm Quốc Hùng",
     "name": "Phạm Quốc Hùng",
     "pap": "PAP0018",
-    "dept": "PM",
-    "avatar": "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=60&auto=format&fit=crop&q=80",
-    "type": "Làm thêm giờ OT tính lương",
+    "dept": "KT",
+    "avatar": "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=60&auto=format&fit=crop&q=80",
+    "type": "Làm thêm giờ (OT)",
     "typeCode": "OT",
     "time": "02/11/2026 · 17:30 - 21:30",
-    "reason": "Làm thêm giờ bốc dỡ cao điểm tàu hàng",
-    "approver": "Trần Văn Nam (QLTT)",
-    "slaInfo": "Còn 16h SLA",
+    "reason": "Xếp dỡ tàu đêm",
+    "approver": "Nguyễn Văn A",
+    "slaInfo": "Còn 14h SLA",
     "status": "PENDING",
     "statusText": "CHỜ DUYỆT",
     "tabType": "INBOX",
-    "dateCreated": "2026-10-31",
-    "isSaved": false,
-    "title": "Đơn đề xuất làm thêm giờ OT tính lương"
+    "dateCreated": "2026-11-01",
+    "title": "Đơn đề xuất làm thêm giờ"
   },
   {
-    "id": "COMP-2026-025",
+    "id": "OT-2026-049",
     "user": "Phạm Quốc Hùng",
     "name": "Phạm Quốc Hùng",
     "pap": "PAP0018",
-    "dept": "PM",
-    "avatar": "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=60&auto=format&fit=crop&q=80",
-    "type": "Làm thêm tích lũy nghỉ bù",
-    "typeCode": "COMP_ACCRUAL",
-    "time": "02/11/2026 (Tích lũy: 1.0 ngày công)",
-    "reason": "Làm thêm tăng cường cầu cảng tích lũy ngày nghỉ",
-    "approver": "Trần Văn Nam (QLTT)",
+    "dept": "KT",
+    "avatar": "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=60&auto=format&fit=crop&q=80",
+    "type": "Làm thêm giờ (OT)",
+    "typeCode": "OT",
+    "time": "03/11/2026 · 18:00 - 22:00",
+    "reason": "Trực cầu cảng",
+    "approver": "Nguyễn Văn A",
     "slaInfo": "Còn 16h SLA",
     "status": "PENDING",
     "statusText": "CHỜ DUYỆT",
     "tabType": "INBOX",
-    "dateCreated": "2026-10-31",
-    "isSaved": false,
-    "title": "Làm thêm tích lũy nghỉ bù"
+    "dateCreated": "2026-11-01",
+    "title": "Làm thêm trực cầu cảng"
   },
   {
     "id": "CT-2026-022",
     "user": "Đỗ Hoàng Long",
     "name": "Đỗ Hoàng Long",
     "pap": "PAP0024",
-    "dept": "PM",
-    "avatar": "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?w=60&auto=format&fit=crop&q=80",
+    "dept": "KT",
+    "avatar": "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=60&auto=format&fit=crop&q=80",
     "type": "Đi công tác",
     "typeCode": "BIZ",
     "time": "06/11/2026 - 08/11/2026",
-    "reason": "Đi công tác",
-    "approver": "Trần Văn Nam (QLTT)",
+    "reason": "Công tác Hải Phòng",
+    "approver": "Nguyễn Văn A",
     "slaInfo": "Còn 22h SLA",
     "status": "PENDING",
     "statusText": "CHỜ DUYỆT",
     "tabType": "INBOX",
-    "dateCreated": "2026-10-30",
-    "isSaved": true,
+    "dateCreated": "2026-11-02",
     "title": "Đơn đề xuất đi công tác"
   },
   {
@@ -19692,18 +19527,17 @@ let greqMasterData = [
     "name": "Nguyễn Thị Mai",
     "pap": "PAP0027",
     "dept": "PM",
-    "avatar": "https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=60&auto=format&fit=crop&q=80",
+    "avatar": "https://images.unsplash.com/photo-1517841905240-472988babdf9?w=60&auto=format&fit=crop&q=80",
     "type": "Nghỉ phép năm",
     "typeCode": "LEAVE",
     "time": "03/11/2026",
-    "reason": "Bận việc gia đình",
-    "approver": "Trần Văn Nam (QLTT)",
+    "reason": "Khám sức khỏe",
+    "approver": "Nguyễn Văn A",
     "slaInfo": "Còn 10h SLA",
     "status": "PENDING",
     "statusText": "CHỜ DUYỆT",
     "tabType": "INBOX",
-    "dateCreated": "2026-10-30",
-    "isSaved": false,
+    "dateCreated": "2026-11-01",
     "title": "Đơn xin nghỉ phép năm"
   },
   {
@@ -19712,18 +19546,17 @@ let greqMasterData = [
     "name": "Bùi Anh Tuấn",
     "pap": "PAP0032",
     "dept": "PM",
-    "avatar": "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=60&auto=format&fit=crop&q=80",
+    "avatar": "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?w=60&auto=format&fit=crop&q=80",
     "type": "Làm việc ngoài VP",
     "typeCode": "WFH",
     "time": "04/11/2026",
-    "reason": "Làm việc ngoài văn phòng",
-    "approver": "Trần Văn Nam (QLTT)",
-    "slaInfo": "Còn 8h SLA",
+    "reason": "Làm việc WFH",
+    "approver": "Nguyễn Văn A",
+    "slaInfo": "Còn 12h SLA",
     "status": "PENDING",
     "statusText": "CHỜ DUYỆT",
     "tabType": "INBOX",
-    "dateCreated": "2026-10-29",
-    "isSaved": false,
+    "dateCreated": "2026-11-02",
     "title": "Đơn làm việc ngoài văn phòng"
   },
   {
@@ -19731,60 +19564,61 @@ let greqMasterData = [
     "user": "Vũ Minh Đức",
     "name": "Vũ Minh Đức",
     "pap": "PAP0036",
-    "dept": "PM",
-    "avatar": "https://images.unsplash.com/photo-1522075469751-3a6694fb2f61?w=60&auto=format&fit=crop&q=80",
+    "dept": "KT",
+    "avatar": "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=60&auto=format&fit=crop&q=80",
     "type": "Giải trình quên chấm công",
     "typeCode": "ATT_ADJ",
-    "time": "29/10/2026",
+    "time": "29/10/2026 · Ra 17:15",
     "reason": "Quên chấm công",
-    "approver": "Trần Văn Nam (QLTT)",
-    "slaInfo": "Quá hạn 4h",
-    "isOverdue": true,
+    "approver": "Nguyễn Văn A",
+    "slaInfo": "Còn 4h SLA",
     "status": "PENDING",
     "statusText": "CHỜ DUYỆT",
     "tabType": "INBOX",
-    "dateCreated": "2026-10-29",
-    "isSaved": false,
+    "dateCreated": "2026-10-30",
     "title": "Đơn giải trình quên chấm công"
   },
   {
-    "id": "OT-2026-045",
+    "id": "OT-2026-051",
     "user": "Hoàng Văn Thái",
     "name": "Hoàng Văn Thái",
     "pap": "PAP0041",
-    "dept": "PM",
-    "avatar": "https://images.unsplash.com/photo-1517841905240-472988babdf9?w=60&auto=format&fit=crop&q=80",
+    "dept": "KT",
+    "avatar": "https://images.unsplash.com/photo-1522075469751-3a6694fb2f61?w=60&auto=format&fit=crop&q=80",
     "type": "Làm thêm giờ (OT)",
     "typeCode": "OT",
     "time": "02/11/2026 · 18:00 - 22:00",
-    "reason": "Làm thêm giờ",
-    "approver": "Trần Văn Nam (QLTT)",
+    "reason": "Bảo trì cẩu bờ",
+    "approver": "Nguyễn Văn A",
     "slaInfo": "Còn 15h SLA",
     "status": "PENDING",
     "statusText": "CHỜ DUYỆT",
     "tabType": "INBOX",
-    "dateCreated": "2026-10-28",
-    "isSaved": false,
+    "dateCreated": "2026-11-01",
     "title": "Đơn đề xuất làm thêm giờ"
   },
+
+  /* =========================================================================
+     TAB: DUYỆT BỞI TÔI (APPROVED_BY_ME - 10 ĐƠN)
+     Đơn đã được Nguyễn Văn A phê duyệt trong kỳ
+     ========================================================================= */
   {
     "id": "NP-2026-074",
     "user": "Trần Thị B",
     "name": "Trần Thị B",
     "pap": "PAP0012",
-    "dept": "PM",
-    "avatar": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=60&auto=format&fit=crop&q=80",
+    "dept": "KT",
+    "avatar": "https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=60&auto=format&fit=crop&q=80",
     "type": "Nghỉ phép năm",
     "typeCode": "LEAVE",
     "time": "28/10/2026",
-    "reason": "Bận việc gia đình",
-    "approver": "Trần Văn Nam (QLTT)",
-    "slaInfo": "Duyệt trong 2 giờ",
+    "reason": "Việc gia đình",
+    "approver": "Nguyễn Văn A",
+    "slaInfo": "Hoàn tất đúng hạn",
     "status": "APPROVED",
     "statusText": "ĐÃ DUYỆT",
     "tabType": "APPROVED_BY_ME",
     "dateCreated": "2026-10-26",
-    "isSaved": false,
     "title": "Đơn xin nghỉ phép năm"
   },
   {
@@ -19793,18 +19627,17 @@ let greqMasterData = [
     "name": "Lê Văn C",
     "pap": "PAP0015",
     "dept": "PM",
-    "avatar": "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=60&auto=format&fit=crop&q=80",
+    "avatar": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=60&auto=format&fit=crop&q=80",
     "type": "Giải trình quên chấm công",
     "typeCode": "ATT_ADJ",
-    "time": "25/10/2026",
+    "time": "25/10/2026 · Vào 08:20",
     "reason": "Quên chấm công",
-    "approver": "Trần Văn Nam (QLTT)",
-    "slaInfo": "Duyệt trong 4 giờ",
+    "approver": "Nguyễn Văn A",
+    "slaInfo": "Hoàn tất đúng hạn",
     "status": "APPROVED",
     "statusText": "ĐÃ DUYỆT",
     "tabType": "APPROVED_BY_ME",
     "dateCreated": "2026-10-25",
-    "isSaved": false,
     "title": "Đơn giải trình quên chấm công"
   },
   {
@@ -19812,19 +19645,18 @@ let greqMasterData = [
     "user": "Phạm Quốc Hùng",
     "name": "Phạm Quốc Hùng",
     "pap": "PAP0018",
-    "dept": "PM",
-    "avatar": "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=60&auto=format&fit=crop&q=80",
+    "dept": "KT",
+    "avatar": "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=60&auto=format&fit=crop&q=80",
     "type": "Làm thêm giờ (OT)",
     "typeCode": "OT",
     "time": "24/10/2026 · 17:30 - 20:30",
-    "reason": "Làm thêm giờ",
-    "approver": "Trần Văn Nam (QLTT)",
-    "slaInfo": "Duyệt trong 1 giờ",
+    "reason": "Bốc dỡ hàng",
+    "approver": "Nguyễn Văn A",
+    "slaInfo": "Hoàn tất đúng hạn",
     "status": "APPROVED",
     "statusText": "ĐÃ DUYỆT",
     "tabType": "APPROVED_BY_ME",
     "dateCreated": "2026-10-23",
-    "isSaved": false,
     "title": "Đơn đề xuất làm thêm giờ"
   },
   {
@@ -19833,18 +19665,17 @@ let greqMasterData = [
     "name": "Nguyễn Thị Mai",
     "pap": "PAP0027",
     "dept": "PM",
-    "avatar": "https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=60&auto=format&fit=crop&q=80",
+    "avatar": "https://images.unsplash.com/photo-1517841905240-472988babdf9?w=60&auto=format&fit=crop&q=80",
     "type": "Nghỉ cá nhân",
     "typeCode": "LEAVE_PL",
     "time": "22/10/2026",
-    "reason": "Bận việc gia đình",
-    "approver": "Trần Văn Nam (QLTT)",
-    "slaInfo": "Duyệt trong 3 giờ",
+    "reason": "Việc gia đình",
+    "approver": "Nguyễn Văn A",
+    "slaInfo": "Hoàn tất đúng hạn",
     "status": "APPROVED",
     "statusText": "ĐÃ DUYỆT",
     "tabType": "APPROVED_BY_ME",
     "dateCreated": "2026-10-20",
-    "isSaved": false,
     "title": "Đơn xin nghỉ việc riêng"
   },
   {
@@ -19852,19 +19683,18 @@ let greqMasterData = [
     "user": "Đỗ Hoàng Long",
     "name": "Đỗ Hoàng Long",
     "pap": "PAP0024",
-    "dept": "PM",
-    "avatar": "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?w=60&auto=format&fit=crop&q=80",
+    "dept": "KT",
+    "avatar": "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=60&auto=format&fit=crop&q=80",
     "type": "Đi công tác",
     "typeCode": "BIZ",
-    "time": "18/10/2026",
-    "reason": "Đi công tác",
-    "approver": "Trần Văn Nam (QLTT)",
-    "slaInfo": "Duyệt trong 6 giờ",
+    "time": "18/10/2026 - 19/10/2026",
+    "reason": "Công tác đối tác",
+    "approver": "Nguyễn Văn A",
+    "slaInfo": "Hoàn tất đúng hạn",
     "status": "APPROVED",
     "statusText": "ĐÃ DUYỆT",
     "tabType": "APPROVED_BY_ME",
     "dateCreated": "2026-10-15",
-    "isSaved": false,
     "title": "Đơn đề xuất đi công tác"
   },
   {
@@ -19873,18 +19703,17 @@ let greqMasterData = [
     "name": "Bùi Anh Tuấn",
     "pap": "PAP0032",
     "dept": "PM",
-    "avatar": "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=60&auto=format&fit=crop&q=80",
+    "avatar": "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?w=60&auto=format&fit=crop&q=80",
     "type": "Làm việc ngoài VP",
     "typeCode": "WFH",
     "time": "14/10/2026",
-    "reason": "Làm việc ngoài văn phòng",
-    "approver": "Trần Văn Nam (QLTT)",
-    "slaInfo": "Duyệt trong 2 giờ",
+    "reason": "Làm việc WFH",
+    "approver": "Nguyễn Văn A",
+    "slaInfo": "Hoàn tất đúng hạn",
     "status": "APPROVED",
     "statusText": "ĐÃ DUYỆT",
     "tabType": "APPROVED_BY_ME",
     "dateCreated": "2026-10-13",
-    "isSaved": false,
     "title": "Đơn làm việc ngoài văn phòng"
   },
   {
@@ -19892,19 +19721,18 @@ let greqMasterData = [
     "user": "Vũ Minh Đức",
     "name": "Vũ Minh Đức",
     "pap": "PAP0036",
-    "dept": "PM",
-    "avatar": "https://images.unsplash.com/photo-1522075469751-3a6694fb2f61?w=60&auto=format&fit=crop&q=80",
+    "dept": "KT",
+    "avatar": "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=60&auto=format&fit=crop&q=80",
     "type": "Giải trình quên chấm công",
     "typeCode": "ATT_ADJ",
-    "time": "10/10/2026",
+    "time": "10/10/2026 · Ra 17:30",
     "reason": "Quên chấm công",
-    "approver": "Trần Văn Nam (QLTT)",
-    "slaInfo": "Duyệt trong 5 giờ",
+    "approver": "Nguyễn Văn A",
+    "slaInfo": "Hoàn tất đúng hạn",
     "status": "APPROVED",
     "statusText": "ĐÃ DUYỆT",
     "tabType": "APPROVED_BY_ME",
     "dateCreated": "2026-10-10",
-    "isSaved": false,
     "title": "Đơn giải trình quên chấm công"
   },
   {
@@ -19912,19 +19740,18 @@ let greqMasterData = [
     "user": "Hoàng Văn Thái",
     "name": "Hoàng Văn Thái",
     "pap": "PAP0041",
-    "dept": "PM",
-    "avatar": "https://images.unsplash.com/photo-1517841905240-472988babdf9?w=60&auto=format&fit=crop&q=80",
+    "dept": "KT",
+    "avatar": "https://images.unsplash.com/photo-1522075469751-3a6694fb2f61?w=60&auto=format&fit=crop&q=80",
     "type": "Làm thêm giờ (OT)",
     "typeCode": "OT",
     "time": "06/10/2026 · 17:30 - 21:00",
-    "reason": "Làm thêm giờ",
-    "approver": "Trần Văn Nam (QLTT)",
-    "slaInfo": "Duyệt trong 3 giờ",
+    "reason": "Bảo dưỡng thiết bị",
+    "approver": "Nguyễn Văn A",
+    "slaInfo": "Hoàn tất đúng hạn",
     "status": "APPROVED",
     "statusText": "ĐÃ DUYỆT",
     "tabType": "APPROVED_BY_ME",
     "dateCreated": "2026-10-05",
-    "isSaved": false,
     "title": "Đơn đề xuất làm thêm giờ"
   },
   {
@@ -19932,19 +19759,18 @@ let greqMasterData = [
     "user": "Trần Thị B",
     "name": "Trần Thị B",
     "pap": "PAP0012",
-    "dept": "PM",
-    "avatar": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=60&auto=format&fit=crop&q=80",
+    "dept": "KT",
+    "avatar": "https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=60&auto=format&fit=crop&q=80",
     "type": "Nghỉ phép năm",
     "typeCode": "LEAVE",
-    "time": "01/10/2026",
-    "reason": "Bận việc gia đình",
-    "approver": "Trần Văn Nam (QLTT)",
-    "slaInfo": "Duyệt trong 4 giờ",
+    "time": "01/10/2026 - 02/10/2026",
+    "reason": "Việc gia đình",
+    "approver": "Nguyễn Văn A",
+    "slaInfo": "Hoàn tất đúng hạn",
     "status": "APPROVED",
     "statusText": "ĐÃ DUYỆT",
     "tabType": "APPROVED_BY_ME",
-    "dateCreated": "2026-09-28",
-    "isSaved": false,
+    "dateCreated": "2026-09-29",
     "title": "Đơn xin nghỉ phép năm"
   },
   {
@@ -19953,61 +19779,61 @@ let greqMasterData = [
     "name": "Lê Văn C",
     "pap": "PAP0015",
     "dept": "PM",
-    "avatar": "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=60&auto=format&fit=crop&q=80",
+    "avatar": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=60&auto=format&fit=crop&q=80",
     "type": "Giải trình quên chấm công",
     "typeCode": "ATT_ADJ",
-    "time": "28/09/2026",
+    "time": "28/09/2026 · Vào 08:10",
     "reason": "Quên chấm công",
-    "approver": "Trần Văn Nam (QLTT)",
-    "slaInfo": "Duyệt trong 2 giờ",
+    "approver": "Nguyễn Văn A",
+    "slaInfo": "Hoàn tất đúng hạn",
     "status": "APPROVED",
     "statusText": "ĐÃ DUYỆT",
     "tabType": "APPROVED_BY_ME",
     "dateCreated": "2026-09-28",
-    "isSaved": false,
     "title": "Đơn giải trình quên chấm công"
   },
+
+  /* =========================================================================
+     TAB: ĐANG THEO DÕI (WATCHING - 5 ĐƠN)
+     Đơn đặc biệt theo dõi toàn đơn vị
+     ========================================================================= */
   {
     "id": "NP-2026-085",
     "user": "Phạm Minh Tuấn",
     "name": "Phạm Minh Tuấn",
     "pap": "PAP0055",
-    "dept": "KT",
-    "avatar": "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=60&auto=format&fit=crop&q=80",
-    "type": "Nghỉ thai sản & dài ngày",
+    "dept": "TC",
+    "avatar": "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=60&auto=format&fit=crop&q=80",
+    "type": "Nghỉ thai sản / Dài ngày",
     "typeCode": "LEAVE_PL",
-    "time": "01/11/2026 - 01/05/2027 (6 tháng)",
-    "reason": "Bận việc gia đình",
-    "approver": "Nguyễn Văn Hải",
-    "slaInfo": "Còn 14h SLA",
+    "time": "01/11/2026 - 01/05/2027",
+    "reason": "Nghỉ thai sản",
+    "approver": "Phạm Quốc Tuấn",
+    "slaInfo": "Đang theo dõi",
     "status": "PENDING",
     "statusText": "CHỜ DUYỆT",
-    "currentStep": 2,
     "tabType": "WATCHING",
-    "dateCreated": "2026-10-25",
-    "isSaved": true,
-    "title": "Đơn xin nghỉ thai sản"
+    "dateCreated": "2026-10-30",
+    "title": "Đơn xin nghỉ chế độ thai sản"
   },
   {
     "id": "CT-2026-025",
     "user": "Lê Thị Thu Thảo",
     "name": "Lê Thị Thu Thảo",
     "pap": "PAP0062",
-    "dept": "KT",
-    "avatar": "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=60&auto=format&fit=crop&q=80",
+    "dept": "BGD",
+    "avatar": "https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=60&auto=format&fit=crop&q=80",
     "type": "Đi công tác",
     "typeCode": "BIZ",
     "time": "08/11/2026 - 15/11/2026",
-    "reason": "Đi công tác",
-    "approver": "Ban Giám đốc Cảng",
-    "slaInfo": "Còn 20h SLA",
+    "reason": "Xúc tiến cảng",
+    "approver": "Phạm Quốc Tuấn",
+    "slaInfo": "Đang theo dõi",
     "status": "PENDING",
     "statusText": "CHỜ DUYỆT",
-    "currentStep": 2,
     "tabType": "WATCHING",
-    "dateCreated": "2026-10-22",
-    "isSaved": true,
-    "title": "Đơn đề xuất đi công tác"
+    "dateCreated": "2026-11-01",
+    "title": "Công lệnh đi công tác nước ngoài"
   },
   {
     "id": "OT-2026-050",
@@ -20019,15 +19845,14 @@ let greqMasterData = [
     "type": "Làm thêm giờ (OT)",
     "typeCode": "OT",
     "time": "01/11/2026 · 22:00 - 06:00",
-    "reason": "Giải phóng hàng tàu container cập cảng đột xuất ban đêm",
-    "approver": "Nguyễn Văn Hải",
-    "slaInfo": "Theo dõi giờ công & an toàn lao động",
+    "reason": "Xếp dỡ tàu đêm",
+    "approver": "Phạm Quốc Hùng",
+    "slaInfo": "Đang theo dõi",
     "status": "APPROVED",
     "statusText": "ĐÃ DUYỆT",
     "tabType": "WATCHING",
     "dateCreated": "2026-10-31",
-    "isSaved": false,
-    "title": "Làm thêm giờ (OT) - Trần Văn Hùng"
+    "title": "Đơn làm thêm giờ ca đêm"
   },
   {
     "id": "NP-2026-077",
@@ -20035,19 +19860,18 @@ let greqMasterData = [
     "name": "Trịnh Quốc Bảo",
     "pap": "PAP0070",
     "dept": "KT",
-    "avatar": "https://images.unsplash.com/photo-1501196354995-cbb51c65aaea?w=60&auto=format&fit=crop&q=80",
+    "avatar": "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=60&auto=format&fit=crop&q=80",
     "type": "Nghỉ không lương",
     "typeCode": "LEAVE_PL",
     "time": "15/11/2026 - 30/11/2026",
-    "reason": "Bận việc gia đình",
-    "approver": "Ban Nhân sự",
-    "slaInfo": "Còn 22h SLA",
+    "reason": "Việc cá nhân",
+    "approver": "Trần Văn Nam",
+    "slaInfo": "Đang theo dõi",
     "status": "PENDING",
     "statusText": "CHỜ DUYỆT",
     "tabType": "WATCHING",
-    "dateCreated": "2026-10-20",
-    "isSaved": false,
-    "title": "Đơn xin nghỉ không lương"
+    "dateCreated": "2026-11-01",
+    "title": "Đơn xin nghỉ việc riêng không lương"
   },
   {
     "id": "DC-2026-018",
@@ -20055,18 +19879,17 @@ let greqMasterData = [
     "name": "Hoàng Văn Thắng",
     "pap": "PAP0085",
     "dept": "KT",
-    "avatar": "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?w=60&auto=format&fit=crop&q=80",
+    "avatar": "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=60&auto=format&fit=crop&q=80",
     "type": "Giải trình quên chấm công",
     "typeCode": "ATT_ADJ",
-    "time": "20/10/2026",
+    "time": "20/10/2026 · Vào 08:00",
     "reason": "Quên chấm công",
-    "approver": "Phạm Văn Hùng",
-    "slaInfo": "Theo dõi kiểm tra máy chấm công",
+    "approver": "Phạm Quốc Hùng",
+    "slaInfo": "Đang theo dõi",
     "status": "APPROVED",
     "statusText": "ĐÃ DUYỆT",
     "tabType": "WATCHING",
-    "dateCreated": "2026-10-21",
-    "isSaved": false,
+    "dateCreated": "2026-10-20",
     "title": "Đơn giải trình quên chấm công"
   }
 ];
@@ -20404,7 +20227,8 @@ function greqCell(r, k, i) {
     return '<span style="background:#f1f5f9;color:#334155;border:1px solid #e2e8f0;padding:2px 7px;border-radius:4px;font-size:11px;font-weight:600">' + deptName + '</span>';
   }
   if (k === 'title') {
-    return '<span style="font-weight:600;color:#1e293b;font-size:12px;cursor:pointer" title="Xem chi tiết đơn" onclick="viewGlobalReq(\'' + r.id + '\')">' + (r.title || r.type || '') + '</span>';
+    const sTitle = r.title || r.type || '';
+    return '<span style="font-weight:600;color:#1e293b;font-size:12px;cursor:pointer;display:block;max-width:145px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis" title="' + sTitle + '" onclick="viewGlobalReq(\'' + r.id + '\')">' + sTitle + '</span>';
   }
   if (k === 'type') {
     let icon = 'fa-calendar-days';
@@ -20427,7 +20251,8 @@ function greqCell(r, k, i) {
     return '<span style="font-size:12px;color:#334155;font-weight:500">' + tVal + '</span>';
   }
   if (k === 'reason') {
-    return '<span style="font-size:12px;color:#475569">' + (r.reason || '—') + '</span>';
+    const sReason = r.reason || '—';
+    return '<span style="font-size:12px;color:#475569;display:block;max-width:110px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis" title="' + sReason + '">' + sReason + '</span>';
   }
   if (k === 'approver' || k === 'routing') {
     return renderGreqApproverFlowCell(r);
@@ -24364,7 +24189,8 @@ function ereqCell(r, k, i) {
     return '<span style="font-size:12px;color:#334155;font-weight:500">' + (r.time || '—') + '</span>';
   }
   if (k === 'reason') {
-    return '<span style="font-size:12px;color:#475569">' + (r.reason || '—') + '</span>';
+    const sReason = r.reason || '—';
+    return '<span style="font-size:12px;color:#475569;display:block;max-width:120px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis" title="' + sReason + '">' + sReason + '</span>';
   }
   if (k === 'approver') {
     return '<span style="font-size:12px;color:#334155;font-weight:500"><i class="fa-solid fa-user-check text-[#15803d] mr-1"></i>' + (r.approver || '—') + '</span>';
@@ -25466,7 +25292,7 @@ function saveEditEmpReq() {
         <span class="badge" id="g-leave-calc-total-days" style="background:#f0fdf4;color:#15803d;border:1px solid #bbf7d0;font-size:12px;font-weight:700;padding:2px 8px">1.0 ngày</span>
         
         <span id="g-leave-calc-remain-wrap" style="font-size:11.5px;color:#64748b;margin-left:2px">(Dư sau nghỉ dự kiến: <b id="g-leave-calc-remain" style="color:#2E3191">9.0 ngày</b>)</span>
-        <span id="g-comp-fund-expiry-tag" style="display:none;margin-left:auto;font-size:11px;color:#854d0e;background:#fefce8;border:1px solid #fef08a;padding:2px 8px;border-radius:4px"><i class="fa-regular fa-clock mr-1"></i>Hạn sử dụng: 30/06/2026</span>
+        
       </div>
 
       <!-- KHỐI QUỸ CŨ (ẨN) -->
@@ -25671,7 +25497,7 @@ function saveEditEmpReq() {
 </div>
 
 <!-- MODAL: XEM CHI TIẾT ĐƠN (VIEW DETAIL MODAL) -->
-<div id="mdl-global-view" class="ov" style="z-index:1050">
+<div id="mdl-global-view" class="ov" style="z-index:10050">
   <div class="mdl" style="max-width:640px">
     <div class="mdl-hd">
       <h3 id="g-view-title" style="display:flex;align-items:center;gap:8px;font-size:15px;margin:0">
