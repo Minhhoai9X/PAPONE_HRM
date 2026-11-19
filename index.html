@@ -868,31 +868,86 @@ table.pap tbody tr.m12-cat-group-hdr:hover td {
   color: #2E3191;
   background: #eef2ff;
 }
-.m12-cat-ico-chip {
-  width: 30px;
-  height: 30px;
-  border-radius: 8px;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 13.5px;
-  flex-shrink: 0;
-}
-.m12-ico-opt, .m12-clr-opt {
-  width: 34px;
-  height: 34px;
-  border-radius: 8px;
-  border: 1.5px solid #e2e8f0;
+/* 32-Color Display Color Picker & Popover (PAP-HRM Bảng màu Standard) */
+.m12-clr-trigger {
+  width: 100%;
+  height: 38px;
+  border-radius: 9px;
+  border: 1.5px solid #cbd5e1;
   background: #ffffff;
+  padding: 0 11px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  cursor: pointer;
+  transition: all .15s ease;
+  text-align: left;
+}
+.m12-clr-trigger:hover {
+  border-color: #94a3b8;
+}
+.m12-clr-trigger.open {
+  border-color: #2E3191;
+  box-shadow: 0 0 0 3px rgba(46, 49, 145, 0.12);
+}
+.m12-clr-popover {
+  position: fixed;
+  z-index: 540;
+  width: 368px;
+  max-width: calc(100vw - 24px);
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 14px;
+  padding: 14px 16px;
+  box-shadow: 0 20px 44px rgba(15, 23, 42, 0.22);
+}
+.m12-clr-popover[hidden] { display: none !important; }
+.m12-clr-grid32 {
+  display: grid;
+  grid-template-columns: repeat(8, 1fr);
+  gap: 8px;
+  margin: 12px 0 14px;
+}
+.m12-clr-sw {
+  width: 33px;
+  height: 33px;
+  border-radius: 8px;
+  border: 1px solid rgba(15, 23, 42, 0.08);
+  padding: 0;
   display: inline-flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  transition: all .15s;
+  position: relative;
+  transition: transform .12s ease;
 }
-.m12-ico-opt.active, .m12-clr-opt.active {
-  border-color: #2E3191;
-  box-shadow: 0 0 0 2px rgba(46, 49, 145, 0.18);
+.m12-clr-sw:hover { transform: scale(1.06); }
+.m12-clr-sw.active {
+  box-shadow: 0 0 0 2px #ffffff, 0 0 0 3.8px #1e293b;
+  z-index: 2;
+}
+.m12-clr-used-dot {
+  position: absolute;
+  top: -4px;
+  right: -4px;
+  width: 13px;
+  height: 13px;
+  border-radius: 999px;
+  background: #ffffff;
+  border: 1px solid #cbd5e1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 1px 2px rgba(15, 23, 42, 0.14);
+  pointer-events: none;
+}
+.m12-clr-used-dot::after {
+  content: '';
+  width: 4.5px;
+  height: 4.5px;
+  border-radius: 999px;
+  background: #334155;
 }
 
 /* Sub-tables */
@@ -1057,6 +1112,9 @@ table.pap tbody tr.m12-cat-group-hdr:hover td {
 }
 /* === M12-CSS-END === */
 /* === M13-CSS-START === */
+#app-side { max-height: 100vh; min-height: 0; }
+#app-side > div:first-child { flex-shrink: 0; }
+#app-side > div:nth-child(2) { min-height: 0; overflow-y: auto; overflow-x: hidden; padding-bottom: 24px !important; }
 #m13-submenu { margin: 0 .4rem 4px; }
 #m13-submenu .m13-side-item { display: flex; align-items: center; gap: 8px; }
 aside.collapsed #m13-submenu, #app-side.collapsed #m13-submenu { display: none !important; }
@@ -6534,18 +6592,18 @@ thead .sl,thead .sr{background:var(--pap)}
 
                 <div class="m10-kpi-card">
                   <div class="m10-kpi-head">
-                    <span class="m10-kpi-title">NGHỈ PHÉP NĂM</span>
-                    <span class="m10-kpi-ico" style="background:#ecfdf5;color:#059669"><i class="fa-solid fa-calendar-check" aria-hidden="true"></i></span>
+                    <span class="m10-kpi-title">NGHỈ HƯỞNG LƯƠNG</span>
+                    <span class="m10-kpi-ico" style="background:#ecfdf5;color:#15803d"><i class="fa-solid fa-calendar-check" aria-hidden="true"></i></span>
                   </div>
-                  <div id="m10-absent-kpi-2" class="m10-kpi-val" style="color:#15803d"><span>15.0</span> <span class="m10-kpi-unit">ngày</span></div>
+                  <div id="m10-absent-kpi-2" class="m10-kpi-val" style="color:#15803d"><span>19.5</span> <span class="m10-kpi-unit">ngày</span></div>
                 </div>
 
                 <div class="m10-kpi-card">
                   <div class="m10-kpi-head">
-                    <span class="m10-kpi-title">NGHỈ CÓ PHÉP KHÁC</span>
-                    <span class="m10-kpi-ico" style="background:#f5f3ff;color:#7c3aed"><i class="fa-solid fa-notes-medical" aria-hidden="true"></i></span>
+                    <span class="m10-kpi-title">NGHỈ BHXH &amp; KHÔNG LƯƠNG</span>
+                    <span class="m10-kpi-ico" style="background:#f5f3ff;color:#6d28d9"><i class="fa-solid fa-notes-medical" aria-hidden="true"></i></span>
                   </div>
-                  <div id="m10-absent-kpi-3" class="m10-kpi-val" style="color:#6d28d9"><span>11.0</span> <span class="m10-kpi-unit">ngày</span></div>
+                  <div id="m10-absent-kpi-3" class="m10-kpi-val" style="color:#6d28d9"><span>6.5</span> <span class="m10-kpi-unit">ngày</span></div>
                 </div>
 
                 <div id="m10-absent-alert-card" class="m10-kpi-card is-alert">
@@ -6585,9 +6643,12 @@ thead .sl,thead .sr{background:var(--pap)}
 
               <div class="m10-table-card">
                 <div class="m10-table-toolbar">
-                  <b style="font-size:12.5px;color:#0f172a;text-transform:uppercase"><i class="fa-solid fa-table-list" style="color:#2E3191;margin-right:6px" aria-hidden="true"></i>Bảng tổng hợp ngày nghỉ phép, nghỉ không phép theo nhân viên</b>
+                  <div>
+                    <b style="font-size:12.5px;color:#0f172a;text-transform:uppercase;display:block"><i class="fa-solid fa-table-list" style="color:#2E3191;margin-right:6px" aria-hidden="true"></i>Bảng tổng hợp ngày nghỉ phép, nghỉ không phép theo nhân viên</b>
+                    <div style="font-size:11.5px;color:#64748b;margin-top:2px"><i class="fa-solid fa-circle-info" style="color:#2563eb;margin-right:4px" aria-hidden="true"></i>Thống kê ngày nghỉ ngắn hạn phát sinh của nhân viên đang làm việc (không gồm nhân viên nghỉ thai sản dài hạn / tạm hoãn HĐLĐ)</div>
+                  </div>
                   <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap">
-                    <input type="text" id="rep-absent-search" aria-label="Tìm nhanh trong bảng nghỉ phép không phép" placeholder="Tìm mã NV, họ tên, phòng ban…" oninput="M7T['rep-absent'].st.query=this.value;M7T['rep-absent'].st.page=1;renderT('rep-absent')" style="width:230px;padding:5px 9px;border:1px solid #cbd5e1;border-radius:6px;font-size:12px;outline:none">
+                    <input type="text" id="rep-absent-search" aria-label="Tìm nhanh trong bảng nghỉ phép không phép" placeholder="Tìm mã NV, họ tên, phòng ban, loại lịch…" oninput="M7T['rep-absent'].st.query=this.value;M7T['rep-absent'].st.page=1;renderT('rep-absent')" style="width:240px;padding:5px 9px;border:1px solid #cbd5e1;border-radius:6px;font-size:12px;outline:none">
                     <button type="button" class="btn btn-o" onclick="openPicker2('rep-absent',this)" style="padding:5px 10px;font-size:12px;display:inline-flex;align-items:center;gap:5px"><i class="fa-solid fa-table-columns" aria-hidden="true"></i> Cột</button>
                     <button type="button" onclick="exportM10Excel('absent')" style="padding:5px 11px;font-size:12px;font-weight:600;border-radius:6px;background:#ecfdf5;color:#047857;border:1px solid #a7f3d0;display:inline-flex;align-items:center;gap:6px;cursor:pointer"><i class="fa-solid fa-file-excel" style="color:#059669" aria-hidden="true"></i><span>Xuất Excel</span></button>
                   </div>
@@ -6779,7 +6840,8 @@ thead .sl,thead .sr{background:var(--pap)}
               </table>
             </div>
           </div>
-          <div class="m10-mdl-foot">
+          <div class="m10-mdl-foot" style="justify-content:space-between;align-items:center;flex-wrap:wrap">
+            <span style="font-size:11.5px;color:#64748b"><i class="fa-solid fa-circle-info" style="color:#2563eb;margin-right:5px" aria-hidden="true"></i>Số dư Quỹ phép năm &amp; Nghỉ bù tra cứu thống nhất tại phân hệ Nghỉ phép (M09).</span>
             <button type="button" class="btn btn-o" onclick="closeM10AbsentDetail()" style="padding:6px 16px;font-weight:600">Đóng</button>
           </div>
         </div>
@@ -8542,15 +8604,16 @@ const CAT_DEFS={
     {code:'KT-TC',name:'Kế toán viên',grp:'Chuyên môn',grade:'Bậc 2',count:8,status:'● Đang hoạt động',cre:'Admin HR · 01/01/2026',upd:'—',link:1},
     {code:'NV-HC',name:'Nhân viên Hành chính',grp:'Hỗ trợ',grade:'Bậc 1',count:11,status:'● Đang hoạt động',cre:'Admin HR · 01/01/2026',upd:'—',link:0},
    ]},
- hd:{icon:'fa-file-contract',label:'Loại hợp đồng',sub:'Loại hợp đồng lao động áp dụng tại Cảng',
-   cols:[['code','Mã HĐ'],['name','Tên loại HĐ'],['term','Thời hạn'],['bhxh','BHXH'],['count','Số NS'],['status','Trạng thái'],['cre','Khởi tạo'],['upd','Cập nhật']],
-   fields:[['code','Mã loại HĐ','text',1],['name','Tên loại hợp đồng','text',1],['term','Thời hạn','select',1,['Không xác định','12 tháng','24 tháng','36 tháng','2 tháng (mùa vụ)','Thử việc']],['bhxh','Đóng BHXH','select',1,['Có','Không']],['renew','Kỳ hạn gia hạn','text',0],['status','Trạng thái','select',1,['● Đang hoạt động','○ Ngừng']]],
+ hd:{icon:'fa-file-contract',label:'Loại hợp đồng',sub:'Loại hợp đồng lao động áp dụng tại Cảng (theo BLLĐ 2019)',
+   cols:[['code','Mã HĐ'],['name','Tên loại HĐ'],['termType','Phân loại thời hạn'],['term','Thời hạn chuẩn'],['bhxh','BHXH'],['count','Số NS'],['status','Trạng thái'],['cre','Khởi tạo'],['upd','Cập nhật']],
+   fields:[['code','Mã loại HĐ','text',1],['name','Tên loại hợp đồng','text',1],['termType','Phân loại thời hạn','select',1,['Có thời hạn','Không xác định thời hạn']],['durationVal','Thời hạn chuẩn','number',1,null,'half'],['durationUnit','Đơn vị thời hạn','select',1,['Tháng','Ngày'],'half'],['bhxh','Đóng BHXH','select',1,['Có','Không']],['status','Trạng thái','select',1,['● Đang hoạt động','○ Ngừng']]],
    data:[
-    {code:'HD-KXD',name:'HĐLĐ không xác định thời hạn',term:'Không xác định',bhxh:'Có',count:156,status:'● Đang hoạt động',cre:'Admin HR · 01/01/2026',upd:'Phòng Nhân sự · 15/02/2026',link:1},
-    {code:'HD-XD12',name:'HĐLĐ xác định thời hạn 12 tháng',term:'12 tháng',bhxh:'Có',count:42,status:'● Đang hoạt động',cre:'Admin HR · 01/01/2026',upd:'—',link:1},
-    {code:'HD-XD24',name:'HĐLĐ xác định thời hạn 24 tháng',term:'24 tháng',bhxh:'Có',count:18,status:'● Đang hoạt động',cre:'Admin HR · 01/01/2026',upd:'—',link:1},
-    {code:'HD-TV',name:'Hợp đồng thử việc',term:'Thử việc',bhxh:'Không',count:12,status:'● Đang hoạt động',cre:'Admin HR · 01/01/2026',upd:'—',link:1},
-    {code:'HD-MV',name:'Hợp đồng mùa vụ',term:'2 tháng (mùa vụ)',bhxh:'Không',count:5,status:'○ Ngừng',cre:'Admin HR · 01/01/2026',upd:'Phòng Nhân sự · 01/03/2026',link:0},
+    {code:'HD-KXD',name:'HĐLĐ không xác định thời hạn',termType:'Không xác định thời hạn',durationVal:'',durationUnit:'',term:'—',bhxh:'Có',count:156,status:'● Đang hoạt động',cre:'Admin HR · 01/01/2026',upd:'Phòng Nhân sự · 15/02/2026',link:1},
+    {code:'HD-XD36',name:'HĐLĐ xác định thời hạn 36 tháng',termType:'Có thời hạn',durationVal:36,durationUnit:'Tháng',term:'36 tháng',bhxh:'Có',count:24,status:'● Đang hoạt động',cre:'Admin HR · 01/01/2026',upd:'—',link:1},
+    {code:'HD-XD24',name:'HĐLĐ xác định thời hạn 24 tháng',termType:'Có thời hạn',durationVal:24,durationUnit:'Tháng',term:'24 tháng',bhxh:'Có',count:18,status:'● Đang hoạt động',cre:'Admin HR · 01/01/2026',upd:'—',link:1},
+    {code:'HD-XD12',name:'HĐLĐ xác định thời hạn 12 tháng',termType:'Có thời hạn',durationVal:12,durationUnit:'Tháng',term:'12 tháng',bhxh:'Có',count:42,status:'● Đang hoạt động',cre:'Admin HR · 01/01/2026',upd:'—',link:1},
+    {code:'HD-XD06',name:'HĐLĐ xác định thời hạn 6 tháng',termType:'Có thời hạn',durationVal:6,durationUnit:'Tháng',term:'6 tháng',bhxh:'Có',count:5,status:'○ Ngừng',cre:'Admin HR · 01/01/2026',upd:'Phòng Nhân sự · 01/03/2026',link:0},
+    {code:'HD-TV60',name:'Hợp đồng thử việc (60 ngày)',termType:'Có thời hạn',durationVal:60,durationUnit:'Ngày',term:'60 ngày',bhxh:'Không',count:12,status:'● Đang hoạt động',cre:'Admin HR · 01/01/2026',upd:'—',link:1},
    ]},
  tt:{icon:'fa-tag',label:'Trạng thái NV',sub:'Trạng thái làm việc của nhân sự',
    cols:[['code','Mã TT'],['name','Tên trạng thái'],['grp','Nhóm'],['chamcong','Chấm công'],['count','Số NS'],['status','Trạng thái'],['cre','Khởi tạo'],['upd','Cập nhật']],
@@ -8579,10 +8642,10 @@ function navCat(k,el){
   expandSub('m01');document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));document.getElementById('pg-m01').classList.add('active');document.querySelectorAll('.side-item').forEach(s=>s.classList.remove('active'));var m=document.getElementById('side-m01');if(m)m.classList.add('active');var d=CAT_DEFS[k];var tt=document.getElementById('top-title');if(tt&&d)tt.textContent=d.label;catSwitch(k);}
 function catSwitch(k){catCur=k;catState.page=1;catState.query='';catState.sortKey=null;catState.colSearch={};catState.colFilter={};var s=document.getElementById('cat-search');if(s)s.value='';var d=CAT_DEFS[k];document.getElementById('cat-title').textContent='Danh mục '+d.label;document.getElementById('cat-sub').textContent=d.sub;catMenu();catBuildCols();renderCat();}
 let catCols=[];
-function catBuildCols(){var d=CAT_DEFS[catCur];catCols=[{k:'stt',t:'STT',pin:true,sl:true,vis:true}].concat(d.cols.map(function(c){return {k:c[0],t:c[1],vis:true,sort:true,search:c[0]==='code'||c[0]==='name',filter:c[0]==='status'||c[0]==='grp'||c[0]==='grp'};})).concat([{k:'action',t:'Hành động',pin:true,sr:true,vis:true}]);}
+function catBuildCols(){var d=CAT_DEFS[catCur];catCols=[{k:'stt',t:'STT',pin:true,sl:true,vis:true}].concat(d.cols.map(function(c){return {k:c[0],t:c[1],vis:true,sort:true,search:c[0]==='code'||c[0]==='name',filter:c[0]==='status'||c[0]==='grp'||c[0]==='termType'||c[0]==='bhxh'};})).concat([{k:'action',t:'Hành động',pin:true,sr:true,vis:true}]);}
 const cvis=()=>catCols.filter(c=>c.vis);
 function catHead(){const tr=document.getElementById('cat-head');tr.innerHTML='';cvis().forEach(c=>{const th=document.createElement('th');th.style.position='relative';if(c.sl)th.className='sl';if(c.sr)th.className='sr';let s='<span class="hdr"><span>'+c.t+'</span>';if(c.sort)s+=`<button class="ctrl" title="Sắp xếp" onclick="catSort('${c.k}')"><i class="fa-solid fa-sort"></i></button>`;if(c.search)s+=`<button class="ctrl" title="Tìm" onclick="catCS('${c.k}')"><i class="fa-solid fa-magnifying-glass"></i></button>`;if(c.filter)s+=`<button class="ctrl" title="Lọc" onclick="catTF('${c.k}',event)"><i class="fa-solid fa-filter"></i></button>`;s+='</span>';if(c.search)s+=`<input class="col-search" hidden data-k="${c.k}" placeholder="Tìm…" oninput="catState.colSearch['${c.k}']=this.value;catState.page=1;renderCat()">`;if(c.filter){const vals=[...new Set(CAT_DEFS[catCur].data.map(r=>r[c.k]))];const cur=catState.colFilter[c.k];s+=`<div class="filter-menu" hidden data-k="${c.k}">`+[{l:'Tất cả',v:null},...vals.map(v=>({l:v,v}))].map(o=>`<button class="filter-opt" aria-selected="${o.v===cur}" onclick="catSF('${c.k}',${o.v===null?'null':`'${o.v}'`})">${o.l}</button>`).join('')+`</div>`;}th.innerHTML=s;tr.appendChild(th);});}
-function renderCat(){catState.query=(document.getElementById('cat-search')||{}).value||'';catHead();const b=document.getElementById('cat-body');let rows=[...CAT_DEFS[catCur].data];if(catState.sortKey)rows.sort((a,b)=>String(a[catState.sortKey]).localeCompare(String(b[catState.sortKey]),'vi',{numeric:true})*catState.sortDir);rows=rows.filter(r=>{const g=!catState.query||Object.values(r).join(' ').toLowerCase().includes(catState.query.toLowerCase());const cs=Object.entries(catState.colSearch).every(([k,q])=>!q||String(r[k]).toLowerCase().includes(q.toLowerCase()));const cf=Object.entries(catState.colFilter).every(([k,v])=>v==null||r[k]===v);return g&&cs&&cf;});const pc=Math.max(1,Math.ceil(rows.length/catState.pageSize));catState.page=Math.min(catState.page,pc);const st=rows.length?(catState.page-1)*catState.pageSize:0;const sl=rows.slice(st,st+catState.pageSize);b.innerHTML='';if(!sl.length)b.innerHTML=`<tr><td colspan="${cvis().length}" style="text-align:center;color:#94a3b8;padding:40px"><i class="fa-solid fa-inbox fa-2x" style="display:block;margin-bottom:8px"></i>Không có dữ liệu phù hợp</td></tr>`;sl.forEach((r,i)=>{const tr=document.createElement('tr');cvis().forEach(c=>{const td=document.createElement('td');if(c.sl)td.className='sl';if(c.sr)td.className='sr';if(c.k==='stt')td.textContent=st+i+1;else if(c.k==='action'){td.innerHTML=`<button class="ctrl" style="color:#64748b" title="Sửa" onclick='catOpenEdit("edit",${JSON.stringify(r)})'><i class="fa-solid fa-pen"></i></button> <button class="ctrl" style="color:#be123c" title="Xóa" onclick='catDelete(${JSON.stringify(r)})'><i class="fa-solid fa-trash"></i></button>`;}else if(c.k==='code'||c.k==='name')td.innerHTML=`<b>${r[c.k]??''}</b>`;else if(c.k==='status')td.innerHTML=`<span style="color:${String(r[c.k]).includes('●')?'#059669':'#94a3b8'}">${r[c.k]}</span>`;else if(c.k==='count')td.innerHTML=`<span style="font-size:11px;color:#2E3191;background:#eef2ff;border-radius:4px;padding:1px 7px;font-weight:600">${r[c.k]} NS</span>`;else if(c.k==='sym')td.innerHTML=`<span class="chip" style="background:#eef2ff;color:#2E3191;border-color:#c7d2fe">${r[c.k]}</span>`;else if(c.k==='cre'||c.k==='upd'){const v=r[c.k]??'—';if(v==='—')td.innerHTML='<span style="color:#cbd5e1">—</span>';else{const p=String(v).split('·');td.innerHTML=`<div style="font-size:11px"><b>${(p[0]||'').trim()}</b>${p[1]?`<div style="font-size:10px;color:#94a3b8">${p[1].trim()}</div>`:''}</div>`;}}else td.textContent=r[c.k]??'';tr.appendChild(td);});b.appendChild(tr);});document.getElementById('cat-range').textContent=rows.length?`${st+1}–${Math.min(st+catState.pageSize,rows.length)} / ${rows.length}`:'0 / 0';document.getElementById('cat-pager').innerHTML=`<button class="btn btn-o" ${catState.page<=1?'disabled':''} onclick="catState.page--;renderCat()"><i class="fa-solid fa-chevron-left"></i></button><span>Trang ${catState.page} / ${pc}</span><button class="btn btn-o" ${catState.page>=pc?'disabled':''} onclick="catState.page++;renderCat()"><i class="fa-solid fa-chevron-right"></i></button>`;}
+function renderCat(){catState.query=(document.getElementById('cat-search')||{}).value||'';catHead();const b=document.getElementById('cat-body');let rows=[...CAT_DEFS[catCur].data];if(catState.sortKey)rows.sort((a,b)=>String(a[catState.sortKey]).localeCompare(String(b[catState.sortKey]),'vi',{numeric:true})*catState.sortDir);rows=rows.filter(r=>{const g=!catState.query||Object.values(r).join(' ').toLowerCase().includes(catState.query.toLowerCase());const cs=Object.entries(catState.colSearch).every(([k,q])=>!q||String(r[k]).toLowerCase().includes(q.toLowerCase()));const cf=Object.entries(catState.colFilter).every(([k,v])=>v==null||r[k]===v);return g&&cs&&cf;});const pc=Math.max(1,Math.ceil(rows.length/catState.pageSize));catState.page=Math.min(catState.page,pc);const st=rows.length?(catState.page-1)*catState.pageSize:0;const sl=rows.slice(st,st+catState.pageSize);b.innerHTML='';if(!sl.length)b.innerHTML=`<tr><td colspan="${cvis().length}" style="text-align:center;color:#94a3b8;padding:40px"><i class="fa-solid fa-inbox fa-2x" style="display:block;margin-bottom:8px"></i>Không có dữ liệu phù hợp</td></tr>`;sl.forEach((r,i)=>{const tr=document.createElement('tr');cvis().forEach(c=>{const td=document.createElement('td');if(c.sl)td.className='sl';if(c.sr)td.className='sr';if(c.k==='stt')td.textContent=st+i+1;else if(c.k==='action'){td.innerHTML=`<button class="ctrl" style="color:#64748b" title="Sửa" onclick='catOpenEdit("edit",${JSON.stringify(r)})'><i class="fa-solid fa-pen"></i></button> <button class="ctrl" style="color:#be123c" title="Xóa" onclick='catDelete(${JSON.stringify(r)})'><i class="fa-solid fa-trash"></i></button>`;}else if(c.k==='code'||c.k==='name')td.innerHTML=`<b>${r[c.k]??''}</b>`;else if(c.k==='status')td.innerHTML=`<span style="color:${String(r[c.k]).includes('●')?'#059669':'#94a3b8'}">${r[c.k]}</span>`;else if(c.k==='termType')td.innerHTML=r[c.k]==='Không xác định thời hạn'?`<span class="chip" style="background:#ecfdf5;color:#047857;border-color:#a7f3d0">${r[c.k]}</span>`:`<span class="chip" style="background:#eef2ff;color:#2E3191;border-color:#c7d2fe">${r[c.k]}</span>`;else if(c.k==='term')td.innerHTML=r[c.k]==='—'||!r[c.k]?'<span style="color:#cbd5e1">—</span>':`<b>${r[c.k]}</b>`;else if(c.k==='count')td.innerHTML=`<span style="font-size:11px;color:#2E3191;background:#eef2ff;border-radius:4px;padding:1px 7px;font-weight:600">${r[c.k]} NS</span>`;else if(c.k==='sym')td.innerHTML=`<span class="chip" style="background:#eef2ff;color:#2E3191;border-color:#c7d2fe">${r[c.k]}</span>`;else if(c.k==='cre'||c.k==='upd'){const v=r[c.k]??'—';if(v==='—')td.innerHTML='<span style="color:#cbd5e1">—</span>';else{const p=String(v).split('·');td.innerHTML=`<div style="font-size:11px"><b>${(p[0]||'').trim()}</b>${p[1]?`<div style="font-size:10px;color:#94a3b8">${p[1].trim()}</div>`:''}</div>`;}}else td.textContent=r[c.k]??'';tr.appendChild(td);});b.appendChild(tr);});document.getElementById('cat-range').textContent=rows.length?`${st+1}–${Math.min(st+catState.pageSize,rows.length)} / ${rows.length}`:'0 / 0';document.getElementById('cat-pager').innerHTML=`<button class="btn btn-o" ${catState.page<=1?'disabled':''} onclick="catState.page--;renderCat()"><i class="fa-solid fa-chevron-left"></i></button><span>Trang ${catState.page} / ${pc}</span><button class="btn btn-o" ${catState.page>=pc?'disabled':''} onclick="catState.page++;renderCat()"><i class="fa-solid fa-chevron-right"></i></button>`;}
 function catSort(k){catState.sortDir=catState.sortKey===k?-catState.sortDir:1;catState.sortKey=k;renderCat();}
 function catCS(k){const e=document.querySelector(`.col-search[data-k="${k}"]`);if(e){e.hidden=!e.hidden;if(!e.hidden)e.focus();}}
 function catTF(k,e){e.stopPropagation();document.querySelectorAll('.filter-menu').forEach(m=>{if(m.dataset.k!==k)m.hidden=true;});const m=document.querySelector(`.filter-menu[data-k="${k}"]`);if(m)m.hidden=!m.hidden;}
@@ -8596,12 +8659,15 @@ function pkSearch(q){document.querySelectorAll('#pk-list .pitem').forEach(it=>{i
 function pkAll(ck){catCols.forEach(c=>{if(c.k!=='stt')c.vis=ck;});renderCat();catPkList();}
 function pkReset(){catBuildCols();renderCat();catPkList();}
 /* CRUD M01 */
-function catOpenEdit(mode,r){var d=CAT_DEFS[catCur];var body=d.fields.map(function(f){var key=f[0],lbl=f[1],typ=f[2],req=f[3],opts=f[4]||[];var val=r?(r[key]??''):'';var reqm=req?' <span style="color:#e11d48">*</span>':'';var ctl;if(typ==='select')ctl='<select id="cf-'+key+'" class="fi" style="width:100%">'+opts.map(function(o){return '<option '+(String(val)===o?'selected':'')+'>'+o+'</option>';}).join('')+'</select>';else if(typ==='textarea')ctl='<textarea id="cf-'+key+'" class="fi" style="width:100%;min-height:54px">'+val+'</textarea>';else ctl='<input id="cf-'+key+'" class="fi" style="width:100%" value="'+String(val).replace(/"/g,'&quot;')+'" '+(mode==='edit'&&key==='code'?'disabled':'')+'>';return '<div style="'+(typ==='textarea'||typ==='select'||f[5]==='wide'?'grid-column:1/-1':'')+'"><label style="display:block;font-weight:600;font-size:12px;margin-bottom:3px">'+lbl+reqm+'</label>'+ctl+'</div>';}).join('');
+function catSyncTermFields(){if(catCur!=='hd')return;var tt=document.getElementById('cf-termType');var wv=document.getElementById('cfw-durationVal'),wu=document.getElementById('cfw-durationUnit');if(!tt||!wv||!wu)return;var isIndef=tt.value==='Không xác định thời hạn';wv.style.display=isIndef?'none':'';wu.style.display=isIndef?'none':'';if(isIndef){var iv=document.getElementById('cf-durationVal');if(iv)iv.value='';}}
+function catOpenEdit(mode,r){var d=CAT_DEFS[catCur];var body=d.fields.map(function(f){var key=f[0],lbl=f[1],typ=f[2],req=f[3],opts=f[4]||[],lay=f[5]||'';var val=r?(r[key]??''):'';var reqm=req?' <span style="color:#e11d48">*</span>':'';var ctl;if(typ==='select')ctl='<select id="cf-'+key+'" class="fi" style="width:100%"'+(key==='termType'?' onchange="catSyncTermFields()"':'')+'>'+opts.map(function(o){return '<option '+(String(val)===o?'selected':'')+'>'+o+'</option>';}).join('')+'</select>';else if(typ==='textarea')ctl='<textarea id="cf-'+key+'" class="fi" style="width:100%;min-height:54px">'+val+'</textarea>';else if(typ==='number')ctl='<input id="cf-'+key+'" type="number" min="1" step="1" placeholder="VD: 12, 24, 60" class="fi" style="width:100%" value="'+String(val).replace(/"/g,'&quot;')+'">';else ctl='<input id="cf-'+key+'" class="fi" style="width:100%" value="'+String(val).replace(/"/g,'&quot;')+'" '+(mode==='edit'&&key==='code'?'disabled':'')+'>';var full=(typ==='textarea'||(typ==='select'&&lay!=='half')||lay==='wide');return '<div id="cfw-'+key+'" style="'+(full?'grid-column:1/-1':'')+'"><label style="display:block;font-weight:600;font-size:12px;margin-bottom:3px">'+lbl+reqm+'</label>'+ctl+'</div>';}).join('');
   var ov=document.getElementById('overlay');document.getElementById('modal-cat').style.display='block';document.getElementById('modal-org').style.display='none';ov.style.display='flex';
-  document.getElementById('modal-cat').innerHTML='<div class="mdl-hd" style="display:flex;justify-content:space-between;align-items:center;padding:14px 18px;border-bottom:1px solid #f1f5f9"><h3 style="margin:0;font-size:14px" class="pap-text"><i class="fa-solid fa-'+(mode==='edit'?'pen':'plus')+' mr-1"></i>'+(mode==='edit'?'Sửa':'Thêm')+' '+d.label+'</h3><button class="ctrl" style="color:#94a3b8;font-size:16px" onclick="catCloseModal()">&times;</button></div><div style="padding:16px 18px;display:grid;grid-template-columns:1fr 1fr;gap:12px">'+body+'</div><div class="mdl-ft" style="display:flex;justify-content:flex-end;gap:8px;padding:12px 18px;border-top:1px solid #f1f5f9"><button class="btn btn-o" onclick="catCloseModal()">Hủy</button><button class="btn btn-p" onclick="catSave()"><i class="fa-solid fa-floppy-disk mr-1"></i>Lưu</button></div>';}
+  document.getElementById('modal-cat').innerHTML='<div class="mdl-hd" style="display:flex;justify-content:space-between;align-items:center;padding:14px 18px;border-bottom:1px solid #f1f5f9"><h3 style="margin:0;font-size:14px" class="pap-text"><i class="fa-solid fa-'+(mode==='edit'?'pen':'plus')+' mr-1"></i>'+(mode==='edit'?'Sửa':'Thêm')+' '+d.label+'</h3><button class="ctrl" style="color:#94a3b8;font-size:16px" onclick="catCloseModal()">&times;</button></div><div style="padding:16px 18px;display:grid;grid-template-columns:1fr 1fr;gap:12px">'+body+'</div><div class="mdl-ft" style="display:flex;justify-content:flex-end;gap:8px;padding:12px 18px;border-top:1px solid #f1f5f9"><button class="btn btn-o" onclick="catCloseModal()">Hủy</button><button class="btn btn-p" onclick="catSave()"><i class="fa-solid fa-floppy-disk mr-1"></i>Lưu</button></div>';
+  catSyncTermFields();}
 function catCloseModal(){document.getElementById('overlay').style.display='none';}
 function catSave(){var d=CAT_DEFS[catCur];var row={};d.fields.forEach(function(f){var el=document.getElementById('cf-'+f[0]);row[f[0]]=el?el.value:'';});if(!row.code||!row.name){toastMsg('Vui lòng nhập Mã và Tên');return;}
-  var idx=d.data.findIndex(function(x){return x.code===row.code;});if(idx>=0){Object.assign(d.data[idx],row);}else{row.count=0;row.link=0;row.cre='Admin HR';row.cdt=new Date().toLocaleDateString('vi-VN');d.data.push(row);}catCloseModal();catMenu();renderCat();toastMsg('Đã lưu danh mục '+d.label);}
+  if(catCur==='hd'){if(row.termType==='Không xác định thời hạn'){row.durationVal='';row.durationUnit='';row.term='—';}else{var n=parseInt(row.durationVal,10);if(!n||n<=0){toastMsg('Vui lòng nhập thời hạn chuẩn là số nguyên dương (> 0)');return;}row.durationVal=n;row.term=n+' '+String(row.durationUnit||'Tháng').toLowerCase();}}
+  var idx=d.data.findIndex(function(x){return x.code===row.code;});if(idx>=0){Object.assign(d.data[idx],row);}else{row.count=0;row.link=0;row.cre='Admin HR · '+new Date().toLocaleDateString('vi-VN');row.upd='—';d.data.push(row);}catCloseModal();catMenu();renderCat();toastMsg('Đã lưu danh mục '+d.label);}
 function catDelete(r){var d=CAT_DEFS[catCur];var linked=r.link&&r.count>0;var msg=linked?('⚠ Danh mục "'+r.name+'" đang liên kết '+r.count+' nhân sự.\\nVẫn xóa? (nhân sự liên quan sẽ cần gán lại danh mục khác)'):('Xóa danh mục "'+r.name+'"?');if(!confirm(msg))return;var i=d.data.findIndex(function(x){return x.code===r.code;});if(i>=0)d.data.splice(i,1);catMenu();renderCat();toastMsg('Đã xóa "'+r.name+'"'+(linked?' (có liên kết dữ liệu)':''));}
 function toastMsg(m){if(typeof E9toast==='function'){E9toast(m);return;}alert(m);}
 document.addEventListener('click',e=>{if(!e.target.closest('.filter-menu')&&!e.target.closest('[title="Lọc"]'))document.querySelectorAll('.filter-menu').forEach(m=>m.hidden=true);if(!e.target.closest('#picker')&&!e.target.closest('[onclick^="openPicker"]'))closePicker();if(!e.target.closest('#org-picker')&&!e.target.closest('[onclick^="openOrgPicker"]'))document.getElementById('org-picker').hidden=true;if(!e.target.closest('#emp-picker')&&!e.target.closest('[onclick^="openEmpPicker"]'))document.getElementById('emp-picker').hidden=true;});
@@ -24553,7 +24619,7 @@ const otpolCols = [
   { k: 'dept', t: 'Đối tượng áp dụng', sort: true, search: true, vis: true, w: 120 },
   { k: 'effectiveDate', t: 'Ngày hiệu lực', sort: true, vis: true, w: 95 },
   { k: 'limit', t: 'Hạn mức quy định', sort: true, vis: true, w: 130 },
-  { k: 'rates', t: 'Hệ số tăng ca', vis: true, w: 175 },
+  { k: 'rates', t: 'Hệ số tăng ca', vis: true, w: 120 },
   { k: 'reward', t: 'Hình thức ghi nhận', vis: true, w: 110 },
   { k: 'created', t: 'Người tạo', sort: true, search: true, vis: true, w: 130 },
   { k: 'updated', t: 'Cập nhật', sort: true, search: true, vis: true, w: 130 },
@@ -24578,8 +24644,6 @@ let otpolMasterData = [
     rateWeekday: 150,
     rateWeekend: 200,
     rateHoliday: 300,
-    rateShiftWeekday: 150,
-    rateShiftHoliday: 350,
     nightBonus: true,
     rewardPay: true,
     rewardComp: true,
@@ -24745,15 +24809,10 @@ const otpolCell = {
     }
     if (k === 'limit') return '<b style="font-size:11.5px;color:#1e293b">' + (r.limit || '—') + '</b>';
     if (k === 'rates') {
-      const rw = r.rateWeekday ?? 150;
-      const rwe = r.rateWeekend ?? 200;
-      const rh = r.rateHoliday ?? 300;
-      const sw = r.rateShiftWeekday ?? rw;
-      const sh = r.rateShiftHoliday ?? rh;
-      return '<div style="display:flex;flex-direction:column;gap:3px">' +
-        '<span class="chip" style="background:#f8fafc;border:1px solid #e2e8f0;font-size:10.5px;font-weight:700;color:#2E3191;display:inline-flex;align-items:center;gap:4px"><span style="color:#64748b;font-weight:600;min-width:22px">HC:</span>' + rw + '% · ' + rwe + '% · ' + rh + '%</span>' +
-        '<span class="chip" style="background:#fffbeb;border:1px solid #fde68a;font-size:10.5px;font-weight:700;color:#b45309;display:inline-flex;align-items:center;gap:4px"><span style="color:#92400e;font-weight:600;min-width:22px">Ca:</span>' + sw + '% · — · ' + sh + '%</span>' +
-      '</div>';
+      const rw = r.rateWeekday || 150;
+      const rwe = r.rateWeekend || 200;
+      const rh = r.rateHoliday || 300;
+      return '<span class="chip" style="background:#f8fafc;border:1px solid #e2e8f0;font-size:11px;font-weight:700;color:#2E3191">' + rw + '% · ' + rwe + '% · ' + rh + '%</span>';
     }
     if (k === 'reward') {
       const isPay = r.rewardPay !== false && (r.rewardType === 'PAY' || r.rewardType === 'BOTH' || r.rewardPay === true);
@@ -24818,8 +24877,6 @@ function openOtPolicyModal(mode) {
   const rateWkEl = document.getElementById('ot-pol-rate-weekday');
   const rateWeEl = document.getElementById('ot-pol-rate-weekend');
   const rateHlEl = document.getElementById('ot-pol-rate-holiday');
-  const rateShiftWkEl = document.getElementById('ot-pol-rate-shift-weekday');
-  const rateShiftHlEl = document.getElementById('ot-pol-rate-shift-holiday');
   const nightEl = document.getElementById('ot-pol-night-bonus');
   const rewPayEl = document.getElementById('ot-pol-reward-pay');
   const rewCompEl = document.getElementById('ot-pol-reward-comp');
@@ -24845,8 +24902,6 @@ function openOtPolicyModal(mode) {
     if (rateWkEl) rateWkEl.value = '150';
     if (rateWeEl) rateWeEl.value = '200';
     if (rateHlEl) rateHlEl.value = '300';
-    if (rateShiftWkEl) rateShiftWkEl.value = '150';
-    if (rateShiftHlEl) rateShiftHlEl.value = '350';
     if (nightEl) nightEl.checked = true;
     if (rewPayEl) rewPayEl.checked = true;
     if (rewCompEl) rewCompEl.checked = true;
@@ -24873,8 +24928,6 @@ function openOtPolicyModal(mode) {
     if (rateWkEl) rateWkEl.value = item.rateWeekday ?? '150';
     if (rateWeEl) rateWeEl.value = item.rateWeekend ?? '200';
     if (rateHlEl) rateHlEl.value = item.rateHoliday ?? '300';
-    if (rateShiftWkEl) rateShiftWkEl.value = item.rateShiftWeekday ?? item.rateWeekday ?? '150';
-    if (rateShiftHlEl) rateShiftHlEl.value = item.rateShiftHoliday ?? '350';
     if (nightEl) nightEl.checked = item.nightBonus !== false;
     
     const isPay = item.rewardPay !== false && (item.rewardType === 'PAY' || item.rewardType === 'BOTH' || item.rewardPay === true);
@@ -24935,8 +24988,6 @@ function saveOtPolicy() {
   const rateWk = parseInt(document.getElementById('ot-pol-rate-weekday')?.value, 10) || 150;
   const rateWe = parseInt(document.getElementById('ot-pol-rate-weekend')?.value, 10) || 200;
   const rateHl = parseInt(document.getElementById('ot-pol-rate-holiday')?.value, 10) || 300;
-  const rateShiftWk = parseInt(document.getElementById('ot-pol-rate-shift-weekday')?.value, 10) || 150;
-  const rateShiftHl = parseInt(document.getElementById('ot-pol-rate-shift-holiday')?.value, 10) || 350;
   const nightBonus = document.getElementById('ot-pol-night-bonus')?.checked ?? true;
 
   let rewardType = 'BOTH';
@@ -24972,8 +25023,6 @@ function saveOtPolicy() {
     rateWeekday: rateWk,
     rateWeekend: rateWe,
     rateHoliday: rateHl,
-    rateShiftWeekday: rateShiftWk,
-    rateShiftHoliday: rateShiftHl,
     nightBonus: nightBonus,
     rewardPay: isPay,
     rewardComp: isComp,
@@ -28740,51 +28789,50 @@ const M10_LATE_EVENTS = [
 ];
 // Check T11 counts: LATE = 3+3+2+2+2+1+1+1 = 15 lượt (61+76+46+33+23+10+12+8 = 269p); EARLY = 1+1+1+1+1+1 = 6 lượt (12+18+14+13+32+10 = 99p); Total = 21 lượt, 368 phút!
 
-/* --- NGUỒN SỰ KIỆN 3: NGHỈ PHÉP, NGHỈ KHÔNG PHÉP (SCR-REP-03 — 5 LOẠI NGÀY NGHỈ THUẦN TÚY) --- */
-const M10_EMP_QUOTA = {
-  PAP0012: 14, PAP0115: 14, PAP0131: 14, PAP0122: 14, PAP0108: 12, PAP0094: 12,
-  PAP0071: 12, PAP0052: 12, PAP0146: 14, PAP0002: 15, PAP0003: 15,
-  PAP0162: 14, PAP0078: 12, PAP0154: 14
-};
+/* --- NGUỒN SỰ KIỆN 3: NGHỈ PHÉP, NGHỈ KHÔNG PHÉP (SCR-REP-03 — HỖ TRỢ LOẠI NGHỈ CẤU HÌNH ĐỘNG M09) --- */
+function m10DefaultWorkMode(unitCode) {
+  return ['CAU', 'CG', 'KTH'].includes(unitCode) ? 'Theo ca' : 'Hành chính';
+}
 
 const M10_ABSENT_EVENTS = [
   // Các tháng trước T11/2026 (T04 - T10/2026)
-  { iso: '2026-04-14', pap: 'PAP0115', name: 'Lương Văn Hải', unitCode: 'CAU', leaveKind: 'AL', days: 3.0 },
-  { iso: '2026-05-11', pap: 'PAP0094', name: 'Phạm Quang Vinh', unitCode: 'PM', leaveKind: 'AL', days: 2.0 },
-  { iso: '2026-05-20', pap: 'PAP0071', name: 'Lê Thị Thu Hà', unitCode: 'TCKT', leaveKind: 'SICK', days: 2.0 },
-  { iso: '2026-06-09', pap: 'PAP0122', name: 'Hoàng Minh Đức', unitCode: 'CG', leaveKind: 'AL', days: 3.0 },
-  { iso: '2026-06-18', pap: 'PAP0108', name: 'Đỗ Thị Thanh Lan', unitCode: 'KT', leaveKind: 'COMP', days: 1.5 },
-  { iso: '2026-07-08', pap: 'PAP0003', name: 'Lê Hoàng Long', unitCode: 'KT', leaveKind: 'AL', days: 3.0 },
-  { iso: '2026-07-22', pap: 'PAP0146', name: 'Phan Văn Hưng', unitCode: 'KTH', leaveKind: 'AL', days: 2.5 },
-  { iso: '2026-08-12', pap: 'PAP0052', name: 'Nguyễn Bích Ngân', unitCode: 'TCHC', leaveKind: 'AL', days: 2.0 },
-  { iso: '2026-08-25', pap: 'PAP0131', name: 'Ngô Thanh Sơn', unitCode: 'CG', leaveKind: 'UNEXCUSED', days: 1.0 },
-  { iso: '2026-09-10', pap: 'PAP0078', name: 'Đặng Mai Hương', unitCode: 'TCKT', leaveKind: 'AL', days: 2.5 },
-  { iso: '2026-09-18', pap: 'PAP0162', name: 'Bùi Văn Tuấn', unitCode: 'CAU', leaveKind: 'COMP', days: 2.0 },
-  { iso: '2026-10-06', pap: 'PAP0002', name: 'Trần Văn Nam', unitCode: 'TCHC', leaveKind: 'AL', days: 2.0 },
-  { iso: '2026-10-15', pap: 'PAP0154', name: 'Trần Hữu Nghĩa', unitCode: 'KTH', leaveKind: 'SICK', days: 1.5 },
-  { iso: '2026-10-23', pap: 'PAP0162', name: 'Bùi Văn Tuấn', unitCode: 'CAU', leaveKind: 'AL', days: 2.0 },
+  { iso: '2026-04-14', pap: 'PAP0115', name: 'Lương Văn Hải', unitCode: 'CAU', workMode: 'Theo ca', leaveKind: 'AL', days: 3.0 },
+  { iso: '2026-05-11', pap: 'PAP0094', name: 'Phạm Quang Vinh', unitCode: 'PM', workMode: 'Hành chính', leaveKind: 'AL', days: 2.0 },
+  { iso: '2026-05-20', pap: 'PAP0071', name: 'Lê Thị Thu Hà', unitCode: 'TCKT', workMode: 'Hành chính', leaveKind: 'SICK', days: 2.0 },
+  { iso: '2026-06-09', pap: 'PAP0122', name: 'Hoàng Minh Đức', unitCode: 'CG', workMode: 'Theo ca', leaveKind: 'AL', days: 3.0 },
+  { iso: '2026-06-18', pap: 'PAP0108', name: 'Đỗ Thị Thanh Lan', unitCode: 'KT', workMode: 'Hành chính', leaveKind: 'COMP', days: 1.5 },
+  { iso: '2026-07-08', pap: 'PAP0003', name: 'Lê Hoàng Long', unitCode: 'KT', workMode: 'Hành chính', leaveKind: 'AL', days: 3.0 },
+  { iso: '2026-07-22', pap: 'PAP0146', name: 'Phan Văn Hưng', unitCode: 'KTH', workMode: 'Theo ca', leaveKind: 'AL', days: 2.5 },
+  { iso: '2026-08-12', pap: 'PAP0052', name: 'Nguyễn Bích Ngân', unitCode: 'TCHC', workMode: 'Hành chính', leaveKind: 'AL', days: 2.0 },
+  { iso: '2026-08-25', pap: 'PAP0131', name: 'Ngô Thanh Sơn', unitCode: 'CG', workMode: 'Theo ca', leaveKind: 'UNEXCUSED', days: 1.0 },
+  { iso: '2026-09-10', pap: 'PAP0078', name: 'Đặng Mai Hương', unitCode: 'TCKT', workMode: 'Hành chính', leaveKind: 'AL', days: 2.5 },
+  { iso: '2026-09-18', pap: 'PAP0162', name: 'Bùi Văn Tuấn', unitCode: 'CAU', workMode: 'Theo ca', leaveKind: 'COMP', days: 2.0 },
+  { iso: '2026-10-06', pap: 'PAP0002', name: 'Trần Văn Nam', unitCode: 'TCHC', workMode: 'Hành chính', leaveKind: 'AL', days: 2.0 },
+  { iso: '2026-10-15', pap: 'PAP0154', name: 'Trần Hữu Nghĩa', unitCode: 'KTH', workMode: 'Theo ca', leaveKind: 'SICK', days: 1.5 },
+  { iso: '2026-10-23', pap: 'PAP0162', name: 'Bùi Văn Tuấn', unitCode: 'CAU', workMode: 'Theo ca', leaveKind: 'AL', days: 2.0 },
 
-  // Tháng 11/2026 (Tổng 28.5 ngày của 11 nhân viên: AL=15.0, Khác=11.0 [COMP=4.5, SICK=4.5, UNPAID=2.0], UNEXCUSED=2.5)
-  { iso: '2026-11-02', pap: 'PAP0012', name: 'Nguyễn Thị Thu Phương', unitCode: 'BTGD', leaveKind: 'AL', days: 2.0 },
-  { iso: '2026-11-03', pap: 'PAP0115', name: 'Lương Văn Hải', unitCode: 'CAU', leaveKind: 'AL', days: 1.0 },
-  { iso: '2026-11-05', pap: 'PAP0115', name: 'Lương Văn Hải', unitCode: 'CAU', leaveKind: 'COMP', days: 1.0 },
-  { iso: '2026-11-19', pap: 'PAP0115', name: 'Lương Văn Hải', unitCode: 'CAU', leaveKind: 'UNEXCUSED', days: 1.5 },
-  { iso: '2026-11-04', pap: 'PAP0162', name: 'Bùi Văn Tuấn', unitCode: 'CAU', leaveKind: 'AL', days: 1.5 },
-  { iso: '2026-11-14', pap: 'PAP0162', name: 'Bùi Văn Tuấn', unitCode: 'CAU', leaveKind: 'COMP', days: 1.5 },
-  { iso: '2026-11-22', pap: 'PAP0162', name: 'Bùi Văn Tuấn', unitCode: 'CAU', leaveKind: 'UNPAID', days: 1.0 },
-  { iso: '2026-11-06', pap: 'PAP0131', name: 'Ngô Thanh Sơn', unitCode: 'CG', leaveKind: 'AL', days: 1.0 },
-  { iso: '2026-11-21', pap: 'PAP0131', name: 'Ngô Thanh Sơn', unitCode: 'CG', leaveKind: 'UNEXCUSED', days: 1.0 },
-  { iso: '2026-11-09', pap: 'PAP0122', name: 'Hoàng Minh Đức', unitCode: 'CG', leaveKind: 'AL', days: 1.5 },
-  { iso: '2026-11-17', pap: 'PAP0122', name: 'Hoàng Minh Đức', unitCode: 'CG', leaveKind: 'COMP', days: 1.0 },
-  { iso: '2026-11-10', pap: 'PAP0071', name: 'Lê Thị Thu Hà', unitCode: 'TCKT', leaveKind: 'AL', days: 1.0 },
-  { iso: '2026-11-12', pap: 'PAP0071', name: 'Lê Thị Thu Hà', unitCode: 'TCKT', leaveKind: 'SICK', days: 2.5 },
-  { iso: '2026-11-11', pap: 'PAP0078', name: 'Đặng Mai Hương', unitCode: 'TCKT', leaveKind: 'SICK', days: 2.0 },
-  { iso: '2026-11-13', pap: 'PAP0094', name: 'Phạm Quang Vinh', unitCode: 'PM', leaveKind: 'AL', days: 2.0 },
-  { iso: '2026-11-24', pap: 'PAP0094', name: 'Phạm Quang Vinh', unitCode: 'PM', leaveKind: 'COMP', days: 1.0 },
-  { iso: '2026-11-16', pap: 'PAP0003', name: 'Lê Hoàng Long', unitCode: 'KT', leaveKind: 'AL', days: 2.0 },
-  { iso: '2026-11-18', pap: 'PAP0002', name: 'Trần Văn Nam', unitCode: 'TCHC', leaveKind: 'AL', days: 1.0 },
-  { iso: '2026-11-20', pap: 'PAP0146', name: 'Phan Văn Hưng', unitCode: 'KTH', leaveKind: 'AL', days: 2.0 },
-  { iso: '2026-11-26', pap: 'PAP0146', name: 'Phan Văn Hưng', unitCode: 'KTH', leaveKind: 'UNPAID', days: 1.0 }
+  // Tháng 11/2026 (Tổng 28.5 ngày của 11 nhân viên: Hưởng lương=19.5 [AL=14.0, COMP=4.5, PL=1.0], BHXH & Không lương=6.5 [SICK=4.5, UNPAID=2.0], Không phép=2.5)
+  { iso: '2026-11-02', pap: 'PAP0012', name: 'Nguyễn Thị Thu Phương', unitCode: 'BTGD', workMode: 'Hành chính', leaveKind: 'AL', days: 1.0 },
+  { iso: '2026-11-18', pap: 'PAP0012', name: 'Nguyễn Thị Thu Phương', unitCode: 'BTGD', workMode: 'Hành chính', leaveKind: 'PL', days: 1.0, note: 'Đơn nghỉ việc riêng hưởng 100% lương (Kết hôn / Tang chế) đã duyệt' },
+  { iso: '2026-11-03', pap: 'PAP0115', name: 'Lương Văn Hải', unitCode: 'CAU', workMode: 'Theo ca', leaveKind: 'AL', days: 1.0 },
+  { iso: '2026-11-05', pap: 'PAP0115', name: 'Lương Văn Hải', unitCode: 'CAU', workMode: 'Theo ca', leaveKind: 'COMP', days: 1.0 },
+  { iso: '2026-11-19', pap: 'PAP0115', name: 'Lương Văn Hải', unitCode: 'CAU', workMode: 'Theo ca', leaveKind: 'UNEXCUSED', days: 1.5 },
+  { iso: '2026-11-04', pap: 'PAP0162', name: 'Bùi Văn Tuấn', unitCode: 'CAU', workMode: 'Theo ca', leaveKind: 'AL', days: 1.5 },
+  { iso: '2026-11-14', pap: 'PAP0162', name: 'Bùi Văn Tuấn', unitCode: 'CAU', workMode: 'Theo ca', leaveKind: 'COMP', days: 1.5 },
+  { iso: '2026-11-22', pap: 'PAP0162', name: 'Bùi Văn Tuấn', unitCode: 'CAU', workMode: 'Theo ca', leaveKind: 'UNPAID', days: 1.0 },
+  { iso: '2026-11-06', pap: 'PAP0131', name: 'Ngô Thanh Sơn', unitCode: 'CG', workMode: 'Theo ca', leaveKind: 'AL', days: 1.0 },
+  { iso: '2026-11-21', pap: 'PAP0131', name: 'Ngô Thanh Sơn', unitCode: 'CG', workMode: 'Theo ca', leaveKind: 'UNEXCUSED', days: 1.0 },
+  { iso: '2026-11-09', pap: 'PAP0122', name: 'Hoàng Minh Đức', unitCode: 'CG', workMode: 'Theo ca', leaveKind: 'AL', days: 1.5 },
+  { iso: '2026-11-17', pap: 'PAP0122', name: 'Hoàng Minh Đức', unitCode: 'CG', workMode: 'Theo ca', leaveKind: 'COMP', days: 1.0 },
+  { iso: '2026-11-10', pap: 'PAP0071', name: 'Lê Thị Thu Hà', unitCode: 'TCKT', workMode: 'Hành chính', leaveKind: 'AL', days: 1.0 },
+  { iso: '2026-11-12', pap: 'PAP0071', name: 'Lê Thị Thu Hà', unitCode: 'TCKT', workMode: 'Hành chính', leaveKind: 'SICK', days: 2.5 },
+  { iso: '2026-11-11', pap: 'PAP0078', name: 'Đặng Mai Hương', unitCode: 'TCKT', workMode: 'Hành chính', leaveKind: 'SICK', days: 2.0 },
+  { iso: '2026-11-13', pap: 'PAP0094', name: 'Phạm Quang Vinh', unitCode: 'PM', workMode: 'Hành chính', leaveKind: 'AL', days: 2.0 },
+  { iso: '2026-11-24', pap: 'PAP0094', name: 'Phạm Quang Vinh', unitCode: 'PM', workMode: 'Hành chính', leaveKind: 'COMP', days: 1.0 },
+  { iso: '2026-11-16', pap: 'PAP0003', name: 'Lê Hoàng Long', unitCode: 'KT', workMode: 'Hành chính', leaveKind: 'AL', days: 2.0 },
+  { iso: '2026-11-18', pap: 'PAP0002', name: 'Trần Văn Nam', unitCode: 'TCHC', workMode: 'Hành chính', leaveKind: 'AL', days: 1.0 },
+  { iso: '2026-11-20', pap: 'PAP0146', name: 'Phan Văn Hưng', unitCode: 'KTH', workMode: 'Theo ca', leaveKind: 'AL', days: 2.0 },
+  { iso: '2026-11-26', pap: 'PAP0146', name: 'Phan Văn Hưng', unitCode: 'KTH', workMode: 'Theo ca', leaveKind: 'UNPAID', days: 1.0 }
 ];
 
 /* --- NGUỒN SỰ KIỆN 4: TIẾN ĐỘ DUYỆT ĐƠN RẢI THEO TUẦN XUYÊN SUỐT 8 ĐƠN VỊ (SCR-REP-04) --- */
@@ -28920,13 +28968,13 @@ const repAbsentCols = [
   { k: 'pap', t: 'Mã NV', sl: true, sort: true, search: true, vis: true, w: 92 },
   { k: 'name', t: 'Họ và tên', sl: true, sort: true, search: true, vis: true, w: 190 },
   { k: 'dept', t: 'Phòng ban / Đơn vị', sort: true, filter: true, vis: true, w: 165 },
+  { k: 'workMode', t: 'Loại lịch làm việc', sort: true, filter: true, vis: true, w: 145, center: true },
   { k: 'al', t: 'Phép năm', sort: true, vis: true, w: 88, center: true },
-  { k: 'comp', t: 'Nghỉ bù', sort: true, vis: true, w: 84, center: true },
-  { k: 'sick', t: 'Ốm/BHXH', sort: true, vis: true, w: 88, center: true },
+  { k: 'otherPaid', t: 'Nghỉ bù & Có lương khác', sort: true, vis: true, w: 158, center: true },
+  { k: 'sick', t: 'Ốm đau / BHXH', sort: true, vis: true, w: 112, center: true },
   { k: 'unpaid', t: 'Không lương', sort: true, vis: true, w: 96, center: true },
   { k: 'unexcused', t: 'Không phép', sort: true, vis: true, w: 94, center: true },
   { k: 'total', t: 'Tổng ngày', sort: true, vis: true, w: 92, center: true },
-  { k: 'alRemain', t: 'Phép năm còn lại', sort: true, vis: true, w: 116, center: true },
   { k: 'status', t: 'Tình trạng', sort: true, filter: true, vis: true, w: 145, center: true },
   { k: 'action', t: 'Hành động', sr: true, vis: true, w: 90, center: true }
 ];
@@ -29021,13 +29069,16 @@ function repLateCell(r, k) {
 function repAbsentCell(r, k) {
   if (k === 'pap') return '<span style="font-weight:700;color:#2E3191;background:#eef2ff;padding:2px 6px;border-radius:4px;font-size:11.5px">' + r.pap + '</span>';
   if (k === 'name') return '<div style="display:flex;align-items:center;gap:8px">' + renderM10Avatar(r.name, 26) + '<span style="font-weight:600;color:#0f172a;font-size:12px;white-space:normal;word-break:break-word;line-height:1.35">' + r.name + '</span></div>';
+  if (k === 'workMode') {
+    const isShift = r.workMode === 'Theo ca';
+    return '<span style="font-size:11px;font-weight:600;padding:2px 8px;border-radius:4px;' + (isShift ? 'background:#f0f9ff;color:#0369a1;border:1px solid #bae6fd' : 'background:#f8fafc;color:#475569;border:1px solid #e2e8f0') + '">' + r.workMode + '</span>';
+  }
   if (k === 'al') return '<b style="color:#1e293b">' + r.al.toFixed(1) + '</b>';
-  if (k === 'comp') return '<span style="color:#059669;font-weight:600">' + r.comp.toFixed(1) + '</span>';
+  if (k === 'otherPaid') return '<span style="color:#059669;font-weight:600">' + r.otherPaid.toFixed(1) + '</span>';
   if (k === 'sick') return '<span style="color:#7c3aed;font-weight:600">' + r.sick.toFixed(1) + '</span>';
   if (k === 'unpaid') return '<span style="color:#475569">' + r.unpaid.toFixed(1) + '</span>';
   if (k === 'unexcused') return '<b style="color:' + (r.unexcused > 0 ? '#e11d48' : '#94a3b8') + '">' + r.unexcused.toFixed(1) + '</b>';
   if (k === 'total') return '<b style="color:#2563eb">' + r.total.toFixed(1) + '</b>';
-  if (k === 'alRemain') return '<span style="color:#0284c7;font-weight:600" title="Tính lũy kế phép năm từ 01/01/' + (r.yearRef || '2026') + ' đến cuối kỳ đang chọn">' + r.alRemain.toFixed(1) + '</span>';
   if (k === 'status') {
     if (r.status === 'Có nghỉ không phép') return '<span style="display:inline-flex;align-items:center;gap:4px;font-size:11px;font-weight:600;padding:2px 8px;border-radius:4px;background:#fff1f2;color:#b91c1c;border:1px solid #fecdd3"><i class="fa-solid fa-circle-exclamation" style="font-size:10px"></i>Có nghỉ không phép</span>';
     return '<span style="font-size:11px;font-weight:600;padding:2px 8px;border-radius:4px;background:#ecfdf5;color:#15803d;border:1px solid #bbf7d0">Đúng quy định</span>';
@@ -29450,11 +29501,12 @@ function closeM10LateDetail() {
 
 /* --- TÍNH TOÁN & RENDER BÁO CÁO 3: NGHỈ PHÉP, NGHỈ KHÔNG PHÉP (SCR-REP-03) --- */
 const M10_ABSENT_KIND_META = {
-  AL:        { label: 'Phép năm',         color: '#2563eb', bg: '#eff6ff', fg: '#1d4ed8', bd: '#bfdbfe', note: 'Đơn nghỉ phép năm đã duyệt hợp lệ' },
-  COMP:      { label: 'Nghỉ bù',          color: '#10b981', bg: '#ecfdf5', fg: '#047857', bd: '#a7f3d0', note: 'Đơn nghỉ bù ca đã duyệt hợp lệ' },
-  SICK:      { label: 'Ốm đau / BHXH',    color: '#8b5cf6', bg: '#f5f3ff', fg: '#6d28d9', bd: '#ddd6fe', note: 'Đơn đã duyệt hợp lệ (Có chứng từ BHXH)' },
-  UNPAID:    { label: 'Nghỉ không lương', color: '#64748b', bg: '#f8fafc', fg: '#475569', bd: '#cbd5e1', note: 'Đơn nghỉ việc riêng không hưởng lương đã duyệt' },
-  UNEXCUSED: { label: 'Nghỉ không phép',  color: '#f43f5e', bg: '#fff1f2', fg: '#be123c', bd: '#fecdd3', note: 'Vắng mặt không đơn / Chưa giải trình' }
+  AL:        { label: 'Phép năm',               payGroup: 'AL',         color: '#2563eb', bg: '#eff6ff', fg: '#1d4ed8', bd: '#bfdbfe', note: 'Đơn nghỉ phép năm đã duyệt hợp lệ' },
+  COMP:      { label: 'Nghỉ bù',                payGroup: 'OTHER_PAID', color: '#10b981', bg: '#ecfdf5', fg: '#047857', bd: '#a7f3d0', note: 'Đơn nghỉ bù ca đã duyệt hợp lệ' },
+  PL:        { label: 'Việc riêng hưởng lương', payGroup: 'OTHER_PAID', color: '#0ea5e9', bg: '#f0f9ff', fg: '#0369a1', bd: '#bae6fd', note: 'Đơn nghỉ việc riêng hưởng 100% lương (Kết hôn / Tang chế) đã duyệt' },
+  SICK:      { label: 'Ốm đau / BHXH',          payGroup: 'SICK',       color: '#8b5cf6', bg: '#f5f3ff', fg: '#6d28d9', bd: '#ddd6fe', note: 'Đơn đã duyệt hợp lệ (Có chứng từ BHXH)' },
+  UNPAID:    { label: 'Nghỉ không lương',       payGroup: 'UNPAID',     color: '#64748b', bg: '#f8fafc', fg: '#475569', bd: '#cbd5e1', note: 'Đơn nghỉ việc riêng không hưởng lương đã duyệt' },
+  UNEXCUSED: { label: 'Nghỉ không phép',        payGroup: 'UNEXCUSED',  color: '#f43f5e', bg: '#fff1f2', fg: '#be123c', bd: '#fecdd3', note: 'Vắng mặt không đơn / Chưa giải trình' }
 };
 
 function renderM10AbsentReport(sel, scope) {
@@ -29464,57 +29516,55 @@ function renderM10AbsentReport(sel, scope) {
     ? M10_ABSENT_EVENTS.filter(e => e.iso >= sel.start && e.iso <= sel.end && m10UnitInScope(e.unitCode, scope))
     : [];
 
-  let sumAl = 0, sumComp = 0, sumSick = 0, sumUnpaid = 0, sumUnexcused = 0;
+  let sumAl = 0, sumComp = 0, sumPersonalPaid = 0, sumSick = 0, sumUnpaid = 0, sumUnexcused = 0;
   const empMap = {};
-  const endYear = valid ? sel.end.slice(0, 4) : '2026';
 
   evts.forEach(e => {
     if (e.leaveKind === 'AL') sumAl += e.days;
     else if (e.leaveKind === 'COMP') sumComp += e.days;
+    else if (e.leaveKind === 'PL') sumPersonalPaid += e.days;
     else if (e.leaveKind === 'SICK') sumSick += e.days;
     else if (e.leaveKind === 'UNPAID') sumUnpaid += e.days;
     else if (e.leaveKind === 'UNEXCUSED') sumUnexcused += e.days;
+    else sumPersonalPaid += e.days;
 
     if (!empMap[e.pap]) {
       const u = M10_UNIT_MAP[e.unitCode];
-      const usedAlToEnd = M10_ABSENT_EVENTS
-        .filter(x => x.pap === e.pap && x.leaveKind === 'AL' && x.iso <= sel.end && x.iso.slice(0, 4) === endYear)
-        .reduce((s, x) => s + x.days, 0);
-      const quota = M10_EMP_QUOTA[e.pap] || 12;
       empMap[e.pap] = {
         pap: e.pap,
         name: e.name,
         unitCode: e.unitCode,
         dept: u ? u.name : e.unitCode,
-        yearRef: endYear,
+        workMode: e.workMode || m10DefaultWorkMode(e.unitCode),
         al: 0,
-        comp: 0,
+        otherPaid: 0,
         sick: 0,
         unpaid: 0,
         unexcused: 0,
         total: 0,
-        alRemain: Math.max(0, +(quota - usedAlToEnd).toFixed(1)),
         status: 'Đúng quy định'
       };
     }
     const r = empMap[e.pap];
-    if (e.leaveKind === 'AL') r.al = +(r.al + e.days).toFixed(1);
-    else if (e.leaveKind === 'COMP') r.comp = +(r.comp + e.days).toFixed(1);
-    else if (e.leaveKind === 'SICK') r.sick = +(r.sick + e.days).toFixed(1);
-    else if (e.leaveKind === 'UNPAID') r.unpaid = +(r.unpaid + e.days).toFixed(1);
-    else if (e.leaveKind === 'UNEXCUSED') r.unexcused = +(r.unexcused + e.days).toFixed(1);
-    r.total = +(r.al + r.comp + r.sick + r.unpaid + r.unexcused).toFixed(1);
+    const pGroup = M10_ABSENT_KIND_META[e.leaveKind]?.payGroup || 'OTHER_PAID';
+    if (pGroup === 'AL') r.al = +(r.al + e.days).toFixed(1);
+    else if (pGroup === 'OTHER_PAID') r.otherPaid = +(r.otherPaid + e.days).toFixed(1);
+    else if (pGroup === 'SICK') r.sick = +(r.sick + e.days).toFixed(1);
+    else if (pGroup === 'UNPAID') r.unpaid = +(r.unpaid + e.days).toFixed(1);
+    else if (pGroup === 'UNEXCUSED') r.unexcused = +(r.unexcused + e.days).toFixed(1);
+    r.total = +(r.al + r.otherPaid + r.sick + r.unpaid + r.unexcused).toFixed(1);
     r.status = r.unexcused > 0 ? 'Có nghỉ không phép' : 'Đúng quy định';
   });
 
-  const sumOtherValid = +(sumComp + sumSick + sumUnpaid).toFixed(1);
-  const totalDays = +(sumAl + sumOtherValid + sumUnexcused).toFixed(1);
+  const sumPaid = +(sumAl + sumComp + sumPersonalPaid).toFixed(1);
+  const sumBhxhUnpaid = +(sumSick + sumUnpaid).toFixed(1);
+  const totalDays = +(sumPaid + sumBhxhUnpaid + sumUnexcused).toFixed(1);
   const empRows = Object.values(empMap).sort((a, b) => (b.unexcused - a.unexcused) || (b.total - a.total));
   empRows.forEach((r, idx) => { r.stt = idx + 1; });
 
   setM10KpiHtml('m10-absent-kpi-1', valid ? totalDays.toFixed(1) : '—', 'ngày');
-  setM10KpiHtml('m10-absent-kpi-2', valid ? sumAl.toFixed(1) : '—', 'ngày');
-  setM10KpiHtml('m10-absent-kpi-3', valid ? sumOtherValid.toFixed(1) : '—', 'ngày');
+  setM10KpiHtml('m10-absent-kpi-2', valid ? sumPaid.toFixed(1) : '—', 'ngày');
+  setM10KpiHtml('m10-absent-kpi-3', valid ? sumBhxhUnpaid.toFixed(1) : '—', 'ngày');
   setM10KpiHtml('m10-absent-kpi-4', valid ? sumUnexcused.toFixed(1) : '—', 'ngày');
   const absAlertCard = document.getElementById('m10-absent-alert-card');
   if (absAlertCard) absAlertCard.classList.toggle('is-alert', valid && sumUnexcused > 0);
@@ -29525,7 +29575,7 @@ function renderM10AbsentReport(sel, scope) {
     renderT('rep-absent');
   }
 
-  // Biểu đồ trái: Cơ cấu ngày nghỉ theo 5 loại (tông sáng đồng bộ Dashboard)
+  // Biểu đồ trái: Cơ cấu ngày nghỉ theo đủ 6 loại cụ thể (cộng lại = đúng 100% totalDays)
   const typeChart = document.getElementById('m10-absent-type-chart');
   const typeMeta = document.getElementById('m10-absent-type-meta');
   if (typeMeta) typeMeta.textContent = valid ? ('Tổng cộng: ' + totalDays.toFixed(1) + ' ngày nghỉ của ' + empRows.length + ' nhân viên phát sinh') : '—';
@@ -29536,6 +29586,7 @@ function renderM10AbsentReport(sel, scope) {
       const cats = [
         { label: 'Phép năm', val: sumAl, color: '#2563eb' },
         { label: 'Nghỉ bù', val: sumComp, color: '#10b981' },
+        { label: 'Việc riêng hưởng lương', val: sumPersonalPaid, color: '#0ea5e9' },
         { label: 'Ốm đau / BHXH', val: sumSick, color: '#8b5cf6' },
         { label: 'Nghỉ không lương', val: sumUnpaid, color: '#64748b' },
         { label: 'Nghỉ không phép', val: sumUnexcused, color: '#f43f5e' }
@@ -29544,7 +29595,7 @@ function renderM10AbsentReport(sel, scope) {
         const w = (c.val / totalDays * 100).toFixed(2);
         return c.val > 0 ? '<div style="width:' + w + '%;height:100%;background:' + c.color + '" title="' + c.label + ': ' + c.val.toFixed(1) + ' ngày"></div>' : '';
       }).join('') + '</div>';
-      const detailRows = '<div class="m10-hbar-list">' + cats.map(c => {
+      const detailRows = '<div class="m10-hbar-list" style="gap:8px">' + cats.map(c => {
         const pct = (c.val / totalDays * 100).toFixed(1);
         return '<div class="m10-hbar-row">'
           + '<div class="m10-hbar-top"><span class="m10-hbar-label"><i style="display:inline-block;width:8px;height:8px;border-radius:50%;background:' + c.color + ';margin-right:6px"></i>' + c.label + '</span>'
@@ -29605,26 +29656,29 @@ function openM10AbsentDetail(pap) {
 
   const first = items[0] || M10_ABSENT_EVENTS.find(e => e.pap === pap) || { pap, name: pap, unitCode: '' };
   const deptName = M10_UNIT_MAP[first.unitCode]?.name || '';
-  const endYear = sel.end.slice(0, 4);
-  const usedAlToEnd = M10_ABSENT_EVENTS
-    .filter(x => x.pap === pap && x.leaveKind === 'AL' && x.iso <= sel.end && x.iso.slice(0, 4) === endYear)
-    .reduce((s, x) => s + x.days, 0);
-  const quota = M10_EMP_QUOTA[pap] || 12;
-  const alRemain = Math.max(0, +(quota - usedAlToEnd).toFixed(1));
+  const workMode = first.workMode || m10DefaultWorkMode(first.unitCode);
+  const isShift = workMode === 'Theo ca';
+  const wmBadge = '<span style="font-weight:600;' + (isShift ? 'color:#0369a1;background:#f0f9ff;border:1px solid #bae6fd' : 'color:#475569;background:#f1f5f9;border:1px solid #e2e8f0') + ';padding:2px 7px;border-radius:4px;font-size:11px;margin-left:4px">' + workMode + '</span>';
+
   const sumDays = +(items.reduce((s, x) => s + x.days, 0)).toFixed(1);
+  const sumPaidEmp = +(items.filter(x => {
+    const pg = M10_ABSENT_KIND_META[x.leaveKind]?.payGroup || 'OTHER_PAID';
+    return pg === 'AL' || pg === 'OTHER_PAID';
+  }).reduce((s, x) => s + x.days, 0)).toFixed(1);
   const sumUnex = +(items.filter(x => x.leaveKind === 'UNEXCUSED').reduce((s, x) => s + x.days, 0)).toFixed(1);
 
   if (sumEl) {
     const unexBadge = sumUnex > 0
       ? '<span style="background:#fff1f2;color:#be123c;border:1px solid #fecdd3;padding:3px 9px;border-radius:6px;font-weight:700;font-size:11.5px"><i class="fa-solid fa-circle-exclamation" style="margin-right:4px"></i>Không phép: ' + sumUnex.toFixed(1) + ' ngày</span>'
-      : '<span style="background:#ecfdf5;color:#15803d;border:1px solid #bbf7d0;padding:3px 9px;border-radius:6px;font-weight:600;font-size:11.5px">Không phép: 0.0 ngày</span>';
+      : '<span style="background:#f8fafc;color:#475569;border:1px solid #cbd5e1;padding:3px 9px;border-radius:6px;font-weight:600;font-size:11.5px">Không phép: 0.0 ngày</span>';
     sumEl.innerHTML = '<div style="display:flex;align-items:center;gap:10px">' + renderM10Avatar(first.name, 34) + '<div><b style="color:#0f172a;font-size:13px">' + first.name + '</b> '
       + '<span style="font-weight:700;color:#2E3191;background:#eef2ff;padding:2px 7px;border-radius:4px;font-size:11.5px;margin-left:4px">' + first.pap + '</span>'
+      + wmBadge
       + '<div style="color:#64748b;font-size:12px;margin-top:2px">' + deptName + ' · Kỳ đang lọc: <b>' + sel.label + '</b></div></div></div>'
       + '<div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap">'
       + '<span style="background:#eff6ff;color:#1d4ed8;border:1px solid #bfdbfe;padding:3px 9px;border-radius:6px;font-weight:700;font-size:11.5px">Tổng nghỉ trong kỳ: ' + sumDays.toFixed(1) + ' ngày</span>'
+      + '<span style="background:#ecfdf5;color:#047857;border:1px solid #a7f3d0;padding:3px 9px;border-radius:6px;font-weight:700;font-size:11.5px">Hưởng lương: ' + sumPaidEmp.toFixed(1) + ' ngày</span>'
       + unexBadge
-      + '<span style="background:#f0f9ff;color:#0369a1;border:1px solid #bae6fd;padding:3px 9px;border-radius:6px;font-weight:700;font-size:11.5px" title="Tổng quỹ phép năm ' + endYear + ': ' + quota + ' ngày · Đã dùng lũy kế đến ' + m10FmtDMY(sel.end) + ': ' + usedAlToEnd.toFixed(1) + ' ngày">Phép năm còn lại: ' + alRemain.toFixed(1) + ' ngày</span>'
       + '</div>';
   }
 
@@ -29632,7 +29686,7 @@ function openM10AbsentDetail(pap) {
     tb.innerHTML = '<tr><td colspan="5" style="text-align:center;color:#94a3b8;padding:28px"><i class="fa-solid fa-inbox" style="margin-right:6px"></i>Không có bản ghi ngày nghỉ phát sinh trong kỳ đang chọn.</td></tr>';
   } else {
     tb.innerHTML = items.map((it, idx) => {
-      const m = M10_ABSENT_KIND_META[it.leaveKind] || M10_ABSENT_KIND_META.AL;
+      const m = M10_ABSENT_KIND_META[it.leaveKind] || { label: it.leaveKind, bg: '#f0f9ff', fg: '#0369a1', bd: '#bae6fd', note: 'Đơn nghỉ đã duyệt hợp lệ' };
       const isUnex = it.leaveKind === 'UNEXCUSED';
       return '<tr' + (isUnex ? ' style="background:#fffafb"' : '') + '>'
         + '<td style="text-align:center">' + (idx + 1) + '</td>'
@@ -30603,34 +30657,74 @@ switchRepTab('dashboard');
   ];
 
   let m12Categories = [
-    { code: 'CAT-HR', name: 'Nhân sự', desc: 'Tuyển dụng, bổ nhiệm, lương thưởng, đào tạo & công tác', icon: 'fa-solid fa-user-tie', color: '#2E3191', bg: '#eef2ff', status: 'Đang sử dụng' },
-    { code: 'CAT-ADM', name: 'Hành chính & An ninh Cảng', desc: 'Điều xe, kiểm soát ra/vào Cảng, mua sắm vật tư & bảo hộ PPE', icon: 'fa-solid fa-helmet-safety', color: '#0284c7', bg: '#e0f2fe', status: 'Đang sử dụng' },
-    { code: 'CAT-FIN', name: 'Tạm ứng & Thanh toán', desc: 'Tạm ứng công tác, thanh toán nhà cung cấp & đối soát chứng từ', icon: 'fa-solid fa-coins', color: '#15803d', bg: '#dcfce7', status: 'Đang sử dụng' }
+    { code: 'CAT-HR', name: 'Nhân sự', desc: 'Tuyển dụng, bổ nhiệm, lương thưởng, đào tạo & công tác', color: '#2E3191', status: 'Đang sử dụng' },
+    { code: 'CAT-ADM', name: 'Hành chính & An ninh Cảng', desc: 'Điều xe, kiểm soát ra/vào Cảng, mua sắm vật tư & bảo hộ PPE', color: '#0284c7', status: 'Đang sử dụng' },
+    { code: 'CAT-FIN', name: 'Tạm ứng & Thanh toán', desc: 'Tạm ứng công tác, thanh toán nhà cung cấp & đối soát chứng từ', color: '#047857', status: 'Đang sử dụng' }
   ];
 
-  const M12_CAT_ICONS = [
-    { icon: 'fa-solid fa-user-tie', label: 'Nhân sự' },
-    { icon: 'fa-solid fa-helmet-safety', label: 'An toàn & An ninh Cảng' },
-    { icon: 'fa-solid fa-coins', label: 'Tài chính & Thanh toán' },
-    { icon: 'fa-solid fa-ship', label: 'Khai thác Tàu & Cầu bến' },
-    { icon: 'fa-solid fa-gears', label: 'Kỹ thuật & Phương tiện' },
-    { icon: 'fa-solid fa-boxes-stacked', label: 'Kho bãi & Vật tư' },
-    { icon: 'fa-solid fa-laptop-code', label: 'Công nghệ thông tin' },
-    { icon: 'fa-solid fa-file-signature', label: 'Pháp chế & Hợp đồng' }
+  const M12_COLOR_PALETTE_32 = [
+    // Hàng 1: 8 màu đậm lạnh — chữ trắng (#ffffff)
+    { hex: '#1e3a8a', fg: '#ffffff', label: 'Xanh navy đậm' },
+    { hex: '#2E3191', fg: '#ffffff', label: 'Xanh thương hiệu' },
+    { hex: '#2563eb', fg: '#ffffff', label: 'Xanh dương tươi' },
+    { hex: '#0369a1', fg: '#ffffff', label: 'Xanh đại dương' },
+    { hex: '#0284c7', fg: '#ffffff', label: 'Xanh lam cảng' },
+    { hex: '#0d9488', fg: '#ffffff', label: 'Xanh ngọc bích' },
+    { hex: '#047857', fg: '#ffffff', label: 'Xanh lục đậm' },
+    { hex: '#4d7c0f', fg: '#ffffff', label: 'Xanh ô liu' },
+    // Hàng 2: 8 màu đậm nóng / tím — chữ trắng (#ffffff)
+    { hex: '#b45309', fg: '#ffffff', label: 'Vàng hổ phách' },
+    { hex: '#d97706', fg: '#ffffff', label: 'Cam vàng đậm' },
+    { hex: '#c2410c', fg: '#ffffff', label: 'Cam đất đậm' },
+    { hex: '#dc2626', fg: '#ffffff', label: 'Đỏ cờ' },
+    { hex: '#be123c', fg: '#ffffff', label: 'Đỏ hồng ngọc' },
+    { hex: '#c026d3', fg: '#ffffff', label: 'Tím hồng' },
+    { hex: '#7c3aed', fg: '#ffffff', label: 'Tím đậm' },
+    { hex: '#4f46e5', fg: '#ffffff', label: 'Tím chàm' },
+    // Hàng 3: 8 màu pastel sáng — chữ đậm (#0f172a)
+    { hex: '#93c5fd', fg: '#0f172a', label: 'Xanh dương nhạt' },
+    { hex: '#7dd3fc', fg: '#0f172a', label: 'Xanh da trời nhạt' },
+    { hex: '#5eead4', fg: '#0f172a', label: 'Xanh ngọc nhạt' },
+    { hex: '#86efac', fg: '#0f172a', label: 'Xanh lá pastel' },
+    { hex: '#fde047', fg: '#0f172a', label: 'Vàng pastel' },
+    { hex: '#fdba74', fg: '#0f172a', label: 'Cam đào nhạt' },
+    { hex: '#fca5a5', fg: '#0f172a', label: 'Hồng san hô nhạt' },
+    { hex: '#f9a8d4', fg: '#0f172a', label: 'Hồng phấn' },
+    // Hàng 4: 8 màu trung tính
+    { hex: '#c4b5fd', fg: '#0f172a', label: 'Tím oải hương' },
+    { hex: '#a5b4fc', fg: '#0f172a', label: 'Xanh tím nhạt' },
+    { hex: '#cbd5e1', fg: '#0f172a', label: 'Xám bạc sáng' },
+    { hex: '#94a3b8', fg: '#0f172a', label: 'Xám khói' },
+    { hex: '#64748b', fg: '#ffffff', label: 'Xám đá' },
+    { hex: '#475569', fg: '#ffffff', label: 'Xám chì' },
+    { hex: '#334155', fg: '#ffffff', label: 'Xám than đậm' },
+    { hex: '#0f172a', fg: '#ffffff', label: 'Đen tuyền' }
   ];
 
-  const M12_CAT_COLORS = [
-    { color: '#2E3191', bg: '#eef2ff', label: 'Xanh Navy Cảng' },
-    { color: '#0284c7', bg: '#e0f2fe', label: 'Xanh Dương' },
-    { color: '#15803d', bg: '#dcfce7', label: 'Xanh Lá' },
-    { color: '#c2410c', bg: '#ffedd5', label: 'Cam Kỹ thuật' },
-    { color: '#7e22ce', bg: '#f3e8ff', label: 'Tím Điều hành' },
-    { color: '#be185d', bg: '#fce7f3', label: 'Hồng Đậm' },
-    { color: '#0f766e', bg: '#ccfbf1', label: 'Xanh Ngọc' }
-  ];
+  function m12AutoContrastFg(hex) {
+    const h = String(hex || '#2E3191').trim().toLowerCase();
+    const hit = M12_COLOR_PALETTE_32.find(function(x) { return x.hex.toLowerCase() === h; });
+    if (hit) return hit.fg;
+    const m = h.match(/^#?([0-9a-f]{6})$/i);
+    if (!m) return '#ffffff';
+    const r = parseInt(m[1].slice(0, 2), 16);
+    const g = parseInt(m[1].slice(2, 4), 16);
+    const b = parseInt(m[1].slice(4, 6), 16);
+    const yiq = (r * 299 + g * 587 + b * 114) / 1000;
+    return yiq >= 165 ? '#0f172a' : '#ffffff';
+  }
+
+  function m12ColorMeta(hex) {
+    const h = String(hex || '#2E3191').trim().toLowerCase();
+    return M12_COLOR_PALETTE_32.find(function(x) { return x.hex.toLowerCase() === h; }) || {
+      hex: hex || '#2E3191',
+      fg: m12AutoContrastFg(hex || '#2E3191'),
+      label: 'Màu tùy chọn'
+    };
+  }
 
   function m12Cat(code) {
-    return m12Categories.find(function(c) { return c.code === code; }) || m12Categories[0] || { code: 'CAT-GEN', name: 'Phân loại chung', desc: '', icon: 'fa-solid fa-folder', color: '#2E3191', bg: '#eef2ff' };
+    return m12Categories.find(function(c) { return c.code === code; }) || m12Categories[0] || { code: 'CAT-GEN', name: 'Phân loại chung', desc: '', color: '#2E3191', status: 'Đang sử dụng' };
   }
 
   function m12CatOrder(code) {
@@ -30639,7 +30733,13 @@ switchRepTab('dashboard');
   }
 
   let m12CollapsedCats = new Set();
-  let m12CatModalState = { editCode: null, icon: 'fa-solid fa-ship', colorIdx: 0, pendingDeleteCode: null };
+  let m12CatModalState = {
+    editCode: null,
+    colorHex: '#2E3191',
+    quickColorHex: '#0d9488',
+    popoverTarget: null,
+    pendingDeleteCode: null
+  };
 
   const M12_APPROVAL_MODES = {
     SEQUENTIAL: 'Duyệt tuần tự',
@@ -31700,15 +31800,16 @@ switchRepTab('dashboard');
 
   function m12RenderCatCell(r, k) {
     const cat = r.raw;
+    const clrMeta = m12ColorMeta(cat.color);
     if (k === 'code') {
-      return '<span style="font-weight:700;color:#2E3191;letter-spacing:0.3px;font-size:12px">' + m12Esc(r.code) + '</span>';
+      return '<span style="background:' + clrMeta.hex + ';color:' + clrMeta.fg + ';padding:3px 10px;border-radius:6px;font-weight:700;letter-spacing:0.3px;font-size:11.5px;display:inline-block">' + m12Esc(r.code) + '</span>';
     }
     if (k === 'name') {
       return '<div style="display:flex;align-items:center;gap:10px;min-width:210px">' +
-        '<span class="m12-cat-ico-chip" style="background:' + cat.bg + ';color:' + cat.color + '"><i class="' + m12Esc(cat.icon || 'fa-solid fa-layer-group') + '" aria-hidden="true"></i></span>' +
-        '<div style="display:flex;align-items:center;gap:7px">' +
-          '<a href="javascript:void(0)" onclick="openM12CatFormModal(\'' + m12Esc(r.code) + '\')" style="font-weight:700;color:#0f172a;font-size:13px;text-decoration:none" onmouseover="this.style.color=\'#2E3191\'" onmouseout="this.style.color=\'#0f172a\'">' + m12Esc(r.name) + '</a>' +
-          '<span style="width:9px;height:9px;border-radius:999px;background:' + cat.color + ';display:inline-block" title="Màu nhận diện"></span>' +
+        '<span style="width:20px;height:20px;border-radius:6px;background:' + clrMeta.hex + ';border:1px solid rgba(15,23,42,0.1);flex-shrink:0;display:inline-block" title="' + m12Esc(clrMeta.label) + '"></span>' +
+        '<div>' +
+          '<a href="javascript:void(0)" onclick="openM12CatFormModal(\'' + m12Esc(r.code) + '\')" style="font-weight:700;color:#0f172a;font-size:13px;text-decoration:none;display:block" onmouseover="this.style.color=\'#2E3191\'" onmouseout="this.style.color=\'#0f172a\'">' + m12Esc(r.name) + '</a>' +
+          '<div style="font-size:11px;color:#64748b;margin-top:1px">' + m12Esc(clrMeta.label) + '</div>' +
         '</div>' +
       '</div>';
     }
@@ -32198,12 +32299,15 @@ switchRepTab('dashboard');
     m12Categories.forEach(function(cat) {
       const items = listAll.filter(function(g) { return g.categoryCode === cat.code; });
       if (!items.length) return;
-      html += '<div style="margin-bottom:14px"><div style="font-size:12px;font-weight:700;color:#334155;margin-bottom:8px;display:flex;align-items:center;gap:6px"><i class="' + m12Esc(cat.icon) + '" style="color:' + cat.color + '" aria-hidden="true"></i><span>' + m12Esc(cat.name) + ' (' + items.length + ')</span></div>' +
+      const clrMeta = m12ColorMeta(cat.color);
+      html += '<div style="margin-bottom:14px"><div style="font-size:12px;font-weight:700;color:#334155;margin-bottom:8px;display:flex;align-items:center;gap:8px">' +
+        '<span style="background:' + clrMeta.hex + ';color:' + clrMeta.fg + ';padding:2px 8px;border-radius:6px;font-size:10.5px;font-weight:700">' + m12Esc(cat.code) + '</span>' +
+        '<span>' + m12Esc(cat.name) + ' (' + items.length + ')</span></div>' +
         '<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(255px,1fr));gap:10px">' +
         items.map(function(g) {
           return '<button type="button" onclick="openM12CreateFromGroup(\'' + m12Esc(g.id) + '\')" style="text-align:left;background:#ffffff;border:1px solid #e2e8f0;border-radius:10px;padding:12px 14px;cursor:pointer;display:flex;flex-direction:column;justify-content:space-between;gap:8px;transition:all .15s" onmouseover="this.style.borderColor=\'#2E3191\'" onmouseout="this.style.borderColor=\'#e2e8f0\'">' +
             '<div style="display:flex;align-items:flex-start;gap:10px">' +
-              '<span style="width:32px;height:32px;border-radius:8px;background:' + cat.bg + ';color:' + cat.color + ';display:inline-flex;align-items:center;justify-content:center;flex-shrink:0"><i class="' + m12Esc(g.icon || cat.icon || 'fa-solid fa-file-lines') + '" aria-hidden="true"></i></span>' +
+              '<span style="width:32px;height:32px;border-radius:8px;background:#eef2ff;color:#2E3191;display:inline-flex;align-items:center;justify-content:center;flex-shrink:0"><i class="' + m12Esc(g.icon || 'fa-solid fa-file-lines') + '" aria-hidden="true"></i></span>' +
               '<div><div style="font-weight:700;font-size:13px;color:#0f172a;line-height:1.35">' + m12Esc(g.name) + '</div><div style="font-size:11.5px;color:#64748b;margin-top:3px">' + m12Esc(g.desc || '') + '</div></div>' +
             '</div>' +
             '<div style="display:flex;justify-content:space-between;font-size:11px;color:#64748b;padding-top:6px;border-top:1px solid #f8fafc;width:100%"><span>SLA: ' + g.slaHours + 'h</span><span style="color:#2E3191;font-weight:600">Mở trang tạo <i class="fa-solid fa-arrow-right" style="font-size:9px" aria-hidden="true"></i></span></div>' +
@@ -33742,7 +33846,7 @@ switchRepTab('dashboard');
           '<div class="m12-kv-row"><div class="m12-kv-key">Tên nhóm đề xuất</div><div class="m12-kv-val" style="font-weight:600;color:#0f172a">' + m12Esc(grp.name) + '</div></div>' +
           '<div class="m12-kv-row"><div class="m12-kv-key">Mã nhóm</div><div class="m12-kv-val" style="font-family:ui-monospace,monospace;font-weight:700;color:#2E3191">' + m12Esc(grp.code) + '</div></div>' +
           '<div class="m12-kv-row"><div class="m12-kv-key">Tạo bởi</div><div class="m12-kv-val"><span class="m12-ava" style="width:24px;height:24px;font-size:10px;background:' + creator.bg + ';color:' + creator.fg + '">' + m12Esc(creator.ini) + '</span><span style="font-weight:600">' + m12Esc(creator.name) + '</span></div></div>' +
-          '<div class="m12-kv-row"><div class="m12-kv-key">Phân loại</div><div class="m12-kv-val"><span style="padding:3px 10px;border-radius:6px;background:' + cat.bg + ';color:' + cat.color + ';font-size:12px;font-weight:600"><i class="' + cat.icon + '" style="margin-right:5px" aria-hidden="true"></i>' + m12Esc(cat.name) + '</span></div></div>' +
+          '<div class="m12-kv-row"><div class="m12-kv-key">Phân loại</div><div class="m12-kv-val"><span style="padding:3.5px 12px;border-radius:6px;background:' + cat.color + ';color:' + m12AutoContrastFg(cat.color) + ';font-size:12px;font-weight:700">' + m12Esc(cat.code) + ' · ' + m12Esc(cat.name) + '</span></div></div>' +
           '<div class="m12-kv-row"><div class="m12-kv-key">SLA</div><div class="m12-kv-val" style="font-weight:600">' + grp.slaHours + ' giờ</div></div>' +
           '<div class="m12-kv-row"><div class="m12-kv-key">Sử dụng cho</div><div class="m12-kv-val">' + (grp.scopeType === 'ALL' ? 'Toàn công ty' : m12Esc((grp.allowedDepts || []).join(', '))) + '</div></div>' +
           '<div class="m12-kv-row"><div class="m12-kv-key">Mô tả nhóm đề xuất</div><div class="m12-kv-val" style="color:#64748b">' + m12Esc(grp.desc || 'Không có mô tả chi tiết') + '</div></div>' +
@@ -34271,22 +34375,29 @@ switchRepTab('dashboard');
     openM12Mdl('mdl-m12-edit-general');
   }
 
+  function m12FirstUnusedPaletteHex() {
+    const usedSet = new Set(m12Categories.map(function(c) { return String(c.color || '').toLowerCase(); }));
+    const unused = M12_COLOR_PALETTE_32.find(function(p) { return !usedSet.has(p.hex.toLowerCase()); });
+    return unused ? unused.hex : M12_COLOR_PALETTE_32[0].hex;
+  }
+
   function toggleM12QuickCatBox(force) {
     const box = document.getElementById('m12-eg-quick-cat-box');
     if (!box) return;
     const show = typeof force === 'boolean' ? force : box.hidden;
     box.hidden = !show;
-    if (show) {
-      const nm = document.getElementById('m12-qc-name'); if (nm) { nm.value = ''; nm.focus(); }
-      const ic = document.getElementById('m12-qc-icon');
-      if (ic) {
-        ic.innerHTML = M12_CAT_ICONS.map(function(o) { return '<option value="' + m12Esc(o.icon) + '">' + m12Esc(o.label) + '</option>'; }).join('');
-      }
-      const cl = document.getElementById('m12-qc-color');
-      if (cl) {
-        cl.innerHTML = M12_CAT_COLORS.map(function(c, idx) { return '<option value="' + idx + '">' + m12Esc(c.label) + '</option>'; }).join('');
-      }
+    if (!show) {
+      if (m12CatModalState.popoverTarget === 'quick') closeM12ColorPopover();
+      return;
     }
+    const nm = document.getElementById('m12-qc-name');
+    if (nm) { nm.value = ''; nm.focus(); }
+    m12CatModalState.quickColorHex = m12FirstUnusedPaletteHex();
+    m12RenderColorTriggerBtn('quick');
+  }
+
+  function onM12QuickCatInput() {
+    if (m12CatModalState.popoverTarget === 'quick') m12RenderColorPopover();
   }
 
   function m12SlugCatCode(name) {
@@ -34308,13 +34419,12 @@ switchRepTab('dashboard');
       return;
     }
     if (err) { err.hidden = true; err.textContent = ''; }
-    const ico = (document.getElementById('m12-qc-icon') || {}).value || 'fa-solid fa-ship';
-    const clrIdx = Number((document.getElementById('m12-qc-color') || {}).value) || 0;
-    const clr = M12_CAT_COLORS[clrIdx] || M12_CAT_COLORS[0];
+    const clrMeta = m12ColorMeta(m12CatModalState.quickColorHex || m12FirstUnusedPaletteHex());
     let code = m12SlugCatCode(name);
     if (m12Categories.some(function(c) { return c.code === code; })) code = code + '-' + (m12Categories.length + 1);
 
-    m12Categories.push({ code: code, name: name, desc: '', icon: ico, color: clr.color, bg: clr.bg, status: 'Đang sử dụng' });
+    m12Categories.push({ code: code, name: name, desc: '', color: clrMeta.hex, status: 'Đang sử dụng' });
+    closeM12ColorPopover();
     m12SyncAllCategoryViews();
     const catSel = document.getElementById('m12-eg-cat');
     if (catSel) catSel.value = code;
@@ -34359,7 +34469,7 @@ switchRepTab('dashboard');
       if (m12Groups.some(function(g) { return g.code.toUpperCase() === code; })) return fail('Mã nhóm "' + code + '" đã tồn tại.');
       const catObj = m12Cat(cat);
       const newGrp = enrichGroup8Settings({
-        id: code, code: code, name: name, categoryCode: catObj.code, icon: catObj.icon,
+        id: code, code: code, name: name, categoryCode: catObj.code,
         slaHours: sla, status: status, scopeType: scopeType, allowedDepts: [].concat(m12EgState.allowedDepts),
         approvalMode: 'SEQUENTIAL', useDirectManager: true, fixedApprovers: ['PAP0003'], conditionalRules: [], defaultFollowers: [],
         desc: desc,
@@ -34719,17 +34829,135 @@ switchRepTab('dashboard');
     m12Toast('Đã tải xuống tệp Excel: ' + fileName);
   }
 
-  /* ====== 10 & 11. DYNAMIC CATEGORY CREATE/EDIT MODAL (#mdl-m12-cat-form) & SAFE DELETE (#mdl-m12-cat-delete) ====== */
+  /* ====== 10 & 11. DYNAMIC CATEGORY CREATE/EDIT MODAL (#mdl-m12-cat-form), 32-COLOR POPOVER (#m12-color-popover) & SAFE DELETE (#mdl-m12-cat-delete) ====== */
+  function m12RenderColorTriggerBtn(target) {
+    const isQuick = target === 'quick';
+    const btn = document.getElementById(isQuick ? 'm12-qc-color-btn' : 'm12-cat-color-btn');
+    if (!btn) return;
+    const hex = isQuick ? (m12CatModalState.quickColorHex || '#0d9488') : (m12CatModalState.colorHex || '#2E3191');
+    const meta = m12ColorMeta(hex);
+    const isOpen = m12CatModalState.popoverTarget === (isQuick ? 'quick' : 'modal');
+    btn.classList.toggle('open', isOpen);
+    btn.innerHTML =
+      '<span style="display:inline-flex;align-items:center;gap:9px;min-width:0">' +
+        '<span style="width:18px;height:18px;border-radius:6px;background:' + meta.hex + ';border:1px solid rgba(15,23,42,0.12);flex-shrink:0;display:inline-block"></span>' +
+        '<span style="font-size:13px;font-weight:600;color:#0f172a;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">' + m12Esc(meta.label) + '</span>' +
+      '</span>' +
+      '<i class="fa-solid fa-chevron-down" style="font-size:11px;color:#64748b;transition:transform .15s;' + (isOpen ? 'transform:rotate(180deg)' : '') + '" aria-hidden="true"></i>';
+  }
+
+  function closeM12ColorPopover() {
+    const pop = document.getElementById('m12-color-popover');
+    if (pop) pop.hidden = true;
+    m12CatModalState.popoverTarget = null;
+    m12RenderColorTriggerBtn('modal');
+    m12RenderColorTriggerBtn('quick');
+  }
+
+  function toggleM12ColorPopover(target, btnEl, ev) {
+    if (ev && typeof ev.stopPropagation === 'function') ev.stopPropagation();
+    const normTarget = target === 'quick' ? 'quick' : 'modal';
+    const pop = document.getElementById('m12-color-popover');
+    if (!pop) return;
+    if (!pop.hidden && m12CatModalState.popoverTarget === normTarget) {
+      closeM12ColorPopover();
+      return;
+    }
+    m12CatModalState.popoverTarget = normTarget;
+    m12RenderColorTriggerBtn('modal');
+    m12RenderColorTriggerBtn('quick');
+    m12RenderColorPopover();
+    pop.hidden = false;
+
+    const anchor = btnEl || document.getElementById(normTarget === 'quick' ? 'm12-qc-color-btn' : 'm12-cat-color-btn');
+    if (anchor && typeof anchor.getBoundingClientRect === 'function') {
+      const rect = anchor.getBoundingClientRect();
+      const vw = (window && window.innerWidth) || 1280;
+      const vh = (window && window.innerHeight) || 800;
+      let left = Math.max(12, Math.min(rect.left, vw - 380));
+      let top = rect.bottom + 6;
+      if (top + 320 > vh && rect.top > 330) {
+        top = rect.top - 318;
+      }
+      pop.style.left = left + 'px';
+      pop.style.top = top + 'px';
+    }
+  }
+
+  function m12RenderColorPopover() {
+    const grid = document.getElementById('m12-clr-pop-grid');
+    const usedBox = document.getElementById('m12-clr-pop-used');
+    const prevBox = document.getElementById('m12-clr-pop-preview');
+    if (!grid) return;
+
+    const isQuick = m12CatModalState.popoverTarget === 'quick';
+    const curHex = String(isQuick ? (m12CatModalState.quickColorHex || '#0d9488') : (m12CatModalState.colorHex || '#2E3191')).toLowerCase();
+    const editingCode = isQuick ? null : m12CatModalState.editCode;
+
+    const usedByHex = {};
+    m12Categories.forEach(function(c) {
+      if (editingCode && c.code === editingCode) return;
+      const h = String(c.color || '').toLowerCase();
+      usedByHex[h] = usedByHex[h] || [];
+      usedByHex[h].push(c);
+    });
+
+    grid.innerHTML = M12_COLOR_PALETTE_32.map(function(p) {
+      const h = p.hex.toLowerCase();
+      const isAct = h === curHex;
+      const usedCats = usedByHex[h] || [];
+      const usedTitle = usedCats.length ? (' · Đã dùng bởi: ' + usedCats.map(function(c) { return c.code; }).join(', ')) : '';
+      return '<button type="button" class="m12-clr-sw ' + (isAct ? 'active' : '') + '" style="background:' + p.hex + '" title="' + m12Esc(p.label + ' (' + p.hex + ')' + usedTitle) + '" aria-label="Chọn màu ' + m12Esc(p.label) + '" onclick="pickM12CatColorHex(\'' + p.hex + '\')">' +
+        (isAct ? '<i class="fa-solid fa-check" style="color:' + p.fg + ';font-size:12px" aria-hidden="true"></i>' : '') +
+        (usedCats.length ? '<span class="m12-clr-used-dot"></span>' : '') +
+      '</button>';
+    }).join('');
+
+    if (usedBox) {
+      usedBox.innerHTML = m12Categories.map(function(c) {
+        const cm = m12ColorMeta(c.color);
+        return '<span style="padding:2.5px 9px;border-radius:6px;background:' + cm.hex + ';color:' + cm.fg + ';font-size:11px;font-weight:700;letter-spacing:0.2px;display:inline-block" title="' + m12Esc(c.name + ' (' + cm.label + ')') + '">' + m12Esc(c.code) + '</span>';
+      }).join('');
+    }
+
+    if (prevBox) {
+      const curMeta = m12ColorMeta(curHex);
+      let sampleCode = 'CAT-NEW', sampleName = 'Tên phân loại';
+      if (isQuick) {
+        const qName = ((document.getElementById('m12-qc-name') || {}).value || '').trim();
+        sampleName = qName || 'Phân loại mới';
+        sampleCode = qName ? m12SlugCatCode(qName) : 'CAT-NEW';
+      } else {
+        const cVal = ((document.getElementById('m12-cat-code') || {}).value || '').trim().toUpperCase();
+        const nVal = ((document.getElementById('m12-cat-name') || {}).value || '').trim();
+        sampleCode = cVal || 'CAT-OPS';
+        sampleName = nVal || 'Tên phân loại';
+      }
+      prevBox.innerHTML = '<span style="padding:4px 12px;border-radius:6px;background:' + curMeta.hex + ';color:' + curMeta.fg + ';font-size:12px;font-weight:700;display:inline-block">' + m12Esc(sampleCode + ' · ' + sampleName) + '</span>';
+    }
+  }
+
+  function pickM12CatColorHex(hex) {
+    const meta = m12ColorMeta(hex);
+    if (m12CatModalState.popoverTarget === 'quick') {
+      m12CatModalState.quickColorHex = meta.hex;
+      m12RenderColorTriggerBtn('quick');
+    } else {
+      m12CatModalState.colorHex = meta.hex;
+      m12RenderColorTriggerBtn('modal');
+    }
+    m12RenderColorPopover();
+  }
+
   function openM12CatFormModal(editCode) {
+    closeM12ColorPopover();
     const err = document.getElementById('m12-cat-err');
     if (err) { err.hidden = true; err.textContent = ''; }
 
     const cat = editCode ? m12Categories.find(function(c) { return c.code === editCode; }) : null;
     const isEdit = !!cat;
     m12CatModalState.editCode = isEdit ? cat.code : null;
-    m12CatModalState.icon = isEdit ? (cat.icon || 'fa-solid fa-layer-group') : 'fa-solid fa-ship';
-    const foundClr = isEdit ? M12_CAT_COLORS.findIndex(function(x) { return x.color.toLowerCase() === String(cat.color || '').toLowerCase(); }) : 0;
-    m12CatModalState.colorIdx = foundClr >= 0 ? foundClr : 0;
+    m12CatModalState.colorHex = isEdit ? m12ColorMeta(cat.color).hex : m12FirstUnusedPaletteHex();
 
     const hd = document.getElementById('mdl-m12-cat-form-title');
     if (hd) hd.textContent = isEdit ? 'Chỉnh sửa phân loại đề xuất' : 'Tạo phân loại đề xuất mới';
@@ -34753,9 +34981,13 @@ switchRepTab('dashboard');
     const ds = document.getElementById('m12-cat-desc');
     if (ds) ds.value = isEdit ? (cat.desc || '') : '';
 
-    m12RenderCatPalettes();
+    m12RenderColorTriggerBtn('modal');
     openM12Mdl('mdl-m12-cat-form');
     if (nm) nm.focus();
+  }
+
+  function onM12CatCodeInput() {
+    if (m12CatModalState.popoverTarget === 'modal') m12RenderColorPopover();
   }
 
   function onM12CatNameInput(val) {
@@ -34763,38 +34995,7 @@ switchRepTab('dashboard');
       const cd = document.getElementById('m12-cat-code');
       if (cd) cd.value = m12SlugCatCode(val);
     }
-  }
-
-  function m12RenderCatPalettes() {
-    const icoBox = document.getElementById('m12-cat-icon-palette');
-    const clr = M12_CAT_COLORS[m12CatModalState.colorIdx] || M12_CAT_COLORS[0];
-    if (icoBox) {
-      icoBox.innerHTML = M12_CAT_ICONS.map(function(o) {
-        const act = m12CatModalState.icon === o.icon;
-        return '<button type="button" class="m12-ico-opt ' + (act ? 'active' : '') + '" title="' + m12Esc(o.label) + '" aria-label="Biểu tượng ' + m12Esc(o.label) + '" style="' + (act ? ('background:' + clr.bg + ';color:' + clr.color) : 'color:#475569') + '" onclick="pickM12CatIcon(\'' + m12Esc(o.icon) + '\')">' +
-          '<i class="' + m12Esc(o.icon) + '" aria-hidden="true"></i>' +
-        '</button>';
-      }).join('');
-    }
-    const clrBox = document.getElementById('m12-cat-color-palette');
-    if (clrBox) {
-      clrBox.innerHTML = M12_CAT_COLORS.map(function(c, idx) {
-        const act = m12CatModalState.colorIdx === idx;
-        return '<button type="button" class="m12-clr-opt ' + (act ? 'active' : '') + '" title="' + m12Esc(c.label) + '" aria-label="Màu ' + m12Esc(c.label) + '" onclick="pickM12CatColor(' + idx + ')">' +
-          '<span style="width:18px;height:18px;border-radius:999px;background:' + c.color + ';display:inline-block"></span>' +
-        '</button>';
-      }).join('');
-    }
-  }
-
-  function pickM12CatIcon(ico) {
-    m12CatModalState.icon = ico;
-    m12RenderCatPalettes();
-  }
-
-  function pickM12CatColor(idx) {
-    m12CatModalState.colorIdx = Number(idx) || 0;
-    m12RenderCatPalettes();
+    if (m12CatModalState.popoverTarget === 'modal') m12RenderColorPopover();
   }
 
   function saveM12CategoryForm() {
@@ -34804,7 +35005,7 @@ switchRepTab('dashboard');
     const rawCode = ((document.getElementById('m12-cat-code') || {}).value || '').trim().toUpperCase();
     const status = (document.getElementById('m12-cat-status') || {}).value || 'Đang sử dụng';
     const desc = ((document.getElementById('m12-cat-desc') || {}).value || '').trim();
-    const clr = M12_CAT_COLORS[m12CatModalState.colorIdx] || M12_CAT_COLORS[0];
+    const clrMeta = m12ColorMeta(m12CatModalState.colorHex);
 
     if (!name) return fail('Vui lòng nhập Tên phân loại.');
     const code = rawCode || m12SlugCatCode(name);
@@ -34819,16 +35020,16 @@ switchRepTab('dashboard');
       cat.name = name;
       cat.status = status;
       cat.desc = desc;
-      cat.icon = m12CatModalState.icon;
-      cat.color = clr.color;
-      cat.bg = clr.bg;
+      cat.color = clrMeta.hex;
+      closeM12ColorPopover();
       closeM12Mdl('mdl-m12-cat-form');
       m12SyncAllCategoryViews();
       m12Toast('Đã lưu thay đổi phân loại "' + name + '".');
     } else {
       if (m12Categories.some(function(c) { return c.code === code; })) return fail('Mã phân loại "' + code + '" đã tồn tại.');
       if (m12Categories.some(function(c) { return c.name.toLowerCase() === name.toLowerCase(); })) return fail('Tên phân loại "' + name + '" đã tồn tại.');
-      m12Categories.push({ code: code, name: name, desc: desc, icon: m12CatModalState.icon, color: clr.color, bg: clr.bg, status: status });
+      m12Categories.push({ code: code, name: name, desc: desc, color: clrMeta.hex, status: status });
+      closeM12ColorPopover();
       closeM12Mdl('mdl-m12-cat-form');
       m12SyncAllCategoryViews();
       m12Toast('Đã tạo phân loại mới: ' + name);
@@ -34896,14 +35097,24 @@ switchRepTab('dashboard');
   }
 
   document.addEventListener('click', function(ev) {
-    if (ev.target && typeof ev.target.closest === 'function' && !ev.target.closest('#m12-apv-add-menu') && !ev.target.closest('[onclick*="toggleM12ApvAddMenu"]')) {
-      const m = document.getElementById('m12-apv-add-menu');
-      if (m) m.hidden = true;
+    if (ev.target && typeof ev.target.closest === 'function') {
+      if (!ev.target.closest('#m12-apv-add-menu') && !ev.target.closest('[onclick*="toggleM12ApvAddMenu"]')) {
+        const m = document.getElementById('m12-apv-add-menu');
+        if (m) m.hidden = true;
+      }
+      if (!ev.target.closest('#m12-color-popover') && !ev.target.closest('.m12-clr-trigger')) {
+        closeM12ColorPopover();
+      }
     }
   });
 
   document.addEventListener('keydown', function(ev) {
     if (ev.key !== 'Escape') return;
+    const pop = document.getElementById('m12-color-popover');
+    if (pop && !pop.hidden) {
+      closeM12ColorPopover();
+      return;
+    }
     const openModals = Array.from(document.querySelectorAll('.m12-ov.show'));
     if (openModals.length > 0) closeM12Mdl(openModals[openModals.length - 1].id);
   });
@@ -34934,11 +35145,11 @@ switchRepTab('dashboard');
     toggleM12FieldRequired, toggleM12GroupDetailTable, deleteM12Field, downloadM12SampleFieldsExcel,
     insertM12PrintVar, saveM12PrintTemplateInline, updateM12PrintSetting, previewGroupPrintA4,
     removeM12LinkedGroup, updateM12PermSetting, updateM12EsignSetting, updateM12NotifSetting,
-    openM12EditGeneralModal, toggleM12QuickCatBox, saveM12QuickCategory, renderM12EgDeptTree, toggleM12EgDept, saveM12EditGeneralModal,
+    openM12EditGeneralModal, toggleM12QuickCatBox, onM12QuickCatInput, saveM12QuickCategory, renderM12EgDeptTree, toggleM12EgDept, saveM12EditGeneralModal,
     openM12ApproverBlockModal, saveM12ApproverBlock,
     openM12FieldModal, m12FeUpdateDtCol, m12FeAddDtCol, m12FeRemoveDtCol, onM12FeLabelInput, onM12FeTypeChange, saveM12FieldModal,
     openM12SubSettingsModal, saveM12SubSettingsModal,
-    openM12CatFormModal, onM12CatNameInput, pickM12CatIcon, pickM12CatColor, saveM12CategoryForm, moveM12Category,
+    openM12CatFormModal, onM12CatCodeInput, onM12CatNameInput, toggleM12ColorPopover, closeM12ColorPopover, pickM12CatColorHex, saveM12CategoryForm, moveM12Category,
     promptDeleteM12Category, confirmDeleteM12CategoryWithReassign,
     deleteM12Group, exportM12Excel
   });
@@ -44445,42 +44656,29 @@ if (typeof renderM8OtMatrix === 'function') { renderM8OtMatrix(); }
           <span>3. Hệ số tăng ca</span>
         </div>
         <div style="border:1px solid #e2e8f0;border-radius:8px;overflow:hidden">
-          <div style="display:grid;grid-template-columns:1fr 155px 155px;padding:9px 16px;background:#f8fafc;font-size:12px;font-weight:700;color:#475569;border-bottom:1px solid #e2e8f0;align-items:center">
+          <div style="display:grid;grid-template-columns:1fr 140px;padding:9px 16px;background:#f8fafc;font-size:12px;font-weight:700;color:#475569;border-bottom:1px solid #e2e8f0">
             <div>Loại ngày</div>
-            <div style="text-align:center;color:#2E3191">Hành chính (%)</div>
-            <div style="text-align:center;color:#b45309">Theo ca (%)</div>
+            <div style="text-align:right">Hệ số (%)</div>
           </div>
-          <div style="display:grid;grid-template-columns:1fr 155px 155px;align-items:center;padding:10px 16px;border-bottom:1px solid #f1f5f9;font-size:12px">
+          <div style="display:grid;grid-template-columns:1fr 140px;align-items:center;padding:10px 16px;border-bottom:1px solid #f1f5f9;font-size:12px">
             <div style="font-weight:600;color:#1e293b">Ngày làm việc bình thường</div>
-            <div style="display:flex;justify-content:center;align-items:center;gap:6px">
-              <input type="number" id="ot-pol-rate-weekday" class="fi" value="150" min="100" max="400" style="width:90px;height:34px;text-align:center;font-weight:700;border-radius:6px;border:1px solid #cbd5e1;color:#0f172a">
-              <span style="color:#64748b;font-weight:600;width:14px">%</span>
-            </div>
-            <div style="display:flex;justify-content:center;align-items:center;gap:6px">
-              <input type="number" id="ot-pol-rate-shift-weekday" class="fi" value="150" min="100" max="400" style="width:90px;height:34px;text-align:center;font-weight:700;border-radius:6px;border:1px solid #cbd5e1;color:#0f172a">
-              <span style="color:#64748b;font-weight:600;width:14px">%</span>
+            <div style="display:flex;justify-content:flex-end;align-items:center;gap:6px">
+              <input type="number" id="ot-pol-rate-weekday" class="fi" value="150" min="100" max="400" style="width:90px;height:34px;text-align:center;font-weight:700;border-radius:6px;border:1px solid #cbd5e1">
+              <span style="color:#64748b;font-weight:600">%</span>
             </div>
           </div>
-          <div style="display:grid;grid-template-columns:1fr 155px 155px;align-items:center;padding:10px 16px;border-bottom:1px solid #f1f5f9;font-size:12px">
+          <div style="display:grid;grid-template-columns:1fr 140px;align-items:center;padding:10px 16px;border-bottom:1px solid #f1f5f9;font-size:12px">
             <div style="font-weight:600;color:#1e293b">Ngày nghỉ hằng tuần</div>
-            <div style="display:flex;justify-content:center;align-items:center;gap:6px">
-              <input type="number" id="ot-pol-rate-weekend" class="fi" value="200" min="150" max="400" style="width:90px;height:34px;text-align:center;font-weight:700;border-radius:6px;border:1px solid #cbd5e1;color:#0f172a">
-              <span style="color:#64748b;font-weight:600;width:14px">%</span>
-            </div>
-            <div style="display:flex;justify-content:center;align-items:center;gap:6px">
-              <span title="Nhân viên làm theo ca không áp dụng nhóm Ngày nghỉ hằng tuần" style="display:inline-flex;align-items:center;justify-content:center;width:90px;height:34px;border-radius:6px;background:#f8fafc;border:1px dashed #cbd5e1;color:#94a3b8;font-weight:700;font-size:13px;user-select:none">—</span>
-              <span style="visibility:hidden;width:14px">%</span>
+            <div style="display:flex;justify-content:flex-end;align-items:center;gap:6px">
+              <input type="number" id="ot-pol-rate-weekend" class="fi" value="200" min="150" max="400" style="width:90px;height:34px;text-align:center;font-weight:700;border-radius:6px;border:1px solid #cbd5e1">
+              <span style="color:#64748b;font-weight:600">%</span>
             </div>
           </div>
-          <div style="display:grid;grid-template-columns:1fr 155px 155px;align-items:center;padding:10px 16px;font-size:12px">
+          <div style="display:grid;grid-template-columns:1fr 140px;align-items:center;padding:10px 16px;font-size:12px">
             <div style="font-weight:600;color:#1e293b">Ngày lễ, Tết</div>
-            <div style="display:flex;justify-content:center;align-items:center;gap:6px">
-              <input type="number" id="ot-pol-rate-holiday" class="fi" value="300" min="200" max="500" style="width:90px;height:34px;text-align:center;font-weight:700;border-radius:6px;border:1px solid #cbd5e1;color:#0f172a">
-              <span style="color:#64748b;font-weight:600;width:14px">%</span>
-            </div>
-            <div style="display:flex;justify-content:center;align-items:center;gap:6px">
-              <input type="number" id="ot-pol-rate-shift-holiday" class="fi" value="350" min="200" max="500" style="width:90px;height:34px;text-align:center;font-weight:700;border-radius:6px;border:1px solid #cbd5e1;color:#0f172a">
-              <span style="color:#64748b;font-weight:600;width:14px">%</span>
+            <div style="display:flex;justify-content:flex-end;align-items:center;gap:6px">
+              <input type="number" id="ot-pol-rate-holiday" class="fi" value="300" min="200" max="500" style="width:90px;height:34px;text-align:center;font-weight:700;border-radius:6px;border:1px solid #cbd5e1">
+              <span style="color:#64748b;font-weight:600">%</span>
             </div>
           </div>
         </div>
@@ -45094,22 +45292,18 @@ if (typeof renderM8OtMatrix === 'function') { renderM8OtMatrix(); }
           <span><i class="fa-solid fa-folder-plus" style="margin-right:5px" aria-hidden="true"></i>Tạo nhanh phân loại mới</span>
           <button type="button" onclick="toggleM12QuickCatBox(false)" style="border:0;background:transparent;color:#64748b;cursor:pointer;font-size:12px" aria-label="Đóng khung tạo nhanh"><i class="fa-solid fa-xmark" aria-hidden="true"></i></button>
         </div>
-        <div style="display:grid;grid-template-columns:1.25fr 1fr 0.9fr auto;gap:8px;align-items:end">
+        <div style="display:grid;grid-template-columns:1.15fr 1.25fr auto;gap:10px;align-items:end">
           <div>
             <label for="m12-qc-name" class="m12-lbl" style="font-size:11px">Tên phân loại <span style="color:#dc2626">*</span></label>
-            <input type="text" id="m12-qc-name" class="m12-inp" style="height:33px;background:#ffffff" placeholder="VD: Khai thác & Kỹ thuật...">
+            <input type="text" id="m12-qc-name" class="m12-inp" style="height:38px;background:#ffffff" placeholder="VD: Khai thác &amp; Kỹ thuật..." oninput="onM12QuickCatInput()">
           </div>
           <div>
-            <label for="m12-qc-icon" class="m12-lbl" style="font-size:11px">Biểu tượng</label>
-            <select id="m12-qc-icon" class="m12-sel" style="height:33px;background:#ffffff"></select>
+            <label class="m12-lbl" style="font-size:11px">Màu hiển thị</label>
+            <button type="button" id="m12-qc-color-btn" class="m12-clr-trigger" onclick="toggleM12ColorPopover('quick',this,event)" aria-label="Chọn màu hiển thị cho phân loại mới"></button>
           </div>
-          <div>
-            <label for="m12-qc-color" class="m12-lbl" style="font-size:11px">Màu sắc</label>
-            <select id="m12-qc-color" class="m12-sel" style="height:33px;background:#ffffff"></select>
-          </div>
-          <div style="display:flex;gap:5px">
-            <button type="button" class="btn btn-o" style="height:33px" onclick="toggleM12QuickCatBox(false)">Hủy</button>
-            <button type="button" class="btn btn-p" style="height:33px" onclick="saveM12QuickCategory()">Tạo phân loại</button>
+          <div style="display:flex;gap:6px">
+            <button type="button" class="btn btn-o" style="height:38px" onclick="toggleM12QuickCatBox(false)">Hủy</button>
+            <button type="button" class="btn btn-p" style="height:38px" onclick="saveM12QuickCategory()">Tạo phân loại</button>
           </div>
         </div>
       </div>
@@ -45222,36 +45416,32 @@ if (typeof renderM8OtMatrix === 'function') { renderM8OtMatrix(); }
     </div>
     <div class="m12-dlg-bd" style="background:#ffffff">
       <div id="m12-cat-err" class="m12-field-err" role="alert" hidden style="margin-bottom:10px"></div>
-      <div style="display:grid;grid-template-columns:165px 1fr 155px;gap:12px;margin-bottom:12px">
+      <div style="display:grid;grid-template-columns:165px 1fr;gap:12px;margin-bottom:12px">
         <div>
           <label for="m12-cat-code" class="m12-lbl">Mã phân loại <span style="color:#dc2626">*</span></label>
-          <input type="text" id="m12-cat-code" class="m12-inp" style="font-weight:700;color:#2E3191;text-transform:uppercase" placeholder="CAT-OPS">
+          <input type="text" id="m12-cat-code" class="m12-inp" style="font-weight:700;color:#2E3191;text-transform:uppercase" placeholder="CAT-OPS" oninput="onM12CatCodeInput(this.value)">
         </div>
         <div>
           <label for="m12-cat-name" class="m12-lbl">Tên phân loại <span style="color:#dc2626">*</span></label>
           <input type="text" id="m12-cat-name" class="m12-inp" placeholder="VD: Khai thác &amp; Kỹ thuật Cảng" oninput="onM12CatNameInput(this.value)">
         </div>
+      </div>
+      <div style="display:grid;grid-template-columns:1.35fr 0.85fr;gap:12px;margin-bottom:12px">
+        <div>
+          <label class="m12-lbl">Màu hiển thị</label>
+          <button type="button" id="m12-cat-color-btn" class="m12-clr-trigger" onclick="toggleM12ColorPopover('modal',this,event)" aria-label="Chọn màu hiển thị cho phân loại"></button>
+        </div>
         <div>
           <label for="m12-cat-status" class="m12-lbl">Trạng thái</label>
-          <select id="m12-cat-status" class="m12-sel">
+          <select id="m12-cat-status" class="m12-sel" style="height:38px">
             <option value="Đang sử dụng">Đang sử dụng</option>
             <option value="Ngừng sử dụng">Ngừng sử dụng</option>
           </select>
         </div>
       </div>
-      <div style="margin-bottom:12px">
+      <div>
         <label for="m12-cat-desc" class="m12-lbl">Mô tả phân loại</label>
         <textarea id="m12-cat-desc" class="m12-ta" rows="2" placeholder="Nhập mô tả phạm vi các nhóm đề xuất thuộc phân loại này..."></textarea>
-      </div>
-      <div style="display:grid;grid-template-columns:1.25fr 1fr;gap:14px">
-        <div>
-          <label class="m12-lbl">Biểu tượng nhận diện</label>
-          <div id="m12-cat-icon-palette" style="display:flex;gap:6px;flex-wrap:wrap"></div>
-        </div>
-        <div>
-          <label class="m12-lbl">Màu sắc</label>
-          <div id="m12-cat-color-palette" style="display:flex;gap:6px;flex-wrap:wrap"></div>
-        </div>
       </div>
     </div>
     <div class="m12-dlg-ft">
@@ -45281,6 +45471,25 @@ if (typeof renderM8OtMatrix === 'function') { renderM8OtMatrix(); }
       <button type="button" class="btn btn-p" style="background:#c2410c;border-color:#c2410c" onclick="confirmDeleteM12CategoryWithReassign()">
         <i class="fa-solid fa-check mr-1" aria-hidden="true"></i>Chuyển nhóm &amp; Xóa phân loại
       </button>
+    </div>
+  </div>
+</div>
+<!-- HỘP POPOVER BẢNG MÀU 32 Ô DÙNG CHUNG (#m12-color-popover) -->
+<div id="m12-color-popover" class="m12-clr-popover" role="dialog" aria-label="Bảng màu hiển thị" hidden>
+  <div style="display:flex;align-items:center;justify-content:space-between;gap:8px">
+    <strong style="font-size:13.5px;font-weight:700;color:#0f172a">Bảng màu</strong>
+    <span style="font-size:11.5px;color:#64748b">Chữ trắng / đậm tự đổi theo màu</span>
+  </div>
+  <div id="m12-clr-pop-grid" class="m12-clr-grid32"></div>
+  <div style="border-top:1px solid #f1f5f9;padding-top:11px">
+    <div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin-bottom:9px">
+      <span style="font-size:12px;font-weight:600;color:#64748b;min-width:66px">Đã dùng:</span>
+      <div id="m12-clr-pop-used" style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;flex:1"></div>
+    </div>
+    <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap">
+      <span style="font-size:12px;font-weight:600;color:#64748b;min-width:66px">Xem trước:</span>
+      <span id="m12-clr-pop-preview"></span>
+      <span style="font-size:11.5px;color:#64748b">trên Phân loại, Nhóm đề xuất</span>
     </div>
   </div>
 </div>
